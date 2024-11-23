@@ -12,12 +12,72 @@
     })();
   </script>
   <style>
+    body {
+      background-color: #f4f7fc;
+      font-family: 'Arial', sans-serif;
+    }
+
     .container {
       margin-top: 10%;
       max-width: 400px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
+    h3 {
+      color: #5f6368;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: bold;
+      color: #5f6368;
+    }
+
     input {
-      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      border-radius: 5px;
+      font-weight: 600;
+    }
+
+    .d-grid .btn {
+      padding: 12px;
+    }
+
+    .otp-form {
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .otp-form.d-none {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
     }
   </style>
 </head>
@@ -29,7 +89,7 @@
         <label for="email" class="form-label">Email Address</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
       </div>
-      <div class="mb-3 d-none" id="otp-container">
+      <div class="otp-form d-none" id="otp-container">
         <label for="otp" class="form-label">Enter OTP</label>
         <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter the OTP" maxlength="6">
       </div>
@@ -63,11 +123,11 @@
         otp: generatedOTP,
         from_name: "Sethu properties", // Adjust as needed
         to_name: emailInput,
-        message: Your OTP is ${generatedOTP}. Please use it to verify your email.,
+        message: `Your OTP is ${generatedOTP}. Please use it to verify your email.`,
         reply_to: "noreply@yourwebsite.com" 
       };
 
-      emailjs.send("service_gs473zw","template_kmcrxnz", params)
+      emailjs.send("service_gs473zw", "template_kmcrxnz", params)
         .then(function(response) {
           alert("OTP sent successfully! Please check your email.");
 
@@ -91,7 +151,7 @@
       }
 
       if (userOTP === String(generatedOTP)) {
-        alert("OTP verified successfully! final");
+        alert("OTP verified successfully!");
         window.location.href = "https://vsgroupsofcompany.neocities.org/finaldatabse";
       } else {
         alert("Invalid OTP. Please try again.");
