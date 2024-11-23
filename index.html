@@ -12,12 +12,72 @@
     })();
   </script>
   <style>
+    body {
+      background-color: #f4f7fc;
+      font-family: 'Arial', sans-serif;
+    }
+
     .container {
       margin-top: 10%;
       max-width: 400px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
+    h3 {
+      color: #5f6368;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: bold;
+      color: #5f6368;
+    }
+
     input {
-      margin-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      border-radius: 5px;
+      font-weight: 600;
+    }
+
+    .d-grid .btn {
+      padding: 12px;
+    }
+
+    .otp-form {
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .otp-form.d-none {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
     }
   </style>
 </head>
@@ -29,7 +89,7 @@
         <label for="email" class="form-label">Email Address</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
       </div>
-      <div class="mb-3 d-none" id="otp-container">
+      <div class="otp-form d-none" id="otp-container">
         <label for="otp" class="form-label">Enter OTP</label>
         <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter the OTP" maxlength="6">
       </div>
@@ -38,6 +98,24 @@
         <button type="button" class="btn btn-success d-none" id="verify-otp" onclick="verifyOTP()">Verify OTP</button>
       </div>
     </form>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="statusModalLabel">OTP Status</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-message">
+          <!-- Message will be dynamically added here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -50,7 +128,7 @@
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailPattern.test(emailInput)) {
-        alert("Please enter a valid email address.");
+        showModal("Please enter a valid email address.", "danger");
         return;
       }
 
@@ -67,9 +145,9 @@
         reply_to: "noreply@yourwebsite.com" 
       };
 
-      emailjs.send("service_gs473zw","template_kmcrxnz", params)
+      emailjs.send("service_gs473zw", "template_kmcrxnz", params)
         .then(function(response) {
-          alert("OTP sent successfully! Please check your email.");
+          showModal("OTP sent successfully! Please check your email.", "success");
 
           // Update UI
           document.getElementById("otp-container").classList.remove("d-none");
@@ -78,7 +156,7 @@
         })
         .catch(function(error) {
           console.error("Failed to send email:", error);
-          alert("Failed to send OTP. Please try again.");
+          showModal("Failed to send OTP. Please try again.", "danger");
         });
     }
 
@@ -86,17 +164,40 @@
       const userOTP = document.getElementById("otp").value.trim();
 
       if (!userOTP) {
-        alert("Please enter the OTP.");
+        showModal("Please enter the OTP.", "warning");
         return;
       }
 
       if (userOTP === String(generatedOTP)) {
-        alert("OTP verified successfully! final");
+        showModal("OTP verified successfully!", "success");
         window.location.href = "https://vsgroupsofcompany.neocities.org/finaldatabse";
       } else {
-        alert("Invalid OTP. Please try again.");
+        showModal("Invalid OTP. Please try again.", "danger");
       }
     }
+
+    // Function to show modal with dynamic message and color
+    function showModal(message, status) {
+      const modalMessage = document.getElementById("modal-message");
+      modalMessage.innerHTML = message;
+
+      // Change modal color based on status
+      const modalDialog = document.querySelector(".modal-dialog");
+      modalDialog.classList.remove("bg-success", "bg-danger", "bg-warning");
+      if (status === "success") {
+        modalDialog.classList.add("bg-success");
+      } else if (status === "danger") {
+        modalDialog.classList.add("bg-danger");
+      } else if (status === "warning") {
+        modalDialog.classList.add("bg-warning");
+      }
+
+      // Show the modal
+      const modal = new bootstrap.Modal(document.getElementById("statusModal"));
+      modal.show();
+    }
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
