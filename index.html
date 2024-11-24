@@ -175,6 +175,10 @@
         showAlert("Invalid OTP. Please try again.", "danger");
       }
     }
+    setTimeout(() => {
+    window.location.reload(); // Refresh the page
+}, 6000); // 10 minutes = 600000 milliseconds
+
   </script>
 </body>
 </html>
