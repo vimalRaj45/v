@@ -43,6 +43,10 @@
 
     .alert {
       display: none;
+      padding: 5px 10px;
+      font-size: 0.85em;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .spinner-border {
@@ -92,10 +96,20 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Alert container styling */
+    #alert-container {
+      position: absolute;
+      top: 15%;
+      right: 10%;
+      z-index: 1000;
+      width: auto;
+      max-width: 200px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container position-relative">
     <h3 class="text-center">OTP Verification</h3>
     <div id="alert-container"></div>
     <form id="otpForm" onsubmit="return handleSubmit(event)">
@@ -106,8 +120,11 @@
       <div class="otp-form d-none" id="otp-container">
         <label for="otp" class="form-label">Enter OTP</label>
         <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter the OTP" maxlength="6">
+        <p id="otp-expiry" class="text-danger mt-2 d-flex justify-content-end pe-2" style="font-size: 12px; font-weight: 700;">
+        </p>
       </div>
-      <p id="otp-sent-message" class="mt-2">OTP has been sent to your email.</p> <!-- Message after OTP is sent -->
+      
+      <p id="otp-sent-message" class="mt-2">OTP has been sent to your email.</p>
       <div class="d-grid gap-2">
         <button type="submit" class="btn btn-primary" id="send-otp">
           Send OTP
@@ -125,16 +142,28 @@
   </div>
 
   <script>
+    let otpExpiryTime;
+    let timerInterval;
     let generatedOTP;
 
-    function showAlert(message, type = "success") {
-      const alertContainer = document.getElementById("alert-container");
-      alertContainer.innerHTML = `
-        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-          ${message}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      `;
+    function startOtpExpiryCountdown() {
+      const expiryDuration = 3 * 60; // 3 minutes in seconds
+      otpExpiryTime = new Date().getTime() + expiryDuration * 1000;
+
+      timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = otpExpiryTime - now;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("otp-expiry").textContent = "OTP has expired. Please resend.";
+          document.getElementById("verify-otp").disabled = true;
+        } else {
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          document.getElementById("otp-expiry").textContent = `OTP expires in ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+        }
+      }, 1000); // Update every second
     }
 
     function handleSubmit(event) {
@@ -148,47 +177,54 @@
         return;
       }
 
-      // Generate OTP
       generatedOTP = Math.floor(100000 + Math.random() * 900000);
 
-      // Show loading spinner
       const sendOtpButton = document.getElementById("send-otp");
       sendOtpButton.disabled = true;
       sendOtpButton.classList.add("loading");
 
-      // Send OTP via EmailJS
       const params = {
         email: emailInput,
         otp: generatedOTP,
-        from_name: "Sethu properties",
+        from_name: "Sethu Properties",
         to_name: emailInput,
         message: `Your OTP is ${generatedOTP}. Please use it to verify your email.`,
-        reply_to: "noreply@yourwebsite.com"
+        reply_to: "noreply@yourwebsite.com",
       };
 
       emailjs.send("service_gs473zw", "template_kmcrxnz", params)
-        .then(function() {
-          // Show success alert and OTP sent message
+        .then(() => {
           showAlert("OTP sent successfully! Please check your email.", "success");
           document.getElementById("otp-sent-message").style.display = "block";
 
-          // Hide spinner and enable button
           sendOtpButton.disabled = false;
           sendOtpButton.classList.remove("loading");
-
-          // Update UI
           document.getElementById("otp-container").classList.remove("d-none");
           document.getElementById("verify-otp").classList.remove("d-none");
           sendOtpButton.textContent = "Resend OTP";
+
+          startOtpExpiryCountdown();
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.error("Failed to send email:", error);
           showAlert("Failed to send OTP. Please try again.", "danger");
 
-          // Hide spinner and enable button
           sendOtpButton.disabled = false;
           sendOtpButton.classList.remove("loading");
         });
+    }
+
+    function showAlert(message, type) {
+      const alertContainer = document.getElementById("alert-container");
+      alertContainer.innerHTML = `
+        <div class="alert alert-${type}">
+          ${message}
+        </div>
+      `;
+
+      setTimeout(() => {
+        alertContainer.innerHTML = ""; // Remove the alert after 3 seconds
+      }, 3000);
     }
 
     function verifyOTP() {
@@ -199,11 +235,9 @@
         return;
       }
 
-      // Show loading overlay while verifying
       document.getElementById("loading-overlay").style.display = "flex";
 
       setTimeout(() => {
-        // Hide loading overlay once verification is done
         document.getElementById("loading-overlay").style.display = "none";
 
         if (userOTP === String(generatedOTP)) {
@@ -221,5 +255,4 @@
       window.location.reload(); // Refresh the page after 10 minutes
     }, 600000); // 10 minutes = 600000 milliseconds
   </script>
-</body>
-</html>
+</body
