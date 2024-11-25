@@ -242,6 +242,7 @@
 
         if (userOTP === String(generatedOTP)) {
           showAlert("OTP verified successfully!", "success");
+        sessionStorage.setItem("authenticated", true); // Set session flag
           setTimeout(() => {
             window.location.href = "https://vsgroupsofcompany.neocities.org/finaldatabse";
           }, 100);
