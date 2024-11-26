@@ -63,14 +63,11 @@
       margin-top: 20px;
     }
 
-    #otp-sent-message {
-      color: #5f6368;
+    #otp-expiry {
+      color: #d9534f;
       font-size: 0.9em;
-      margin-top: 10px;
-      display: none;
     }
 
-    /* Full-screen loading overlay */
     #loading-overlay {
       position: fixed;
       top: 0;
@@ -98,7 +95,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Alert container styling */
     #alert-container {
       position: absolute;
       top: 15%;
@@ -118,41 +114,38 @@
         <label for="email" class="form-label">Email Address</label>
         <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
       </div>
-      <div class="otp-form d-none" id="otp-container">
+      <div id="otp-container" class="d-none">
         <label for="otp" class="form-label">Enter OTP</label>
         <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter the OTP" maxlength="6">
+        <p id="otp-expiry" class="mt-1 text-end"></p>
       </div>
-      
-      
-      <p id="otp-expiry" class="text-danger mt-1 d-flex justify-content-end pe-2" style="font-size: 16px; font-weight: 700;">
-      </p>
       <div class="d-grid gap-2">
         <button type="submit" class="btn btn-primary" id="send-otp">
           Send OTP
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         </button>
-       
         <button type="button" class="btn btn-success d-none" id="verify-otp" onclick="verifyOTP()">Verify OTP</button>
       </div>
     </form>
   </div>
+
   <!-- Modal -->
-<div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="otpModalLabel">OTP Notification</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        OTP has been sent to your email.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
+  <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="otpModalLabel">OTP Notification</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          OTP has been sent to your email.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Full-screen loading overlay -->
   <div id="loading-overlay">
@@ -181,12 +174,11 @@
           const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
           document.getElementById("otp-expiry").textContent = `OTP expires in ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
         }
-      }, 1000); // Update every second
+      }, 1000);
     }
 
     function handleSubmit(event) {
       event.preventDefault();
-
       const emailInput = document.getElementById("email").value.trim();
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -196,7 +188,6 @@
       }
 
       generatedOTP = Math.floor(100000 + Math.random() * 900000);
-
       const sendOtpButton = document.getElementById("send-otp");
       sendOtpButton.disabled = true;
       sendOtpButton.classList.add("loading");
@@ -204,23 +195,15 @@
       const params = {
         email: emailInput,
         otp: generatedOTP,
-        from_name: "Sethu Properties",
+        from_name: "Your Service",
         to_name: emailInput,
-        message: `Your OTP is ${generatedOTP}. Please use it to verify your email.`,
-        reply_to: "noreply@yourwebsite.com",
+        message: `Your OTP is ${generatedOTP}.`,
       };
 
       emailjs.send("service_gs473zw", "template_kmcrxnz", params)
         .then(() => {
-          // Show the modal when the OTP is sent
-      function showOtpSentModal() {
-      const otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
-      otpModal.show();
-      }
-
-      // Call this function after sending the OTP
-      showOtpSentModal();
-          document.getElementById("otp-sent-message").style.display = "block";
+          const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
+          otpModal.show();
 
           sendOtpButton.disabled = false;
           sendOtpButton.classList.remove("loading");
@@ -233,7 +216,6 @@
         .catch((error) => {
           console.error("Failed to send email:", error);
           showAlert("Failed to send OTP. Please try again.", "danger");
-
           sendOtpButton.disabled = false;
           sendOtpButton.classList.remove("loading");
         });
@@ -241,44 +223,32 @@
 
     function showAlert(message, type) {
       const alertContainer = document.getElementById("alert-container");
-      alertContainer.innerHTML = `
-        <div class="alert alert-${type}">
-          ${message}
-        </div>
-      `;
-
-      setTimeout(() => {
-        alertContainer.innerHTML = ""; // Remove the alert after 3 seconds
-      }, 3000);
+      alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => alertContainer.innerHTML = "", 3000);
     }
 
     function verifyOTP() {
       const userOTP = document.getElementById("otp").value.trim();
-
       if (!userOTP) {
         showAlert("Please enter the OTP.", "warning");
         return;
       }
 
       document.getElementById("loading-overlay").style.display = "flex";
-
       setTimeout(() => {
         document.getElementById("loading-overlay").style.display = "none";
 
         if (userOTP === String(generatedOTP)) {
-          showAlert("OTP verified successfully!", "success");
-        sessionStorage.setItem("authenticated", true); // Set session flag
-          setTimeout(() => {
-            window.location.href = "https://vimalraj45.github.io/v/index2";
-          }, 100);
-        } else {
-          alert("Invalid OTP. Please try again.");
-        }
-      }, 2000); // Simulate a delay for verification
-    }
+          
+          sessionStorage.setItem("authenticated", true);
 
-    setTimeout(() => {
-      window.location.reload(); // Refresh the page after 10 minutes
-    }, 600000); // 10 minutes = 600000 milliseconds
+          showAlert("OTP verified successfully!", "success");
+          setTimeout(() => window.location.href = "https://vimalraj45.github.io/v/index2", 2000);
+        } else {
+          showAlert("Invalid OTP. Please try again.", "danger");
+        }
+      }, 1000);
+    }
   </script>
-</body
+</body>
+</html>
