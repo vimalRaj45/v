@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+</head>
+<body>
+    <h1>Google Sheets Data</h1>
+    <table border="1" id="data-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>URL</th>
+                <th>Type</th>
+                <th>Field 1</th>
+                <th>Field 2</th>
+                <th>Email</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+
+
+
+	<script>
+		const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
+    const sheetTab = "sheet1"; // Replace with your sheet tab name
+    const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
+
+    const fetchData = async () => {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
+        try {
+            const response = await axios.get(url);
+            const rows = response.data.values;
+
+            // Log the response array to the console for debugging
+            console.log(rows);
+
+            const tbody = document.getElementById('data-table').querySelector('tbody');
+            tbody.innerHTML = ""; // Clear existing rows
+
+            rows.slice(1).forEach(row => { // Skip header row
+                const tr = document.createElement('tr');
+
+                // Insert Timestamp in the first column
+                const tdTimestamp = document.createElement('td');
+                tdTimestamp.textContent = row[0] || 'N/A'; // Assuming the first column is Timestamp
+                tr.appendChild(tdTimestamp);
+
+                // Insert Property Image in the second column
+                const imgSrc = row[1] || '';  // Property image URL is in the 2nd column (index 1)
+                const imgHTML = imgSrc ? `<img src="${imgSrc}" alt="Property Image" style="width: 100px; height: auto;">` : 'No Image';
+
+                const tdImage = document.createElement('td');
+                tdImage.innerHTML = imgHTML;
+                tr.appendChild(tdImage);
+
+                // Add other columns
+                const tdTitle = document.createElement('td');
+                tdTitle.textContent = row[2] || 'N/A';  // Property Title
+                tr.appendChild(tdTitle);
+
+                const tdLocation = document.createElement('td');
+                tdLocation.textContent = row[3] || 'N/A';  // Location URL
+                tr.appendChild(tdLocation);
+
+                const tdDescription = document.createElement('td');
+                tdDescription.textContent = row[4] || 'N/A';  // Description
+                tr.appendChild(tdDescription);
+
+                const tdEmail = document.createElement('td');
+                tdEmail.textContent = row[5] || 'N/A';  // Email Address
+                tr.appendChild(tdEmail);
+
+                const tdColumn1 = document.createElement('td');
+                tdColumn1.textContent = row[6] || 'N/A';  // Column 1
+                tr.appendChild(tdColumn1);
+
+                tbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    fetchData();
+	</script>
+	
+</body>
+</html>
