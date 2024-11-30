@@ -3,103 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Registration Form</title>
+    <title>Property Registration</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .container {
-            margin-top: 30px;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
         .form-label {
-            font-weight: bold;
+            font-weight: 600;
+            color: #333;
         }
         .form-control {
-            margin-bottom: 15px;
-        }
-        .table {
-            width: 100%;
-            margin-top: 30px;
-        }
-        .table th, .table td {
-            text-align: center;
-        }
-        .table td {
-            word-wrap: break-word;
-        }
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1055;
-        }
-        .toast {
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 1px solid #17a2b8;
-        }
-        .toast-header {
-            color: #007bff;
-            font-weight: bold;
-        }
-        .toast-body {
-            color: #333;
+            border-radius: 6px;
         }
         .loading {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            display: none;
+            width: 100%;
+            height: 100%;
+            display: none; /* Initially hidden */
             justify-content: center;
             align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
             z-index: 1050;
-            text-align: center;
         }
         .spinner-border {
-            margin-top: 20%;
             width: 3rem;
             height: 3rem;
+            color: #007bff;
+        }
+        .loading div {
+            text-align: center;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: white;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 class="text-center">Property Registration Form</h2>
-    <form id="myForm" action="javascript:void(0);" method="POST" onsubmit="handleSubmit()">
-        <label for="timestamp" class="form-label">Timestamp</label>
-        <input type="text" name="timestamp" id="timestamp" class="form-control" readonly />
-
+    <h2>Property Registration</h2>
+    <form id="propertyForm" onsubmit="handleSubmit(event)">
         <label for="propertyImgUrl" class="form-label">Property Image URL</label>
-        <input type="text" name="propertyImgUrl" placeholder="Enter Property Image URL" required class="form-control">
+        <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Enter Property Image URL" required class="form-control">
 
         <label for="propertyTitle" class="form-label">Property Title</label>
-        <input type="text" name="propertyTitle" placeholder="Enter Property Title" required class="form-control">
+        <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter Property Title" required class="form-control">
 
         <label for="locationUrl" class="form-label">Location URL</label>
-        <input type="text" name="locationUrl" placeholder="Enter Location URL" required class="form-control">
+        <input type="text" name="locationUrl" id="locationUrl" placeholder="Enter Location URL" required class="form-control">
 
         <label for="description" class="form-label">Description</label>
-        <textarea name="description" placeholder="Enter Property Description" required class="form-control"></textarea>
+        <textarea name="description" id="description" placeholder="Enter Property Description" required class="form-control"></textarea>
 
         <label for="email" class="form-label">Email Address</label>
-        <input type="email" name="email" placeholder="Enter Email Address" required class="form-control">
+        <input type="email" name="email" id="email" placeholder="Enter Email Address" required class="form-control">
 
         <label for="location" class="form-label">Location</label>
-        <input type="text" name="location" placeholder="Enter Location" required class="form-control">
+        <input type="text" name="location" id="location" placeholder="Enter Location" required class="form-control">
 
-        <label for="column1" class="form-label">Column 1</label>
-        <input type="text" name="column1" placeholder="Enter Additional Info" required class="form-control">
+        <label for="column1" class="form-label">Additional Info</label>
+        <input type="text" name="column1" id="column1" placeholder="Enter Additional Info" required class="form-control">
 
         <label for="propertyType" class="form-label">Property Type</label>
-        <select name="propertyType" class="form-control" required>
+        <select name="propertyType" id="propertyType" class="form-control" required>
             <option value="land">Land</option>
             <option value="plot">Plot</option>
             <option value="home">Home</option>
@@ -107,107 +101,73 @@
 
         <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
     </form>
-
-    <!-- Table to display the submitted data -->
-    <div class="mt-5">
-        <h3>Submitted Properties</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Timestamp</th>
-                    <th>Property Image URL</th>
-                    <th>Property Title</th>
-                    <th>Location URL</th>
-                    <th>Description</th>
-                    <th>Email Address</th>
-                    <th>Location</th>
-                    <th>Column 1</th>
-                </tr>
-            </thead>
-            <tbody id="propertyTableBody">
-                <!-- Dynamic rows will be added here -->
-            </tbody>
-        </table>
-    </div>
-
-</div>
-
-<!-- Toast Notification -->
-<div class="toast-container">
-    <div class="toast" id="successToast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
-        <div class="toast-header">
-            <strong class="mr-auto">Success</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            Form submitted successfully!
-        </div>
-    </div>
 </div>
 
 <!-- Loading Spinner -->
 <div class="loading" id="loading">
     <div>
-        <div class="spinner-border text-primary" role="status"></div>
-        <div class="mt-2">Loading, please wait...</div>
+        <div class="spinner-border" role="status"></div>
+        <div class="mt-2">please wait...</div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your property details have been submitted successfully!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function () {
-        window.handleSubmit = function() {
-            const form = document.getElementById('myForm');
-            const data = new FormData(form);
-            const propertyType = form.propertyType.value;
+    function handleSubmit(event) {
+        event.preventDefault();
+        const form = document.getElementById('propertyForm');
+        const formData = new FormData(form);
+        const propertyType = formData.get('propertyType');
 
-            // Set timestamp field
-            const timestamp = new Date().toLocaleString();
-            document.getElementById('timestamp').value = timestamp;
+         // Show the loading spinner
+         document.getElementById('loading').style.display = 'flex';
 
-            // Show loading spinner
-            $('#loading').show();
+       // Google Sheets URLs for each property type
+const actionLinks = {
+         land: "https://script.google.com/macros/s/AKfycbwaloBbFlqFtuSZ0Aay8dj27vnVzL-CKXpaQx-COeICoZKBoK52AQctHVlZdHB6eLMV/exec",
+         plot: "https://script.google.com/macros/s/AKfycbxiF9gbwfzUYYFLJBAQWo9rMK_ES2O9cpjtFSvXF1BltD7age8Q9bB5mejIhJxhp0DW/exec",
+         home: "https://script.google.com/macros/s/AKfycbxJV5wJuzvC1btMoIlJUxMPanQc76gBbaQqL22K_BLqYPtLFl9dXMYx3x7wmcTLe3-b3Q/exec"
+     };
 
-            // Google Sheets URLs for each property type
-            const actionLinks = {
-                land: "https://script.google.com/macros/s/AKfycbwaloBbFlqFtuSZ0Aay8dj27vnVzL-CKXpaQx-COeICoZKBoK52AQctHVlZdHB6eLMV/exec",
-                plot: "https://script.google.com/macros/s/AKfycbxiF9gbwfzUYYFLJBAQWo9rMK_ES2O9cpjtFSvXF1BltD7age8Q9bB5mejIhJxhp0DW/exec",
-                home: "https://script.google.com/macros/s/AKfycbxJV5wJuzvC1btMoIlJUxMPanQc76gBbaQqL22K_BLqYPtLFl9dXMYx3x7wmcTLe3-b3Q/exec"
-            };
 
-            // Submit the data to the appropriate Google Sheet based on the property type
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", actionLinks[propertyType], true);
-            xhr.onload = function () {
-                // Hide loading spinner
-                $('#loading').hide();
-                if (xhr.status === 200) {
-                    // Show success message
-                    $('#successToast').toast('show');
-
-                    // Append new data to the table
-                    const newRow = `
-                        <tr>
-                            <td>${timestamp}</td>
-                            <td><a href="${form.propertyImgUrl.value}" target="_blank">View Image</a></td>
-                            <td>${form.propertyTitle.value}</td>
-                            <td><a href="${form.locationUrl.value}" target="_blank">View Location</a></td>
-                            <td>${form.description.value}</td>
-                            <td>${form.email.value}</td>
-                            <td>${form.location.value}</td>
-                            <td>${form.column1.value}</td>
-                        </tr>
-                    `;
-                    $('#propertyTableBody').append(newRow);
-
-                    // Reset the form
-                    form.reset();
-                }
-            };
-            xhr.send(data);
-        };
-    });
+        fetch(actionLinks[propertyType], {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(result => {
+            $('#loading').hide();
+            if (result.includes("Success")) {
+                $('#successModal').modal('show');
+                form.reset();
+            } else {
+                alert("Submission failed. Please try again.");
+            }
+        })
+        .catch(error => {
+            $('#loading').hide();
+            alert("Error: " + error.message);
+        });
+    }
 </script>
 
 </body>
