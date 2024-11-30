@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +8,63 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: lavender;
+      background-color: #f4f4f9;
       text-align: center;
-      padding: 20px;
+      padding: 30px;
       margin: 0;
     }
+
     h2 {
       color: #4CAF50;
       margin-bottom: 20px;
-      font-size: 2em;
+      font-size: 2.5em;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
+
     iframe {
-      width: 100%;
+      width: 80%;
       height: 600px;
       border: none;
-      border-radius: 5px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      background-color: #397d3f;
+      transform: translateY(2px);
+    }
+
+    button:focus {
+      outline: none;
     }
   </style>
 </head>
+
 <body>
   <script>
     // Check if user is authenticated
@@ -33,17 +72,33 @@
       alert("Access denied. Please verify your OTP first.");
       window.location.href = "https://vimalraj45.github.io/v/"; // Redirect to OTP page
     }
-    function load(){
-      window.location.href="https://forms.gle/pLmo7W1whBjrB4vTA";
+
+    function load() {
+      window.location.href = "https://vimalraj45.github.io/v/put";
     }
-     function load2(){
-      window.location.href="https://script.google.com/macros/s/AKfycbzsfeCIwhcHjMHdiWweJkCs92tq1S7mO3bb7mhke8Cxy47hl4jAqaI3z-gZ658GMm7g3w/exec";
+
+    function load2() {
+      window.location.href = "https://script.google.com/macros/s/AKfycbxlaB-Wx3zJn-DkK-73DyMPBAXDCDhipE9FADduWfgvvGmS2oZM4bKZrTy-pdrNe-11/exec";
+    }
+
+    function load3() {
+      window.location.href = "https://script.google.com/macros/s/AKfycbzabgRaGgmrieiC2d3Qz1qCGUfeK0OGdZl4vRgaTtE28GxSFb5uwv4xQbbUL36b2DuK/exec";
+    }
+
+    function load4() {
+      window.location.href = "https://script.google.com/macros/s/AKfycbzcjbO4flvKMgceF6G1fxBrxiY86WTgTDCdrNyF5YVf64JJmhkE35FjzECCMzupS-S07Q/exec";
     }
   </script>
 
   <h2>SRK Property Contacts</h2>
   <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTE0aysjRRZ8zbyLcnb1lBRugOb8p_Sv6YtckSt3wjWsKdLdsBNUZtPT6HKWAaeVjHhmQwsOgoxazjc/pubhtml?widget=true&amp;headers=false" allowfullscreen></iframe>
-  <button onclick="load()" style="padding:5px; background-color:blue; margin:3px">Add Land Properties</button>
-  <button onclick="load2()" style="padding:5px; background-color:blue; margin:3px">Update and Delete Land Properties</button>
+
+  <div class="button-container">
+    <button onclick="load()">Add Properties</button>
+    <button onclick="load2()">Update and Delete Land Properties</button>
+    <button onclick="load3()">Update and Delete Plot Properties</button>
+    <button onclick="load4()">Update and Delete Home Properties</button>
+  </div>
 </body>
+
 </html>
