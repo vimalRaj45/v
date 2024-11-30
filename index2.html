@@ -134,17 +134,21 @@
 
 <body>
   <script>
-    // Check if user is authenticated
-    if (!sessionStorage.getItem("authenticated")) {
+     function checkSession() {
+   if (!sessionStorage.getItem("authenticated")) {
       alert("Access denied. Please verify your OTP first.");
       window.location.href = "https://vimalraj45.github.io/v/"; // Redirect to OTP page
+    } else {
+        // Session exists, start timeout countdown
+        resetTimeout();
+      }
     }
 
     // Timeout Functionality: After 5 minutes of inactivity, redirect to OTP verification
     let timeout;
     function resetTimeout() {
       clearTimeout(timeout);
-      timeout = setTimeout(logout, 300000); // 5 minutes in milliseconds
+      timeout = setTimeout(logout, 300000 ); // 5 minute in milliseconds (testing with 1 minute)
     }
 
     function logout() {
@@ -166,6 +170,7 @@
       showLoading();
       setTimeout(function () {
         hideLoading();
+        checkSession(); // Check session when page loads
       }, 3000); // Simulate loading for 3 seconds
     };
 
