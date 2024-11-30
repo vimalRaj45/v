@@ -122,8 +122,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                Your property details have been submitted successfully!
+                Your property details have been submitted successfully! You are being redirected to our website shortly.
             </div>
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
             </div>
@@ -159,6 +160,10 @@ const actionLinks = {
             if (result.includes("Success")) {
                 $('#successModal').modal('show');
                 form.reset();
+                  // Add a small delay before navigating to another page
+            setTimeout(() => {
+                window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";  // Redirect to the desired page
+            }, 1500); // 1.5 seconds delay before redirectin
             } else {
                 alert("Submission failed. Please try again.");
             }
