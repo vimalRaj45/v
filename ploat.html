@@ -253,22 +253,7 @@
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.card-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
-}
 
-.card-text {
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 1.4;
-}
-
-h6 {
-    margin-top: 10px;
-}
-  
     
     </style>
 </head>
@@ -426,10 +411,10 @@ const fetchData = async () => {
         <img src="${home['propertiy img url']}" 
     class="card-img-top" 
     alt="${home['property title']}" 
-    style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0; display: block;">
+    style="width: 100%; height: 80%; border-radius: 10px 10px 0 0; display: block;">
+    <hr>
 
 
-        <hr>
         <div class="card-body">
             <!-- Property Title -->
             <h5 class="card-title text-truncate">${home['property title']}</h5>
