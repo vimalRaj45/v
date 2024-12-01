@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Registration</title>
+    <title>Sethu Property Registration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
@@ -133,8 +133,18 @@
 <body>
 
     <div class="container">
-        <h2>Property Registration</h2>
+        <h2>Property Registration (All) </h2>
         <form id="propertyForm" onsubmit="handleSubmit(event)">
+
+           <div class="mb-3">
+                <label for="propertyType" class="form-label">Property Type</label>
+                <select name="propertyType" id="propertyType" class="form-select" required>
+                    <option value="land">Land</option>
+                    <option value="plot">Plot</option>
+                    <option value="home">Home</option>
+                </select>
+            </div>
+            
             <div class="mb-3">
                 <label for="propertyImgUrl" class="form-label">Property Image URL</label>
                 <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Paste Image URL here" required class="form-control">
@@ -170,14 +180,7 @@
                 <input type="number" name="column1" id="column1" placeholder="Enter property rate" required class="form-control">
             </div>
     
-            <div class="mb-3">
-                <label for="propertyType" class="form-label">Property Type</label>
-                <select name="propertyType" id="propertyType" class="form-select" required>
-                    <option value="land">Land</option>
-                    <option value="plot">Plot</option>
-                    <option value="home">Home</option>
-                </select>
-            </div>
+        
     
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
