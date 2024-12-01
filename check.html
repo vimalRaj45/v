@@ -297,7 +297,7 @@
     </div>
 
     <script>
-   const shareProperty = (propertyId, propertyTitle) => {
+  const shareProperty = (propertyId, propertyTitle) => {
     const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
     const shareData = {
         title: `Check out this property: ${propertyTitle}`,
@@ -335,6 +335,12 @@ const showSectionFromHash = () => {
         // If no hash is present, show all properties
         allSections.forEach(section => section.style.display = 'block');
     }
+};
+
+const showAllProperties = () => {
+    // Reset the URL hash to remove the specific property view
+    window.location.hash = '';
+    showSectionFromHash();  // Show all properties
 };
 
 const fetchData = async () => {
@@ -412,7 +418,10 @@ const fetchData = async () => {
     }
 };
 
+// Call function to fetch property data
 window.onload = fetchData;
+
+// Event listener for hash changes
 window.addEventListener('hashchange', showSectionFromHash);
 
 // Enhanced send message function
@@ -425,7 +434,6 @@ function sendmsg() {
     }, 1000);
 }
 
-    
     </script>
 
     <!-- WhatsApp Floating Button -->
