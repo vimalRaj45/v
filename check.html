@@ -296,6 +296,13 @@
         <div class="row" id="homes-container"></div>
     </div>
 
+    <!-- Floating "View All Properties" button -->
+<button id="view-all-btn" class="btn btn-sm btn-secondary" onclick="showAllProperties()" 
+    style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
+    View All Properties
+</button>
+
+
     <script>
   const shareProperty = (propertyId, propertyTitle) => {
     const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
