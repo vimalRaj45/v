@@ -462,25 +462,23 @@ const fetchData = async () => {
     </div>
 </div>
 
-<!-- Enquiry Modal -->
-<div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="enquiryModalLabel">Enquire About ${home['property title']}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Would you like to get in touch with us via:</p>
-                <button type="button" class="btn btn-success" onclick="makeCall('${home['phone number']}')">
-                    <i class="fas fa-phone-alt"></i> Call
-                </button>
-                <button type="button" class="btn btn-primary" onclick="sendEmail('${home['email']}')">
-                    <i class="fas fa-envelope"></i> Email
-                </button>
-            </div>
-        </div>
+<!-- Enquiry Modal with Call, Email, and WhatsApp Options -->
+<div class="modal fade" id="enquiryModal" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="enquiryModalLabel">Enquire About the Property</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Select how you would like to get in touch:</p>
+        <!-- Options -->
+        <button class="btn btn-primary mb-2" onclick="sendEmail()">Send Email</button>
+        <button class="btn btn-success mb-2" onclick="makeCall()">Call</button>
+        <button class="btn btn-info mb-2" onclick="sendWhatsapp()">WhatsApp</button>
+      </div>
     </div>
+  </div>
 </div>
 
 
@@ -527,17 +525,23 @@ function sendmsg() {
     }, 1000);
 } 
 
-const email = "vimalraj5207@gmail.com";
+const phoneNumber = "+918807099288";
+  const email = "vimalraj5207@gmail.com";
 
+  // Send email function
+  function sendEmail() {
+    window.location.href = `mailto:${email}`;
+  }
 
-function makeCall() {
-    window.location.href = `tel:+918807099288`; // Ensure this is the correct phone number
-}
+  // Make call function
+  function makeCall() {
+    window.location.href = `tel:${phoneNumber}`;
+  }
 
-    function sendEmail(email) {
-        window.location.href = `mailto:${email}?subject=Enquiry for Property`;
-    }
-
+  // Send WhatsApp function
+  function sendWhatsapp() {
+    window.location.href = `https://wa.me/${phoneNumber}`;
+  }
     </script>
 
     <!-- WhatsApp Floating Button -->
