@@ -462,24 +462,30 @@ const fetchData = async () => {
     </div>
 </div>
 
-<!-- Enquiry Modal with Call, Email, and WhatsApp Options -->
-<div class="modal fade" id="enquiryModal" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="enquiryModalLabel">Enquire About the Property</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Select how you would like to get in touch:</p>
-        <!-- Options -->
-        <button class="btn btn-primary mb-2" onclick="sendEmail()">Send Email</button>
-        <button class="btn btn-success mb-2" onclick="makeCall()">Call</button>
-        <button class="btn btn-info mb-2" onclick="sendWhatsapp()">WhatsApp</button>
-      </div>
+<!-- Enquiry Modal -->
+<div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="enquiryModalLabel">Enquire About ${home['property title']}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Would you like to get in touch with us via:</p>
+                <button type="button" class="btn btn-success" onclick="makeCall()">
+                    <i class="fas fa-phone-alt"></i> Call
+                </button>
+                <button type="button" class="btn btn-primary" onclick="sendEmail()">
+                    <i class="fas fa-envelope"></i> Email
+                </button>
+                <button type="button" class="btn btn-primary" onclick="sendMsg()">
+                    <i class="fas fa-whatsapp"></i> Whatsapp
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 
 
 <!-- Map Modal -->
@@ -530,17 +536,17 @@ const phoneNumber = "+918807099288";
 
   // Send email function
   function sendEmail() {
-    window.location.href = `mailto:${email}`;
+    window.location.href = `mailto:vimalraj5207@gmail.com`;
   }
 
   // Make call function
   function makeCall() {
-    window.location.href = `tel:${phoneNumber}`;
+    window.location.href = `tel:+918807099288`;
   }
 
   // Send WhatsApp function
   function sendWhatsapp() {
-    window.location.href = `https://wa.me/${phoneNumber}`;
+    window.location.href = `https://wa.me/+918807099288`;
   }
     </script>
 
