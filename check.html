@@ -11,6 +11,7 @@
         body {
             background-color: lightgray;
             font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
         }
         .whatsapp-float, .whatsapp2-float {
             position: fixed;
@@ -44,9 +45,46 @@
         }
         .property-card {
             margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .property-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .share-btn-container {
             margin-top: 10px;
+        }
+        .back-to-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 25px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            padding: 15px;
+            font-size: 18px;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .back-to-top-btn:hover {
+            background-color: #0056b3;
+        }
+        .active-section {
+            background-color: #f7f7f7;
+            border-left: 5px solid #007BFF;
+            padding: 10px;
+        }
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -68,6 +106,11 @@
         <div id="homes-container" class="row"></div>
     </div>
 
+    <!-- Loading Spinner -->
+    <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+
     <!-- WhatsApp and Instagram Floating Buttons -->
     <a href="https://wa.me/918807099288" target="_blank" class="whatsapp-float">
         <i class="fab fa-whatsapp"></i>
@@ -76,8 +119,10 @@
         <i class="fab fa-instagram"></i>
     </a>
 
+    <!-- Back to Top Button -->
+    <button id="back-to-top-btn" class="back-to-top-btn" onclick="scrollToTop()">↑</button>
+
     <script>
-        // Share function for the property
         const shareProperty = (propertyId, propertyTitle) => {
             const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
             const shareData = {
@@ -97,12 +142,28 @@
             }
         };
 
-        // Fetch Property Data
+        const showSectionFromHash = () => {
+            const hash = window.location.hash; 
+            const propertyId = hash.substring(1); 
+
+            if (propertyId) {
+                const targetSection = document.getElementById(propertyId);
+                if (targetSection) {
+                    const allSections = document.querySelectorAll('.property-card');
+                    allSections.forEach(section => section.classList.add('hidden'));
+                    targetSection.classList.remove('hidden');
+                }
+            }
+        };
+
         const fetchData = async () => {
             const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
             const sheetTab = "sheet1";
             const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
+
+            document.querySelector('.loading-spinner').style.display = 'block';
+            document.getElementById("homes-container").classList.add("hidden");
 
             try {
                 const response = await fetch(url);
@@ -121,7 +182,7 @@
                 container.innerHTML = "";
 
                 homesData.forEach((home, index) => {
-                    const propertyId = `property-${index + 1}`; // Automatically generate property ID based on index
+                    const propertyId = `property-${index + 1}`;
 
                     container.innerHTML += `
                         <div class="col-md-4 property-card" id="${propertyId}">
@@ -140,27 +201,19 @@
                         </div>
                     `;
                 });
+
+                document.querySelector('.loading-spinner').style.display = 'none';
+                container.classList.remove("hidden");
+
+                showSectionFromHash();
             } catch (error) {
                 console.error("Error fetching property data:", error);
+                document.querySelector('.loading-spinner').style.display = 'none';
             }
         };
 
-        // Check if there is a hash in the URL, and scroll to the property section
-        const scrollToProperty = () => {
-            const hash = window.location.hash;
-            if (hash) {
-                const propertyElement = document.getElementById(hash.substring(1)); // Remove the '#' from the hash
-                if (propertyElement) {
-                    propertyElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        };
-
-        // Initialize Fetch Data
-        fetchData();
-
-        // Handle page load and scroll to the property section if needed
-        window.onload = scrollToProperty;
+        window.onload = fetchData;
+        window.addEventListener('hashchange', showSectionFromHash);
     </script>
 </body>
 </html>
