@@ -398,22 +398,22 @@ const fetchData = async () => {
     <div class="card shadow-sm mb-4" style="border-radius: 10px; transition: transform 0.3s ease;">
         <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="border-radius: 10px 10px 0 0;">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
+            <h5 class="card-title">${home['property title']}</h5>
+            <p class="card-text">Location: ${home['location']}</p>
+            <p class="card-text">${home['description']}</p>
+
+            <!-- Buttons row with share icon aligned to the right -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
                 <div>
-                    <h5 class="card-title">${home['property title']}</h5>
-                    <p class="card-text">Location: ${home['location']}</p>
-                    <p class="card-text">${home['description']}</p>
+                    <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">Enquire</a>
+                    <a href="#" class="btn btn-sm btn-success">Buy</a>
+                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
+                        View Map
+                    </button>
                 </div>
                 <!-- Share button aligned to the right -->
                 <button class="btn btn-sm btn-secondary" onclick="shareProperty('${propertyId}', '${home['property title']}')" style="border-radius: 50%; padding: 10px; background-color: #007bff; color: white;">
                     <i class="fas fa-share-alt"></i>
-                </button>
-            </div>
-            <div class="d-flex gap-2 mt-2">
-                <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">Enquire</a>
-                <a href="#" class="btn btn-sm btn-success">Buy</a>
-                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-                    View Map
                 </button>
             </div>
         </div>
@@ -435,8 +435,7 @@ const fetchData = async () => {
             </div>
         </div>
     </div>
-</div>
-   `;
+</div> `;
         });
 
         container.classList.remove("hidden");
