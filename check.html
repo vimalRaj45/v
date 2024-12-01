@@ -79,7 +79,7 @@
     <script>
         // Share function for the property
         const shareProperty = (propertyId, propertyTitle) => {
-            const url = `${window.location.href}#property-${propertyId}`;
+            const url = `${window.location.href}#${propertyId}`;
             const shareData = {
                 title: `Check out this property: ${propertyTitle}`,
                 text: `Take a look at this amazing property: ${propertyTitle}`,
@@ -145,8 +145,22 @@
             }
         };
 
+        // Check if there is a hash in the URL, and scroll to the property section
+        const scrollToProperty = () => {
+            const hash = window.location.hash;
+            if (hash) {
+                const propertyElement = document.getElementById(hash.substring(1)); // Remove the '#' from the hash
+                if (propertyElement) {
+                    propertyElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
         // Initialize Fetch Data
         fetchData();
+
+        // Handle page load and scroll to the property section if needed
+        window.onload = scrollToProperty;
     </script>
 </body>
 </html>
