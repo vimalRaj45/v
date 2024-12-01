@@ -296,52 +296,102 @@
     </div>
 
     <script>
-     function show() {
-            const side = document.querySelector('.sidebar');
-            side.classList.remove('hide');
-            side.classList.add('show');
-        }
-        function hide() {
-            const side = document.querySelector('.sidebar');
-            side.classList.remove('show');
-            side.classList.add('hide');
-        }
-        const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY"; // Replace with your Sheet ID
+      function show() {
+    const side = document.querySelector('.sidebar');
+    side.classList.remove('hide');
+    side.classList.add('show');
+}
+
+function hide() {
+    const side = document.querySelector('.sidebar');
+    side.classList.remove('show');
+    side.classList.add('hide');
+}
+
+const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
 
+// Function to show a specific property based on the URL hash
+const showSectionFromHash = () => {
+    const hash = window.location.hash;
+    const propertyId = hash.substring(1);  // Remove the '#' from the hash
+
+    // Hide all property cards first
+    const allSections = document.querySelectorAll('.home-card');
+    allSections.forEach(section => section.style.display = 'none');
+
+    // If a valid property ID is in the URL, show that property
+    if (propertyId) {
+        const targetSection = document.getElementById(propertyId);
+        if (targetSection) {
+            targetSection.style.display = 'block';  // Only display the targeted property
+            document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
+        }
+    } else {
+        // If no hash is present, show all properties
+        allSections.forEach(section => section.style.display = 'block');
+        document.getElementById('view-all-btn').style.display = 'none';  // Hide the "View All Properties" button
+    }
+};
+
+const showAllProperties = () => {
+    // Reset the URL hash to remove the specific property view
+    window.location.hash = '';
+    showSectionFromHash();  // Show all properties
+};
+
+const shareProperty = (propertyId, propertyTitle) => {
+    const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
+    const shareData = {
+        title: `Check out this property: ${propertyTitle}`,
+        text: `Take a look at this amazing property: ${propertyTitle}`,
+        url: url,
+    };
+
+    if (navigator.share) {
+        try {
+            navigator.share(shareData);
+            alert('Property shared successfully!');
+        } catch (err) {
+            console.error('Error sharing:', err);
+        }
+    } else {
+        alert('Sharing is not supported in this browser.');
+    }
+};
+
 const fetchData = async () => {
+    const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
+    const sheetTab = "sheet1";
+    const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
+
+    document.getElementById("homes-container").classList.add("hidden");
 
     try {
         const response = await fetch(url);
         const data = await response.json();
-
-        if (!data.values || data.values.length === 0) {
-            console.error('No data found in the sheet.');
-            return;
-        }
-
-        // Extract rows and headers
-        const rows = data.values;
-        const headers = rows[0].map(header => header.trim().toLowerCase()); // Clean header names
-        const homesData = rows.slice(1).filter(row => row.length > 0).map(row => {
+        const rows = data.values || [];
+        const headers = rows[0].map(header => header.trim().toLowerCase());
+        const homesData = rows.slice(1).map(row => {
             const home = {};
             headers.forEach((header, index) => {
-                home[header] = row[index] || ""; // Safely map values, handle empty cells
+                home[header] = row[index] || "";
             });
             return home;
         });
 
-        // Render the cards
-        const container = document.getElementById('homes-container');
-        container.innerHTML = '';
+        const container = document.getElementById("homes-container");
+        container.innerHTML = "";
 
         homesData.forEach((home, index) => {
-            const cardHTML = `
-                <div class="col-md-3 home-card">
-                    <div class="card">
-                        <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}">
+            const propertyId = `property-${index + 1}`;
+
+            container.innerHTML += `
+                <div class="col-md-3 home-card" id="${propertyId}" style="display: none;">
+                    <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease;">
+                        <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="border-radius: 10px 10px 0 0;">
                         <div class="card-body">
                             <h5 class="card-title">${home['property title']}</h5>
                             <p class="card-text">Location: ${home['location']}</p>
@@ -350,6 +400,9 @@ const fetchData = async () => {
                             <a href="#" class="btn btn-success">Buy</a>
                             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
                                 View Map
+                            </button>
+                            <button class="btn btn-secondary" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+                                <i class="fas fa-share-alt"></i> Share
                             </button>
                         </div>
                     </div>
@@ -365,32 +418,40 @@ const fetchData = async () => {
                             </div>
                             <div class="modal-body">
                                 <div class="map-container">
-                                    <iframe src="${home['location url']}" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                    <iframe src="${home['location url']}" width="100%" height="400" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy"></iframe>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
-            container.innerHTML += cardHTML;
         });
+
+        container.classList.remove("hidden");
+
+        // Call the function to show the property based on hash value
+        showSectionFromHash();
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching property data:", error);
     }
 };
 
-// Call the function to fetch and render data
-fetchData();
+// Call function to fetch property data
+window.onload = fetchData;
 
+// Event listener for hash changes
+window.addEventListener('hashchange', showSectionFromHash);
 
-        function sendmsg() {
-            window.location.href = "mailto:malikasaravanan774@gmail.com?subject=Property%20Enquiry";
-            setTimeout(function() {
-                window.alert("Mail sent successfully; we will contact you via email.");
-            }, 1000); 
-        }
+// Enhanced send message function
+function sendmsg() {
+    const email = "malikasaravanan774@gmail.com";
+    const subject = "Property%20Enquiry";
+    window.location.href = `mailto:${email}?subject=${subject}`;
+    setTimeout(function () {
+        window.alert("Mail sent successfully; we will contact you via email.");
+    }, 1000);
+} 
 
-    
     </script>
 
     <!-- WhatsApp Floating Button -->
