@@ -394,7 +394,7 @@ const fetchData = async () => {
             const propertyId = `property-${index + 1}`;
 
             container.innerHTML += `
-                <div class="col-md-3 m-2 home-card" id="${propertyId}" style="display: none;">
+                <div class="col-md-3 home-card" id="${propertyId}" style="display: none;">
                     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease;">
                         <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="border-radius: 10px 10px 0 0;">
                         <div class="card-body">
@@ -412,6 +412,7 @@ const fetchData = async () => {
                         </div>
                     </div>
                 </div>
+                <br>
 
                 <!-- Map Modal -->
                 <div class="modal fade" id="mapModal${index}" tabindex="-1" aria-labelledby="mapModalLabel${index}" aria-hidden="true">
