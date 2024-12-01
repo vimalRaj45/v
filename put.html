@@ -4,133 +4,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Registration</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        body {
-            background-color: #f0f8ff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          /* General Body Styling */
+          body {
+            background: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            line-height: 1.6;
         }
+
+        /* Main Container Styling */
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e5e5e5;
         }
+
         h2 {
             text-align: center;
-            color: #007bff;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-size: 2rem;
         }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
+
+        /* Form Input Styling */
         .form-label {
             font-weight: 600;
-            color: #333;
+            color: #4d4d4d;
+            margin-bottom: 8px;
+            display: block;
         }
+
         .form-control {
-            border-radius: 6px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
+
+        .form-control:focus {
+            border-color: #5a67d8;
+            box-shadow: 0 0 6px rgba(90, 103, 216, 0.4);
+        }
+
+        .form-select {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: #5a67d8;
+            box-shadow: 0 0 6px rgba(90, 103, 216, 0.4);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #5a67d8, #2b6cb0);
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            padding: 12px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2b6cb0, #5a67d8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(42, 45, 127, 0.3);
+        }
+
+        /* Textarea */
+        textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        /* Modal Styling */
+        .modal-header {
+            background-color: #5a67d8;
+            color: white;
+        }
+
+        .modal-footer .btn {
+            background-color: #2b6cb0;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+
+        .modal-footer .btn:hover {
+            background-color: #5a67d8;
+        }
+
+        /* Loading Screen */
         .loading {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: none; /* Initially hidden */
+            display: none;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 1050;
         }
+
         .spinner-border {
             width: 3rem;
             height: 3rem;
-            color: #007bff;
-        }
-        .loading div {
-            text-align: center;
-        }
-        .modal-header {
-            background-color: #007bff;
-            color: white;
+            color: #5a67d8;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Property Registration</h2>
-    <form id="propertyForm" onsubmit="handleSubmit(event)">
-        <label for="propertyImgUrl" class="form-label">Property Image URL</label>
-        <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Enter Property Image URL" required class="form-control">
-
-        <label for="propertyTitle" class="form-label">Property Title</label>
-        <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter Property Title" required class="form-control">
-
-        <label for="locationUrl" class="form-label">Location URL</label>
-        <input type="text" name="locationUrl" id="locationUrl" placeholder="Enter Location URL" required class="form-control">
-
-        <label for="description" class="form-label">Description</label>
-        <textarea name="description" id="description" placeholder="Enter Property Description" required class="form-control"></textarea>
-
-        <label for="email" class="form-label">Email Address</label>
-        <input type="email" name="email" id="email" placeholder="Enter Email Address" required class="form-control">
-
-        <label for="location" class="form-label">Location</label>
-        <input type="text" name="location" id="location" placeholder="Enter Location" required class="form-control">
-
-        <label for="column1" class="form-label">Rate :</label>
-        <input type="text" name="column1" id="column1" placeholder="Enter Additional Info" required class="form-control">
-
-        <label for="propertyType" class="form-label">Property Type</label>
-        <select name="propertyType" id="propertyType" class="form-control" required>
-            <option value="land">Land</option>
-            <option value="plot">Plot</option>
-            <option value="home">Home</option>
-        </select>
-
-        <button type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
-    </form>
-</div>
-
-<!-- Loading Spinner -->
-<div class="loading" id="loading">
-    <div>
-        <div class="spinner-border" role="status"></div>
-        <div class="mt-2">please wait...</div>
+    <div class="container">
+        <h2>Property Registration</h2>
+        <form id="propertyForm" onsubmit="handleSubmit(event)">
+            <div class="mb-3">
+                <label for="propertyImgUrl" class="form-label">Property Image URL</label>
+                <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Paste Image URL here" required class="form-control">
+            </div>
+    
+            <div class="mb-3">
+                <label for="propertyTitle" class="form-label">Property Title</label>
+                <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter property title" required class="form-control">
+            </div>
+    
+            <div class="mb-3">
+                <label for="locationUrl" class="form-label">Location URL</label>
+                <input type="url" name="locationUrl" id="locationUrl" placeholder="Enter Google Maps location URL" required class="form-control">
+            </div>
+    
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="description" id="description" placeholder="Describe the property" required class="form-control"></textarea>
+            </div>
+    
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="Your email address" required class="form-control">
+            </div>
+    
+            <div class="mb-3">
+                <label for="location" class="form-label">Property Location</label>
+                <input type="text" name="location" id="location" placeholder="City or area name" required class="form-control">
+            </div>
+    
+            <div class="mb-3">
+                <label for="column1" class="form-label">Rate</label>
+                <input type="number" name="column1" id="column1" placeholder="Enter property rate" required class="form-control">
+            </div>
+    
+            <div class="mb-3">
+                <label for="propertyType" class="form-label">Property Type</label>
+                <select name="propertyType" id="propertyType" class="form-select" required>
+                    <option value="land">Land</option>
+                    <option value="plot">Plot</option>
+                    <option value="home">Home</option>
+                </select>
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-</div>
-
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Success</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Your property details have been submitted successfully! You are being redirected to our website shortly.
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+    
+    <div class="loading" id="loading">
+        <div>
+            <div class="spinner-border" role="status"></div>
+            <div class="mt-2 text-white">Submitting...</div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Submission Successful</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Your property details have been submitted successfully. Redirecting you to our homepage shortly.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+
 
 <script>
     function handleSubmit(event) {
@@ -138,17 +215,13 @@
         const form = document.getElementById('propertyForm');
         const formData = new FormData(form);
         const propertyType = formData.get('propertyType');
-
-         // Show the loading spinner
-         document.getElementById('loading').style.display = 'flex';
-
-       // Google Sheets URLs for each property type
-const actionLinks = {
+        const actionLinks = {
          land: "https://script.google.com/macros/s/AKfycbwaloBbFlqFtuSZ0Aay8dj27vnVzL-CKXpaQx-COeICoZKBoK52AQctHVlZdHB6eLMV/exec",
          plot: "https://script.google.com/macros/s/AKfycbxiF9gbwfzUYYFLJBAQWo9rMK_ES2O9cpjtFSvXF1BltD7age8Q9bB5mejIhJxhp0DW/exec",
          home: "https://script.google.com/macros/s/AKfycbxJV5wJuzvC1btMoIlJUxMPanQc76gBbaQqL22K_BLqYPtLFl9dXMYx3x7wmcTLe3-b3Q/exec"
      };
 
+        document.getElementById('loading').style.display = 'flex';
 
         fetch(actionLinks[propertyType], {
             method: 'POST',
@@ -156,20 +229,19 @@ const actionLinks = {
         })
         .then(response => response.text())
         .then(result => {
-            $('#loading').hide();
+            document.getElementById('loading').style.display = 'none';
             if (result.includes("Success")) {
-                $('#successModal').modal('show');
-                form.reset();
-                  // Add a small delay before navigating to another page
-            setTimeout(() => {
-                window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";  // Redirect to the desired page
-            }, 2500); // 1.5 seconds delay before redirectin
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+                setTimeout(() => {
+                    window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";
+                }, 2500);
             } else {
                 alert("Submission failed. Please try again.");
             }
         })
         .catch(error => {
-            $('#loading').hide();
+            document.getElementById('loading').style.display = 'none';
             alert("Error: " + error.message);
         });
     }
