@@ -420,40 +420,68 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-        <div class="col-md-3 home-card mb-4" id="${propertyId}" style="display: block;">
-            <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
-                <!-- Property Image -->
-                <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body">
-                    <!-- Property Title -->
-                    <h5 class="card-title text-truncate">${home['property title']}</h5>
-                    <!-- Location -->
-                    <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
-                    <!-- Description -->
-                    <p class="card-text">${home['description']}</p>
-                    <!-- Rate -->
-                    <h6 class="text-primary fw-bold">Rate: ₹${rate}</h6>
-                    
-                    <!-- Buttons -->
-                    <div class="d-flex flex-wrap justify-content-between mt-1 gap-2">
-                        <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">
-                                <i class="fas fa-envelope"></i> Enquire
-                            </a>
-                            <a href="#" class="btn btn-sm btn-success">
-                                <i class="fas fa-shopping-cart"></i> Buy
-                            </a>
-                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-                                <i class="fas fa-map-marker-alt"></i> View Map
-                            </button>
-                        </div>
-                        <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
-                            <i class="fas fa-share-alt"></i> Share
-                        </button>
-                    </div>
+      <div class="col-md-3 home-card mb-4" id="${propertyId}" style="display: block;">
+    <div class="card shadow-lg rounded-3" style="transition: transform 0.3s ease; position: relative;">
+        <!-- Property Image -->
+        <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+        <hr class="my-2">
+        <div class="card-body">
+            <!-- Property Title -->
+            <h5 class="card-title text-truncate text-dark fw-bold" style="font-size: 1.1rem; line-height: 1.2;">${home['property title']}</h5>
+            <!-- Location -->
+            <p class="card-text text-muted d-flex align-items-center mb-2">
+                <i class="fas fa-map-marker-alt me-2"></i> ${home['location']}
+            </p>
+            <!-- Description -->
+            <p class="card-text text-muted" style="font-size: 0.9rem; line-height: 1.5;">${home['description']}</p>
+            
+            <!-- Rate -->
+            <div class="d-flex justify-content-end align-items-center pb-2">
+                <h6 class="text-primary fw-bold mb-0" style="font-size: 1.2rem;">Rate: ${home['column 1']} ₹</h6>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="d-flex flex-wrap justify-content-between mt-1 gap-2">
+                <div class="d-flex gap-2">
+                    <!-- Enquire Button -->
+                    <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}">
+                        <i class="fas fa-envelope"></i> Enquire
+                    </a>
+                    <a href="#" class="btn btn-sm btn-success">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </a>
+                    <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
+                        <i class="fas fa-map-marker-alt"></i> View Map
+                    </button>
                 </div>
+                <button class="btn btn-sm btn-outline-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Enquiry Modal -->
+<div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="enquiryModalLabel">Enquire About ${home['property title']}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Would you like to get in touch with us via:</p>
+                <button type="button" class="btn btn-success" onclick="makeCall('${home['phone number']}')">
+                    <i class="fas fa-phone-alt"></i> Call
+                </button>
+                <button type="button" class="btn btn-primary" onclick="sendEmail('${home['email']}')">
+                    <i class="fas fa-envelope"></i> Email
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Map Modal -->
@@ -498,6 +526,17 @@ function sendmsg() {
         window.alert("Mail sent successfully; we will contact you via email.");
     }, 1000);
 } 
+const phoneNumber = "+918807099288";
+const email = "vimalraj5207@gmail.com";
+
+
+function makeCall(phoneNumber) {
+        window.location.href = `tel:${phoneNumber}`;
+    }
+
+    function sendEmail(email) {
+        window.location.href = `mailto:${email}?subject=Enquiry for Property`;
+    }
 
     </script>
 
