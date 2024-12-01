@@ -358,7 +358,6 @@ const shareProperty = (propertyId, propertyTitle) => {
     if (navigator.share) {
         try {
             navigator.share(shareData);
-            alert('Property shared successfully!');
         } catch (err) {
             console.error('Error sharing:', err);
         }
