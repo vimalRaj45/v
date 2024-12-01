@@ -318,7 +318,6 @@ const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY"; // Replace with 
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
 
-// Function to show a specific property based on the URL hash
 const showSectionFromHash = () => {
     const hash = window.location.hash;
     const propertyId = hash.substring(1);  // Remove the '#' from the hash
@@ -331,20 +330,20 @@ const showSectionFromHash = () => {
     if (propertyId) {
         const targetSection = document.getElementById(propertyId);
         if (targetSection) {
-            targetSection.style.display = 'block';  // Only display the targeted property
-            document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
+            targetSection.style.display = 'block';  // Show the targeted property
+            document.getElementById('view-all-btn').style.display = 'block';  // Show "View All Properties" button
         }
     } else {
-        // If no hash is present, show all properties
-        allSections.forEach(section => section.style.display = 'block');
+        // If no hash is present, do not display any properties
         document.getElementById('view-all-btn').style.display = 'none';  // Hide the "View All Properties" button
     }
 };
 
+
 const showAllProperties = () => {
-    // Reset the URL hash to remove the specific property view
-    window.location.hash = '';
-    showSectionFromHash();  // Show all properties
+    // Reset the URL hash to remove any specific property view
+    window.location.hash = '';  // This will remove any current property-specific hash
+    showSectionFromHash();  // This will show all properties
 };
 
 const shareProperty = (propertyId, propertyTitle) => {
@@ -434,7 +433,7 @@ const fetchData = async () => {
 
         container.classList.remove("hidden");
 
-        // Call the function to show the property based on hash value
+        // Call the function to show the property based on the hash value (if any)
         showSectionFromHash();
     } catch (error) {
         console.error("Error fetching property data:", error);
