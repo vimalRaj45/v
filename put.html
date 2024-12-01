@@ -3,214 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sethu Property Registration</title>
+    <title>Property Registration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-          /* General Body Styling */
-          body {
-            background: #f5f7fa;
-            font-family: 'Inter', sans-serif;
+        body {
+            background: linear-gradient(135deg, #f0f8ff, #e6e6fa);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
-            line-height: 1.6;
         }
-
-        /* Main Container Styling */
         .container {
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 40px;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
-
         h2 {
             text-align: center;
-            color: #2c3e50;
-            font-weight: 700;
+            color: #000000;
+            font-weight: bold;
             margin-bottom: 25px;
-            font-size: 2rem;
         }
-
-        /* Form Input Styling */
         .form-label {
-            font-weight: 600;
-            color: #4d4d4d;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .form-control {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 12px 16px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            color: #4a4a4a;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
-
-        .form-control:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 6px rgba(90, 103, 216, 0.4);
-        }
-
-        .form-select {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px 16px;
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .form-select:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 6px rgba(90, 103, 216, 0.4);
+        .form-control:focus {
+            border-color: #56b71a;
+            box-shadow: 0 0 8px rgba(45, 203, 30, 0.25);
         }
-
-        /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, #5a67d8, #2b6cb0);
+            background-color: #000000;
             border: none;
-            color: #fff;
-            font-size: 1rem;
             padding: 12px 20px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            width: 100%;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
         .btn-primary:hover {
-            background: linear-gradient(135deg, #2b6cb0, #5a67d8);
+            background-color: #242121;
             transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(42, 45, 127, 0.3);
         }
-
-        /* Textarea */
         textarea {
             resize: none;
-            height: 120px;
         }
-
-        /* Modal Styling */
-        .modal-header {
-            background-color: #5a67d8;
-            color: white;
-        }
-
-        .modal-footer .btn {
-            background-color: #2b6cb0;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-        }
-
-        .modal-footer .btn:hover {
-            background-color: #5a67d8;
-        }
-
-        /* Loading Screen */
         .loading {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: none;
+            display: none; /* Initially hidden */
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 1050;
+            backdrop-filter: blur(5px); /* Background blur */
         }
-
         .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            color: #5a67d8;
+            width: 4rem;
+            height: 4rem;
+            color: #5a5af3;
+        }
+        .modal-header {
+            background-color: #5a5af3;
+            color: white;
+        }
+        .modal-footer .btn {
+            background-color: #5a5af3;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+        .modal-footer .btn:hover {
+            background-color: #4848c4;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Property Registration (All) </h2>
-        <form id="propertyForm" onsubmit="handleSubmit(event)">
+<div class="container">
+    <h2>Property Registration</h2>
+    <form id="propertyForm" onsubmit="handleSubmit(event)">
 
-           <div class="mb-3">
-                <label for="propertyType" class="form-label">Property Type</label>
-                <select name="propertyType" id="propertyType" class="form-select" required>
-                    <option value="land">Land</option>
-                    <option value="plot">Plot</option>
-                    <option value="home">Home</option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="propertyImgUrl" class="form-label">Property Image URL</label>
-                <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Paste Image URL here" required class="form-control">
-            </div>
-    
-            <div class="mb-3">
-                <label for="propertyTitle" class="form-label">Property Title</label>
-                <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter property title" required class="form-control">
-            </div>
-    
-            <div class="mb-3">
-                <label for="locationUrl" class="form-label">Location URL</label>
-                <input type="url" name="locationUrl" id="locationUrl" placeholder="Enter Google Maps location URL" required class="form-control">
-            </div>
-    
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" placeholder="Describe the property" required class="form-control"></textarea>
-            </div>
-    
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" name="email" id="email" placeholder="Your email address" required class="form-control">
-            </div>
-    
-            <div class="mb-3">
-                <label for="location" class="form-label">Property Location</label>
-                <input type="text" name="location" id="location" placeholder="City or area name" required class="form-control">
-            </div>
-    
-            <div class="mb-3">
-                <label for="column1" class="form-label">Rate</label>
-                <input type="number" name="column1" id="column1" placeholder="Enter property rate" required class="form-control">
-            </div>
-    
-        
-    
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        <div class="mb-3">
+            <label for="propertyType" class="form-label">Property Type</label>
+            <select name="propertyType" id="propertyType" class="form-control" required>
+                <option value="land">Land</option>
+                <option value="plot">Plot</option>
+                <option value="home">Home</option>
+            </select>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="propertyImgUrl" class="form-label">Property Image URL</label>
+            <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Enter Property Image URL" required class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="propertyTitle" class="form-label">Property Title</label>
+            <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter Property Title" required class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="locationUrl" class="form-label">Location URL</label>
+            <input type="text" name="locationUrl" id="locationUrl" placeholder="Enter Location URL" required class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" id="description" rows="4" placeholder="Enter Property Description" required class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" name="email" id="email" placeholder="Enter Email Address" required class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" name="location" id="location" placeholder="Enter Location" required class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="column1" class="form-label">Rate</label>
+            <input type="text" name="column1" id="column1" placeholder="Enter Rate" required class="form-control">
+        </div>
+
+       
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+</div>
+
+<div class="loading" id="loading">
+    <div>
+        <div class="spinner-border" role="status"></div>
+        <div class="mt-2 text-white">Submitting...</div>
     </div>
-    
-    <div class="loading" id="loading">
-        <div>
-            <div class="spinner-border" role="status"></div>
-            <div class="mt-2 text-white">Submitting...</div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Your property details have been submitted successfully! Redirecting you to our homepage shortly.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">OK</button>
+            </div>
         </div>
     </div>
-    
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Submission Successful</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Your property details have been submitted successfully. Redirecting you to our homepage shortly.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+</div>
 
 <script>
     function handleSubmit(event) {
@@ -223,6 +181,7 @@
          plot: "https://script.google.com/macros/s/AKfycbxiF9gbwfzUYYFLJBAQWo9rMK_ES2O9cpjtFSvXF1BltD7age8Q9bB5mejIhJxhp0DW/exec",
          home: "https://script.google.com/macros/s/AKfycbxJV5wJuzvC1btMoIlJUxMPanQc76gBbaQqL22K_BLqYPtLFl9dXMYx3x7wmcTLe3-b3Q/exec"
      };
+
 
         document.getElementById('loading').style.display = 'flex';
 
@@ -238,7 +197,7 @@
                 successModal.show();
                 setTimeout(() => {
                     window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";
-                }, 2500);
+                }, 2000);
             } else {
                 alert("Submission failed. Please try again.");
             }
