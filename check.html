@@ -297,7 +297,7 @@
     </div>
 
     <script>
-    const shareProperty = (propertyId, propertyTitle) => {
+   const shareProperty = (propertyId, propertyTitle) => {
     const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
     const shareData = {
         title: `Check out this property: ${propertyTitle}`,
@@ -319,15 +319,21 @@
 
 const showSectionFromHash = () => {
     const hash = window.location.hash;
-    const propertyId = hash.substring(1);
+    const propertyId = hash.substring(1);  // Remove the '#' from the hash
 
+    // Hide all property cards first
+    const allSections = document.querySelectorAll('.home-card');
+    allSections.forEach(section => section.style.display = 'none');
+
+    // If a valid property ID is in the URL, show that property
     if (propertyId) {
         const targetSection = document.getElementById(propertyId);
         if (targetSection) {
-            const allSections = document.querySelectorAll('.property-card');
-            allSections.forEach(section => section.classList.add('hidden'));
-            targetSection.classList.remove('hidden');
+            targetSection.style.display = 'block';  // Only display the targeted property
         }
+    } else {
+        // If no hash is present, show all properties
+        allSections.forEach(section => section.style.display = 'block');
     }
 };
 
@@ -338,6 +344,7 @@ const fetchData = async () => {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
 
     document.getElementById("homes-container").classList.add("hidden");
+
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -358,7 +365,7 @@ const fetchData = async () => {
             const propertyId = `property-${index + 1}`;
 
             container.innerHTML += `
-                <div class="col-md-3 home-card" id="${propertyId}">
+                <div class="col-md-3 home-card" id="${propertyId}" style="display: none;">
                     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease;">
                         <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="border-radius: 10px 10px 0 0;">
                         <div class="card-body">
@@ -397,10 +404,11 @@ const fetchData = async () => {
         });
 
         container.classList.remove("hidden");
+
+        // Call the function to show the property based on hash value
         showSectionFromHash();
     } catch (error) {
         console.error("Error fetching property data:", error);
-
     }
 };
 
@@ -416,7 +424,6 @@ function sendmsg() {
         window.alert("Mail sent successfully; we will contact you via email.");
     }, 1000);
 }
-
 
     
     </script>
