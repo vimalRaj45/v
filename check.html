@@ -526,13 +526,13 @@ function sendmsg() {
         window.alert("Mail sent successfully; we will contact you via email.");
     }, 1000);
 } 
-const phoneNumber = "+918807099288";
+
 const email = "vimalraj5207@gmail.com";
 
 
-function makeCall(phoneNumber) {
-        window.location.href = `tel:${phoneNumber}`;
-    }
+function makeCall() {
+    window.location.href = `tel:+918807099288`; // Ensure this is the correct phone number
+}
 
     function sendEmail(email) {
         window.location.href = `mailto:${email}?subject=Enquiry for Property`;
