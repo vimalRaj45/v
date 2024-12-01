@@ -438,23 +438,31 @@ const fetchData = async () => {
                 <h6 class="text-primary fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
             </div>
             
-            <!-- Buttons -->
-            <div class="d-flex flex-wrap justify-content-between mt-1 gap-2">
-                <div class="d-flex gap-2">
-                   <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}"></a>
-                        <i class="fas fa-envelope"></i> Enquire
-                    </a>
-                    <a href="#" class="btn btn-sm btn-success">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </a>
-                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-                        <i class="fas fa-map-marker-alt"></i> View Map
-                    </button>
-                </div>
-                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
-                    <i class="fas fa-share-alt"></i> Share
-                </button>
-            </div>
+           <!-- Buttons -->
+<div class="d-flex flex-wrap justify-content-between mt-1 gap-2">
+    <div class="d-flex gap-2">
+        <!-- Enquire Button -->
+        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}">
+            <i class="fas fa-envelope"></i> Enquire
+        </a>
+        
+        <!-- Buy Button -->
+        <a href="#" class="btn btn-sm btn-success">
+            <i class="fas fa-shopping-cart"></i> Buy
+        </a>
+        
+        <!-- View Map Button -->
+        <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
+            <i class="fas fa-map-marker-alt"></i> View Map
+        </button>
+    </div>
+
+    <!-- Share Button -->
+    <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+        <i class="fas fa-share-alt"></i> Share
+    </button>
+</div>
+
         </div>
     </div>
 </div>
