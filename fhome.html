@@ -406,11 +406,9 @@ const fetchData = async () => {
             <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
                 View Map
             </button>
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-sm btn-secondary" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+                <button class="btn btn-sm btn-secondary d-flex justify-content-end" onclick="shareProperty('${propertyId}', '${home['property title']}')">
                     Share
                 </button>
-            </div>
         </div>
     </div>
 </div>
