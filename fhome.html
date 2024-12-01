@@ -403,7 +403,7 @@ const fetchData = async () => {
             <p class="card-text">${home['description']}</p>
             
             <!-- Flex container for buttons with gap -->
-            <div class="d-flex justify-content-between mt-2 gap-2">
+            <div class="d-flex justify-content-between mt-1 gap-1">
                 <div>
                     <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">Enquire</a>
                     <a href="#" class="btn btn-sm btn-success">Buy</a>
@@ -412,9 +412,10 @@ const fetchData = async () => {
                     </button>
                 </div>
                 <!-- Share button aligned to the right -->
-                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
-                    Share
-                </button>
+               <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+                  <i class="fas fa-share-alt"></i> Share
+               </button>
+
             </div>
         </div>
     </div>
