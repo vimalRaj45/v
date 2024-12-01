@@ -405,21 +405,28 @@ const fetchData = async () => {
             <!-- Flex container for buttons with gap -->
             <div class="d-flex justify-content-between mt-1 gap-1">
                 <div>
-                    <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">Enquire</a>
-                    <a href="#" class="btn btn-sm btn-success">Buy</a>
+                    <!-- Enquire button with icon -->
+                    <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">
+                        <i class="fas fa-envelope"></i> Enquire
+                    </a>
+                    <!-- Buy button with icon -->
+                    <a href="#" class="btn btn-sm btn-success">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </a>
+                    <!-- View Map button with icon -->
                     <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-                        View Map
+                        <i class="fas fa-map-marker-alt"></i> View Map
                     </button>
                 </div>
-                <!-- Share button aligned to the right -->
-               <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
-                  <i class="fas fa-share-alt"></i> Share
-               </button>
-
+                <!-- Share button with icon aligned to the right -->
+                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <!-- Map Modal -->
