@@ -394,7 +394,7 @@ const fetchData = async () => {
             const propertyId = `property-${index + 1}`;
 
             container.innerHTML += `
-          <div class="col-md-3 home-card" id="${propertyId}" style="display: none;">
+         <div class="col-md-3 home-card mb-4" id="${propertyId}" style="display: none;">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="border-radius: 10px 10px 0 0;">
         <div class="card-body">
@@ -402,8 +402,8 @@ const fetchData = async () => {
             <p class="card-text">Location: ${home['location']}</p>
             <p class="card-text">${home['description']}</p>
             
-            <!-- Flex container for buttons -->
-            <div class="d-flex justify-content-between mt-2">
+            <!-- Flex container for buttons with gap -->
+            <div class="d-flex justify-content-between mt-2 gap-2">
                 <div>
                     <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">Enquire</a>
                     <a href="#" class="btn btn-sm btn-success">Buy</a>
