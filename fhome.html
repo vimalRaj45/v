@@ -310,8 +310,8 @@
     style="position: fixed; top: 140px; right: 20px; z-index: 1000; display: none;">
     View All Properties
 </button>
+<center><div class="text bold" id="no-record-found" style="display:none;">No Record Found</div></center>
 
-<div id="no-record-found" style="display:none;">No Record Found</div>
     
 
     <script>
@@ -351,7 +351,6 @@ const showSectionFromHash = () => {
         else {
             // Show "No Record Found" if the property ID is invalid
             document.getElementById('no-record-found').style.display = 'block';
-            document.getElementById('view-all-btn').style.display = 'none';  // Hide the "View All Properties" button
         }
     } else {
         // If no hash is present, show all properties
