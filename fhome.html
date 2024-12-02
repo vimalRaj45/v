@@ -456,7 +456,6 @@ const fetchData = async () => {
         </div>
     </div>
 </div>
-
 <!-- Enquiry Modal -->
 <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -476,7 +475,7 @@ const fetchData = async () => {
                     <i class="fas fa-envelope"></i> Email
                 </button>
                 <button type="button" class="btn btn-success" 
-                        onclick="sendMsg('+918807099288', '${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
+                        onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </button>
             </div>
@@ -518,7 +517,7 @@ window.onload = fetchData;
 // Event listener for hash changes
 window.addEventListener('hashchange', showSectionFromHash);
 
-// Enhanced send message function
+// Enhanced send email function
 function sendEmail(title, location, rate) {
     const email = "vimalraj5207@gmail.com";
     const subject = `Property%20Enquiry%20-%20${encodeURIComponent(title)}`;
@@ -526,18 +525,18 @@ function sendEmail(title, location, rate) {
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 }
 
-
-  // Make call function
-  function makeCall() {
+// Make call function
+function makeCall() {
     window.location.href = `tel:+918807099288`;
-  }
+}
 
-  // Send WhatsApp message function
-function sendMsg(phoneNumber = "title, location, rate) {
+// Send WhatsApp message function
+function sendMsg(title, location, rate) {
     const message = `Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.`;
     const encodedMessage = encodeURIComponent(message);
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
+
     </script>
 
     <!-- WhatsApp Floating Button -->
