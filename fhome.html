@@ -420,6 +420,11 @@ const showSectionFromHash = () => {
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
+     // Get the input group element by class name
+    var inputGroup = document.getElementsByClassName('input-group')[0];
+    
+    // Hide the input group by setting display to "none"
+    inputGroup.style.display = "none";
     showSectionFromHash();  // Show all properties
 };
 
@@ -562,7 +567,7 @@ const fetchData = async () => {
         });
 
         container.classList.remove("hidden");
-
+        
         // Call the function to show the property based on hash value
         showSectionFromHash();
     } catch (error) {
