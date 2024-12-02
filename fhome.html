@@ -301,7 +301,14 @@
             </ul>
     </nav>
     <div class="container">
-        <h1 class="text-center my-4">Sethu Raman Homes</h1>
+        <h1 class="text-center my-4" 
+    style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #000; letter-spacing: 2px; 
+           text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">
+    Sethu Raman Homes
+</h1>
+
+
+    
         <div class="row" id="homes-container"></div>
     </div>
 
@@ -310,7 +317,9 @@
     style="position: fixed; top: 140px; right: 20px; z-index: 1000; display: none;">
     View All Properties
 </button>
-<center><div class="text bold" id="no-record-found" style="display:none;">No Record Found</div></center>
+<center style="margin-top: 10%;"><div class="text bold" id="no-record-found" style="display:none;font-size: xx-large;">No Record Found <br>
+    <small style="font-size: smaller; font-weight: 200;">Property Sold</small>
+</div></center>
 
     
 
@@ -351,6 +360,7 @@ const showSectionFromHash = () => {
         else {
             // Show "No Record Found" if the property ID is invalid
             document.getElementById('no-record-found').style.display = 'block';
+            document.getElementById('view-all-btn').style.display = 'block';
         }
     } else {
         // If no hash is present, show all properties
