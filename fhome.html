@@ -457,7 +457,6 @@ const fetchData = async () => {
     </div>
 </div>
 
-
 <!-- Enquiry Modal -->
 <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -468,20 +467,22 @@ const fetchData = async () => {
             </div>
             <div class="modal-body">
                 <p>Would you like to get in touch with us via:</p>
-                <button type="button" class="btn btn-secondary" onclick="makeCall()">
+                <button type="button" class="btn btn-secondary" 
+                        onclick="makeCall()">
                     <i class="fas fa-phone-alt"></i> Call
                 </button>
-                <button type="button" class="btn btn-primary" onclick="sendEmail()">
+                <button type="button" class="btn btn-primary" 
+                        onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fas fa-envelope"></i> Email
                 </button>
-                <button type="button" class="btn btn-success" onclick="sendMsg()">
+                <button type="button" class="btn btn-success" 
+                        onclick="sendMsg('+918807099288', '${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </button>
             </div>
         </div>
     </div>
 </div>
-
 
 
 <!-- Map Modal -->
@@ -518,32 +519,25 @@ window.onload = fetchData;
 window.addEventListener('hashchange', showSectionFromHash);
 
 // Enhanced send message function
-function sendmsg() {
-    const email = "malikasaravanan774@gmail.com";
-    const subject = "Property%20Enquiry";
-    window.location.href = `mailto:${email}?subject=${subject}`;
-    setTimeout(function () {
-        window.alert("Mail sent successfully; we will contact you via email.");
-    }, 1000);
-} 
+function sendEmail(title, location, rate) {
+    const email = "vimalraj5207@gmail.com";
+    const subject = `Property%20Enquiry%20-%20${encodeURIComponent(title)}`;
+    const body = `Hello,%0D%0A%0D%0AI am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.%0D%0A%0D%0AThank you!`;
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
 
-const phoneNumber = "+918807099288";
-  const email = "vimalraj5207@gmail.com";
-
-  // Send email function
-  function sendEmail() {
-    window.location.href = `mailto:vimalraj5207@gmail.com`;
-  }
 
   // Make call function
   function makeCall() {
     window.location.href = `tel:+918807099288`;
   }
 
-  // Send WhatsApp function
-  function sendMsg() {
-    window.location.href = `https://wa.me/918807099288`;
-  }
+  // Send WhatsApp message function
+function sendMsg(phoneNumber = "title, location, rate) {
+    const message = `Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.`;
+    const encodedMessage = encodeURIComponent(message);
+    window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
+}
     </script>
 
     <!-- WhatsApp Floating Button -->
