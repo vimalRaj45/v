@@ -252,9 +252,54 @@
     transform: scale(1.03);
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
+   
+
+/* Search Bar Container */
+.input-group {
+    max-width: 400px;             /* Limit max width of the search bar */
+    margin: 20px auto;            /* Center the search bar */
+    display: flex;                /* Enable flexbox for alignment */
+    border-radius: 30px;          /* Rounded corners for the container */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Light shadow for modern look */
+}
+
+/* Input Field Style */
+.input-group .form-control {
+    border-radius: 30px;          /* Rounded corners for the input field */
+    border: 1px solid #ccc;       /* Light border */
+    padding: 10px 20px;           /* Adequate padding for the input */
+    font-size: 16px;              /* Slightly larger text */
+    box-shadow: none;             /* Remove default shadow */
+    flex-grow: 1;                 /* Allow the input field to grow */
+    transition: all 0.3s ease;    /* Smooth transition on focus */
+}
+
+.input-group .form-control:focus {
+    border-color: #007bff;        /* Blue border on focus */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Subtle shadow effect on focus */
+}
+
+/* Input Icon Style */
+.input-group .input-group-text {
+    background-color: #f8f9fa;    /* Light background for the icon */
+    border: none;                  /* Remove border */
+    border-radius: 50%;            /* Round corners for the icon */
+    padding: 10px;                 /* Adequate padding for the icon */
+    cursor: pointer;              /* Pointer cursor on hover */
+    transition: background-color 0.3s ease;  /* Smooth hover transition */
+}
+
+.input-group .input-group-text:hover {
+    background-color: #e2e6ea;    /* Light grey background on hover */
+}
+
+/* Optional: Style for the icon itself */
+.input-group .input-group-text i {
+    font-size: 18px;              /* Adjust the size of the search icon */
+    color: #007bff;               /* Icon color */
+}
 
 
-    
     </style>
 </head>
 <body>
@@ -306,6 +351,13 @@
            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">
     Sethu Raman Ploats
      </h1>
+
+        <div class="input-group mb-3" style="max-width: 400px; margin: 20px auto;">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search by location, price, or title..." onkeyup="filterProperties()" aria-label="Search properties" aria-describedby="searchIcon">
+    <span class="input-group-text" id="searchIcon">
+        <i class="fa fa-search"></i>
+    </span>
+</div>
         <div class="row" id="homes-container"></div>
     </div>
 
@@ -543,6 +595,26 @@ function sendMsg(title, location, rate) {
     const message = `Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.`;
     const encodedMessage = encodeURIComponent(message);
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
+}
+
+
+function filterProperties() {
+    const input = document.getElementById('searchInput').value.trim().toLowerCase();  
+    const cards = document.querySelectorAll('.home-card'); // Target the home-card elements
+    
+    cards.forEach(card => {
+        // Extract the text content of title, location, and rate
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const location = card.querySelector('.card-text.text-muted').textContent.toLowerCase();
+        const rate = card.querySelector('.fw-bold').textContent.toLowerCase();  // Assuming class 'fw-bold' for rate
+        
+        // Check if the input matches any of the fields (title, location, rate)
+        if (title.includes(input) || location.includes(input) || rate.includes(input)) {
+            card.style.display = "block";  // Show the card
+        } else {
+            card.style.display = "none";  // Hide the card
+        }
+    });
 }
 
     </script>
