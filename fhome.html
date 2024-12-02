@@ -409,12 +409,10 @@ const fetchData = async () => {
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
         <img src="${home['propertiy img url']}" 
-    class="card-img-top" 
-    alt="${home['property title']}" 
-    style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;">
-    
-
-
+            class="card-img-top" 
+            alt="${home['property title']}" 
+            style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;">
+        
         <div class="card-body">
             <!-- Property Title -->
             <h5 class="card-title text-truncate">${home['property title']}</h5>
@@ -423,37 +421,35 @@ const fetchData = async () => {
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
-           <!-- Rate -->
-   <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
-        <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
-  </div>
+            <!-- Rate -->
+            <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
+                <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
+            </div>
 
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between align-items-center mt-1 gap-2">
+                <!-- Enquire Button -->
+                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}">
+                    <i class="fas fa-envelope"></i> Enquire
+                </a>
+                
+                <!-- Buy Button -->
+                <a href="#" class="btn btn-sm btn-success">
+                    <i class="fas fa-shopping-cart"></i> Buy
+                </a>
+                
+                <!-- View Map Button -->
+                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
+                    <i class="fas fa-map-marker-alt"></i> View Map
+                </button>
 
-        
-            
-           <!-- Buttons -->
-<div class="d-flex justify-content-between align-items-center mt-1 gap-2">
-    <div class="d-flex gap-2">
-        <!-- Enquire Button -->
-        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}">
-            <i class="fas fa-envelope"></i> Enquire
-        </a>
-        
-        <!-- Buy Button -->
-        <a href="#" class="btn btn-sm btn-success">
-            <i class="fas fa-shopping-cart"></i> Buy
-        </a>
-        
-        <!-- View Map Button -->
-        <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-            <i class="fas fa-map-marker-alt"></i> View Map
-        </button>
+                <!-- Share Button (aligned to the right) -->
+                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+        </div>
     </div>
-
-    <!-- Share Button (align right) -->
-    <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
-        <i class="fas fa-share-alt"></i> Share
-    </button>
 </div>
 
 <!-- Enquiry Modal -->
@@ -466,23 +462,19 @@ const fetchData = async () => {
             </div>
             <div class="modal-body">
                 <p>Would you like to get in touch with us via:</p>
-                <button type="button" class="btn btn-secondary" 
-                        onclick="makeCall()">
+                <button type="button" class="btn btn-secondary" onclick="makeCall()">
                     <i class="fas fa-phone-alt"></i> Call
                 </button>
-                <button type="button" class="btn btn-primary" 
-                        onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
+                <button type="button" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fas fa-envelope"></i> Email
                 </button>
-                <button type="button" class="btn btn-success" 
-                        onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
+                <button type="button" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </button>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Map Modal -->
 <div class="modal fade" id="mapModal${index}" tabindex="-1" aria-labelledby="mapModalLabel${index}" aria-hidden="true">
@@ -499,7 +491,8 @@ const fetchData = async () => {
             </div>
         </div>
     </div>
-</div> `;
+</div>
+ `;
         });
 
         container.classList.remove("hidden");
