@@ -598,7 +598,7 @@ function sendMsg(title, location, rate) {
 
 
 function filterProperties() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
+    const input = document.getElementById('searchInput').value.trim().toLowerCase();  
     const cards = document.querySelectorAll('.home-card'); // Target the home-card elements
     
     cards.forEach(card => {
