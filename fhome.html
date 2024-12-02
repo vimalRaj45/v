@@ -403,6 +403,11 @@ const showSectionFromHash = () => {
         if (targetSection) {
             targetSection.style.display = 'block';  // Only display the targeted property
             document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
+             // Get the input group element by class name
+             var inputGroup = document.getElementsByClassName('input-group')[0];
+    
+             // Hide the input group by setting display to "none"
+             inputGroup.style.display = "none";
         }
 
         else {
@@ -420,11 +425,6 @@ const showSectionFromHash = () => {
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
-     // Get the input group element by class name
-    var inputGroup = document.getElementsByClassName('input-group')[0];
-    
-    // Hide the input group by setting display to "none"
-    inputGroup.style.display = "none";
     showSectionFromHash();  // Show all properties
 };
 
