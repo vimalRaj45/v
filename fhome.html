@@ -483,7 +483,7 @@ const fetchData = async () => {
             <!-- Property Title -->
             <div style="position: relative;">
   <p class="card-text text-muted" style="display: flex; justify-content: space-between; align-items: center;">
-    <span> ${home['property title']}</span>
+    <span class="type"> ${home['property title']}</span>
     <button 
       style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
       disabled>
@@ -613,7 +613,7 @@ function filterProperties() {
 
     cards.forEach(card => {
         // Safely extract the title, location, and rate text
-        const titleElement = card.querySelector('.card-title');
+        const titleElement = card.querySelector('.type');
         const locationElement = card.querySelector('.location'); // Use a specific class for location
         const rateElement = card.querySelector('.fw-bold');
 
