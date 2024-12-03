@@ -405,7 +405,7 @@ const showSectionFromHash = () => {
         } else {
             // Show "No Record Found" message if the property ID is invalid
             const noRecordElement = document.getElementById('no-record-found');
-            if (noRecordElement) noRecordElement.style.display = 'block';
+            if (!noRecordElement) noRecordElement.style.display = 'block';
             document.getElementById('view-all-btn').style.display = 'block';
         }
     } else {
