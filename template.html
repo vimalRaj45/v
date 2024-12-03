@@ -489,7 +489,7 @@ const fetchData = async () => {
   </p>
 </div>
             <!-- Location -->
-            <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <p class="location"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
@@ -601,43 +601,60 @@ function sendMsg(title, location, rate) {
     const encodedMessage = encodeURIComponent(message);
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
-
 function filterProperties() {
-    const input = document.getElementById('searchInput').value.trim().toLowerCase();
-    const cards = document.querySelectorAll('.home-card'); // Target the home-card elements
+    const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get the input value and convert to lowercase
+    const cards = document.querySelectorAll('.home-card'); // Get all property cards
     let found = false; // Variable to track if any card is found
-    console.log(cards)
+    const locationsArray = []; // Array to store all locations
+
     cards.forEach(card => {
-        // Extract the text content of title, location, and rate
-        const title = card.querySelector('.card-title').textContent.toLowerCase();
-        const location = card.querySelector('.card-text.text-muted').textContent.toLowerCase();
-        const rate = card.querySelector('.fw-bold').textContent.toLowerCase();  // Assuming class 'fw-bold' for rate
-        
+        // Safely extract the title, location, and rate text
+        const titleElement = card.querySelector('.card-title');
+        const locationElement = card.querySelector('.location'); // Use a specific class for location
+        const rateElement = card.querySelector('.fw-bold');
+
+        // Ensure elements exist before trying to get their text content
+        const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+        const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : ''; // Clean location text
+        const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
+
+        // Add the location to the array
+        if (location) {
+            locationsArray.push(location);
+        }
+
+        // Debug: Check the extracted title, location, and input
+        console.log("Input: ", input);
+        console.log("Extracted Title: ", title);
+        console.log("Extracted Location: ", location);
+
         // Check if the input matches any of the fields (title, location, rate)
         if (title.includes(input) || location.includes(input) || rate.includes(input)) {
-            card.style.display = "block";  // Show the card
+            card.style.display = "block";  // Show card if it matches
             found = true;  // Set found to true if at least one card matches
         } else {
-            card.style.display = "none";  // Hide the card
+            card.style.display = "none";  // Hide card if no match
         }
     });
-    
-    // Show "No search found" if no matching card is found
+
+    // Debug: Log all extracted locations
+    console.log("All Locations: ", locationsArray);
+
+    // Show "No property found" message if no matches
     const noSearchMessage = document.getElementById('no-search-message');
     if (!found) {
-        // If there's no match, display the "No search found" message
+        // If no card matches, show the "No Property found" message
         if (!noSearchMessage) {
             const message = document.createElement('p');
             message.id = 'no-search-message';
             message.textContent = 'No Property found';
-            // Apply the styles directly to the message element
-            message.style.textAlign = 'center'; // Center align
-            message.style.fontWeight = 'bold';  // Make it bold
-            message.style.fontSize = '22px';    // Optional: Increase font size for visibility
-            document.body.appendChild(message); // You can append it to a specific element instead of body
+            message.style.textAlign = 'center';
+            message.style.fontWeight = 'bold';
+            message.style.fontSize = '22px';
+            document.body.appendChild(message); // Append to body or a specific element
         }
     } else {
-        // If matches are found, remove the message
+        // If matches are found, remove the "No Property found" message
         if (noSearchMessage) {
             noSearchMessage.remove();
         }
