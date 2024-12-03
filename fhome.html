@@ -492,7 +492,7 @@ const fetchData = async () => {
   </p>
 </div>
             <!-- Location -->
-            <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <p class="location"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
@@ -605,41 +605,60 @@ function sendMsg(title, location, rate) {
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
 
-// Function to filter properties
 function filterProperties() {
-    const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get user input and convert to lowercase
-    const cards = document.querySelectorAll('.home-card'); // Get all the property cards
-    let found = false; // Flag to track if any matching property is found
-    
+    const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get the input value and convert to lowercase
+    const cards = document.querySelectorAll('.home-card'); // Get all property cards
+    let found = false; // Variable to track if any card is found
+    const locationsArray = []; // Array to store all locations
+
     cards.forEach(card => {
-        const title = card.querySelector('.card-text.text-muted').textContent.toLowerCase(); // Extract title text
-        const location = card.querySelector('.card-text.text-muted').textContent.toLowerCase(); // Extract location text
-        const rate = card.querySelector('.fw-bold').textContent.toLowerCase(); // Extract rate text
-        
-        // Check if input matches any part of the title, location, or rate
+        // Safely extract the title, location, and rate text
+        const titleElement = card.querySelector('.card-title');
+        const locationElement = card.querySelector('.location'); // Use a specific class for location
+        const rateElement = card.querySelector('.fw-bold');
+
+        // Ensure elements exist before trying to get their text content
+        const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+        const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : ''; // Clean location text
+        const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
+
+        // Add the location to the array
+        if (location) {
+            locationsArray.push(location);
+        }
+
+        // Debug: Check the extracted title, location, and input
+        console.log("Input: ", input);
+        console.log("Extracted Title: ", title);
+        console.log("Extracted Location: ", location);
+
+        // Check if the input matches any of the fields (title, location, rate)
         if (title.includes(input) || location.includes(input) || rate.includes(input)) {
-            card.style.display = "block"; // Show the card if there's a match
-            found = true;
+            card.style.display = "block";  // Show card if it matches
+            found = true;  // Set found to true if at least one card matches
         } else {
-            card.style.display = "none"; // Hide the card if there's no match
+            card.style.display = "none";  // Hide card if no match
         }
     });
-    
-    // Show a message if no properties are found
+
+    // Debug: Log all extracted locations
+    console.log("All Locations: ", locationsArray);
+
+    // Show "No property found" message if no matches
     const noSearchMessage = document.getElementById('no-search-message');
     if (!found) {
-        // Create a "No search results found" message if none of the cards match the search input
+        // If no card matches, show the "No Property found" message
         if (!noSearchMessage) {
             const message = document.createElement('p');
             message.id = 'no-search-message';
-            message.textContent = 'No properties found matching your search';
-            message.style.textAlign = 'center'; // Center align the message
-            message.style.fontWeight = 'bold';  // Make it bold
-            message.style.fontSize = '18px';    // Increase font size for better visibility
-            document.body.appendChild(message); // Append it to the body (or a specific container)
+            message.textContent = 'No Property found';
+            message.style.textAlign = 'center';
+            message.style.fontWeight = 'bold';
+            message.style.fontSize = '22px';
+            document.body.appendChild(message); // Append to body or a specific element
         }
     } else {
-        // If properties are found, remove the "No search" message
+        // If matches are found, remove the "No Property found" message
         if (noSearchMessage) {
             noSearchMessage.remove();
         }
