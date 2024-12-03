@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sethu Raman Homes</title>
+    <title>Sethu Homes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
@@ -99,7 +99,7 @@
             align-items: flex-start;
             justify-content: flex-start;
             opacity: 0;
-            transition: opacity 0.6s ease-out, transform 1.5s ease;
+            transition: opacity 250ms linear, transform 500ms linear;
             border-radius: 2%;
         }
         .sidebar.show {
@@ -166,7 +166,7 @@
     }
     .whatsapp-float {
             position: fixed;
-            bottom: 40px;
+            bottom: 80px;
             right: 25px;
             width: 50px;
             height: 50px;
@@ -194,7 +194,7 @@
         
                 .whatsapp2-float {
             position: fixed;
-            bottom: 100px;
+            bottom: 140px;
             right: 25px;
             width: 50px;
             height: 50px;
@@ -253,22 +253,52 @@
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.card-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
+/* Search Bar Container */
+.input-group {
+    max-width: 400px;             /* Limit max width of the search bar */
+    margin: 20px auto;            /* Center the search bar */
+    display: flex;                /* Enable flexbox for alignment */
+    border-radius: 30px;          /* Rounded corners for the container */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Light shadow for modern look */
 }
 
-.card-text {
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 1.4;
+/* Input Field Style */
+.input-group .form-control {
+    border-radius: 30px;          /* Rounded corners for the input field */
+    border: 1px solid #ccc;       /* Light border */
+    padding: 10px 20px;           /* Adequate padding for the input */
+    font-size: 16px;              /* Slightly larger text */
+    box-shadow: none;             /* Remove default shadow */
+    flex-grow: 1;                 /* Allow the input field to grow */
+    transition: all 0.3s ease;    /* Smooth transition on focus */
 }
 
-h6 {
-    margin-top: 10px;
+.input-group .form-control:focus {
+    border-color: #007bff;        /* Blue border on focus */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Subtle shadow effect on focus */
 }
-  
+
+/* Input Icon Style */
+.input-group .input-group-text {
+    background-color: #f8f9fa;    /* Light background for the icon */
+    border: none;                  /* Remove border */
+    border-radius: 50%;            /* Round corners for the icon */
+    padding: 10px;                 /* Adequate padding for the icon */
+    cursor: pointer;              /* Pointer cursor on hover */
+    transition: background-color 0.3s ease;  /* Smooth hover transition */
+}
+
+.input-group .input-group-text:hover {
+    background-color: #e2e6ea;    /* Light grey background on hover */
+}
+
+/* Optional: Style for the icon itself */
+.input-group .input-group-text i {
+    font-size: 18px;              /* Adjust the size of the search icon */
+    color: #007bff;               /* Icon color */
+}
+
+
     
     </style>
 </head>
@@ -316,15 +346,30 @@ h6 {
             </ul>
     </nav>
     <div class="container">
-        <h1 class="text-center my-4">Sethu Raman Homes</h1>
+        <h1 class="text-center my-4" 
+    style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #000; letter-spacing: 2px; 
+           text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">
+    Sethu Homes
+</h1>
+<div class="input-group mb-3" style="max-width: 400px; margin: 20px auto;">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search by location, price, or title..." onkeyup="filterProperties()" aria-label="Search properties" aria-describedby="searchIcon">
+    <span class="input-group-text" id="searchIcon">
+        <i class="fa fa-search"></i>
+    </span>
+</div>
         <div class="row" id="homes-container"></div>
     </div>
 
     <!-- Floating "View All Properties" button -->
 <button id="view-all-btn" class="btn btn-sm btn-secondary" onclick="showAllProperties()" 
-    style="position: fixed; bottom: 40px; left: 20px; z-index: 1000; display: none;">
+    style="position: fixed; top: 140px; right: 20px; z-index: 1000; display: none;">
     View All Properties
 </button>
+<center style="margin-top: 10%;"><div class="text bold" id="no-record-found" style="display:none;font-size: xx-large;">No Record Found <br>
+    <small style="font-size: smaller; font-weight: 200;">Property Sold</small>
+</div></center>
+
+    
 
     <script>
       function show() {
@@ -342,22 +387,25 @@ function hide() {
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
-
-// Function to show a specific property based on the URL hash
+// Function to show property based on the URL hash
 const showSectionFromHash = () => {
     const hash = window.location.hash;
-    const propertyId = hash.substring(1);  // Remove the '#' from the hash
+    const propertyTitle = decodeURIComponent(hash.substring(1));  // Remove the '#' from the hash and decode the title
 
     // Hide all property cards first
     const allSections = document.querySelectorAll('.home-card');
     allSections.forEach(section => section.style.display = 'none');
 
-    // If a valid property ID is in the URL, show that property
-    if (propertyId) {
-        const targetSection = document.getElementById(propertyId);
+    // If a valid property title is in the URL hash, show that property
+    if (propertyTitle) {
+        const targetSection = document.querySelector(`.home-card[data-title="${propertyTitle}"]`);
         if (targetSection) {
             targetSection.style.display = 'block';  // Only display the targeted property
             document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
+        } else {
+            // Show "No Record Found" if the property title is invalid
+            document.getElementById('no-record-found').style.display = 'block';
+            document.getElementById('view-all-btn').style.display = 'block';
         }
     } else {
         // If no hash is present, show all properties
@@ -366,14 +414,24 @@ const showSectionFromHash = () => {
     }
 };
 
+// Function to show all properties
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
     showSectionFromHash();  // Show all properties
 };
 
-const shareProperty = (propertyId, propertyTitle) => {
-    const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
+
+// Call the function when the page is loaded
+window.addEventListener('load', showSectionFromHash);
+
+// Listen for hash changes and call the function
+window.addEventListener('hashchange', showSectionFromHash);
+
+const shareProperty = (propertyTitle) => {
+    const encodedTitle = encodeURIComponent(propertyTitle); // Encode the title for URL
+    const url = `${window.location.origin}${window.location.pathname}#${encodedTitle}`;
+    
     const shareData = {
         title: `Check out this property: ${propertyTitle}`,
         text: `Take a look at this amazing property: ${propertyTitle}`,
@@ -381,18 +439,18 @@ const shareProperty = (propertyId, propertyTitle) => {
     };
 
     if (navigator.share) {
-        try {
-            navigator.share(shareData);
-        } catch (err) {
-            console.error('Error sharing:', err);
-        }
+        navigator.share(shareData)
+            .then(() => console.log('Shared successfully!'))
+            .catch(err => console.error('Error sharing:', err));
     } else {
-        alert('Sharing is not supported in this browser.');
+        const fallbackMessage = `Sharing is not supported in this browser. Copy this link: ${url}`;
+        alert(fallbackMessage);
     }
 };
 
+
 const fetchData = async () => {
-    const sheetID = "1R9pJnXgcUJRvUsrE6J-4e8uAVznMPjzAzwYOAx0qA68";
+    const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
     const sheetTab = "sheet1";
     const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
@@ -420,45 +478,63 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-     <div class="col-md-3 home-card mb-1" id="${propertyId}" style="display: block;">
+      <div class="col-md-3 home-card mb-3" id="${propertyId}" style="display: block;" data-title="${home['property title']}">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
-        <img src="${home['propertiy img url']}" class="card-img-top" alt="${home['property title']}" style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
-        <hr>
+        <img src="${home['property img url']}" 
+            class="card-img-top" 
+            alt="${home['property title']}" 
+            style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;">
+        
         <div class="card-body">
             <!-- Property Title -->
-            <h5 class="card-title text-truncate">${home['property title']}</h5>
+            <div style="position: relative;">
+                <p class="card-text text-muted" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="type"> ${home['property title']}</span>
+                    <button 
+                        style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
+                        disabled>
+                        Available
+                    </button>
+                </p>
+            </div>
+
             <!-- Location -->
-            <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <p class="location"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
             <!-- Rate -->
-            <div class="d-flex justify-content-end align-items-center pb-2 pe-2">
-                <h6 class="text-primary fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
+            <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
+                <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
             </div>
-            
+
             <!-- Buttons -->
-            <div class="d-flex flex-wrap justify-content-between mt-1 gap-2">
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-sm btn-primary" onclick="sendmsg()">
-                        <i class="fas fa-envelope"></i> Enquire
-                    </a>
-                    <a href="#" class="btn btn-sm btn-success">
-                        <i class="fas fa-shopping-cart"></i> Buy
-                    </a>
-                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-                        <i class="fas fa-map-marker-alt"></i> View Map
-                    </button>
-                </div>
-                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${propertyId}', '${home['property title']}')">
+            <div class="d-flex justify-content-between align-items-center mt-1 gap-2">
+                <!-- Enquire Button -->
+                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}">
+                    <i class="fas fa-envelope"></i> Enquire
+                </a>
+                
+                <!-- Buy Button -->
+                <a href="#" class="btn btn-sm btn-success">
+                    <i class="fas fa-shopping-cart"></i> Buy
+                </a>
+                
+                <!-- View Map Button -->
+                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
+                    <i class="fas fa-map-marker-alt"></i> Map
+                </button>
+
+                <!-- Share Button (aligned to the right) -->
+                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${home['property title']}')">
                     <i class="fas fa-share-alt"></i> Share
                 </button>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Enquiry Modal -->
 <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
@@ -473,18 +549,16 @@ const fetchData = async () => {
                 <button type="button" class="btn btn-secondary" onclick="makeCall()">
                     <i class="fas fa-phone-alt"></i> Call
                 </button>
-                <button type="button" class="btn btn-primary" onclick="sendEmail()">
+                <button type="button" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fas fa-envelope"></i> Email
                 </button>
-                <button type="button" class="btn btn-success" onclick="sendMsg()">
+                <button type="button" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </button>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <!-- Map Modal -->
 <div class="modal fade" id="mapModal${index}" tabindex="-1" aria-labelledby="mapModalLabel${index}" aria-hidden="true">
@@ -501,11 +575,12 @@ const fetchData = async () => {
             </div>
         </div>
     </div>
-</div> `;
+</div>
+ `;
         });
 
         container.classList.remove("hidden");
-
+        
         // Call the function to show the property based on hash value
         showSectionFromHash();
     } catch (error) {
@@ -519,33 +594,90 @@ window.onload = fetchData;
 // Event listener for hash changes
 window.addEventListener('hashchange', showSectionFromHash);
 
-// Enhanced send message function
-function sendmsg() {
-    const email = "malikasaravanan774@gmail.com";
-    const subject = "Property%20Enquiry";
-    window.location.href = `mailto:${email}?subject=${subject}`;
-    setTimeout(function () {
-        window.alert("Mail sent successfully; we will contact you via email.");
-    }, 1000);
-} 
+// Enhanced send email function
+function sendEmail(title, location, rate) {
+    const email = "vimalraj5207@gmail.com";
+    const subject = `Property%20Enquiry%20-%20${encodeURIComponent(title)}`;
+    const body = `Hello,%0D%0A%0D%0AI am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.%0D%0A%0D%0AThank you!`;
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
 
-const phoneNumber = "+918807099288";
-  const email = "vimalraj5207@gmail.com";
-
-  // Send email function
-  function sendEmail() {
-    window.location.href = `mailto:vimalraj5207@gmail.com`;
-  }
-
-  // Make call function
-  function makeCall() {
+// Make call function
+function makeCall() {
     window.location.href = `tel:+918807099288`;
-  }
+}
 
-  // Send WhatsApp function
-  function sendMsg() {
-    window.location.href = `https://wa.me/918807099288`;
-  }
+// Send WhatsApp message function
+function sendMsg(title, location, rate) {
+    const message = `Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.`;
+    const encodedMessage = encodeURIComponent(message);
+    window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
+}
+
+function filterProperties() {
+    const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get the input value and convert to lowercase
+    const cards = document.querySelectorAll('.home-card'); // Get all property cards
+    let found = false; // Variable to track if any card is found
+    const locationsArray = []; // Array to store all locations
+
+    cards.forEach(card => {
+        // Safely extract the title, location, and rate text
+        const titleElement = card.querySelector('.type');
+        const locationElement = card.querySelector('.location'); // Use a specific class for location
+        const rateElement = card.querySelector('.fw-bold');
+
+        // Ensure elements exist before trying to get their text content
+        const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+        const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : ''; // Clean location text
+        const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
+
+        // Add the location to the array
+        if (location) {
+            locationsArray.push(location);
+        }
+
+        // Debug: Check the extracted title, location, and input
+        console.log("Input: ", input);
+        console.log("Extracted Title: ", title);
+        console.log("Extracted Location: ", location);
+
+        // Check if the input matches any of the fields (title, location, rate)
+        if (title.includes(input) || location.includes(input) || rate.includes(input)) {
+            card.style.display = "block";  // Show card if it matches
+            found = true;  // Set found to true if at least one card matches
+        } else {
+            card.style.display = "none";  // Hide card if no match
+        }
+    });
+
+    // Debug: Log all extracted locations
+    console.log("All Locations: ", locationsArray);
+
+    // Show "No property found" message if no matches
+    const noSearchMessage = document.getElementById('no-search-message');
+    if (!found) {
+        // If no card matches, show the "No Property found" message
+        if (!noSearchMessage) {
+            const message = document.createElement('p');
+            message.id = 'no-search-message';
+            message.textContent = 'No Property found';
+            message.style.textAlign = 'center';
+            message.style.fontWeight = 'bold';
+            message.style.fontSize = '22px';
+            document.body.appendChild(message); // Append to body or a specific element
+        }
+    } else {
+        // If matches are found, remove the "No Property found" message
+        if (noSearchMessage) {
+            noSearchMessage.remove();
+        }
+    }
+}
+
+// Adding event listener to input field for filtering
+document.getElementById('searchInput').addEventListener('keyup', filterProperties);
+
+
     </script>
 
     <!-- WhatsApp Floating Button -->
