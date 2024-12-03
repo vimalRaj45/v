@@ -606,7 +606,7 @@ function filterProperties() {
     const input = document.getElementById('searchInput').value.trim().toLowerCase();
     const cards = document.querySelectorAll('.home-card'); // Target the home-card elements
     let found = false; // Variable to track if any card is found
-    
+    console.log(cards)
     cards.forEach(card => {
         // Extract the text content of title, location, and rate
         const title = card.querySelector('.card-title').textContent.toLowerCase();
