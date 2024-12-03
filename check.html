@@ -387,30 +387,31 @@ function hide() {
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
-// Function to show property based on the URL hash
+// Function to show a specific property based on the URL hash
 const showSectionFromHash = () => {
     const hash = window.location.hash;
-    const propertyTitle = decodeURIComponent(hash.substring(1));  // Remove the '#' from the hash and decode the title
+    const propertyId = decodeURIComponent(hash.substring(1)); // Decode URL hash and remove the '#' 
 
     // Hide all property cards first
     const allSections = document.querySelectorAll('.home-card');
     allSections.forEach(section => section.style.display = 'none');
 
-    // If a valid property title is in the URL hash, show that property
-    if (propertyTitle) {
-        const targetSection = document.querySelector(`.home-card[data-title="${propertyTitle}"]`);
+    // If a valid property ID is in the URL hash, show that property
+    if (propertyId) {
+        const targetSection = document.getElementById(propertyId);
         if (targetSection) {
-            targetSection.style.display = 'block';  // Only display the targeted property
-            document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
+            targetSection.style.display = 'block'; // Show only the targeted property
+            document.getElementById('view-all-btn').style.display = 'block'; // Show the "View All Properties" button
         } else {
-            // Show "No Record Found" if the property title is invalid
-            document.getElementById('no-record-found').style.display = 'block';
+            // Show "No Record Found" message if the property ID is invalid
+            const noRecordElement = document.getElementById('no-record-found');
+            if (noRecordElement) noRecordElement.style.display = 'block';
             document.getElementById('view-all-btn').style.display = 'block';
         }
     } else {
         // If no hash is present, show all properties
         allSections.forEach(section => section.style.display = 'block');
-        document.getElementById('view-all-btn').style.display = 'none';  // Hide the "View All Properties" button
+        document.getElementById('view-all-btn').style.display = 'none'; // Hide the "View All Properties" button
     }
 };
 
@@ -418,35 +419,41 @@ const showSectionFromHash = () => {
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
-    showSectionFromHash();  // Show all properties
+    showSectionFromHash(); // Show all properties
 };
 
-
-// Call the function when the page is loaded
+// Call the function on page load to handle the initial hash
 window.addEventListener('load', showSectionFromHash);
 
-// Listen for hash changes and call the function
+// Call the function on hash change to update the displayed property
 window.addEventListener('hashchange', showSectionFromHash);
 
-const shareProperty = (propertyTitle) => {
-    const encodedTitle = encodeURIComponent(propertyTitle); // Encode the title for URL
-    const url = `${window.location.origin}${window.location.pathname}#${encodedTitle}`;
+function shareProperty(propertyTitle) {
+    const shareText = `Check out this property: ${propertyTitle}`;
+    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
     
-    const shareData = {
-        title: `Check out this property: ${propertyTitle}`,
-        text: `Take a look at this amazing property: ${propertyTitle}`,
-        url: url,
-    };
-
     if (navigator.share) {
-        navigator.share(shareData)
-            .then(() => console.log('Shared successfully!'))
-            .catch(err => console.error('Error sharing:', err));
+        // Use Web Share API if supported
+        navigator.share({
+            title: 'Property Details',
+            text: shareText,
+            url: shareURL
+        }).then(() => {
+            console.log('Property shared successfully!');
+        }).catch(err => {
+            console.error('Error sharing the property:', err);
+        });
     } else {
-        const fallbackMessage = `Sharing is not supported in this browser. Copy this link: ${url}`;
-        alert(fallbackMessage);
+        // Fallback for browsers that don't support Web Share API
+        const dummyInput = document.createElement('input');
+        dummyInput.value = shareURL;
+        document.body.appendChild(dummyInput);
+        dummyInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummyInput);
+        alert('Property link copied to clipboard: ' + shareURL);
     }
-};
+}
 
 
 const fetchData = async () => {
@@ -478,10 +485,10 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-      <div class="col-md-3 home-card mb-3" id="${propertyId}" style="display: block;" data-title="${home['property title']}">
+      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
-        <img src="${home['property img url']}" 
+        <img src="${home['propertiy img url']}" 
             class="card-img-top" 
             alt="${home['property title']}" 
             style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;">
@@ -489,19 +496,17 @@ const fetchData = async () => {
         <div class="card-body">
             <!-- Property Title -->
             <div style="position: relative;">
-                <p class="card-text text-muted" style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="type"> ${home['property title']}</span>
-                    <button 
-                        style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
-                        disabled>
-                        Available
-                    </button>
-                </p>
-            </div>
-
+  <p class="card-text text-muted" style="display: flex; justify-content: space-between; align-items: center;">
+    <span class="type"> ${home['property title']}</span>
+    <button 
+      style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
+      disabled>
+      Available
+    </button>
+  </p>
+</div>
             <!-- Location -->
             <p class="location"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
-            
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
@@ -528,7 +533,7 @@ const fetchData = async () => {
                 </button>
 
                 <!-- Share Button (aligned to the right) -->
-                <button class="btn btn-sm btn-secondary ms-auto" onclick="shareProperty('${home['property title']}')">
+                <button class="btn btn-sm btn-secondary ms-auto"  onclick="shareProperty('${home['property title']}')">
                     <i class="fas fa-share-alt"></i> Share
                 </button>
             </div>
