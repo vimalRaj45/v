@@ -129,6 +129,10 @@
         width: 90%; /* Make buttons narrower on small screens */
       }
     }
+
+      body{
+        display: none;
+    }
   </style>
 </head>
 
@@ -141,6 +145,7 @@
     } else {
         // Session exists, start timeout countdown
         resetTimeout();
+        document.body.style.display = 'block';
       }
     }
 
