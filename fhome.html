@@ -387,26 +387,23 @@ function hide() {
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
-
-// Function to show a specific property based on the URL hash
+// Function to show property based on the URL hash
 const showSectionFromHash = () => {
     const hash = window.location.hash;
-    const propertyId = hash.substring(1);  // Remove the '#' from the hash
+    const propertyTitle = decodeURIComponent(hash.substring(1));  // Remove the '#' from the hash and decode the title
 
     // Hide all property cards first
     const allSections = document.querySelectorAll('.home-card');
     allSections.forEach(section => section.style.display = 'none');
 
-    // If a valid property ID is in the URL, show that property
-    if (propertyId) {
-        const targetSection = document.getElementById(propertyId);
+    // If a valid property title is in the URL hash, show that property
+    if (propertyTitle) {
+        const targetSection = document.querySelector(`.home-card[data-title="${propertyTitle}"]`);
         if (targetSection) {
             targetSection.style.display = 'block';  // Only display the targeted property
             document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
-        }
-
-        else {
-            // Show "No Record Found" if the property ID is invalid
+        } else {
+            // Show "No Record Found" if the property title is invalid
             document.getElementById('no-record-found').style.display = 'block';
             document.getElementById('view-all-btn').style.display = 'block';
         }
@@ -417,14 +414,24 @@ const showSectionFromHash = () => {
     }
 };
 
+// Function to show all properties
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
     showSectionFromHash();  // Show all properties
 };
 
-const shareProperty = (propertyId, propertyTitle) => {
-    const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
+
+// Call the function when the page is loaded
+window.addEventListener('load', showSectionFromHash);
+
+// Listen for hash changes and call the function
+window.addEventListener('hashchange', showSectionFromHash);
+
+const shareProperty = (propertyTitle) => {
+    const encodedTitle = encodeURIComponent(propertyTitle); // Encode the title for URL
+    const url = `${window.location.origin}${window.location.pathname}#${encodedTitle}`;
+    
     const shareData = {
         title: `Check out this property: ${propertyTitle}`,
         text: `Take a look at this amazing property: ${propertyTitle}`,
@@ -432,15 +439,15 @@ const shareProperty = (propertyId, propertyTitle) => {
     };
 
     if (navigator.share) {
-        try {
-            navigator.share(shareData);
-        } catch (err) {
-            console.error('Error sharing:', err);
-        }
+        navigator.share(shareData)
+            .then(() => console.log('Shared successfully!'))
+            .catch(err => console.error('Error sharing:', err));
     } else {
-        alert('Sharing is not supported in this browser.');
+        const fallbackMessage = `Sharing is not supported in this browser. Copy this link: ${url}`;
+        alert(fallbackMessage);
     }
 };
+
 
 const fetchData = async () => {
     const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
@@ -471,7 +478,7 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-      <div class="col-md-3 home-card mb-3" id="${propertyId}" style="display: block;">
+      <div class="col-md-3 home-card mb-3" id="${propertyId}" style="display: block;" data-title="${home['property title']}">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
         <img src="${home['propertiy img url']}" 
