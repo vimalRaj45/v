@@ -605,17 +605,25 @@ function sendMsg(title, location, rate) {
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
 
-
 function filterProperties() {
     const input = document.getElementById('searchInput').value.trim().toLowerCase();
     const cards = document.querySelectorAll('.home-card'); // Target the home-card elements
     let found = false; // Variable to track if any card is found
     
     cards.forEach(card => {
-        // Extract the text content of title, location, and rate
-        const title = card.querySelector('.card-title').textContent.toLowerCase();
-        const location = card.querySelector('.card-text.text-muted').textContent.toLowerCase();
-        const rate = card.querySelector('.fw-bold').textContent.toLowerCase();  // Assuming class 'fw-bold' for rate
+        // Extract the text content of title, location, and rate with null checks
+        const titleElement = card.querySelector('.card-title');
+        const locationElement = card.querySelector('.card-text.text-muted');
+        const rateElement = card.querySelector('.fw-bold');
+        
+        // If any of these elements are not found, skip this card
+        if (!titleElement || !locationElement || !rateElement) {
+            return;
+        }
+        
+        const title = titleElement.textContent.toLowerCase();
+        const location = locationElement.textContent.toLowerCase();
+        const rate = rateElement.textContent.toLowerCase();
         
         // Check if the input matches any of the fields (title, location, rate)
         if (title.includes(input) || location.includes(input) || rate.includes(input)) {
@@ -646,6 +654,8 @@ function filterProperties() {
             noSearchMessage.remove();
         }
     }
+}
+
 }
     </script>
 
