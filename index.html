@@ -110,6 +110,7 @@
     <h3 class="text-center">OTP Verification</h3>
     <div id="alert-container"></div>
     <form id="otpForm" onsubmit="return handleSubmit(event)">
+      <input type="text" id="email" class="form-control mb-2" placeholder="Enter mail">
       <div id="otp-container" class="d-none">
         <label for="otp" class="form-label">Enter OTP</label>
         <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter the OTP" maxlength="6">
@@ -182,14 +183,19 @@
         showAlert("Please enter a valid email address.", "danger");
         return;
       }
+       let myArray = ['vimalraj5207@gmail.com', 'malikasaravanan774@gmail.com'];
 
+   if (!myArray.includes(emailInput)) {
+    alert("not a valid mail");
+    return;
+   } 
       generatedOTP = Math.floor(100000 + Math.random() * 900000);
       const sendOtpButton = document.getElementById("send-otp");
       sendOtpButton.disabled = true;
       sendOtpButton.classList.add("loading");
 
       const params = {
-        email: "vimalraj5207@gmail.com",
+        email: emailInput,
         otp: generatedOTP,
         from_name: "Your Service",
         to_name: emailInput,
