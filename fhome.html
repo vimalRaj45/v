@@ -605,56 +605,49 @@ function sendMsg(title, location, rate) {
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
 
+// Function to filter properties
 function filterProperties() {
-    const input = document.getElementById('searchInput').value.trim().toLowerCase();
-    const cards = document.querySelectorAll('.home-card'); // Target the home-card elements
-    let found = false; // Variable to track if any card is found
+    const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get user input and convert to lowercase
+    const cards = document.querySelectorAll('.home-card'); // Get all the property cards
+    let found = false; // Flag to track if any matching property is found
     
     cards.forEach(card => {
-        // Extract the text content of title, location, and rate with null checks
-        const titleElement = card.querySelector('.card-title');
-        const locationElement = card.querySelector('.card-text.text-muted');
-        const rateElement = card.querySelector('.fw-bold');
+        const title = card.querySelector('.card-text.text-muted').textContent.toLowerCase(); // Extract title text
+        const location = card.querySelector('.card-text.text-muted').textContent.toLowerCase(); // Extract location text
+        const rate = card.querySelector('.fw-bold').textContent.toLowerCase(); // Extract rate text
         
-        // If any of these elements are not found, skip this card
-        if (!titleElement || !locationElement || !rateElement) {
-            return;
-        }
-        
-        const title = titleElement.textContent.toLowerCase();
-        const location = locationElement.textContent.toLowerCase();
-        const rate = rateElement.textContent.toLowerCase();
-        
-        // Check if the input matches any of the fields (title, location, rate)
+        // Check if input matches any part of the title, location, or rate
         if (title.includes(input) || location.includes(input) || rate.includes(input)) {
-            card.style.display = "block";  // Show the card
-            found = true;  // Set found to true if at least one card matches
+            card.style.display = "block"; // Show the card if there's a match
+            found = true;
         } else {
-            card.style.display = "none";  // Hide the card
+            card.style.display = "none"; // Hide the card if there's no match
         }
     });
     
-    // Show "No search found" if no matching card is found
+    // Show a message if no properties are found
     const noSearchMessage = document.getElementById('no-search-message');
     if (!found) {
-        // If there's no match, display the "No search found" message
+        // Create a "No search results found" message if none of the cards match the search input
         if (!noSearchMessage) {
             const message = document.createElement('p');
             message.id = 'no-search-message';
-            message.textContent = 'No Property found';
-            // Apply the styles directly to the message element
-            message.style.textAlign = 'center'; // Center align
+            message.textContent = 'No properties found matching your search';
+            message.style.textAlign = 'center'; // Center align the message
             message.style.fontWeight = 'bold';  // Make it bold
-            message.style.fontSize = '22px';    // Optional: Increase font size for visibility
-            document.body.appendChild(message); // You can append it to a specific element instead of body
+            message.style.fontSize = '18px';    // Increase font size for better visibility
+            document.body.appendChild(message); // Append it to the body (or a specific container)
         }
     } else {
-        // If matches are found, remove the message
+        // If properties are found, remove the "No search" message
         if (noSearchMessage) {
             noSearchMessage.remove();
         }
     }
 }
+
+// Adding event listener to input field for filtering
+document.getElementById('searchInput').addEventListener('keyup', filterProperties);
 
 
     </script>
