@@ -138,16 +138,22 @@
 
 <body>
   <script>
-     function checkSession() {
-   if (!sessionStorage.getItem("authenticated")) {
-      alert("Access denied. Please verify your OTP first.");
-      window.location.href = "https://vimalraj45.github.io/v/"; // Redirect to OTP page
-    } else {
-        // Session exists, start timeout countdown
-        resetTimeout();
-        document.body.style.display = 'block';
-      }
-    }
+    function checkSession() {
+  const token = sessionStorage.getItem("authenticated");
+
+  if (!token) {
+    alert("Access denied. Please verify your OTP first.");
+    window.location.href = "https://vimalraj45.github.io/v/"; // Redirect to OTP page
+  } else {
+    // Session exists, start timeout countdown
+    resetTimeout();
+    document.body.style.display = "block"; // Ensure the page becomes visible
+  }
+}
+
+// Call checkSession on page load
+document.addEventListener("DOMContentLoaded", checkSession);
+
 
     // Timeout Functionality: After 5 minutes of inactivity, redirect to OTP verification
     let timeout;
