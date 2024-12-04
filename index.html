@@ -241,17 +241,17 @@
     document.getElementById("loading-overlay").style.display = "none";
 
     if (userOTP === String(generatedOTP)) {
-      // Generate a simple JWT token
-      const token = generateJWT({ otpVerified: true });
+  // Generate a simple JWT token
+  const token = generateJWT({ otpVerified: true });
 
-      // Store the token in sessionStorage
-      sessionStorage.setItem("authToken", token);
+  // Store the token in sessionStorage
+  sessionStorage.setItem("authenticated", token);
 
-      showAlert("OTP verified successfully!", "success");
-      setTimeout(() => window.location.href = "https://vimalraj45.github.io/v/index2", 200);
-    } else {
-      showAlert("Invalid OTP. Please try again.", "danger");
-    }
+  showAlert("OTP verified successfully!", "success");
+  setTimeout(() => window.location.href = "https://vimalraj45.github.io/v/index2", 200);
+} else {
+  showAlert("Invalid OTP. Please try again.", "danger");
+}
   }, 1000);
 }
 
