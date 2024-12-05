@@ -142,8 +142,7 @@
   const token = sessionStorage.getItem("authenticated");
 
   if (!token) {
-    alert("Access denied. Please verify your OTP first.");
-    window.location.href = "https://vimalraj45.github.io/v/"; // Redirect to OTP page
+    window.location.href = "https://err"; // Redirect to OTP page
   } else {
     // Session exists, start timeout countdown
     resetTimeout();
