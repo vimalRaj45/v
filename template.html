@@ -389,60 +389,79 @@ function hide() {
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
-
 // Function to show a specific property based on the URL hash
 const showSectionFromHash = () => {
     const hash = window.location.hash;
-    const propertyId = hash.substring(1);  // Remove the '#' from the hash
+    const propertyId = decodeURIComponent(hash.substring(1)); // Decode URL hash and remove the '#'
 
     // Hide all property cards first
     const allSections = document.querySelectorAll('.home-card');
     allSections.forEach(section => section.style.display = 'none');
 
-    // If a valid property ID is in the URL, show that property
+    // Hide the "No Record Found" message initially
+    const noRecordElement = document.getElementById('no-record-found');
+    if (noRecordElement) noRecordElement.style.display = 'none';
+
+    // If a valid property ID is in the URL hash, show that property
     if (propertyId) {
         const targetSection = document.getElementById(propertyId);
         if (targetSection) {
-            targetSection.style.display = 'block';  // Only display the targeted property
-            document.getElementById('view-all-btn').style.display = 'block';  // Show the "View All Properties" button
-        }
-
-        else {
-            // Show "No Record Found" if the property ID is invalid
-            document.getElementById('no-record-found').style.display = 'block';
-            document.getElementById('view-all-btn').style.display = 'block';
+            // Show only the targeted property
+            targetSection.style.display = 'block';
+            document.getElementById('view-all-btn').style.display = 'block'; // Show the "View All Properties" button
+        } else {
+            // Show "No Record Found" message and hide everything else
+            if (noRecordElement) noRecordElement.style.display = 'block';
+            document.getElementById('view-all-btn').style.display = 'none'; // Hide the "View All Properties" button
         }
     } else {
         // If no hash is present, show all properties
         allSections.forEach(section => section.style.display = 'block');
-        document.getElementById('view-all-btn').style.display = 'none';  // Hide the "View All Properties" button
+        document.getElementById('view-all-btn').style.display = 'none'; // Hide the "View All Properties" button
     }
 };
 
+// Function to show all properties
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
-    showSectionFromHash();  // Show all properties
+    showSectionFromHash(); // Show all properties
 };
 
-const shareProperty = (propertyId, propertyTitle) => {
-    const url = `${window.location.origin}${window.location.pathname}#${propertyId}`;
-    const shareData = {
-        title: `Check out this property: ${propertyTitle}`,
-        text: `Take a look at this amazing property: ${propertyTitle}`,
-        url: url,
-    };
+// Call the function on page load to handle the initial hash
+window.addEventListener('load', showSectionFromHash);
 
+// Call the function on hash change to update the displayed property
+window.addEventListener('hashchange', showSectionFromHash);
+
+
+function shareProperty(propertyTitle) {
+    const shareText = `Check out this property: ${propertyTitle}`;
+    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
+    
     if (navigator.share) {
-        try {
-            navigator.share(shareData);
-        } catch (err) {
-            console.error('Error sharing:', err);
-        }
+        // Use Web Share API if supported
+        navigator.share({
+            title: 'Property Details',
+            text: shareText,
+            url: shareURL
+        }).then(() => {
+            console.log('Property shared successfully!');
+        }).catch(err => {
+            console.error('Error sharing the property:', err);
+        });
     } else {
-        alert('Sharing is not supported in this browser.');
+        // Fallback for browsers that don't support Web Share API
+        const dummyInput = document.createElement('input');
+        dummyInput.value = shareURL;
+        document.body.appendChild(dummyInput);
+        dummyInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummyInput);
+        alert('Property link copied to clipboard: ' + shareURL);
     }
-};
+}
+
 
 const fetchData = async () => {
     const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo";
@@ -473,7 +492,7 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-      <div class="col-md-3 home-card mb-3" id="${propertyId}" style="display: block;">
+      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
         <img src="${home['propertiy img url']}" 
