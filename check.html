@@ -150,12 +150,12 @@
   </div>
 
   <script>
-
-    let otpVerified = false; // Flag to track OTP verification status
     let otpExpiryTime;
+    let otpVerified = false;
     let timerInterval;
     let generatedOTP;
 
+    
     // Prevent page reload and back navigation
     window.onbeforeunload = function () {
       if (!otpVerified) {
@@ -169,7 +169,7 @@
         history.pushState(null, null, location.href);
       }
     };
-  
+
     function startOtpExpiryCountdown() {
       const expiryDuration = 3 * 60; // 3 minutes in seconds
       otpExpiryTime = new Date().getTime() + expiryDuration * 1000;
@@ -199,58 +199,90 @@
         showAlert("Please enter a valid email address.", "danger");
         return;
       }
+       let myArray = ['vimalraj5207@gmail.com', 'malikasaravanan774@gmail.com'];
 
-      let myArray = ['vimalraj5207@gmail.com', 'malikasaravanan774@gmail.com'];
-      if (!myArray.includes(emailInput)) {
-        alert("Not a valid mail");
-        return;
-      }
-
-      // Generate a new OTP
+   if (!myArray.includes(emailInput)) {
+    alert("not a valid mail");
+    return;
+   } 
       generatedOTP = Math.floor(100000 + Math.random() * 900000);
-      alert(`Generated OTP: ${generatedOTP}`);
-      // Disable the OTP button after sending OTP
       const sendOtpButton = document.getElementById("send-otp");
       sendOtpButton.disabled = true;
       sendOtpButton.classList.add("loading");
 
-      // Show OTP modal and verification option
-      const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
-      otpModal.show();
+      const params = {
+        email: emailInput,
+        otp: generatedOTP,
+        from_name: "Your Service",
+        to_name: emailInput,
+        message: `Your OTP is ${generatedOTP}.`,
+      };
 
-      sendOtpButton.disabled = false;
-      sendOtpButton.classList.remove("loading");
-      document.getElementById("otp-container").classList.remove("d-none");
-      document.getElementById("verify-otp").classList.remove("d-none");
-      sendOtpButton.classList.add("d-none");
+      emailjs.send("service_gs473zw", "template_kmcrxnz", params)
+        .then(() => {
+          const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
+          otpModal.show();
 
-      startOtpExpiryCountdown();
+          sendOtpButton.disabled = false;
+          sendOtpButton.classList.remove("loading");
+          document.getElementById("otp-container").classList.remove("d-none");
+          document.getElementById("verify-otp").classList.remove("d-none");
+          sendOtpButton.textContent = "Resend OTP";
+
+          startOtpExpiryCountdown();
+        })
+        .catch((error) => {
+          console.error("Failed to send email:", error);
+          showAlert("Failed to send OTP. Please try again.", "danger");
+          sendOtpButton.disabled = false;
+          sendOtpButton.classList.remove("loading");
+        });
     }
 
     function showAlert(message, type) {
       const alertContainer = document.getElementById("alert-container");
-      const alert = document.createElement("div");
-      alert.classList.add("alert", `alert-${type}`);
-      alert.innerHTML = message;
-      alertContainer.innerHTML = '';
-      alertContainer.appendChild(alert);
-      alert.style.display = "block";
-
-      setTimeout(() => {
-        alert.style.display = "none";
-      }, 3000);
+      alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => alertContainer.innerHTML = "", 3000);
     }
 
     function verifyOTP() {
-      const enteredOtp = document.getElementById("otp").value;
-      if (enteredOtp === generatedOTP.toString()) {
+  const userOTP = document.getElementById("otp").value.trim();
+  if (!userOTP) {
+    showAlert("Please enter the OTP.", "warning");
+    return;
+  }
+
+  document.getElementById("loading-overlay").style.display = "flex";
+  setTimeout(() => {
+    document.getElementById("loading-overlay").style.display = "none";
+
+    if (userOTP === String(generatedOTP)) {
+
         otpVerified = true;
-        alert("OTP verified successfully!");
-        // Enable a submit or proceed button if necessary
-      } else {
-        alert("Invalid OTP. Please try again.");
-      }
-    }
+  // Generate a simple JWT token
+  const token = generateJWT({ otpVerified: true });
+
+  // Store the token in sessionStorage
+  sessionStorage.setItem("authenticated", token);
+
+  showAlert("OTP verified successfully!", "success");
+  setTimeout(() => window.location.href = "https://vimalraj45.github.io/v/index2", 200);
+} else {
+  showAlert("Invalid OTP. Please try again.", "danger");
+}
+  }, 1000);
+}
+
+function generateJWT(payload) {
+  // Encoding a simple JWT - payload + dummy header + dummy signature (in reality, this should be signed)
+  const header = { alg: "HS256", typ: "JWT" };
+  const encodedHeader = btoa(JSON.stringify(header));
+  const encodedPayload = btoa(JSON.stringify(payload));
+  const signature = "dummy-signature"; // In real-world scenarios, this would be an actual cryptographic signature
+
+  return `${encodedHeader}.${encodedPayload}.${signature}`;
+}
+
   </script>
 </body>
 </html>
