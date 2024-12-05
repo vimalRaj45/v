@@ -151,15 +151,20 @@
 
   <script>
 
-      // Prevent page reload
+      let otpVerified = false; // Flag to track OTP verification status
+
+  // Prevent page reload and back navigation
   window.onbeforeunload = function () {
-    return "Reloading this page is not allowed.";
+    if (!otpVerified) {
+      return "Reloading this page is not allowed.";
+    }
   };
 
-  // Disable back button
   history.pushState(null, null, location.href);
   window.onpopstate = function () {
-    history.pushState(null, null, location.href);
+    if (!otpVerified) {
+      history.pushState(null, null, location.href);
+    }
   };
   
     let otpExpiryTime;
@@ -255,10 +260,13 @@
     if (userOTP === String(generatedOTP)) {
   // Generate a simple JWT token
   const token = generateJWT({ otpVerified: true });
-
+   
   // Store the token in sessionStorage
   sessionStorage.setItem("authenticated", token);
-
+  otpVerified = true;
+       // Disable page reload and back navigation after OTP verification
+      window.onbeforeunload = null;
+      window.onpopstate = null;
   showAlert("OTP verified successfully!", "success");
   setTimeout(() => window.location.href = "https://vimalraj45.github.io/v/index2", 200);
 } else {
