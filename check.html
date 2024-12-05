@@ -191,54 +191,48 @@
       }, 1000);
     }
 
-    function handleSubmit(event) {
-      event.preventDefault();
-      const emailInput = document.getElementById("email").value.trim();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    <script>
+  let generatedOTP = null;  // Variable to store the generated OTP
+  let otpVerified = false;  // Flag to track OTP verification status
 
-      if (!emailPattern.test(emailInput)) {
-        showAlert("Please enter a valid email address.", "danger");
-        return;
-      }
-       let myArray = ['vimalraj5207@gmail.com', 'malikasaravanan774@gmail.com'];
+  // Handle OTP request
+  function handleSubmit(event) {
+    event.preventDefault();
+    const emailInput = document.getElementById("email").value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-   if (!myArray.includes(emailInput)) {
-    alert("not a valid mail");
-    return;
-   } 
-      generatedOTP = Math.floor(100000 + Math.random() * 900000);
-      const sendOtpButton = document.getElementById("send-otp");
-      sendOtpButton.disabled = true;
-      sendOtpButton.classList.add("loading");
-
-      const params = {
-        email: emailInput,
-        otp: generatedOTP,
-        from_name: "Your Service",
-        to_name: emailInput,
-        message: `Your OTP is ${generatedOTP}.`,
-      };
-
-      emailjs.send("service_gs473zw", "template_kmcrxnz", params)
-        .then(() => {
-          const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
-          otpModal.show();
-
-          sendOtpButton.disabled = false;
-          sendOtpButton.classList.remove("loading");
-          document.getElementById("otp-container").classList.remove("d-none");
-          document.getElementById("verify-otp").classList.remove("d-none");
-          sendOtpButton.textContent = "Resend OTP";
-
-          startOtpExpiryCountdown();
-        })
-        .catch((error) => {
-          console.error("Failed to send email:", error);
-          showAlert("Failed to send OTP. Please try again.", "danger");
-          sendOtpButton.disabled = false;
-          sendOtpButton.classList.remove("loading");
-        });
+    if (!emailPattern.test(emailInput)) {
+      showAlert("Please enter a valid email address.", "danger");
+      return;
     }
+
+    let myArray = ['vimalraj5207@gmail.com', 'malikasaravanan774@gmail.com'];
+    if (!myArray.includes(emailInput)) {
+      alert("Not a valid mail");
+      return;
+    }
+
+    // Generate a new OTP
+    generatedOTP = Math.floor(100000 + Math.random() * 900000);
+    console.log(`Generated OTP: ${generatedOTP}`);  // Display OTP in console for checking purposes
+
+    // Disable the OTP button after sending OTP
+    const sendOtpButton = document.getElementById("send-otp");
+    sendOtpButton.disabled = true;
+    sendOtpButton.classList.add("loading");
+
+    // Show OTP modal and verification option
+    const otpModal = new bootstrap.Modal(document.getElementById("otpModal"));
+    otpModal.show();
+
+    sendOtpButton.disabled = false;
+    sendOtpButton.classList.remove("loading");
+    document.getElementById("otp-container").classList.remove("d-none");
+    document.getElementById("verify-otp").classList.remove("d-none");
+    sendOtpButton.textContent = "Resend OTP";
+
+    startOtpExpiryCountdown();
+  }
 
     function showAlert(message, type) {
       const alertContainer = document.getElementById("alert-container");
