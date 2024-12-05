@@ -214,8 +214,7 @@
 
     // Generate a new OTP
     generatedOTP = Math.floor(100000 + Math.random() * 900000);
-    console.log(`Generated OTP: ${generatedOTP}`);  // Display OTP in console for checking purposes
-
+    alert(`Generated OTP: ${generatedOTP}`);
     // Disable the OTP button after sending OTP
     const sendOtpButton = document.getElementById("send-otp");
     sendOtpButton.disabled = true;
