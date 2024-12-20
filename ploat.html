@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -299,7 +300,7 @@
 }
 
 i{
-    padding-right: 5px;
+    padding: 5px;
 }
 
     </style>
@@ -308,9 +309,12 @@ i{
      <nav class="sticky-top border rounded">
         <ul class="sidebar hide">
          
-            <li onclick="hide()"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="28px" fill="#5f6368" style="margin-right: 10px;">
-                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
-              </svg></li>
+            <li onclick="hide()" style="padding-top: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="40px" viewBox="0 -960 960 960" fill="#5f6368">
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+              </li>
+              
             <li class="how"><a href="https://vsgroupsofcompany.neocities.org/SRK"><i class="fa-solid fa-house-user"></i> Home Page</a></li>
             <li class="how"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
             <li class="how"><a  href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
@@ -350,12 +354,12 @@ i{
             </ul>
     </nav>
     <div class="container" onclick="hide()">
-        <h1 class="text-center my-4" 
-    style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #000; letter-spacing: 2px; 
-           text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">
-    Sethu Ploats
-</h1>
-<div class="input-group mb-3" style="max-width: 400px; margin: 20px auto;">
+
+
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: #000; text-align: center; margin-top: 20px; text-transform: uppercase; letter-spacing: 5px; background: linear-gradient(135deg, #000, #fff); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);">Sethu Ploats</p>
+
+
+<div class="input-group" style="max-width: 600px;">
     <input type="text" id="searchInput" class="form-control" placeholder="Search by location, price, or title..." onkeyup="filterProperties()" aria-label="Search properties" aria-describedby="searchIcon">
     <span class="input-group-text" id="searchIcon">
         <i class="fa fa-search"></i>
