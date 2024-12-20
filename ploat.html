@@ -122,7 +122,7 @@
         }
         .sidebar a {
             width: 100%;
-            padding: 5px;
+            padding: 6px;
             color: rgb(17, 2, 2);
             display: block;
             text-align: left;
@@ -308,7 +308,9 @@ i{
      <nav class="sticky-top border rounded">
         <ul class="sidebar hide">
          
-            <li onclick="hide()"><svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#5f6368" class="m-3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></li>
+            <li onclick="hide()"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="28px" fill="#5f6368" style="margin-right: 10px;">
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+              </svg></li>
             <li class="how"><a href="https://vsgroupsofcompany.neocities.org/SRK"><i class="fa-solid fa-house-user"></i> Home Page</a></li>
             <li class="how"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
             <li class="how"><a  href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
@@ -333,7 +335,7 @@ i{
             <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/SRK"> <i class="fa-solid fa-house-user"></i> Home Page</a></li>
             <li class="hidemob"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
             <li class="hidemob"><a href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/fhome"><i class="fas fa-building"></i> Homes</a></li>
+            <li class="hidemob"><a href="https://vimalraj45.github.io/v/fhome"><i class="fa-solid fa-house-circle-check"></i> Homes</a></li>
           <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/formore"><i class="fas fa-info-circle"></i> For More Details</a></li>
             <li class="hidemob"><a href="#secr"><i class="fas fa-phone"></i> Contact Us</a></li>
             <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/loginsrk"><i class="fas fa-sign-in-alt"></i> Login</a></li>
@@ -347,7 +349,7 @@ i{
 
             </ul>
     </nav>
-    <div class="container">
+    <div class="container" onclick="hide()">
         <h1 class="text-center my-4" 
     style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #000; letter-spacing: 2px; 
            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">
@@ -385,6 +387,8 @@ function hide() {
     side.classList.remove('show');
     side.classList.add('hide');
 }
+
+
 
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
@@ -492,7 +496,7 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
+      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;" >
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
         <img src="${home['propertiy img url']}" 
