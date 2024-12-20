@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,7 +124,7 @@
         }
         .sidebar a {
             width: 100%;
-            padding: 15px;
+            padding: 6px;
             color: rgb(17, 2, 2);
             display: block;
             text-align: left;
@@ -298,22 +300,29 @@
     color: #007bff;               /* Icon color */
 }
 
+i{
+    padding: 5px;
+}
 
-    
     </style>
 </head>
 <body>
      <nav class="sticky-top border rounded">
         <ul class="sidebar hide">
          
-            <li onclick="hide()"><svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#5f6368" class="m-3"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></li>
-            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/SRK">Home Page</a></li>
-            <li class="how"><a href="https://vimalraj45.github.io/v/template">Lands</a></li>
-            <li class="how"><a  href="https://vimalraj45.github.io/v/ploat">Ploats</a></li>
-            <li class="how"><a href="https://vimalraj45.github.io/v/fhome">Homes</a></li>
-            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/formore">For More Details</a></li>
-            <li class="how"><a href="#secr">Contact Us</a></li>
-            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/loginsrk">Login</a></li>
+            <li onclick="hide()" style="padding-top: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="40px" viewBox="0 -960 960 960" fill="#5f6368">
+                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
+                </svg>
+              </li>
+              
+            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/SRK"><i class="fa-solid fa-house-user"></i> Home Page</a></li>
+            <li class="how"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
+            <li class="how"><a  href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
+            <li class="how"><a href="https://vimalraj45.github.io/v/fhome"><i class="fa-solid fa-house-circle-check"></i> Homes</a></li>
+            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/formore"><i class="fas fa-info-circle"></i> For More Details</a></li>
+            <li class="how"><a href="#secr"><i class="fas fa-phone"></i> Contact Us</a></li>
+            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/loginsrk"><i class="fas fa-sign-in-alt"></i> Login</a></li>
         </ul>
         <ul>
            <li id="home" style="list-style: none; padding: 0; animation: fadeIn 1s ease-in-out;">
@@ -328,13 +337,13 @@
     </div>
 </li>
         
-            <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/SRK">Home Page</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/template">Lands</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/ploat">Ploats</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/fhome">Homes</a></li>
-          <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/formore">For More Details</a></li>
-            <li class="hidemob"><a href="#secr">Contact Us</a></li>
-            <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/loginsrk">Login</a></li>
+            <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/SRK"> <i class="fa-solid fa-house-user"></i> Home Page</a></li>
+            <li class="hidemob"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
+            <li class="hidemob"><a href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
+            <li class="hidemob"><a href="https://vimalraj45.github.io/v/fhome"><i class="fa-solid fa-house-circle-check"></i> Homes</a></li>
+          <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/formore"><i class="fas fa-info-circle"></i> For More Details</a></li>
+            <li class="hidemob"><a href="#secr"><i class="fas fa-phone"></i> Contact Us</a></li>
+            <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/loginsrk"><i class="fas fa-sign-in-alt"></i> Login</a></li>
             <li class="menu" onclick="show()">
     <a href="#" style="display: inline-flex; align-items: center; justify-content: center;">
         <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#5f6368">
@@ -345,13 +354,13 @@
 
             </ul>
     </nav>
-    <div class="container">
-        <h1 class="text-center my-4" 
-    style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #000; letter-spacing: 2px; 
-           text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);">
-    Sethu Lands
-</h1>
-<div class="input-group mb-3" style="max-width: 400px; margin: 20px auto;">
+    <div class="container" onclick="hide()">
+
+
+        <p style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: #000; text-align: center; margin-top: 20px; text-transform: uppercase; letter-spacing: 5px; background: linear-gradient(135deg, #000, #fff); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);">Sethu Lands</p>
+
+
+<div class="input-group" style="max-width: 600px;">
     <input type="text" id="searchInput" class="form-control" placeholder="Search by location, price, or title..." onkeyup="filterProperties()" aria-label="Search properties" aria-describedby="searchIcon">
     <span class="input-group-text" id="searchIcon">
         <i class="fa fa-search"></i>
@@ -383,6 +392,8 @@ function hide() {
     side.classList.remove('show');
     side.classList.add('hide');
 }
+
+
 
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
@@ -490,7 +501,7 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
+      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;" >
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
         <img src="${home['propertiy img url']}" 
@@ -556,14 +567,14 @@ const fetchData = async () => {
             </div>
             <div class="modal-body">
                 <p>Would you like to get in touch with us via:</p>
-                <button type="button" class="btn btn-secondary" onclick="makeCall()">
+                <button type="button" class="btn btn-secondary" onclick="makeCall()"  style="margin:2px;">
                     <i class="fas fa-phone-alt"></i> Call
                 </button>
-                <button type="button" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
-                    <i class="fas fa-envelope"></i> Email
+                <button type="button" style="margin:2px;" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
+                    <i class="fas fa-envelope" ></i> Email
                 </button>
-                <button type="button" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
+                <button type="button" style="margin:2px;" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
+                    <i class="fab fa-whatsapp" ></i> WhatsApp
                 </button>
             </div>
         </div>
