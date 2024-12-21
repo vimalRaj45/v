@@ -303,6 +303,34 @@ i {
     padding: 5px;
     opacity: 0.8; /* 60% opacity */
 }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
+
+.smooth-auto-write-no-cursor {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #000;
+    text-align: center;
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    background: linear-gradient(135deg, #000, #fff);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    white-space: nowrap;
+    animation: smooth-typing 4s ease-out;
+}
+
+@keyframes smooth-typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
 
     </style>
 </head>
@@ -357,7 +385,9 @@ i {
     <div class="container" onclick="hide()">
 
 
-        <p style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: #000; text-align: center; margin-top: 20px; text-transform: uppercase; letter-spacing: 5px; background: linear-gradient(135deg, #000, #fff); -webkit-background-clip: text; color: transparent; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);">Sethu Ploats</p>
+        <p class="smooth-auto-write-no-cursor">Sethu Ploats</p>
+
+
 
 
 <div class="input-group" style="max-width: 600px;">
