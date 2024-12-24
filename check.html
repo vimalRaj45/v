@@ -333,27 +333,37 @@
 
 .social-icon.youtube {
     color: #ff0000; /* YouTube Red */
-}
-#visitor-count-container {
+}#visitor-count-container {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent black background */
+    backdrop-filter: blur(1px); /* Apply blur effect to the background */
+    color: rgb(0, 0, 0); /* White text */
+    padding: 7px; /* Small padding */
+    border-radius: 12px; /* Rounded corners */
+    font-family: 'Roboto', Arial, sans-serif; /* Professional font */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    font-size: 16px; /* Smaller font size */
+    display: flex;
+    font-weight: 600;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 #visitor-count-container h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 16px; /* Adjusted for small header */
+    font-weight: 500; /* Slightly bolder header */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Dark shadow for text visibility */
 }
 
 #visitor-count-container p {
-    margin: 5px 0 0;
-    font-size: 18px;
+    margin: 3px 0 0;
+    font-size: 12px; /* Smaller font for the paragraph */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Dark shadow for text visibility */
 }
+
 
     </style>
 </head>
@@ -614,10 +624,10 @@
             <a href="https://www.youtube.com/" target="_blank" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
         </div>
             <hr>
-           <div id="visitor-count-container">
-    <h1>Welcome to My Website!</h1>
-    <p>Total Visitors: <span id="visitor-count">0</span></p>
-</div>
+            <div id="visitor-count-container">
+              <p>Total Visitors: <span id="visitor-count">0</span></p>
+          </div>
+          
 
     </div>
         
@@ -625,4 +635,3 @@
 </body>
 </html
 >
-
