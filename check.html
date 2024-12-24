@@ -10,37 +10,19 @@
     <p>Total Visitors: <span id="visitor-count">0</span></p>
 
     <script>
-        const sheetId = "1_ajUXCcXwHOvD_ynsobpGCDhr6Y7S54nqFPLB4dpFzw"; // Your Google Sheet ID
-        const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
-        const sheetTab = "sheet1"; // Replace with your sheet tab name
-        const column = "D"; // Column where the visitor count is stored
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbzHOV8NsaOmB1AWyoRMyIjQ-9MhY2g4s39xlxpclRPHJbCGcUkPdf0CGLUmbk7s2eRLNg/exec";
 
         async function updateVisitorCount() {
-            const range = `${sheetTab}!${column}2:${column}`; // Assuming data starts from D2
+            try {
+                // Fetch the current visitor count from Apps Script
+                const response = await fetch(scriptUrl);
+                const data = await response.json();
 
-            // Step 1: Fetch the current visitor count
-            const getUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${API_KEY}`;
-            const response = await fetch(getUrl);
-            const data = await response.json();
-            let visitorCount = data.values ? parseInt(data.values[0][0]) : 0;
-
-            // Increment the visitor count
-            visitorCount++;
-
-            // Step 2: Update the visitor count
-            const updateUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?valueInputOption=USER_ENTERED&key=${API_KEY}`;
-            await fetch(updateUrl, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    values: [[visitorCount]],
-                }),
-            });
-
-            // Step 3: Update the displayed count on the webpage
-            document.getElementById("visitor-count").textContent = visitorCount;
+                // Update the count on the webpage
+                document.getElementById("visitor-count").textContent = data.count;
+            } catch (error) {
+                console.error("Error updating visitor count:", error);
+            }
         }
 
         // Call the function when the page loads
