@@ -1,9 +1,4 @@
 
-
-
-
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -589,7 +584,7 @@ async function updateVisitorCountGradually() {
     const interval = setInterval(() => {
         if (displayedCount < finalCount) {
             displayedCount += increment;
-            visitorCountElement.textContent = displayedCount;
+            visitorCountElement.textContent = displayedCount+"+";
         } else {
             clearInterval(interval);
         }
