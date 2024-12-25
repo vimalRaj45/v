@@ -1,4 +1,9 @@
 
+
+
+
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -333,11 +338,11 @@
     position: fixed;
     bottom: 20px;
     left: 20px;
-    background: rgba(230, 230, 230, 0.5); /* Semi-transparent black background */
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent black background */
     backdrop-filter: blur(1px); /* Apply blur effect to the background */
     color: rgb(0, 0, 0); /* White text */
     padding: 7px; /* Small padding */
-    border-radius: 6px; /* Rounded corners */
+    border-radius: 12px; /* Rounded corners */
     font-family: 'Roboto', Arial, sans-serif; /* Professional font */
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow */
     font-size: 16px; /* Smaller font size */
@@ -350,13 +355,13 @@
 #visitor-count-container h1 {
     margin: 0;
     font-size: 16px; /* Adjusted for small header */
-    font-weight: 400; /* Slightly bolder header */
-    text-shadow: 1px 1px 3px rgba(20, 20, 20, 0.7); /* Dark shadow for text visibility */
+    font-weight: 500; /* Slightly bolder header */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Dark shadow for text visibility */
 }
 
 #visitor-count-container p {
     margin: 3px 0 0;
-    font-size: 13px; /* Smaller font for the paragraph */
+    font-size: 12px; /* Smaller font for the paragraph */
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Dark shadow for text visibility */
 }
 
@@ -560,46 +565,43 @@
                 clearInterval(interval);  // Stop when the entire text has been typed
             }
         }, typingSpeed);
-      const scriptUrl = "https://script.google.com/macros/s/AKfycbzHOV8NsaOmB1AWyoRMyIjQ-9MhY2g4s39xlxpclRPHJbCGcUkPdf0CGLUmbk7s2eRLNg/exec";
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbzHOV8NsaOmB1AWyoRMyIjQ-9MhY2g4s39xlxpclRPHJbCGcUkPdf0CGLUmbk7s2eRLNg/exec";
 
-        async function fetchVisitorCount() {
-            try {
-                const response = await fetch(scriptUrl);
-                const data = await response.json();
-                return data.count;
-            } catch (error) {
-                console.error("Error fetching visitor count:", error);
-                return parseInt(localStorage.getItem("visitorCount") || "0", 10); // Use saved count on error
-            }
-        }
-
-        async function updateVisitorCountGraduallyNoDelay() {
-    const visitorCountElement = document.getElementById("visitor-count");
-    const storedCount = parseInt(localStorage.getItem("visitorCount") || "0", 10);
-    const finalCount = await fetchVisitorCount();
-    let displayedCount = storedCount || 0;
-
-    // Gradually update count without a delay
-    while (displayedCount < finalCount) {
-        displayedCount++;
-        visitorCountElement.textContent = `${displayedCount}+`;
-        localStorage.setItem("visitorCount", displayedCount);
+async function fetchVisitorCount() {
+    try {
+        const response = await fetch(scriptUrl);
+        const data = await response.json();
+        return data.count;
+    } catch (error) {
+        console.error("Error fetching visitor count:", error);
+        return 0; // Fallback count if fetching fails
     }
 }
 
-// On page load, set the initial count and update it
+async function updateVisitorCountGradually() {
+    const visitorCountElement = document.getElementById("visitor-count");
+    const finalCount = await fetchVisitorCount();
+    let displayedCount = 0;
+
+    const increment = finalCount > displayedCount ? 1 : 0;
+    const delay = 50; // Delay between increments (50ms)
+
+    const interval = setInterval(() => {
+        if (displayedCount < finalCount) {
+            displayedCount += increment;
+            visitorCountElement.textContent = displayedCount;
+        } else {
+            clearInterval(interval);
+        }
+    }, delay);
+}
+
+// On page load, set the initial count and update it gradually
 document.addEventListener("DOMContentLoaded", () => {
-    const storedCount = localStorage.getItem("visitorCount") || "0";
-    document.getElementById("visitor-count").textContent = `${storedCount}+`;
-    updateVisitorCountGraduallyNoDelay();
+    document.getElementById("visitor-count").textContent = "0";
+    updateVisitorCountGradually();
 });
 
-        // On page load, set the initial count and update it gradually
-        document.addEventListener("DOMContentLoaded", () => {
-            const storedCount = localStorage.getItem("visitorCount") || "0";
-            document.getElementById("visitor-count").textContent = storedCount;
-            updateVisitorCountGradually();
-        });
         </script>
     
        <div class="footer-section">
@@ -620,7 +622,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
             <hr>
             <div id="visitor-count-container">
-              <p class="h6 bold">Total Visitors: <span id="visitor-count">0+</span></p>
+              <p>Total Visitors: <span id="visitor-count">0</span></p>
           </div>
           
 
