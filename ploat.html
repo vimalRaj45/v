@@ -731,6 +731,14 @@ document.getElementById('searchInput').addEventListener('keyup', filterPropertie
     event.preventDefault(); // Disable right-click
 });
 
+
+        setInterval(function () {
+    if (window.location.href.startsWith("view-source")) {
+        alert("fuck!");
+        window.location.replace("https://vimalraj45.github.io/v/ploat#");
+    }
+}, 1000);
+
 document.addEventListener("keydown", function (event) {
     // Disable F12
     if (event.key === "F12") {
