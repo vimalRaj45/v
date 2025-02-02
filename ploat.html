@@ -732,12 +732,13 @@ document.getElementById('searchInput').addEventListener('keyup', filterPropertie
 });
 
 
-        setInterval(function () {
-    if (window.location.href.startsWith("view-source")) {
-        alert("fuck!");
-        window.location.replace("https://vimalraj45.github.io/v/ploat#");
-    }
-}, 1000);
+        // Check if the current page is in "view-source" mode
+if (window.location.href.indexOf("view-source:") !== -1) {
+    document.body.innerHTML = '';  // Clear the page content
+    alert("Viewing source is not allowed!"); // Show alert
+    window.location.replace("about:blank"); // Redirect to a blank page
+}
+
 
 document.addEventListener("keydown", function (event) {
     // Disable F12
