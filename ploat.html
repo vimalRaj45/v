@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,7 @@
             position: relative;
             padding: 12px;
             margin: 1px;
-            /border-radius: 10px;/
+            /*border-radius: 10px;*/
         }
         nav ul {
             list-style: none;
@@ -474,8 +475,8 @@ window.addEventListener('hashchange', showSectionFromHash);
 
 
 function shareProperty(propertyTitle) {
-    const shareText = Check out this property: ${propertyTitle};
-    const shareURL = window.location.href.split('#')[0] + #${encodeURIComponent(propertyTitle)};
+    const shareText = `Check out this property: ${propertyTitle}`;
+    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
     
     if (navigator.share) {
         // Use Web Share API if supported
@@ -505,7 +506,7 @@ const fetchData = async () => {
     const sheetID = "1R9pJnXgcUJRvUsrE6J-4e8uAVznMPjzAzwYOAx0qA68";
     const sheetTab = "sheet1";
     const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
-    const url = https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY};
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
 
     document.getElementById("homes-container").classList.add("hidden");
 
@@ -527,7 +528,7 @@ const fetchData = async () => {
         container.innerHTML = "";
 
         homesData.forEach((home, index) => {
-    const propertyId = property-${index + 1};
+    const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
       <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;" >
@@ -647,21 +648,21 @@ window.addEventListener('hashchange', showSectionFromHash);
 // Enhanced send email function
 function sendEmail(title, location, rate) {
     const email = "vimalraj5207@gmail.com";
-    const subject = Property%20Enquiry%20-%20${encodeURIComponent(title)};
-    const body = Hello,%0D%0A%0D%0AI am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.%0D%0A%0D%0AThank you!;
-    window.location.href = mailto:${email}?subject=${subject}&body=${body};
+    const subject = `Property%20Enquiry%20-%20${encodeURIComponent(title)}`;
+    const body = `Hello,%0D%0A%0D%0AI am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.%0D%0A%0D%0AThank you!`;
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 }
 
 // Make call function
 function makeCall() {
-    window.location.href = tel:+918807099288;
+    window.location.href = `tel:+918807099288`;
 }
 
 // Send WhatsApp message function
 function sendMsg(title, location, rate) {
-    const message = Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.;
+    const message = `Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.`;
     const encodedMessage = encodeURIComponent(message);
-    window.location.href = https://wa.me/918807099288?text=${encodedMessage};
+    window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
 
 function filterProperties() {
@@ -730,25 +731,15 @@ document.getElementById('searchInput').addEventListener('keyup', filterPropertie
     event.preventDefault(); // Disable right-click
 });
 
-
-        // Check if the current page is in "view-source" mode
-if (window.location.href.indexOf("view-source:") !== -1) {
-    document.body.innerHTML = '';  // Clear the page content
-    alert("Viewing source is not allowed!"); // Show alert
-    window.location.replace("about:blank"); // Redirect to a blank page
-}
-
-
 document.addEventListener("keydown", function (event) {
     // Disable F12
     if (event.key === "F12") {
-          alert("fuck !")
         event.preventDefault();
     }
 
     // Disable Ctrl + U
     if (event.ctrlKey && event.key === "u") {
-        event.preventDefault();
+        alert("fuck bro!")
     }
 
     // Disable Ctrl + Shift + I
@@ -766,7 +757,7 @@ document.addEventListener("keydown", function (event) {
   </a>
   
       <!-- Instagram Icon Link -->
-      <a href="https://www.instagram.com/vimalraj__s" target="_blank" class="whatsapp2-float">
+      <a href="https://www.instagram.com/vimalraj____s" target="_blank" class="whatsapp2-float">
           <i class="fab fa-instagram instagram-icon"></i>
       </a>
 </body>
