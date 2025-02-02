@@ -740,8 +740,8 @@ document.addEventListener("keydown", function (event) {
     // Disable Ctrl + U
     if (event.ctrlKey && event.key === "u") {
         alert("take it!")
-        event.preventDefault();
         window.location.replace("view-source:https://aurotechsolutions.in/index.html")
+        event.preventDefault();
     }
 
     // Disable Ctrl + Shift + I
