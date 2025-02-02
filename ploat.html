@@ -727,6 +727,26 @@ function filterProperties() {
 
 // Adding event listener to input field for filtering
 document.getElementById('searchInput').addEventListener('keyup', filterProperties);
+ document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Disable right-click
+});
+
+document.addEventListener("keydown", function (event) {
+    // Disable F12
+    if (event.key === "F12") {
+        event.preventDefault();
+    }
+
+    // Disable Ctrl + U
+    if (event.ctrlKey && event.key === "u") {
+        event.preventDefault();
+    }
+
+    // Disable Ctrl + Shift + I
+    if (event.ctrlKey && event.shiftKey && event.key === "I") {
+        event.preventDefault();
+    }
+});
 
 
     </script>
