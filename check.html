@@ -1,102 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OTP Verification</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function(){
-      emailjs.init("KyxAXjrH956mO5Fsc"); // Initialize EmailJS with your public key
-    })();
-  </script>
-  <style>
-    .container {
-      margin-top: 10%;
-      max-width: 400px;
-    }
-    input {
-      margin-bottom: 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Links</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/css/uikit.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.24/dist/js/uikit-icons.min.js"></script>
 </head>
-<body>
-  <div class="container">
-    <h3 class="text-center">OTP Verification</h3>
-    <form id="otpForm" onsubmit="return handleSubmit(event)">
-      <div class="mb-3">
-        <label for="email" class="form-label">Email Address</label>
-        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-      </div>
-      <div class="mb-3 d-none" id="otp-container">
-        <label for="otp" class="form-label">Enter OTP</label>
-        <input type="text" id="otp" name="otp" class="form-control" placeholder="Enter the OTP" maxlength="6">
-      </div>
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary" id="send-otp">Send OTP</button>
-        <button type="button" class="btn btn-success d-none" id="verify-otp" onclick="verifyOTP()">Verify OTP</button>
-      </div>
+<body class="uk-container uk-margin-large-top">
+
+    <h2 class="uk-text-center uk-text-primary">Upload Links</h2>
+
+    <form id="uploadForm" class="uk-form-stacked uk-card uk-card-default uk-card-body uk-width-1-2@m uk-margin-auto">
+        <div class="uk-margin">
+            <label class="uk-form-label">Email:</label>
+            <input class="uk-input" type="email" id="email" required>
+        </div>
+
+        <div class="uk-margin">
+            <label class="uk-form-label">File Name:</label>
+            <input class="uk-input" type="text" id="fileName" required>
+        </div>
+
+        <div class="uk-margin">
+            <label class="uk-form-label">Enter Link:</label>
+            <input class="uk-input" type="url" id="fileLink" required>
+        </div>
+
+        <button type="submit" class="uk-button uk-button-primary uk-width-1-1">Submit</button>
     </form>
-  </div>
 
-  <script>
-    let generatedOTP;
+    <p id="status" class="uk-text-center uk-margin-top"></p>
 
-    function handleSubmit(event) {
-      event.preventDefault(); // Prevent form submission
+    <div class="uk-container uk-margin-top">
+        <h3 class="uk-text-center">Uploaded Links</h3>
+        <div id="dataDisplay" class="uk-overflow-auto"></div>
+    </div>
 
-      const emailInput = document.getElementById("email").value.trim();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById("email").value;
+            const fileName = document.getElementById("fileName").value;
+            const fileLink = document.getElementById("fileLink").value;
 
-      if (!emailPattern.test(emailInput)) {
-        alert("Please enter a valid email address.");
-        return;
-      }
+            let formData = new FormData();
+            formData.append("email", email);
+            formData.append("fileName", fileName);
+            formData.append("fileLink", fileLink);
 
-      // Generate OTP
-      generatedOTP = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById("status").innerHTML = '<span class="uk-label uk-label-warning">Uploading...</span>';
 
-      // Send OTP via EmailJS
-      const params = {
-        email: emailInput,
-        otp: generatedOTP,
-        from_name: "VS Groups", // Adjust as needed
-        to_name: emailInput,
-        message: `Your OTP is ${generatedOTP}. Please use it to verify your email.`,
-        reply_to: "noreply@yourwebsite.com" 
-      };
+            try {
+                let response = await fetch("https://script.google.com/macros/s/AKfycbygZYlZjUX-5_Tfxbb1RRTQKuwGHMrl9zbuG4QdUoVJKw73Pqx9gWdLHXCp2gz4CA2Q/exec", {
+                    method: "POST",
+                    body: formData
+                });
 
-      emailjs.send("service_0ij24d5", "template_aye2dvp", params)
-        .then(function(response) {
-          alert("OTP sent successfully! Please check your email.");
-
-          // Update UI
-          document.getElementById("otp-container").classList.remove("d-none");
-          document.getElementById("verify-otp").classList.remove("d-none");
-          document.getElementById("send-otp").textContent = "Resend OTP";
-        })
-        .catch(function(error) {
-          console.error("Failed to send email:", error);
-          alert("Failed to send OTP. Please try again.");
+                let result = await response.json();
+                document.getElementById("status").innerHTML = `<span class="uk-label uk-label-success">${result.message}</span>`;
+                fetchData(); // Refresh table after submission
+            } catch (error) {
+                document.getElementById("status").innerHTML = '<span class="uk-label uk-label-danger">Error uploading link.</span>';
+            }
         });
-    }
 
-    function verifyOTP() {
-      const userOTP = document.getElementById("otp").value.trim();
+        async function fetchData() {
+            let response = await fetch("https://script.google.com/macros/s/AKfycbygZYlZjUX-5_Tfxbb1RRTQKuwGHMrl9zbuG4QdUoVJKw73Pqx9gWdLHXCp2gz4CA2Q/exec");
+            let data = await response.json();
 
-      if (!userOTP) {
-        alert("Please enter the OTP.");
-        return;
-      }
+            let table = `<table class="uk-table uk-table-striped uk-table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>File Name</th>
+                                    <th>File URL</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
 
-      if (userOTP === String(generatedOTP)) {
-        alert("OTP verified successfully!");
-       window.location.href = "C:\Users\shanm\OneDrive\Desktop\ecom\index.html";
-      } else {
-        alert("Invalid OTP. Please try again.");
-      }
-    }
-  </script>
+            data.slice(1).forEach(row => {
+                table += `<tr>
+                            <td>${row[0]}</td>
+                            <td>${row[1]}</td>
+                            <td><a href="${row[2]}" target="_blank" class="uk-button uk-button-text">View</a></td>
+                        </tr>`;
+            });
+
+            table += "</tbody></table>";
+            document.getElementById("dataDisplay").innerHTML = table;
+        }
+
+        fetchData();
+    </script>
+
 </body>
 </html>
