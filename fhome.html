@@ -301,7 +301,7 @@
 }
 
 i {
-    padding: 5px;
+    padding: 0px;
     opacity: 0.8; /* 60% opacity */
 }
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
@@ -562,31 +562,31 @@ const fetchData = async () => {
             <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
                 <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
             </div>
-
+          <hr>
             <!-- Buttons -->
-            <div class="d-flex justify-content-between align-items-center mt-1 gap-2">
+            <div class="d-flex justify-content-between align-items-center mt-1 gap-1" >
                 <!-- Enquire Button -->
                 <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}" 
-                    style="background: #205375; color: white;">
-                    <i class="fas fa-envelope"></i> Enquire
+                    style="background: #205375; color: white; ">
+                    <i class="fas fa-envelope" style="font-size:11px"></i> Enquire
                 </a>
                 
                 <!-- Buy Button -->
                 <a href="#" class="btn btn-sm" 
                     style="background: #166534; color: white;">
-                    <i class="fas fa-shopping-cart"></i> Buy
+                    <i class="fas fa-shopping-cart" style="font-size:11px"></i> Buy
                 </a>
                 
                 <!-- View Map Button -->
 <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal${index}" 
     style="background: #4682B4; color: white;">
-    <i class="fas fa-map-marker-alt"></i> Map
+    <i class="fas fa-map-marker-alt" style="font-size:11px"></i> Map
 </button>
 
 <!-- Share Button -->
 <button class="btn btn-sm ms-auto" onclick="shareProperty('${home['property title']}')" 
     style="background: #008080; color: white;">
-    <i class="fas fa-share-alt"></i> Share
+    <i class="fas fa-share-alt" style="font-size:11px"></i> Share
 </button>
             </div>
         </div>
@@ -603,17 +603,17 @@ const fetchData = async () => {
             </div>
             <div class="modal-body">
                 <p>Would you like to get in touch with us via:</p>
-                <button type="button" class="btn" onclick="makeCall()" style="margin: 2px;
+                <button type="button" class="btn" onclick="makeCall()" style="margin: 1px;
     background: linear-gradient(135deg, #17a2b8, #138496);
     color: white; border: none;">
-    <i class="fas fa-phone-alt"></i> Call
+    <i class="fas fa-phone-alt" style="font-size:11px"></i> Call
 </button>
 
                 <button type="button" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
-                    <i class="fas fa-envelope"></i> Email
+                    <i class="fas fa-envelope" style="font-size:11px"></i> Email
                 </button>
                 <button type="button" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
+                    <i class="fab fa-whatsapp" style="font-size:11px"></i> WhatsApp
                 </button>
             </div>
         </div>
