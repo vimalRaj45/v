@@ -536,6 +536,8 @@
       
     </div>
 </div>
+
+
 <!-- WhatsApp Floating Button -->
  <a href="https://wa.me/918807099288" target="_blank" class="whatsapp-float">
     <i class="fab fa-whatsapp"></i>
@@ -546,6 +548,19 @@
           <i class="fab fa-instagram instagram-icon"></i>
       </a>
  <script>
+    window.onscroll = function() { 
+    let btn = document.getElementById("arr");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        btn.style.display = "block";
+    } else {
+        btn.style.display = "none";
+    }
+};
+
+function goToTop() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
  const text = "Sethu Properties";  // Text to be typed
         const typingElement = document.getElementById('property-title');
         const typingSpeed = 70; // Speed of typing in milliseconds
@@ -622,7 +637,11 @@ document.addEventListener("DOMContentLoaded", () => {
           
 
     </div>
-        
+    <i class="fa-solid fa-angles-up" id="arr" onclick="goToTop()" 
+    style="position: fixed; bottom: 40px; right: 100px; z-index: 99; font-size: 22px; color: black; cursor: pointer; opacity: 0.8; transition: transform 0.2s ease, opacity 0.3s ease; display: none;"
+    onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='1';" 
+    onmouseout="this.style.transform='scale(1)'; this.style.opacity='0.8';">
+ </i>
         
 </body>
 </html
