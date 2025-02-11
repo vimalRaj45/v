@@ -531,7 +531,7 @@ const fetchData = async () => {
     const propertyId = `property-${index + 1}`;
     const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
     container.innerHTML += `
-      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;" >
+      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
         <img src="${home['propertiy img url']}" 
@@ -542,17 +542,19 @@ const fetchData = async () => {
         <div class="card-body">
             <!-- Property Title -->
             <div style="position: relative;">
-  <p class="card-text text-muted" style="display: flex; justify-content: space-between; align-items: center;">
-    <span class="type"> ${home['property title']}</span>
-    <button 
-      style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
-      disabled>
-      Available
-    </button>
-  </p>
-</div>
+                <p class="card-text text-muted d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold" style="color: #1F2937;">${home['property title']}</span>
+                    <button class="btn btn-sm" 
+    style="border-radius: 30px; background: #218838; color: white; 
+    font-weight: 600; cursor: not-allowed;" 
+    disabled>
+    Available
+</button>
+
+                </p>
+            </div>
             <!-- Location -->
-            <p class="location"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
@@ -564,24 +566,28 @@ const fetchData = async () => {
             <!-- Buttons -->
             <div class="d-flex justify-content-between align-items-center mt-1 gap-2">
                 <!-- Enquire Button -->
-                <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}">
+                <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}" 
+                    style="background: #205375; color: white;">
                     <i class="fas fa-envelope"></i> Enquire
                 </a>
                 
                 <!-- Buy Button -->
-                <a href="#" class="btn btn-sm btn-success">
+                <a href="#" class="btn btn-sm" 
+                    style="background: #166534; color: white;">
                     <i class="fas fa-shopping-cart"></i> Buy
                 </a>
                 
                 <!-- View Map Button -->
-                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#mapModal${index}">
-                    <i class="fas fa-map-marker-alt"></i> Map
-                </button>
+<button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal${index}" 
+    style="background: #4682B4; color: white;">
+    <i class="fas fa-map-marker-alt"></i> Map
+</button>
 
-                <!-- Share Button (aligned to the right) -->
-                <button class="btn btn-sm btn-secondary ms-auto"  onclick="shareProperty('${home['property title']}')">
-                    <i class="fas fa-share-alt"></i> Share
-                </button>
+<!-- Share Button -->
+<button class="btn btn-sm ms-auto" onclick="shareProperty('${home['property title']}')" 
+    style="background: #008080; color: white;">
+    <i class="fas fa-share-alt"></i> Share
+</button>
             </div>
         </div>
     </div>
@@ -591,20 +597,23 @@ const fetchData = async () => {
 <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background: #1F2937; color: white;">
                 <h5 class="modal-title" id="enquiryModalLabel">Enquire About ${home['property title']}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
             </div>
             <div class="modal-body">
                 <p>Would you like to get in touch with us via:</p>
-                <button type="button" class="btn btn-secondary" onclick="makeCall()"  style="margin:2px;">
-                    <i class="fas fa-phone-alt"></i> Call
+                <button type="button" class="btn" onclick="makeCall()" style="margin: 2px;
+    background: linear-gradient(135deg, #17a2b8, #138496);
+    color: white; border: none;">
+    <i class="fas fa-phone-alt"></i> Call
+</button>
+
+                <button type="button" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
+                    <i class="fas fa-envelope"></i> Email
                 </button>
-                <button type="button" style="margin:2px;" class="btn btn-primary" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
-                    <i class="fas fa-envelope" ></i> Email
-                </button>
-                <button type="button" style="margin:2px;" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')">
-                    <i class="fab fa-whatsapp" ></i> WhatsApp
+                <button type="button" class="btn btn-success" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
                 </button>
             </div>
         </div>
@@ -615,9 +624,9 @@ const fetchData = async () => {
 <div class="modal fade" id="mapModal${index}" tabindex="-1" aria-labelledby="mapModalLabel${index}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background: #374151; color: white;">
                 <h5 class="modal-title" id="mapModalLabel${index}">${home['property title']} - Location</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
             </div>
             <div class="modal-body">
                 <div class="map-container">
@@ -627,6 +636,7 @@ const fetchData = async () => {
         </div>
     </div>
 </div>
+
  `;
         });
 
@@ -727,7 +737,18 @@ function filterProperties() {
 
 // Adding event listener to input field for filtering
 document.getElementById('searchInput').addEventListener('keyup', filterProperties);
+window.onscroll = function() { 
+    let btn = document.getElementById("arr");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        btn.style.display = "block";
+    } else {
+        btn.style.display = "none";
+    }
+};
 
+function goToTop() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
     </script>
 
@@ -740,5 +761,12 @@ document.getElementById('searchInput').addEventListener('keyup', filterPropertie
       <a href="https://www.instagram.com/vimalraj____s" target="_blank" class="whatsapp2-float">
           <i class="fab fa-instagram instagram-icon"></i>
       </a>
+      <i class="fa-solid fa-angles-up" id="arr" onclick="goToTop()" 
+      style="position: fixed; bottom: 70px; left: 20px; z-index: 99; font-size: 18px; color: black; cursor: pointer; opacity: 0.8; transition: transform 0.2s ease, opacity 0.3s ease; display: none;
+      background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(6px); padding: 10px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);"
+      onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='1';" 
+      onmouseout="this.style.transform='scale(1)'; this.style.opacity='0.8';">
+   </i>
+  
 </body>
 </html>
