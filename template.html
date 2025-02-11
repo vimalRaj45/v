@@ -333,6 +333,36 @@ i {
     }
 }
 
+.glitter-btn {
+    border-radius: 30px;
+    background: linear-gradient(45deg, #1e7e34, #28a745, #1e7e34);
+    color: white;
+    font-weight: 600;
+    cursor: not-allowed;
+    border: none;
+    padding: 5px 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glitter Effect */
+.glitter-btn::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(46, 204, 113, 0.7) 10%, rgba(46, 204, 113, 0) 70%);
+    transform: rotate(25deg);
+    animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(25deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(25deg); }
+}
     </style>
 </head>
 <body>
@@ -544,7 +574,7 @@ const fetchData = async () => {
                     <span class="fw-semibold" style="color: #1F2937;">${home['property title']}</span>
                     <button class="btn btn-sm" 
     style="border-radius: 30px; background: #218838; color: white; 
-    font-weight: 600; cursor: not-allowed;" 
+    font-weight: 600; cursor: not-allowed;" class="glitter-btn"
     disabled>
     Available
 </button>
