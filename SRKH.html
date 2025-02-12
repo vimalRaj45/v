@@ -383,13 +383,13 @@ setTimeout(function() {
         const themeCheckbox = document.getElementById('check');
         
         // Apply theme and set checkbox state
-        if (val === 'dark') {
+        if (val == 1) {
             themeCheckbox.checked = true;
             toggleTheme();
         } else {
             themeCheckbox.checked = false;
         }
-    }, 500);
+    }, 50);
                // Function to toggle the theme
 function toggleTheme() {
     document.body.classList.toggle('theme-dark'); // Toggle the theme-dark class
