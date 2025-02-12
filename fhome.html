@@ -725,6 +725,12 @@ setTimeout(function() {
 function toggleTheme() {
   // Toggle the 'theme-dark' class on the body
   document.body.classList.toggle('theme-dark');
+    // Store the current theme in localStorage
+    if (document.body.classList.contains('theme-dark')) {
+        localStorage.setItem('theme',1);
+    } else {
+        localStorage.setItem('theme', 0);
+    }
 
 }
 
