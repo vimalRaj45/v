@@ -417,10 +417,8 @@ i {
     </nav>
     <div class="container" onclick="hide()">
 
-
-         <p class="smooth-auto-write-no-cursor">Sethu Lands</p>
-         <label class="theme-switch" style="position: sticky; top: 0; right: 0; padding: 5px; margin-right: 0; z-index: 999; display: block;">
-            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()">
+<label class="theme-switch" style="position: sticky; top: 0; right: 0; padding: 5px; margin-right: 0; z-index: 999; display: block;">
+            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()" id="check">
             <div class="theme-switch__container">
               <div class="theme-switch__clouds"></div>
               <div class="theme-switch__stars-container">
@@ -439,6 +437,8 @@ i {
               </div>
             </div>
           </label>
+         <p class="smooth-auto-write-no-cursor">Sethu Lands</p>
+         
 
 
           <style>
@@ -713,6 +713,19 @@ body.theme-dark li.hidemob a {
 
         
 
+setTimeout(function() {
+        // Check theme preference
+        let val = localStorage.getItem("theme");
+        const themeCheckbox = document.getElementById('check');
+        
+        // Apply theme and set checkbox state
+        if (val == 1) {
+            themeCheckbox.checked = true;
+            toggleTheme();
+        } else {
+            themeCheckbox.checked = false;
+        }
+    }, 50);
 function toggleTheme() {
   // Toggle the 'theme-dark' class on the body
   document.body.classList.toggle('theme-dark');
