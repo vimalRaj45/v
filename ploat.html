@@ -416,7 +416,7 @@ i {
     </nav>
     <div class="container" onclick="hide()">
         <label class="theme-switch" style="position: sticky; top: 0; right: 0; padding: 5px; margin-right: 0; z-index: 999; display: block;">
-            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()">
+            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()" id="check">
             <div class="theme-switch__container">
               <div class="theme-switch__clouds"></div>
               <div class="theme-switch__stars-container">
@@ -440,7 +440,7 @@ i {
           <style>
                   /* From Uiverse.io by Galahhad */ 
 .theme-switch {
-  --toggle-size: 10px;
+  --toggle-size: 9px;
   /* the size is adjusted using font-size,
      this is not transform scale,
      so you can choose any size */
@@ -708,7 +708,20 @@ body.theme-dark li.hidemob a {
 
     <script>
 
-              
+
+setTimeout(function() {
+        // Check theme preference
+        let val = localStorage.getItem("theme");
+        const themeCheckbox = document.getElementById('check');
+        
+        // Apply theme and set checkbox state
+        if (val == 1) {
+            themeCheckbox.checked = true;
+            toggleTheme();
+        } else {
+            themeCheckbox.checked = false;
+        }
+    }, 50);    
 
 function toggleTheme() {
   // Toggle the 'theme-dark' class on the body
@@ -716,22 +729,13 @@ function toggleTheme() {
 
   // Optionally, save the theme preference in localStorage so it persists
   if (document.body.classList.contains('theme-dark')) {
-    localStorage.setItem('theme', 'dark');
+    localStorage.setItem('theme', 1);
   } else {
-    localStorage.setItem('theme', 'light');
+    localStorage.setItem('theme', 0);
   }
 }
 
-// Check the stored theme preference and apply it on page load
-window.onload = function() {
-  if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('theme-dark');
-    document.getElementById('theme-toggle').checked = true; // Check the toggle
-  } else {
-    document.body.classList.remove('theme-dark');
-    document.getElementById('theme-toggle').checked = false; // Uncheck the toggle
-  }
-};
+
       function show() {
     const side = document.querySelector('.sidebar');
     side.classList.remove('hide');
@@ -874,7 +878,7 @@ const fetchData = async () => {
                 </p>
             </div>
             <!-- Location -->
-            <p class="location text-light"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
