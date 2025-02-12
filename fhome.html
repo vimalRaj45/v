@@ -433,7 +433,7 @@ body.theme-dark li.hidemob a {
          <p class="smooth-auto-write-no-cursor">Sethu Homes</p>
 
          <label class="theme-switch" style="position: sticky; top: 0; right: 0; padding: 5px; margin-right: 0; z-index: 999; display: block;">
-            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()">
+            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()" id="check">
             <div class="theme-switch__container">
               <div class="theme-switch__clouds"></div>
               <div class="theme-switch__stars-container">
@@ -970,10 +970,12 @@ window.onload = function() {
 
     // Check theme preference
     let val = localStorage.getItem("theme");
-     alert(val)
-    // Check if theme is 'dark' (ensure proper comparison)
+    const themeCheckbox = document.getElementById('check');
     if (val == 1) {
+        themeCheckbox.checked = true;
         toggleTheme();
+    } else {
+        themeCheckbox.checked = false;
     }
 };
 
