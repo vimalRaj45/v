@@ -678,12 +678,14 @@ i {
     padding: 10px 20px;
 }
 
+
 /* Dark Theme Styles */
 body.theme-dark, 
 body.theme-dark .footer-section, 
 body.theme-dark li.hidemob a, 
 body.theme-dark .card, 
 body.theme-dark #fort, 
+body.theme-dark #tit,
 body.theme-dark li.hidemob a {
     background-color: black;
     color: white;
@@ -862,7 +864,7 @@ const fetchData = async () => {
             <!-- Property Title -->
             <div style="position: relative;">
                 <p class="card-text text-muted d-flex justify-content-between align-items-center">
-                   <span class="type"> ${home['property title']}</span>
+                   <span class="type" id="tit"> ${home['property title']}</span>
                    <button 
       style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
       disabled class="glitter-btn">
@@ -872,13 +874,13 @@ const fetchData = async () => {
                 </p>
             </div>
             <!-- Location -->
-            <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <p class="location text-light"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
             <!-- Description -->
             <p class="card-text">${home['description']}</p>
             
             <!-- Rate -->
             <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
-                <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
+                <h6 class="text-secondary fw-bold mb-0" id="tit">Rate: ${home['column 1']} ₹</h6>
             </div>
           <hr>
             <!-- Buttons -->
