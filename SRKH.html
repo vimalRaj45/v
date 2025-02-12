@@ -377,19 +377,19 @@ body.theme-dark, body.theme-dark .footer-section, body.theme-dark , body.theme-d
 <body>
     <script>
     
-          // Combined window.onload
-window.onload = function() {
-
-    // Check theme preference
-    let val = localStorage.getItem("theme");
-    const themeCheckbox = document.getElementById('check');
-    if (val == 1) {
-        themeCheckbox.checked = true;
-        toggleTheme();
-    } else {
-        themeCheckbox.checked = false;
-    }
-};
+setTimeout(function() {
+        // Check theme preference
+        let val = localStorage.getItem("theme");
+        const themeCheckbox = document.getElementById('check');
+        
+        // Apply theme and set checkbox state
+        if (val === 'dark') {
+            themeCheckbox.checked = true;
+            toggleTheme();
+        } else {
+            themeCheckbox.checked = false;
+        }
+    }, 500);
                // Function to toggle the theme
 function toggleTheme() {
     document.body.classList.toggle('theme-dark'); // Toggle the theme-dark class
