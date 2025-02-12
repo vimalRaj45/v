@@ -518,7 +518,7 @@ function toggleTheme() {
       
         <div id="body" class="m-2 mt-3" onclick="hide()" style="padding: 10px;">
             <label class="theme-switch" style="position: sticky; top: 0; right: 0; padding: 5px; margin-right: 0; z-index: 999; display: block;">
-                <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()">
+                <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()" id="check">
                 <div class="theme-switch__container">
                   <div class="theme-switch__clouds"></div>
                   <div class="theme-switch__stars-container">
@@ -806,6 +806,19 @@ function toggleTheme() {
           <i class="fab fa-instagram instagram-icon"></i>
       </a>
  <script>
+     // Combined window.onload
+window.onload = function() {
+
+    // Check theme preference
+    let val = localStorage.getItem("theme");
+    const themeCheckbox = document.getElementById('check');
+    if (val == 1) {
+        themeCheckbox.checked = true;
+        toggleTheme();
+    } else {
+        themeCheckbox.checked = false;
+    }
+};
     window.onscroll = function() { 
     let btn = document.getElementById("arr");
     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
