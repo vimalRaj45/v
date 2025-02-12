@@ -378,13 +378,17 @@ body.theme-dark, body.theme-dark .footer-section, body.theme-dark , body.theme-d
     <script>
     
         
-        // Function to toggle the theme
+               // Function to toggle the theme
 function toggleTheme() {
-    document.body.classList.toggle('theme-dark'); // Toggle the theme-dark class on body
-}
+    document.body.classList.toggle('theme-dark'); // Toggle the theme-dark class
 
-// Listen for the button click to call the toggleTheme function
-document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+    // Store the current theme in localStorage
+    if (document.body.classList.contains('theme-dark')) {
+        localStorage.setItem('theme',1);
+    } else {
+        localStorage.setItem('theme', 0);
+    }
+}
 
         const mb=document.getElementById('mb')
         function show() {
