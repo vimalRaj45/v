@@ -963,8 +963,19 @@ const fetchData = async () => {
     }
 };
 
-// Call function to fetch property data
-window.onload = fetchData;
+// Combined window.onload
+window.onload = function() {
+    // Call fetchData
+    fetchData();
+
+    // Check theme preference
+    let val = localStorage.getItem("theme");
+     alert(val)
+    // Check if theme is 'dark' (ensure proper comparison)
+    if (val == 1) {
+        toggleTheme();
+    }
+};
 
 // Event listener for hash changes
 window.addEventListener('hashchange', showSectionFromHash);
