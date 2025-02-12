@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -709,7 +710,17 @@ body.theme-dark li.hidemob a {
     <script>
 
 
+function toggleTheme() {
+// Toggle the 'theme-dark' class on the body
+document.body.classList.toggle('theme-dark');
 
+  // Optionally, save the theme preference in localStorage so it persists
+  if (document.body.classList.contains('theme-dark')) {
+    localStorage.setItem('theme', 1);
+  } else {
+    localStorage.setItem('theme', 0);
+  }
+}
 
 setTimeout(function() {
         // Check theme preference
@@ -718,15 +729,16 @@ setTimeout(function() {
         
         // Apply theme and set checkbox state
         if (val == 1) {
-            toggleTheme();
             themeCheckbox.checked = true;
         } else {
             themeCheckbox.checked = false;
         }
     }, 50);
+
+
 function toggleTheme() {
-  // Toggle the 'theme-dark' class on the body
-  document.body.classList.toggle('theme-dark');
+// Toggle the 'theme-dark' class on the body
+document.body.classList.toggle('theme-dark');
 
   // Optionally, save the theme preference in localStorage so it persists
   if (document.body.classList.contains('theme-dark')) {
