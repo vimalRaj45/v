@@ -229,13 +229,43 @@
     }
 
     function convertFileToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.src = reader.result;
+
+            img.onload = () => {
+                // Force the image to be resized to 600px width and 400px height
+                const fixedWidth = 800;
+                const fixedHeight = 800;
+
+                const canvas = document.createElement('canvas');
+                canvas.width = fixedWidth;
+                canvas.height = fixedHeight;
+
+                const ctx = canvas.getContext('2d');
+                // Fill canvas with white background (optional, useful for JPGs)
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, fixedWidth, fixedHeight);
+
+                // Draw the image onto the canvas with fixed dimensions
+                ctx.drawImage(img, 0, 0, fixedWidth, fixedHeight);
+
+                // Compress the image to 60% quality
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
+                resolve(compressedBase64);
+            };
+
+            img.onerror = (error) => reject(error);
+        };
+
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
+
 
     document.getElementById('addAnotherBtn').addEventListener('click', function() {
         document.getElementById('propertyForm').reset();
