@@ -63,12 +63,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: none; /* Initially hidden */
+            display: none;
             justify-content: center;
             align-items: center;
             background: rgba(0, 0, 0, 0.4);
             z-index: 1050;
-            backdrop-filter: blur(5px); /* Background blur */
+            backdrop-filter: blur(5px);
         }
         .spinner-border {
             width: 4rem;
@@ -108,13 +108,13 @@
                 <option value="home">Home</option>
             </select>
         </div>
-
         <div class="mb-3">
             <label for="propertyImage" class="form-label">Upload Property Image</label>
             <input type="file" name="propertyImage" id="propertyImage" accept="image/*" required class="form-control">
             <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
+            <button type="button" class="btn btn-secondary mt-2" id="showImageOnlyBtn" onclick="disp()" style="display: none;">Show Image Only</button>
         </div>
-
+        
         <div class="mb-3">
             <label for="propertyTitle" class="form-label">Property Title</label>
             <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter Property Title" required class="form-control">
@@ -139,62 +139,67 @@
             <label for="column1" class="form-label">Rate</label>
             <input type="text" name="column1" id="column1" placeholder="Enter Rate" required class="form-control">
         </div>
-       
         <button type="submit" class="btn btn-primary w-100">Submit</button>
     </form>
 </div>
+
+<!-- Loading Spinner -->
 <div class="loading" id="loading">
     <div>
         <div class="spinner-border" role="status"></div>
         <div class="mt-2 text-white">Submitting...</div>
     </div>
 </div>
+
+<!-- Success Modal -->
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="successModalLabel">Success</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Your property details have been submitted successfully! Redirecting you to our homepage shortly.
+                Your property details have been submitted successfully!
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn" data-bs-dismiss="modal">OK</button>
+                <button type="button" class="btn text-white" data-bs-dismiss="modal" id="addAnotherBtn">Add Another Property</button>
+                <button type="button" class="btn text-white" id="viewAllBtn">Go to Our Web</button>
             </div>
         </div>
     </div>
 </div>
+
 <script>
-    // Show image preview when an image is selected
     document.getElementById('propertyImage').addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
-                const imagePreview = document.getElementById('imagePreview');
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('showImageOnlyBtn').style.display = 'block'; // Show the button
             };
             reader.readAsDataURL(file);
         }
     });
 
+    function disp() {
+    const imagePreview = document.getElementById('imagePreview');
+    if (imagePreview.style.display === 'none' || imagePreview.style.display === '') {
+        imagePreview.style.display = 'block';
+    } else {
+        imagePreview.style.display = 'none';
+    }
+}
+
+
     async function handleSubmit(event) {
         event.preventDefault();
         const form = document.getElementById('propertyForm');
         const formData = new FormData(form);
-
-        // Get the uploaded image file
         const imageFile = formData.get('propertyImage');
-
-        // Convert the image file to a base64 string
         const base64String = await convertFileToBase64(imageFile);
-
-        // Replace the file input with the base64 string as the "image URL"
         formData.set('propertyImgUrl', base64String);
 
-        // Backend URLs based on property type
         const propertyType = formData.get('propertyType');
         const actionLinks = {
             land: "https://script.google.com/macros/s/AKfycbzNns6qA7Sh7cIkvxPDOin6TBRlkxLWyz7HHNqBTEjT2HWxyR84f2EBybmUFTfyh8f_/exec",
@@ -202,10 +207,7 @@
             home: "https://script.google.com/macros/s/AKfycbycTr0NIggwx-WRyl_QrdkXw9msk8322CgcreHTLD7gRviJ9uyXw3nSi2dWHrPR2WhLxw/exec"
         };
 
-        // Show loading spinner
         document.getElementById('loading').style.display = 'flex';
-
-        // Submit the form data to the backend
         fetch(actionLinks[propertyType], {
             method: 'POST',
             body: formData
@@ -216,9 +218,6 @@
             if (result.includes("Success")) {
                 const successModal = new bootstrap.Modal(document.getElementById('successModal'));
                 successModal.show();
-                setTimeout(() => {
-                    window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";
-                }, 2000);
             } else {
                 alert("Submission failed. Please try again.");
             }
@@ -229,15 +228,23 @@
         });
     }
 
-    // Helper function to convert a file to base64
     function convertFileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]); // Extract base64 part
+            reader.onload = () => resolve(reader.result.split(',')[1]);
             reader.onerror = error => reject(error);
             reader.readAsDataURL(file);
         });
     }
+
+    document.getElementById('addAnotherBtn').addEventListener('click', function() {
+        document.getElementById('propertyForm').reset();
+        document.getElementById('imagePreview').style.display = 'none';
+    });
+
+    document.getElementById('viewAllBtn').addEventListener('click', function() {
+        window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";
+    });
 </script>
 </body>
 </html>
