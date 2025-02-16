@@ -877,10 +877,12 @@ const fetchData = async () => {
       <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
-        <img src="${imageSrc}" 
-            class="card-img-top" 
-            alt="${home['property title']}" 
-            style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;">
+<img src="${imageSrc}" 
+    class="card-img-top" 
+    alt="${home['property title']}" 
+    style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;" 
+    loading="lazy">
+
         
         <div class="card-body">
             <!-- Property Title -->
