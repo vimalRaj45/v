@@ -218,8 +218,9 @@
             if (result.includes("Success")) {
                 const successModal = new bootstrap.Modal(document.getElementById('successModal'));
                 successModal.show();
-            } else {
-                alert("Submission failed. Please try again.");
+            }else{
+              const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
             }
         })
         .catch(error => {
