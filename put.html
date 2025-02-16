@@ -88,14 +88,18 @@
         .modal-footer .btn:hover {
             background-color: #4848c4;
         }
+        #imagePreview {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2>Property Registration</h2>
     <form id="propertyForm" onsubmit="handleSubmit(event)">
-
         <div class="mb-3">
             <label for="propertyType" class="form-label">Property Type</label>
             <select name="propertyType" id="propertyType" class="form-control" required>
@@ -105,54 +109,46 @@
             </select>
         </div>
 
-
         <div class="mb-3">
-            <label for="propertyImgUrl" class="form-label">Property Image URL</label>
-            <input type="text" name="propertyImgUrl" id="propertyImgUrl" placeholder="Enter Property Image URL" required class="form-control">
+            <label for="propertyImage" class="form-label">Upload Property Image</label>
+            <input type="file" name="propertyImage" id="propertyImage" accept="image/*" required class="form-control">
+            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
         </div>
 
         <div class="mb-3">
             <label for="propertyTitle" class="form-label">Property Title</label>
             <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter Property Title" required class="form-control">
         </div>
-
         <div class="mb-3">
             <label for="locationUrl" class="form-label">Location URL</label>
             <input type="text" name="locationUrl" id="locationUrl" placeholder="Enter Location URL" required class="form-control">
         </div>
-
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea name="description" id="description" rows="4" placeholder="Enter Property Description" required class="form-control"></textarea>
         </div>
-
         <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" name="email" id="email" placeholder="Enter Email Address" required class="form-control">
         </div>
-
         <div class="mb-3">
             <label for="location" class="form-label">Location</label>
             <input type="text" name="location" id="location" placeholder="Enter Location" required class="form-control">
         </div>
-
         <div class="mb-3">
             <label for="column1" class="form-label">Rate</label>
             <input type="text" name="column1" id="column1" placeholder="Enter Rate" required class="form-control">
         </div>
-
        
         <button type="submit" class="btn btn-primary w-100">Submit</button>
     </form>
 </div>
-
 <div class="loading" id="loading">
     <div>
         <div class="spinner-border" role="status"></div>
         <div class="mt-2 text-white">Submitting...</div>
     </div>
 </div>
-
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -169,22 +165,47 @@
         </div>
     </div>
 </div>
-
 <script>
-    function handleSubmit(event) {
+    // Show image preview when an image is selected
+    document.getElementById('propertyImage').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    async function handleSubmit(event) {
         event.preventDefault();
         const form = document.getElementById('propertyForm');
         const formData = new FormData(form);
+
+        // Get the uploaded image file
+        const imageFile = formData.get('propertyImage');
+
+        // Convert the image file to a base64 string
+        const base64String = await convertFileToBase64(imageFile);
+
+        // Replace the file input with the base64 string as the "image URL"
+        formData.set('propertyImgUrl', base64String);
+
+        // Backend URLs based on property type
         const propertyType = formData.get('propertyType');
         const actionLinks = {
-         land: "https://script.google.com/macros/s/AKfycbzNns6qA7Sh7cIkvxPDOin6TBRlkxLWyz7HHNqBTEjT2HWxyR84f2EBybmUFTfyh8f_/exec",
-         plot: "https://script.google.com/macros/s/AKfycbwoL14OffR4L1nR-Z9G3_5kbckVITnQYTVGNKyqelQ6y1CVeIHXH4NQm0hnTsI3ZFcl/exec",
-         home: "https://script.google.com/macros/s/AKfycbycTr0NIggwx-WRyl_QrdkXw9msk8322CgcreHTLD7gRviJ9uyXw3nSi2dWHrPR2WhLxw/exec"
-     };
+            land: "https://script.google.com/macros/s/AKfycbzNns6qA7Sh7cIkvxPDOin6TBRlkxLWyz7HHNqBTEjT2HWxyR84f2EBybmUFTfyh8f_/exec",
+            plot: "https://script.google.com/macros/s/AKfycbwoL14OffR4L1nR-Z9G3_5kbckVITnQYTVGNKyqelQ6y1CVeIHXH4NQm0hnTsI3ZFcl/exec",
+            home: "https://script.google.com/macros/s/AKfycbycTr0NIggwx-WRyl_QrdkXw9msk8322CgcreHTLD7gRviJ9uyXw3nSi2dWHrPR2WhLxw/exec"
+        };
 
-
+        // Show loading spinner
         document.getElementById('loading').style.display = 'flex';
 
+        // Submit the form data to the backend
         fetch(actionLinks[propertyType], {
             method: 'POST',
             body: formData
@@ -207,7 +228,16 @@
             alert("Error: " + error.message);
         });
     }
-</script>
 
+    // Helper function to convert a file to base64
+    function convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]); // Extract base64 part
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+</script>
 </body>
 </html>
