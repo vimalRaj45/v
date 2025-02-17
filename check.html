@@ -839,7 +839,7 @@ function shareProperty(propertyTitle) {
 
 let allHomesData = []; // Store all fetched data
 let currentIndex = 0;  // Track the current index
-const batchSize = 5; // Number of records to fetch at a time (set to 5)
+const batchSize = 4; // Number of records to fetch at a time (set to 5)
 
 const fetchData = async () => {
     const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
@@ -1015,13 +1015,23 @@ window.onload = function() {
     fetchData(); // Call fetchData to fetch and start loading data
 
 
-    // Infinite scroll handler (downwards)
-    window.addEventListener('scroll', () => {
-        // Check if we've scrolled near the bottom
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-            loadNextBatch(); // Load more data when scrolled to the bottom
-        }
-    });
+    let isLoading = false; // Flag to prevent multiple triggers
+
+// Infinite scroll handler (downwards)
+window.addEventListener('scroll', () => {
+    // Check if we're near the bottom and not already loading data
+    if (!isLoading && window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        isLoading = true; // Set loading flag to true to prevent further triggers
+       loadNextBatch() // Replace with your actual data loading function
+
+        // Simulate data loading delay
+        setTimeout(() => {
+            // After loading is complete, reset the flag
+            isLoading = false;
+        }, 1000); // Adjust timeout based on your data loading time
+    }
+});
+
 };
 
 
