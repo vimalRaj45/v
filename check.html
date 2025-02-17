@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -709,7 +711,6 @@ body.theme-dark li.hidemob a {
     <script>
 
 
-
 function toggleTheme() {
 // Toggle the 'theme-dark' class on the body
 document.body.classList.toggle('theme-dark');
@@ -761,124 +762,16 @@ function hide() {
     side.classList.add('hide');
 }
 
+// Call showSectionFromHash once the initial batch is loaded
 
 
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
-const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API keylet isLoadingBatches = false; // Flag to prevent multiple triggers
-
-let isLoadingBatches = false; // Prevent multiple batch loads
-
-const showSectionFromHash = async () => {
-        
-    const hash = window.location.hash;
-    const propertyId = decodeURIComponent(hash.substring(1));
-
-    if (!propertyId) return;
-
-    const noRecordElement = document.getElementById('no-record-found');
-    if (noRecordElement) noRecordElement.style.display = 'none';
-
-    let targetSection = document.getElementById(propertyId);
-
-    // Check if the property is already loaded
-    if (targetSection) {
-
-    // Use a flag to reload only once
-    if (!sessionStorage.getItem('hasReloaded')) {
-        sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
-        window.location.reload();
-    }
-    targetSection.style.display = 'block';
-    document.getElementById('view-all-btn').style.display = 'none';
-    targetSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
-
-
-    return; // No need to load more batches
-    }
-
-    // Property not found - load more batches until it's found
-    isLoadingBatches = true;
-    while (!document.getElementById(propertyId) && currentIndex < allHomesData.length) {
-        loadNextBatch(); // Load the next batch of data
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Add a small delay for smooth batch loading
-    }
-
-    // Property should now be loaded
-    targetSection = document.getElementById(propertyId);
-    if (targetSection) {
-        
-        targetSection.style.display = 'block';
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-
-    isLoadingBatches = false;
-};
-
-// Function to load the next batch of data
-const loadNextBatch = () => {
-    if (currentIndex >= allHomesData.length) return; // No more data to load
-
-    const homesDataBatch = allHomesData.slice(currentIndex, currentIndex + batchSize);
-    currentIndex += batchSize;
-
-    renderHomesData(homesDataBatch); // Render the new batch of data
-};
-
-
-// Function to show all properties
-const showAllProperties = () => {
-    // Reset the URL hash to remove the specific property view
-    window.location.hash = '';
-    showSectionFromHash(); // Show all properties
-};
-
-// Call the function on page load to handle the initial hash
-window.addEventListener('load', showSectionFromHash);
-
-// Call the function on hash change to update the displayed property
-window.addEventListener('hashchange', showSectionFromHash);
-
-
-function shareProperty(propertyTitle) {
-    const shareText = `Check out this property: ${propertyTitle}`;
-    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
-    
-    if (navigator.share) {
-        // Use Web Share API if supported
-        navigator.share({
-            title: 'Property Details',
-            text: shareText,
-            url: shareURL
-        }).then(() => {
-            console.log('Property shared successfully!');
-        }).catch(err => {
-            console.error('Error sharing the property:', err);
-        });
-    } else {
-        // Fallback for browsers that don't support Web Share API
-        const dummyInput = document.createElement('input');
-        dummyInput.value = shareURL;
-        document.body.appendChild(dummyInput);
-        dummyInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummyInput);
-        alert('Property link copied to clipboard: ' + shareURL);
-    }
-}
-
-
-let allHomesData = []; // Store all fetched data
-let currentIndex = 0;  // Track the current index
-const batchSize = 4; // Number of records to fetch at a time (set to 5)
-
-const fetchData = async () => {
+const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
+// Function to show a specific property based on the URL hash
+const showSectionFromHash = () => {
+   
+const fetchData2 = async () => {
     const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
     const sheetTab = "sheet1";
     const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
@@ -890,10 +783,9 @@ const fetchData = async () => {
         const response = await fetch(url);
         const data = await response.json();
         const rows = data.values || [];
-
-        console.log(rows);
+        console.log(rows)
         const headers = rows[0].map(header => header.trim().toLowerCase());
-        allHomesData = rows.slice(1).map(row => {
+        const homesData = rows.slice(1).map(row => {
             const home = {};
             headers.forEach((header, index) => {
                 home[header] = row[index] || "";
@@ -901,27 +793,19 @@ const fetchData = async () => {
             return home;
         });
 
-        // Initially load the first batch (5 records)
-        loadNextBatch();
-    } catch (error) {
-        console.error("Error fetching property data:", error);
-    }
-};
+        const container = document.getElementById("homes-container");
+        container.innerHTML = "";
 
-// Function to render homes data efficiently using the provided structure
-const renderHomesData = (homesData) => {
-    const container = document.getElementById("homes-container");
-
-    homesData.forEach((home, index) => {
-        const propertyId = `property-${home['property title']}`;
-        const imageSrc = home['propertiy img url']
-            ? home['propertiy img url'].startsWith('data:image')
-                ? home['propertiy img url']
-                : `data:image/jpeg;base64,${home['propertiy img url']}`
-            : 'default-image.jpg';
-        
-        container.insertAdjacentHTML('beforeend', `
-          <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
+        homesData.forEach((home, index) => {
+    const propertyId = `property-${index + 1}`;
+                const imageSrc = home['propertiy img url']
+        ? home['propertiy img url'].startsWith('data:image')
+            ? home['propertiy img url']
+            : `data:image/jpeg;base64,${home['propertiy img url']}`
+        : 'default-image.jpg';
+    const rate = home['column 1']; // Assuming 'column 1' contains the rate of the property
+    container.innerHTML += `
+      <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
     <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
         <!-- Property Image -->
 <!-- Property Image -->
@@ -1030,26 +914,248 @@ const renderHomesData = (homesData) => {
         </div>
     </div>
 </div>
-        `);
-    });
 
-    container.classList.remove("hidden");
-    // Call the function to show the property based on hash value
-    showSectionFromHash();
+ `;
+        });
+
+        container.classList.remove("hidden");
+        
+        // Call the function to show the property based on hash value
+        showSectionFromHash();
+    } catch (error) {
+        console.error("Error fetching property data:", error);
+    }
+};
+
+    const hash = window.location.hash;
+    const propertyId = decodeURIComponent(hash.substring(1)); // Decode URL hash and remove the '#'
+
+    // Hide all property cards first
+    const allSections = document.querySelectorAll('.home-card');
+    allSections.forEach(section => section.style.display = 'none');
+
+    // Hide the "No Record Found" message initially
+    const noRecordElement = document.getElementById('no-record-found');
+    if (noRecordElement) noRecordElement.style.display = 'none';
+
+    // If a valid property ID is in the URL hash, show that property
+    if (propertyId) {
+        const targetSection = document.getElementById(propertyId);
+        if (targetSection) {
+            // Show only the targeted property
+            targetSection.style.display = 'block';
+            document.getElementById('view-all-btn').style.display = 'block'; // Show the "View All Properties" button
+        } else {
+            fetchData2()
+            // Show "No Record Found" message and hide everything else
+            if (noRecordElement) noRecordElement.style.display = 'block';
+            document.getElementById('view-all-btn').style.display = 'none'; // Hide the "View All Properties" button
+        }
+    } else {
+        // If no hash is present, show all properties
+        fetchData()
+        allSections.forEach(section => section.style.display = 'none');
+        document.getElementById('view-all-btn').style.display = 'none'; // Hide the "View All Properties" button
+    }
+};
+
+// Function to show all properties
+const showAllProperties = () => {
+    // Reset the URL hash to remove the specific property view
+    window.location.hash = '';
+    showSectionFromHash(); // Show all properties
+};
+
+// Call the function on page load to handle the initial hash
+window.addEventListener('load', showSectionFromHash);
+
+// Call the function on hash change to update the displayed property
+window.addEventListener('hashchange', showSectionFromHash);
+
+
+function shareProperty(propertyTitle) {
+    const shareText = `Check out this property: ${propertyTitle}`;
+    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
+    
+    if (navigator.share) {
+        // Use Web Share API if supported
+        navigator.share({
+            title: 'Property Details',
+            text: shareText,
+            url: shareURL
+        }).then(() => {
+            console.log('Property shared successfully!');
+        }).catch(err => {
+            console.error('Error sharing the property:', err);
+        });
+    } else {
+        // Fallback for browsers that don't support Web Share API
+        const dummyInput = document.createElement('input');
+        dummyInput.value = shareURL;
+        document.body.appendChild(dummyInput);
+        dummyInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummyInput);
+        alert('Property link copied to clipboard: ' + shareURL);
+    }
+}
+
+
+
+const fetchData = async () => {
+    const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
+    const sheetTab = "sheet1";
+    const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
+
+    document.getElementById("homes-container").classList.add("hidden");
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const rows = data.values || [];
+        console.log(rows);
+        const headers = rows[0].map(header => header.trim().toLowerCase());
+        const homesData = rows.slice(1).map(row => {
+            const home = {};
+            headers.forEach((header, index) => {
+                home[header] = row[index] || "";
+            });
+            return home;
+        });
+
+        const container = document.getElementById("homes-container");
+        container.innerHTML = "";
+
+        // Batch loading logic: You can define the batch size here.
+        const batchSize = 4; // Number of properties to load in each batch
+        let batchIndex = 0;
+
+        const loadBatch = () => {
+            const batch = homesData.slice(batchIndex, batchIndex + batchSize);
+            batch.forEach((home, index) => {
+                const propertyId = `property-${batchIndex + index + 1}`;
+                const imageSrc = home['propertiy img url']
+                    ? home['propertiy img url'].startsWith('data:image')
+                        ? home['propertiy img url']
+                        : `data:image/jpeg;base64,${home['propertiy img url']}`
+                    : 'default-image.jpg';
+                const rate = home['column 1'];
+
+                container.innerHTML += `
+                    <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
+                        <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
+                            <img src="${imageSrc}" class="card-img-top" alt="${home['property title']}" style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;" loading="lazy" width="600" height="400">
+                            <div class="card-body">
+                                <p class="card-text text-muted d-flex justify-content-between align-items-center">
+                                    <span class="type"> ${home['property title']}</span>
+                                    <button style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" disabled class="glitter-btn">
+                                        Available
+                                    </button>
+                                </p>
+                                <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+                                <p class="card-text">${home['description']}</p>
+                                <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
+                                    <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center mt-1 gap-1">
+                                    <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}" style="background: #205375; color: white;">
+                                        <i class="fas fa-envelope" style="font-size:11px"></i> Enquire
+                                    </a>
+                                    <a href="#" class="btn btn-sm" style="background: #166534; color: white;">
+                                        <i class="fas fa-shopping-cart" style="font-size:11px"></i> Buy
+                                    </a>
+                                    <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal${batchIndex + index}" style="background: #4682B4; color: white;">
+                                        <i class="fas fa-map-marker-alt" style="font-size:11px"></i> Map
+                                    </button>
+                                    <button class="btn btn-sm ms-auto" onclick="shareProperty('${home['property title']}')" style="background: #008080; color: white;">
+                                        <i class="fas fa-share-alt" style="font-size:11px"></i> Share
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: #1F2937; color: white;">
+                                    <h5 class="modal-title" id="enquiryModalLabel">Enquire About ${home['property title']}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Would you like to get in touch with us via:</p>
+                                    <button type="button" class="btn" onclick="makeCall()" style="margin: 1px; background: linear-gradient(135deg, #17a2b8, #138496); font-size:13px color: white; border: none;">
+                                        <i class="fas fa-phone-alt" style="font-size:11px"></i> Call
+                                    </button>
+                                    <button type="button" class="btn btn-primary" style="font-size:13px" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
+                                        <i class="fas fa-envelope" style="font-size:11px"></i> Email
+                                    </button>
+                                    <button type="button" class="btn btn-success" style="font-size:13px" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
+                                        <i class="fab fa-whatsapp" style="font-size:11px"></i> WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="mapModal${batchIndex + index}" tabindex="-1" aria-labelledby="mapModalLabel${batchIndex + index}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: #374151; color: white;">
+                                    <h5 class="modal-title" id="mapModalLabel${batchIndex + index}">${home['property title']} - Location</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="map-container">
+                                        <iframe src="${home['location url']}" width="100%" height="400" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            batchIndex += batchSize;
+
+             // If there are more properties to load, load the next batch after scroll
+             if (batchIndex < homesData.length) {
+                window.addEventListener("scroll", onScroll);
+            }
+        };
+
+        let debounceTimer;
+const onScroll = () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        const windowHeight = window.innerHeight;
+
+        if (scrollHeight - (scrollPosition + windowHeight) <= 100) {
+            window.removeEventListener("scroll", onScroll);
+            loadBatch();
+        }
+    }, 50); // Adjust debounce time if necessary
+};
+
+        // Start loading the first batch
+        loadBatch();
+
+        container.classList.remove("hidden");
+
+        // Call the function to show the property based on hash value
+        showSectionFromHash();
+    } catch (error) {
+        console.error("Error fetching property data:", error);
+    }
 };
 
 
-
-
-// Combined window.onload
-window.onload = function() {
-    // Call fetchData
+setTimeout(() => {
+    // Call fetchData before other things
     fetchData();
-    window.addEventListener('scroll', () => {
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 200){
-            loadNextBatch()
-        }
-    });
+
     // Check theme preference
     let val = localStorage.getItem("theme");
     const themeCheckbox = document.getElementById('check');
@@ -1059,7 +1165,9 @@ window.onload = function() {
     } else {
         themeCheckbox.checked = false;
     }
-};
+}, 0); 
+
+
 
 // Event listener for hash changes
 window.addEventListener('hashchange', showSectionFromHash);
