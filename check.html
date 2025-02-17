@@ -953,7 +953,6 @@ const fetchData2 = async () => {
         }
     } else {
         // If no hash is present, show all properties
-        fetchData()
         allSections.forEach(section => section.style.display = 'none');
         document.getElementById('view-all-btn').style.display = 'none'; // Hide the "View All Properties" button
     }
