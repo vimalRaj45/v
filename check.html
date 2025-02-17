@@ -788,7 +788,8 @@ const showSectionFromHash = async () => {
             behavior: 'smooth',
             block: 'start'
         });
-        return; // No need to load more batches
+        return; 
+        window.location.reload();// No need to load more batches
     }
 
     // Property not found - load more batches until it's found
@@ -801,7 +802,7 @@ const showSectionFromHash = async () => {
     // Property should now be loaded
     targetSection = document.getElementById(propertyId);
     if (targetSection) {
-        window.location.reload();
+        
         targetSection.style.display = 'block';
         targetSection.scrollIntoView({
             behavior: 'smooth',
