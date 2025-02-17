@@ -779,8 +779,6 @@ const showSectionFromHash = () => {
 
     // If a valid property ID is in the URL hash, show that property
     if (propertyId) {
-        alert("try!")
-        window.location.href="https://vimalraj45.github.io/v/check#2"
         const targetSection = document.getElementById(propertyId);
         if (targetSection) {
             // Show only the targeted property
@@ -813,7 +811,7 @@ window.addEventListener('hashchange', showSectionFromHash);
 
 function shareProperty(propertyTitle) {
     const shareText = `Check out this property: ${propertyTitle}`;
-    const shareURL = window.location.hash.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
+    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
     
     if (navigator.share) {
         // Use Web Share API if supported
@@ -886,54 +884,73 @@ const renderHomesData = (homesData) => {
             : 'default-image.jpg';
         
         container.insertAdjacentHTML('beforeend', `
-            <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
-                <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
-                    <img src="${imageSrc}" 
-                        class="card-img-top" 
-                        alt="${home['property title']}" 
-                        style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;" 
-                        loading="lazy" 
-                        width="600" 
-                        height="400">
+           <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
+    <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
+        <!-- Property Image -->
+<!-- Property Image -->
+<img src="${imageSrc}" 
+    class="card-img-top" 
+    alt="${home['property title']}" 
+    style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;" 
+    loading="lazy" 
+    width="600" 
+    height="400">
 
-                    <div class="card-body">
-                        <div style="position: relative;">
-                            <p class="card-text text-muted d-flex justify-content-between align-items-center">
-                                <span class="type">${home['property title']}</span>
-                                <button style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
-                                    disabled class="glitter-btn">Available</button>
-                            </p>
-                        </div>
-                        <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
-                        <p class="card-text">${home['description']}</p>
+        
+        <div class="card-body">
+            <!-- Property Title -->
+            <div style="position: relative;">
+                <p class="card-text text-muted d-flex justify-content-between align-items-center">
+                    <span class="type"> ${home['property title']}</span>
+                   <button 
+      style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" 
+      disabled class="glitter-btn">
+      Available
+    </button>
 
-                        <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
-                            <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mt-1 gap-1">
-                            <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}" 
-                                style="background: #205375; color: white;">
-                                <i class="fas fa-envelope" style="font-size:11px"></i> Enquire
-                            </a>
-                            <a href="#" class="btn btn-sm" style="background: #166534; color: white;">
-                                <i class="fas fa-shopping-cart" style="font-size:11px"></i> Buy
-                            </a>
-                            <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal${index}" 
-                                style="background: #4682B4; color: white;">
-                                <i class="fas fa-map-marker-alt" style="font-size:11px"></i> Map
-                            </button>
-                           <!-- Share Button -->
+                </p>
+            </div>
+            <!-- Location -->
+            <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
+            <!-- Description -->
+            <p class="card-text">${home['description']}</p>
+            
+            <!-- Rate -->
+            <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
+                <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
+            </div>
+          <hr>
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between align-items-center mt-1 gap-1" >
+                <!-- Enquire Button -->
+                <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}" 
+                    style="background: #205375; color: white; ">
+                    <i class="fas fa-envelope" style="font-size:11px"></i> Enquire
+                </a>
+                
+                <!-- Buy Button -->
+                <a href="#" class="btn btn-sm" 
+                    style="background: #166534; color: white;">
+                    <i class="fas fa-shopping-cart" style="font-size:11px"></i> Buy
+                </a>
+                
+                <!-- View Map Button -->
+<button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal${index}" 
+    style="background: #4682B4; color: white;">
+    <i class="fas fa-map-marker-alt" style="font-size:11px"></i> Map
+</button>
+
+<!-- Share Button -->
 <button class="btn btn-sm ms-auto" onclick="shareProperty('${home['property title']}')" 
     style="background: #008080; color: white;">
     <i class="fas fa-share-alt" style="font-size:11px"></i> Share
 </button>
-                        </div>
-                    </div>
-                </div>
             </div>
+        </div>
+    </div>
+</div>
 
-           <!-- Enquiry Modal -->
+<!-- Enquiry Modal -->
 <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -960,7 +977,7 @@ const renderHomesData = (homesData) => {
     </div>
 </div>
 
-            <!-- Map Modal -->
+<!-- Map Modal -->
 <div class="modal fade" id="mapModal${index}" tabindex="-1" aria-labelledby="mapModalLabel${index}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -976,11 +993,12 @@ const renderHomesData = (homesData) => {
         </div>
     </div>
 </div>
-            </div>
         `);
     });
 
     container.classList.remove("hidden");
+    // Call the function to show the property based on hash value
+    showSectionFromHash();
 };
 
 // Function to load the next batch of data
