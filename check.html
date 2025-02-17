@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -769,11 +768,12 @@ const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API keylet isLoadingBatches = false; // Flag to prevent multiple triggers
 
 let isLoadingBatches = false; // Prevent multiple batch loads
+
 const showSectionFromHash = async () => {
+        
     const hash = window.location.hash;
     const propertyId = decodeURIComponent(hash.substring(1));
 
-    // Exit if no property ID is provided in the URL
     if (!propertyId) return;
 
     const noRecordElement = document.getElementById('no-record-found');
@@ -783,22 +783,21 @@ const showSectionFromHash = async () => {
 
     // Check if the property is already loaded
     if (targetSection) {
-        // Hide all sections first
-        const allSections = document.querySelectorAll('.property-section'); // Adjust this selector as needed
-        allSections.forEach(section => {
-            section.style.display = 'none';
-        });
 
-        // Show the target section
-        targetSection.style.display = 'block';
-        document.getElementById('view-all-btn').style.display = 'none'; // Hide View All button when showing specific property
+    // Use a flag to reload only once
+    if (!sessionStorage.getItem('hasReloaded')) {
+        sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
+        window.location.reload();
+    }
+    targetSection.style.display = 'block';
+    document.getElementById('view-all-btn').style.display = 'none';
+    targetSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
 
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
 
-        return; // No need to load more batches
+    return; // No need to load more batches
     }
 
     // Property not found - load more batches until it's found
@@ -808,25 +807,15 @@ const showSectionFromHash = async () => {
         await new Promise((resolve) => setTimeout(resolve, 500)); // Add a small delay for smooth batch loading
     }
 
-    // Hide all property cards first
-    const allSections = document.querySelectorAll('.home-card');
-    allSections.forEach(section => section.style.display = 'none');
-
     // Property should now be loaded
     targetSection = document.getElementById(propertyId);
     if (targetSection) {
-        // Hide all sections before showing the target
-        const allSections = document.querySelectorAll('.property-section'); // Adjust this selector as needed
-        allSections.forEach(section => {
-            section.style.display = 'none';
-        });
-
+        
         targetSection.style.display = 'block';
         targetSection.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
         });
-        document.getElementById('view-all-btn').style.display = 'block'; // Show the "View All Properties" button
     }
 
     isLoadingBatches = false;
@@ -847,7 +836,6 @@ const loadNextBatch = () => {
 const showAllProperties = () => {
     // Reset the URL hash to remove the specific property view
     window.location.hash = '';
-    window.location.reload();
     showSectionFromHash(); // Show all properties
 };
 
