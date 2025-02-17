@@ -768,7 +768,7 @@ const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
 const showSectionFromHash = () => {
     const hash = window.location.hash;
     const propertyId = decodeURIComponent(hash.substring(1)); // Decode URL hash and remove the '#'
-    window.location.href=`https://vimalraj45.github.io/v/check#${propertyId}`;
+
     // Hide all property cards first
     const allSections = document.querySelectorAll('.home-card');
     allSections.forEach(section => section.style.display = 'none');
@@ -779,6 +779,8 @@ const showSectionFromHash = () => {
 
     // If a valid property ID is in the URL hash, show that property
     if (propertyId) {
+        alert("try!')
+        window.location.href="https://vimalraj45.github.io/v/check#2"
         const targetSection = document.getElementById(propertyId);
         if (targetSection) {
             // Show only the targeted property
