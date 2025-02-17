@@ -770,7 +770,7 @@ const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
 // Function to show a specific property based on the URL hash
 const showSectionFromHash = () => {
-    const hash = window.location.href;
+    const hash = window.location.hash;
     const propertyId = decodeURIComponent(hash.substring(1)); // Decode URL hash and remove the '#'
 
     // Hide all property cards first
@@ -815,7 +815,7 @@ window.addEventListener('hashchange', showSectionFromHash);
 
 function shareProperty(propertyTitle) {
     const shareText = `Check out this property: ${propertyTitle}`;
-    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
+    const shareURL = window.location.hash.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
     
     if (navigator.share) {
         // Use Web Share API if supported
