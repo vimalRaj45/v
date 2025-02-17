@@ -844,8 +844,7 @@ const fetchData = async () => {
     const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
     const sheetTab = "sheet1";
     const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
-
+     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}!A:H?key=${API_KEY}`;
     document.getElementById("homes-container").classList.add("hidden");
 
     try {
