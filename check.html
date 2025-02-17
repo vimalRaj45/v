@@ -812,11 +812,10 @@ window.addEventListener('load', showSectionFromHash);
 // Call the function on hash change to update the displayed property
 window.addEventListener('hashchange', showSectionFromHash);
 
-
 function shareProperty(propertyTitle) {
     const shareText = `Check out this property: ${propertyTitle}`;
     const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
-    
+
     if (navigator.share) {
         // Use Web Share API if supported
         navigator.share({
@@ -839,6 +838,7 @@ function shareProperty(propertyTitle) {
         alert('Property link copied to clipboard: ' + shareURL);
     }
 }
+
 
 let allHomesData = []; // Store all fetched data
 let currentIndex = 0;  // Track the current index
@@ -994,9 +994,21 @@ const loadNextBatch = () => {
     renderHomesData(homesDataBatch);
 };
 
-// Scroll event listener for infinite scrolling
 window.onload = function() {
     fetchData(); // Call fetchData to fetch and start loading data
+
+    // Check if the page URL has a hash (e.g., #property-title)
+    const hash = window.location.hash;
+    if (hash) {
+        const propertyId = decodeURIComponent(hash.substring(1)); // Remove '#' and decode
+        setTimeout(() => {
+            const targetProperty = document.getElementById(propertyId);
+            if (targetProperty) {
+                targetProperty.scrollIntoView({ behavior: 'smooth' }); // Scroll to the property
+                targetProperty.style.border = "2px solid #FF6347"; // Optional: Highlight the property
+            }
+        }, 1000); // Delay to ensure data is loaded
+    }
 
     // Infinite scroll handler (downwards)
     window.addEventListener('scroll', () => {
