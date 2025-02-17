@@ -782,6 +782,7 @@ const showSectionFromHash = async () => {
 
     // Check if the property is already loaded
     if (targetSection) {
+        window.location.reload();
         targetSection.style.display = 'block';
         document.getElementById('view-all-btn').style.display = 'none';
         targetSection.scrollIntoView({
