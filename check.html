@@ -782,14 +782,19 @@ const showSectionFromHash = async () => {
 
     // Check if the property is already loaded
     if (targetSection) {
-        targetSection.style.display = 'block';
-        document.getElementById('view-all-btn').style.display = 'none';
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
+    targetSection.style.display = 'block';
+    document.getElementById('view-all-btn').style.display = 'none';
+    targetSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+
+    // Use a flag to reload only once
+    if (!sessionStorage.getItem('hasReloaded')) {
+        sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
         window.location.reload();
-        return; // No need to load more batches
+    }
+    return; // No need to load more batches
     }
 
     // Property not found - load more batches until it's found
