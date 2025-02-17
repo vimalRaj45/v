@@ -772,7 +772,7 @@ const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API key
 const showSectionFromHash = () => {
     const hash = window.location.hash;
     const propertyId = decodeURIComponent(hash.substring(1)); // Decode URL hash and remove the '#'
-
+    alert(propertyId);
     // Hide all property cards first
     const allSections = document.querySelectorAll('.home-card');
     allSections.forEach(section => section.style.display = 'none');
