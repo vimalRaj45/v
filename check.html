@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -815,7 +816,7 @@ window.addEventListener('hashchange', showSectionFromHash);
 function shareProperty(propertyTitle) {
     const shareText = `Check out this property: ${propertyTitle}`;
     const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
-
+    
     if (navigator.share) {
         // Use Web Share API if supported
         navigator.share({
@@ -924,7 +925,7 @@ const renderHomesData = (homesData) => {
                                 style="background: #4682B4; color: white;">
                                 <i class="fas fa-map-marker-alt" style="font-size:11px"></i> Map
                             </button>
-                            <!-- Share Button -->
+                           <!-- Share Button -->
 <button class="btn btn-sm ms-auto" onclick="shareProperty('${home['property title']}')" 
     style="background: #008080; color: white;">
     <i class="fas fa-share-alt" style="font-size:11px"></i> Share
