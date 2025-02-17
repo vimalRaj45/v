@@ -770,6 +770,11 @@ const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API keylet is
 let isLoadingBatches = false; // Prevent multiple batch loads
 
 const showSectionFromHash = async () => {
+        // Use a flag to reload only once
+    if (!sessionStorage.getItem('hasReloaded')) {
+        sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
+        window.location.reload();
+    }
     const hash = window.location.hash;
     const propertyId = decodeURIComponent(hash.substring(1));
 
@@ -789,11 +794,7 @@ const showSectionFromHash = async () => {
         block: 'start'
     });
 
-    // Use a flag to reload only once
-    if (!sessionStorage.getItem('hasReloaded')) {
-        sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
-        window.location.reload();
-    }
+
     return; // No need to load more batches
     }
 
