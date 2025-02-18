@@ -1099,6 +1099,7 @@ function sendMsg(title, location, rate) {
 
 // Function to filter properties based on input
 const filterProperties = () => {
+     document.getElementById('view-all-btn').style.display = 'none';
     const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get the input value and convert to lowercase
     const cards = document.querySelectorAll('.home-card'); // Get all property cards
     let found = false; // Variable to track if any card is found
