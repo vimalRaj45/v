@@ -1096,32 +1096,21 @@ function sendMsg(title, location, rate) {
     window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
 }
 
-function filterProperties() {
+
+// Function to filter properties based on input
+const filterProperties = () => {
     const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get the input value and convert to lowercase
     const cards = document.querySelectorAll('.home-card'); // Get all property cards
     let found = false; // Variable to track if any card is found
-    const locationsArray = []; // Array to store all locations
 
+    // Loop through each property card initially
     cards.forEach(card => {
-        // Safely extract the title, location, and rate text
         const titleElement = card.querySelector('.type');
-        const locationElement = card.querySelector('.location'); // Use a specific class for location
+        const locationElement = card.querySelector('.location');
         const rateElement = card.querySelector('.fw-bold');
-
-        // Ensure elements exist before trying to get their text content
         const title = titleElement ? titleElement.textContent.toLowerCase() : '';
-        const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : ''; // Clean location text
+        const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : '';
         const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
-
-        // Add the location to the array
-        if (location) {
-            locationsArray.push(location);
-        }
-
-        // Debug: Check the extracted title, location, and input
-        console.log("Input: ", input);
-        console.log("Extracted Title: ", title);
-        console.log("Extracted Location: ", location);
 
         // Check if the input matches any of the fields (title, location, rate)
         if (title.includes(input) || location.includes(input) || rate.includes(input)) {
@@ -1131,9 +1120,6 @@ function filterProperties() {
             card.style.display = "none";  // Hide card if no match
         }
     });
-
-    // Debug: Log all extracted locations
-    console.log("All Locations: ", locationsArray);
 
     // Show "No property found" message if no matches
     const noSearchMessage = document.getElementById('no-search-message');
@@ -1148,13 +1134,43 @@ function filterProperties() {
             message.style.fontSize = '22px';
             document.body.appendChild(message); // Append to body or a specific element
         }
+
+        // Start loading more data until a match is found
+        const loadInterval = setInterval(() => {
+            // Try loading the next batch of data
+            const loaded = loadNextBatch(); // Try loading the next batch of homes
+
+            // If a batch was loaded, check the newly loaded cards for a match
+            if (loaded) {
+                const newCards = document.querySelectorAll('.home-card');
+                newCards.forEach(card => {
+                    const titleElement = card.querySelector('.type');
+                    const locationElement = card.querySelector('.location');
+                    const rateElement = card.querySelector('.fw-bold');
+                    const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+                    const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : '';
+                    const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
+
+                    // If a match is found in the newly loaded cards, stop loading and display the result
+                    if (title.includes(input) || location.includes(input) || rate.includes(input)) {
+                        card.style.display = "block";
+                        found = true; // Match found
+                    }
+                });
+            }
+
+            // If a match is found, stop the interval
+            if (found) {
+                clearInterval(loadInterval);
+            }
+        }, 10); // Load new batch every 50ms
     } else {
         // If matches are found, remove the "No Property found" message
         if (noSearchMessage) {
             noSearchMessage.remove();
         }
     }
-}
+};
 
 // Adding event listener to input field for filtering
 document.getElementById('searchInput').addEventListener('keyup', filterProperties);
