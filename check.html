@@ -766,7 +766,6 @@ function hide() {
 const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
 const sheetTab = "sheet1"; // Replace with your sheet tab name
 const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API keylet isLoadingBatches = false; // Flag to prevent multiple triggers
-
 let isLoadingBatches = false; // Prevent multiple batch loads
 const showSectionFromHash = async () => {
     const hash = window.location.hash;
@@ -781,17 +780,19 @@ const showSectionFromHash = async () => {
 
     // Check if the property is already loaded
     if (targetSection) {
+
+
         // Use a flag to reload only once
         if (!sessionStorage.getItem('hasReloaded')) {
             sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
-            window.location.reload();
         }
+
         targetSection.style.display = 'block';
         
         // Remove hash from the URL without reloading
         window.history.replaceState(null, null, ' ');
 
-        document.getElementById('view-all-btn').style.display = 'none';
+        document.getElementById('view-all-btn').style.display = 'block';
         targetSection.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -810,6 +811,10 @@ const showSectionFromHash = async () => {
     // Property should now be loaded
     targetSection = document.getElementById(propertyId);
     if (targetSection) {
+        // Hide all property cards before showing the target
+        const allSections = document.querySelectorAll('.home-card');
+        allSections.forEach(section => section.style.display = 'none');
+
         targetSection.style.display = 'block';
         targetSection.scrollIntoView({
             behavior: 'smooth',
@@ -833,9 +838,11 @@ const loadNextBatch = () => {
 
 // Function to show all properties
 const showAllProperties = () => {
-    // Reset the URL hash to remove the specific property view
-    window.location.hash = '';
-    showSectionFromHash(); // Show all properties
+// Hide all property cards before showing the target
+const allSections = document.querySelectorAll('.home-card');
+        allSections.forEach(section => section.style.display = 'block');
+        document.getElementById('view-all-btn').style.display = 'none';
+
 };
 
 // Call the function on page load to handle the initial hash
