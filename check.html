@@ -787,9 +787,11 @@ const showSectionFromHash = async () => {
     // Use a flag to reload only once
     if (!sessionStorage.getItem('hasReloaded')) {
         sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
-        window.location.reload();
+       
     }
     targetSection.style.display = 'block';
+    window.location.hash = '';
+    window.location.reload(); 
     document.getElementById('view-all-btn').style.display = 'none';
     targetSection.scrollIntoView({
         behavior: 'smooth',
@@ -1019,11 +1021,7 @@ const renderHomesData = (homesData) => {
 // Combined window.onload
 window.onload = function() {
 
-    window.addEventListener('scroll', () => {
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 80){
-            showAllProperties();
-        }
-    });
+
     // Call fetchData
     fetchData();
     window.addEventListener('scroll', () => {
