@@ -787,11 +787,10 @@ const showSectionFromHash = async () => {
     // Use a flag to reload only once
     if (!sessionStorage.getItem('hasReloaded')) {
         sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
-       
+           window.location.reload(); 
     }
     targetSection.style.display = 'block';
     window.location.hash = '';
-    window.location.reload(); 
     document.getElementById('view-all-btn').style.display = 'none';
     targetSection.scrollIntoView({
         behavior: 'smooth',
