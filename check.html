@@ -884,6 +884,7 @@ let allHomesData = []; // Store all fetched data
 let currentIndex = 0;  // Track the current index
 const batchSize = 4; // Number of records to fetch at a time (set to 5)
 
+
 const fetchData = async () => {
     const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
     const sheetTab = "sheet1";
@@ -891,27 +892,42 @@ const fetchData = async () => {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
 
     document.getElementById("homes-container").classList.add("hidden");
+    let loadingMessage = document.getElementById('loading-message');
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const rows = data.values || [];
+// If the loading message doesn't already exist, create it
+if (!loadingMessage) {
+    loadingMessage = document.createElement('p');
+    loadingMessage.id = 'loading-message';
+    loadingMessage.textContent = 'Loading data, please wait...';
+    loadingMessage.style.textAlign = 'center';
+    loadingMessage.style.fontWeight = 'bold';
+    loadingMessage.style.fontSize = '20px';
+    document.body.appendChild(loadingMessage); // Append the message to the body
+}
 
-        console.log(rows);
-        const headers = rows[0].map(header => header.trim().toLowerCase());
-        allHomesData = rows.slice(1).map(row => {
-            const home = {};
-            headers.forEach((header, index) => {
-                home[header] = row[index] || "";
-            });
-            return home;
+try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const rows = data.values || [];
+
+    const headers = rows[0].map(header => header.trim().toLowerCase());
+    allHomesData = rows.slice(1).map(row => {
+        const home = {};
+        headers.forEach((header, index) => {
+            home[header] = row[index] || "";
         });
+        return home;
+    });
 
-        // Initially load the first batch (5 records)
-        loadNextBatch();
-    } catch (error) {
-        console.error("Error fetching property data:", error);
-    }
+    // Initially load the first batch
+    loadNextBatch();
+
+    // Remove loading message after data is fully loaded
+    loadingMessage.remove();
+} catch (error) {
+    console.error("Error fetching property data:", error);
+    loadingMessage.textContent = "Failed to load data. Please try again.";
+}
 };
 // Declare a global variable to keep track of the index
 let globalIndex = 0;
