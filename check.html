@@ -1020,7 +1020,9 @@ const renderHomesData = (homesData) => {
 window.onload = function() {
 
     window.addEventListener('scroll', () => {
-       showAllProperties();
+        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 80){
+            showAllProperties();
+        }
     });
     // Call fetchData
     fetchData();
