@@ -915,7 +915,7 @@ const renderHomesData = (homesData) => {
     const container = document.getElementById("homes-container");
 
     homesData.forEach((home) => {
-         const propertyId = `property-${home['property title'].replace(/\s+/g, '_')}`;
+        const propertyId = `property-${home['property title'].replace(/\s+/g, '_')}`;
         const imageSrc = home['propertiy img url']
             ? home['propertiy img url'].startsWith('data:image')
                 ? home['propertiy img url']
@@ -1018,6 +1018,10 @@ const renderHomesData = (homesData) => {
 
 // Combined window.onload
 window.onload = function() {
+
+    window.addEventListener('scroll', () => {
+       showAllProperties();
+    });
     // Call fetchData
     fetchData();
     window.addEventListener('scroll', () => {
