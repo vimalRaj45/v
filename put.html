@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -269,6 +270,10 @@ function disp() {
             reader.readAsDataURL(file);
         });
     }
+   // Replace spaces with underscores in the "Property Title" input field
+document.getElementById('propertyTitle').addEventListener('input', function(event) {
+    this.value = this.value.replace(/\s+/g, '_');
+});
 
     document.getElementById('addAnotherBtn').addEventListener('click', function() {
         document.getElementById('propertyForm').reset();
