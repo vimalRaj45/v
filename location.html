@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sona Campus Navigation</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* Same styles as before */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -41,7 +43,6 @@
 </head>
 <body>
     <h2>Sona Campus Navigation</h2>
-    <h6>Make Sure Location is On</h6>
     <div id="loader"></div>
     <p id="status"></p>
     <p id="address" style="display: none"></p>
@@ -59,7 +60,7 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                alert("Geolocation is not supported by this browser.");
+                Swal.fire("Error", "Geolocation is not supported by this browser.", "error");
                 document.getElementById("status").innerText = "";
                 document.getElementById("loader").style.display = "none";
             }
@@ -90,7 +91,7 @@
 
         function routeToLibrary() {
             if (!userCoords) {
-                alert("First, get your location!");
+                Swal.fire("Error", "First, get your location!", "warning");
                 return;
             }
 
@@ -119,18 +120,25 @@
             }
             document.getElementById("status").innerText = msg;
             document.getElementById("loader").style.display = "none";
-            alert(msg);
+            Swal.fire("Error", msg, "error");
         }
 
         function show_alert() {
-            alert("To reset location permissions:\n\n" +
-                  "1. Open your browser settings.\n" +
-                  "2. Go to Site Settings > Location.\n" +
-                  "3. Find this site and reset or allow location permissions.\n" +
-                  "4. Reload the page and try again.");
+            Swal.fire(
+                "Reset Location Permissions",
+                "To reset location permissions:\n\n" +
+                "1. Open your browser settings.\n" +
+                "2. Go to Site Settings > Location.\n" +
+                "3. Find this site and reset or allow location permissions.\n" +
+                "4. Reload the page and try again.",
+                "info"
+            );
         }
 
-        window.onload = getLocation;
+        window.onload = function (){getAddress();,Swal.fire(
+                "Make Sure Location is On",
+                "info"
+            );}
     </script>
 </body>
 </html>
