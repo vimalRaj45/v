@@ -143,18 +143,21 @@
         }
 
         function show_alert() {
-            Swal.fire({
-                title: "Reset Location Permissions",
-                text: " To reset location permissions:\n\n" +
-                      " 1. Open your browser settings.\n" +
-                      " 2. Go to Site Settings > Location.\n" +
-                      " 3. Find this site and reset or allow location permissions.\n" +
-                      " 4. Reload the page and try again.",
-                icon: "info",
-                timer: 10000,
-                showCancelButton: true,
-                confirmButtonText: "Okay"
-            });
+    Swal.fire({
+        title: "Reset Location Permissions",
+        html: `
+            To reset location permissions:<br><br>
+            1. Open your browser settings.<br>
+            2. Go to Site Settings > Location.<br>
+            3. Find this site and reset or allow location permissions.<br>
+            4. Reload the page and try again.
+        `,
+        icon: "info",
+        timer: 10000,
+        showCancelButton: true,
+        confirmButtonText: "Okay",
+        timerProgressBar: true
+    });
         }
 
         window.onload = function () {
