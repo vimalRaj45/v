@@ -134,7 +134,7 @@
             document.getElementById("loader").style.display = "none";
             Swal.fire({
                 title: "Error",
-                text: msg,
+                text: msg+'On Location',
                 icon: "error",
                 timer: 3000,
                 showCancelButton: true,
@@ -158,14 +158,6 @@
         }
 
         window.onload = function () {
-            Swal.fire({
-                title: "Make Sure Location is On",
-                text: "Please ensure your location services are enabled before proceeding.",
-                icon: "info",
-                timer: 3000,
-                showCancelButton: true,
-                confirmButtonText: "Close"
-            });
             getLocation();
         };
     </script>
