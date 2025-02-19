@@ -68,18 +68,17 @@
     <p id="status"></p>
     <button onclick="routeToLibrary()">Route to Library</button>
     <p id="address" style="display: none"></p>
-    <button id="msg" onclick="msg()" style="display: none;">Reset Location Permissions</button>
+    <button onclick="show_alert()" style="display: none; margin-top: 8px" id="alertbtn">Acedently Clicked Never Button what i do</button>
 
     <script>
-        function msg() {
-            alert("To reset location permissions, follow these steps:\n\n" +
+    function show_alert(){
+      alert("To reset location permissions, follow these steps:\n\n" +
                   "1. Open your browser settings.\n" +
-                  "2. Go to Privacy/Site Settings > Location.\n" +
-                  "3. Find this site and reset or allow location permissions.\n" +
+                  "2. Go to Site Settings > .\n" +
+                  "3. Find Location  in site and reset or allow location in location permissions.\n" +
                   "4. Reload the page and try again.");
-        }
-
-        let apiKey = "908f81b3-d677-438e-a4f0-aac03af858aa"; // Replace with your GraphHopper API Key
+    }
+        let apiKey = "908f81b3-d677-438e-a4f0-aac03af858aa"; // Replace with  GraphHopper API Key
         let userCoords;
 
         function getLocation() {
@@ -92,6 +91,8 @@
                 alert("Geolocation is not supported by this browser.");
                 document.getElementById("status").innerText = "";
                 document.getElementById("loader").style.display = "none";
+                
+                
             }
         }
 
@@ -118,7 +119,6 @@
                     console.error("Error fetching address:", error);
                     document.getElementById("status").innerText = "Failed to get address.";
                     document.getElementById("loader").style.display = "none";
-                    document.getElementById("msg").style.display = "block";
                 });
         }
 
@@ -144,18 +144,12 @@
         function showError(error) {
             let msg;
             switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    msg = "User denied the request for Geolocation.";
-                    document.getElementById("msg").style.display = "block";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    msg = "Location information is unavailable.";
-                    break;
-                case error.TIMEOUT:
-                    msg = "The request to get user location timed out.";
-                    break;
-                default:
-                    msg = "An unknown error occurred.";
+                case error.PERMISSION_DENIED: msg = "User denied the request for Geolocation.";
+                document.getElementById("alertbtn").style.display="block";
+                break;
+                case error.POSITION_UNAVAILABLE: msg = "Location information is unavailable."; break;
+                case error.TIMEOUT: msg = "The request to get user location timed out."; break;
+                case error.UNKNOWN_ERROR: msg = "An unknown error occurred."; break;
             }
             document.getElementById("status").innerText = msg;
             document.getElementById("loader").style.display = "none";
