@@ -68,8 +68,16 @@
     <p id="status"></p>
     <button onclick="routeToLibrary()">Route to Library</button>
     <p id="address" style="display: none"></p>
+    <button id="msg" onclick="msg()" style="display: none"></button>
 
     <script>
+     function msg(){
+       alert("To reset location permissions, follow these steps:\n\n" +
+                  "1. Open your browser settings.\n" +
+                  "2. Go to Privacy/Site Settings > Location.\n" +
+                  "3. Find this site and reset or allow location permissions.\n" +
+                  "4. Reload the page and try again.");
+     }
         let apiKey = "908f81b3-d677-438e-a4f0-aac03af858aa"; // Replace with your GraphHopper API Key
         let userCoords;
 
@@ -109,6 +117,7 @@
                     console.error("Error fetching address:", error);
                     document.getElementById("status").innerText = "Failed to get address.";
                     document.getElementById("loader").style.display = "none";
+                    document.getElementById("msg").style.display = "block"
                 });
         }
 
