@@ -81,7 +81,7 @@
                 .then(response => response.json())
                 .then(data => {
                     let address = data.hits.length > 0 ? data.hits[0].name : "Address not found";
-                    document.getElementById("address").innerText = address;
+                    document.getElementById("address").innerText = "now click Route Button";
                     document.getElementById("address").style.display = "block";
                 })
                 .catch(error => console.error("Error fetching address:", error));
@@ -103,7 +103,7 @@
             let msg;
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    msg = "User denied the request for Geolocation.";
+                    msg = "User denied the request for location service.";
                     document.getElementById("alertbtn").style.display = "block";
                     break;
                 case error.POSITION_UNAVAILABLE:
