@@ -46,15 +46,6 @@
     </style>
 </head>
 <body>
-  <!-- Pop-up for "Navigation Info" -->
-<!-- Pop-up for Navigation -->
-<div id="modal-media-image" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
-        <button class="uk-modal-close-outside" type="button" uk-close></button>
-        <img src="https://i.ibb.co/CF6xFrv/1740058447018.webp" width="400" height="400" alt="Navigation Image" loading="lazy">
-        <p style="margin: 5px">Please Verify location enabled in Google maps (We are Auto navigate to google map wait...)</p>
-    </div>
-</div>
     <h2 class="uk-heading-line uk-text-primary"><span>Sona Campus Navigation</span></h2>
     <!-- Location Pop-up -->
     <div id="location-popup">
@@ -154,23 +145,21 @@
             }, 1000);
         }
 
-function routeToHall(destinationCoords) {
+        function routeToHall(destinationCoords) {
     if (!userCoords) {
         showModal("Error", "Please allow location access before trying to navigate.");
         return;
     }
 
-    // Show the image modal
-    UIkit.modal("#modal-media-image").show();
-
-    // Wait for 4 seconds, then navigate to Google Maps
-    setTimeout(() => {
+    // Display an image modal using UIkit before navigating
+    UIkit.modal.alert(`
+        <img src="https://i.ibb.co/CF6xFrv/1740058447018.webp" style="width: 100%; max-width: 300px;" alt="Navigation Image">
+        <p>Please Verify in Google maps location is enabled ( press okay to navigate then check that )</p>
+    `).then(() => {
+        // Navigate to Google Maps after user closes the modal
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-        window.open(googleMapsURL, "_blank");
-
-        // Close the modal after navigation
-        UIkit.modal("#modal-media-image").hide();
-    }, 5000);
+        window.location.href = googleMapsURL; // Navigate within the same tab
+    });
 }
 
         function showError(error) {
@@ -205,6 +194,5 @@ function routeToHall(destinationCoords) {
             getLocation();
         };
     </script>
-
 </body>
 </html>
