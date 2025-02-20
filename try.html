@@ -55,18 +55,23 @@
       gapiLoaded = true;
     }
 
-    function initializeAuth() {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-  client_id: CLIENT_ID, // Replace with your actual client ID
-  scope: SCOPES,
-  callback: (tokenResponse) => {
-    gapi.client.setApiKey(API_KEY); // Optional
-    gapi.client.setToken(tokenResponse);
-    alert('Authorization successful!');
-  },
-  redirect_uri: 'https://vimalraj45.github.io', // Match this with the authorized redirect URI
-});
+   function initializeAuth() {
+  // Ensure you load Google's JavaScript client library before calling this
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID, // Replace with your actual client ID from Google Cloud
+    scope: SCOPES, // Ensure SCOPES includes necessary permissions (e.g., 'https://www.googleapis.com/auth/drive.file')
+    callback: (tokenResponse) => {
+      gapi.client.setApiKey(API_KEY); // Optional, depending on your setup
+      gapi.client.setToken(tokenResponse); // Sets the token after successful authentication
+      alert('Authorization successful!');
+    },
+    redirect_uri: 'https://vimalraj45.github.io', // Match with the registered redirect URI
+  });
+
+  // Request the access token (triggers the OAuth flow)
+  tokenClient.requestAccessToken();
 }
+
 
 
     async function uploadFile() {
