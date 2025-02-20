@@ -4,57 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sona Campus Navigation</title>
+
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/css/uikit.min.css" />
+
+    <!-- UIkit JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/js/uikit-icons.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f4f4f9;
-            margin: 0;
             padding: 20px;
         }
         h2 { color: #333; }
-        button {
-            padding: 12px 20px;
-            text-align:center;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover { background-color: #0056b3; }
         #status { font-size: 14px; color: #555; margin: 20px 0; }
-        #loader {
-            display: none;
-            margin: 20px auto;
-            border: 4px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 4px solid #007bff;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
+        #alertbtn {
+            font-size: 12px;
+            padding: 4px 8px;
+            margin: 5px;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #address { font-size: 14px; font-style: italic; color: #333; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <h2>Sona Campus Navigation</h2>
-    <div id="loader"></div>
+    <h2 class="uk-heading-line uk-text-primary"><span>Sona Campus Navigation</span></h2>
+    <div id="loader" uk-spinner="ratio: 2" style="display: none; margin-bottom: 20px;"></div>
     <p id="status"></p>
     <p id="address" style="display: none"></p>
-    <button onclick="routeToLibrary()">Route to Library</button>
-    <button onclick="show_alert()" style="display: none; margin-top: 8px" id="alertbtn">Accidentally Clicked "Never Allow"</button>
+
+    <!-- "Accidentally Clicked" Button -->
+    <button id="alertbtn" class="uk-button uk-button-danger uk-button-small" style="display: none;" onclick="show_alert()">Accidentally Clicked "Never Allow"</button>
+
+    <!-- Table for Event Halls -->
+    <table class="uk-table uk-table-divider uk-table-hover uk-table-middle uk-margin-large-top">
+        <thead>
+            <tr>
+                <th>Hall No</th>
+                <th>Route</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Hall 1</td>
+                <td><button class="uk-button uk-button-primary uk-button-small" onclick="routeToHall('11.677865,78.126028')">Route</button></td>
+            </tr>
+            <tr>
+                <td>Hall 2</td>
+                <td><button class="uk-button uk-button-primary uk-button-small" onclick="routeToHall('11.678500,78.126500')">Route</button></td>
+            </tr>
+            <!-- Add more halls as needed -->
+        </tbody>
+    </table>
 
     <script>
         let apiKey = "908f81b3-d677-438e-a4f0-aac03af858aa";
         let userCoords;
 
         function getLocation() {
-            document.getElementById("status").innerText = "Please wait it takes few minutes... Getting your location.";
+            document.getElementById("status").innerText = "Please wait... Getting your location.";
             document.getElementById("loader").style.display = "block";
 
             if (navigator.geolocation) {
@@ -78,23 +88,10 @@
             userCoords = { lat: lat, lng: lon };
             document.getElementById("status").innerText = "Location found!";
             document.getElementById("loader").style.display = "none";
-
-            getAddress(lat, lon);
+            document.getElementById("address").style.display = "block";
         }
 
-        function getAddress(lat, lon) {
-            let url = `https://graphhopper.com/api/1/geocode?reverse=true&point=${lat},${lon}&key=${apiKey}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    let address = data.hits.length > 0 ? data.hits[0].name : "Address not found";
-                    document.getElementById("address").innerText = "Your location is detected. You can now click the 'Route' buttons.";
-                    document.getElementById("address").style.display = "block";
-                })
-                .catch(error => console.error("Error fetching address:", error));
-        }
-
-        function routeToLibrary() {
+        function routeToHall(destinationCoords) {
             if (!userCoords) {
                 Swal.fire({
                     title: "Error",
@@ -106,9 +103,7 @@
                 return;
             }
 
-            let libraryCoords = "11.677865,78.126028";
-            let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${libraryCoords}&travelmode=walking&maptype=satellite`;
-
+            let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
             window.open(googleMapsURL, "_blank");
         }
 
