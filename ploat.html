@@ -707,7 +707,19 @@ body.theme-dark li.hidemob a {
     
 
     <script>
+   // Lodash example (CDN import)
+const _ = window._ || (function() {
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/lodash/lodash.min.js';
+  document.head.appendChild(script);
+})();
 
+// jQuery example (CDN import)
+const $ = window.jQuery || (function() {
+  const script = document.createElement('script');
+  script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+  document.head.appendChild(script);
+})();
 
 setTimeout(function() {
         // Check theme preference
