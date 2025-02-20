@@ -154,7 +154,7 @@
     // Display an image modal using UIkit before navigating
     UIkit.modal.alert(`
         <img src="https://i.ibb.co/RpbPBMTW/1740059461741.webp" style="width: 100%; max-width: 300px;" alt="Navigation Image">
-        <p>Please Verify in Google maps location is enabled ( press okay to navigate then check that )</p>
+        <p>Please Verify in Google maps location is enabled ( press okay to navigate then check that and use satilite view )</p>
     `).then(() => {
         // Navigate to Google Maps after user closes the modal
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
