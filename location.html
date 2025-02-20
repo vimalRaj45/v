@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sona Campus Navigation</title>
-
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/css/uikit.min.css" />
-
     <!-- UIkit JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/js/uikit-icons.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         body {
@@ -25,18 +22,42 @@
         #alertbtn {
             font-size: 12px;
             padding: 4px 8px;
-            margin: 5px;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+        }
+        table {
+            margin: 0 auto;
+            width: 80%;
+        }
+        /* Pop-up container */
+        #location-popup {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #448AB9;
+            color: white;
+            padding: 5px 6px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
     <h2 class="uk-heading-line uk-text-primary"><span>Sona Campus Navigation</span></h2>
+    <!-- Location Pop-up -->
+    <div id="location-popup">
+        <span id="popup-text" style="font-size: 12px">Location found!</span>
+    </div>
     <div id="loader" uk-spinner="ratio: 2" style="display: none; margin-bottom: 20px;"></div>
     <p id="status"></p>
     <p id="address" style="display: none"></p>
-
+    <!-- Refresh Location Button -->
+    <button id="refresh-btn" class="uk-button uk-button-secondary uk-button-small" onclick="getLocation()">Refresh Location</button>
     <!-- "Accidentally Clicked" Button -->
-    <button id="alertbtn" class="uk-button uk-button-danger uk-button-small" style="display: none;" onclick="show_alert()">Accidentally Clicked "Never Allow"</button>
+    <button id="alertbtn" class="uk-button uk-button-danger uk-button-small" style="display: none;" onclick="UIkit.modal('#reset-permissions-modal').show()">Accidentally Clicked "Never Allow"</button>
 
     <!-- Table for Event Halls -->
     <table class="uk-table uk-table-divider uk-table-hover uk-table-middle uk-margin-large-top">
@@ -55,28 +76,52 @@
                 <td>Hall 2</td>
                 <td><button class="uk-button uk-button-primary uk-button-small" onclick="routeToHall('11.678500,78.126500')">Route</button></td>
             </tr>
-            <!-- Add more halls as needed -->
         </tbody>
     </table>
+
+    <!-- UIkit Modal for Error Messages -->
+    <div id="error-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title" id="modal-title">Error</h2>
+            <hr>
+            <p id="modal-message">An error occurred.</p>
+            <hr>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Okay</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- UIkit Modal for Reset Permissions -->
+    <div id="reset-permissions-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Reset Location Permissions</h2>
+            <hr>
+            <p>To reset location permissions:</p>
+            <ol>
+                <li>Open your browser settings.</li>
+                <li>Go to Site Settings > Location.</li>
+                <li>Find this site and reset or allow location permissions.</li>
+                <li>Reload the page and try again.</li>
+            </ol>
+            <hr>
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Okay</button>
+            </p>
+        </div>
+    </div>
 
     <script>
         let apiKey = "908f81b3-d677-438e-a4f0-aac03af858aa";
         let userCoords;
 
         function getLocation() {
-            document.getElementById("status").innerText = "Please wait... Getting your location.";
+            document.getElementById("status").innerText = "It may take a few minutes... Getting your location.";
             document.getElementById("loader").style.display = "block";
-
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                Swal.fire({
-                    title: "Error",
-                    text: "Geolocation is not supported by this browser. Please use a different browser.",
-                    icon: "error",
-                    timer: 5000,
-                    confirmButtonText: "Okay"
-                });
+                showModal("Error", "Geolocation is not supported by this browser. Please use a different browser.");
                 document.getElementById("status").innerText = "";
                 document.getElementById("loader").style.display = "none";
             }
@@ -86,23 +131,25 @@
             let lat = position.coords.latitude;
             let lon = position.coords.longitude;
             userCoords = { lat: lat, lng: lon };
-            document.getElementById("status").innerText = "Location found!";
+            // Update status and show pop-up
+            document.getElementById("status").innerText = "";
             document.getElementById("loader").style.display = "none";
+            document.getElementById("address").innerText = "Your location is detected. You can now click the 'Route' buttons.";
             document.getElementById("address").style.display = "block";
+            // Show pop-up
+            document.getElementById("location-popup").style.display = "block";
+            document.getElementById("popup-text").innerText = `Location found!`;
+            // Hide pop-up after 5 seconds
+            setTimeout(() => {
+                document.getElementById("location-popup").style.display = "none";
+            }, 1000);
         }
 
         function routeToHall(destinationCoords) {
             if (!userCoords) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Please allow location access before trying to navigate.",
-                    icon: "warning",
-                    timer: 4000,
-                    confirmButtonText: "Okay"
-                });
+                showModal("Error", "Please allow location access before trying to navigate.");
                 return;
             }
-
             let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
             window.open(googleMapsURL, "_blank");
         }
@@ -126,31 +173,13 @@
             }
             document.getElementById("status").innerText = msg;
             document.getElementById("loader").style.display = "none";
-            Swal.fire({
-                title: "Location Error",
-                text: msg,
-                icon: "error",
-                timer: 5000,
-                confirmButtonText: "Okay"
-            });
+            showModal("Location Error", msg);
         }
 
-        function show_alert() {
-            Swal.fire({
-                title: "Reset Location Permissions",
-                html: `
-                    To reset location permissions:<br><br>
-                    1. Open your browser settings.<br>
-                    2. Go to Site Settings > Location.<br>
-                    3. Find this site and reset or allow location permissions.<br>
-                    4. Reload the page and try again.
-                `,
-                icon: "info",
-                timer: 1000000,
-                showCancelButton: true,
-                confirmButtonText: "Okay",
-                timerProgressBar: true
-            });
+        function showModal(title, message) {
+            document.getElementById("modal-title").innerText = title;
+            document.getElementById("modal-message").innerText = message;
+            UIkit.modal("#error-modal").show();
         }
 
         window.onload = function () {
