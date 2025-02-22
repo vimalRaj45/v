@@ -6,6 +6,7 @@
     <title>Sona Campus Navigation</title>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/css/uikit.min.css" />
+    <link rel="preload" href="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" as="image">
     <!-- UIkit JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.27/dist/js/uikit-icons.min.js"></script>
@@ -154,7 +155,7 @@
 
     // Display an image modal using UIkit before navigating
     UIkit.modal.alert(`
-        <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" style="width: 100%; max-width: 300px;" alt="Navigation Image">
+        <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" style="width: 100%; max-width: 300px;" alt="Navigation Image" loading="lazy">
         <p>Please Verify in Google maps location is enabled ( press okay to navigate then check that and use satilite view )</p>
     `).then(() => {
         // Navigate to Google Maps after user closes the modal
