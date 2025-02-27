@@ -115,14 +115,17 @@
 
     <script>
 
-        function getLocation() {
+       let userCoords = ""; // Store user's location globally
+
+// Function to get the user's location
+function getLocation() {
     document.getElementById("status").innerText = "It may take a few moments... Getting your location.";
     document.getElementById("loader").style.display = "block";
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                // Success callback
+                // Success: store the user's coordinates
                 userCoords = `${position.coords.latitude},${position.coords.longitude}`;
                 document.getElementById("status").innerText = "";
                 document.getElementById("loader").style.display = "none";
@@ -137,7 +140,6 @@
                 }, 600);
             },
             (error) => {
-                // Error callback
                 showError(error);
             }
         );
@@ -146,42 +148,46 @@
     }
 }
 
-        function routeToHall(destinationCoords) {
-            let countdown = 5;
+// Function to generate route to a selected hall
+function routeToHall(destinationCoords) {
+    if (!userCoords) {
+        showModal("Location Error", "Your location is not detected yet. Please click 'Refresh Location' and try again.");
+        return;
+    }
 
-            // Create modal with countdown in a rectangular shape with rounded corners
-            const modal = UIkit.modal.dialog(`
-                <div class="uk-modal-body">
-                    <button class="uk-modal-close-default" type="button" uk-close></button>
-                    <img src="https://i.ibb.co/HWc5gt6/1740682334151.jpg" 
-                         style="width:100%; max-width: 400px;" 
-                         alt="Navigation Image" 
-                         loading="lazy">
-                    <p>Please Click Start in Google Maps. You will be automatically redirected in 
-                        <span id="countdown" style="color: #007bff; font-weight: bold;">
-                            ${countdown}
-                        </span> 
-                        seconds.
-                    </p>
-                </div>
-            `);
+    let countdown = 5;
+    const modal = UIkit.modal.dialog(`
+        <div class="uk-modal-body">
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <img src="https://i.ibb.co/HWc5gt6/1740682334151.jpg" 
+                 style="width:100%; max-width: 400px;" 
+                 alt="Navigation Image" 
+                 loading="lazy">
+            <p>Please Click Start in Google Maps. You will be automatically redirected in 
+                <span id="countdown" style="color: #007bff; font-weight: bold;">
+                    ${countdown}
+                </span> 
+                seconds.
+            </p>
+        </div>
+    `);
 
-            const countdownElement = document.getElementById("countdown");
+    const countdownElement = document.getElementById("countdown");
+    const interval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
 
-            const interval = setInterval(() => {
-                countdown--;
-                countdownElement.textContent = countdown;
-
-                if (countdown <= 0) {
-                    clearInterval(interval);
-                    modal.hide(); // Correct usage now
-                    let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=My+Location&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-                    window.location.href = googleMapsURL; // Redirect to Google Maps
-                }
-            }, 1000);
+        if (countdown <= 0) {
+            clearInterval(interval);
+            modal.hide();
+            let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
+            window.location.href = googleMapsURL;
         }
+    }, 1000);
+}
 
-        function showError(error) {
+// Function to show error messages
+function showError(error) {
     let msg;
     switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -206,15 +212,18 @@
     showModal("Location Error", msg);
 }
 
-        function showModal(title, message) {
-            document.getElementById("modal-title").innerText = title;
-            document.getElementById("modal-message").innerText = message;
-            UIkit.modal("#error-modal").show();
-        }
+// Function to show modal with title and message
+function showModal(title, message) {
+    document.getElementById("modal-title").innerText = title;
+    document.getElementById("modal-message").innerText = message;
+    UIkit.modal("#error-modal").show();
+}
 
-        window.onload = function () {
-            getLocation();
-        };
+// Automatically get location on page load
+window.onload = function () {
+    getLocation();
+};
+
     </script>
 </body>
 </html>
