@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,13 +148,15 @@
             }, 1000);
         }
 
-       function routeToHall(destinationCoords) {
+        function routeToHall(destinationCoords) {
     if (!userCoords) {
         showModal("Error", "Please allow location access before trying to navigate.");
         return;
     }
 
-    // Create and store modal instance
+    let countdown = 10;
+
+    // Create modal with countdown in a rectangular shape with rounded corners
     const modal = UIkit.modal.dialog(`
         <div class="uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -161,16 +164,28 @@
                  style="width: 100%; max-width: 300px;" 
                  alt="Navigation Image" 
                  loading="lazy">
-            <p>Please verify in Google Maps that location is enabled. You will be automatically redirected.</p>
+            <p>Please verify in Google Maps that location is enabled. You will be automatically redirected in 
+                <span id="countdown" style="display: inline-block; padding: 6px 15px; background-color: #007bff; color: white; font-weight: bold; border-radius: 8px; font-size: 16px;">
+                    ${countdown}
+                </span> 
+                seconds.
+            </p>
         </div>
     `);
 
-    // Automatically close the modal and navigate to Google Maps after 3 seconds
-    setTimeout(() => {
-        modal.hide(); // Close the modal
-        let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-        window.location.href = googleMapsURL; // Navigate to Google Maps
-    }, 3000); // 3-second delay
+    // Countdown timer
+    const countdownElement = document.getElementById("countdown");
+    const interval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+
+        if (countdown <= 0) {
+            clearInterval(interval);
+            modal.hide(); // Close modal
+            let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
+            window.location.href = googleMapsURL; // Redirect to Google Maps
+        }
+    }, 1000);
 }
 
 
