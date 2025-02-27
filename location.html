@@ -160,12 +160,12 @@
     const modal = UIkit.modal.dialog(`
         <div class="uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <img src="https://i.ibb.co/zW6n1Nfh/1740680930394.jpg" 
+           <img src="https://i.ibb.co/zW6n1Nfh/1740680930394.jpg" 
                  style="width: 75%; max-width: 400px;" 
                  alt="Navigation Image" 
                  loading="lazy">
-            <p>Please Click That loaction button and  Start Button  in Google Maps. You will be automatically redirected in 
-                <span id="countdown" style="color: #007bff;font-weight:bold;">
+            <p>Please Click Location button and Start  in Google Maps. You will be automatically redirected in 
+                 <span id="countdown" style="color: #007bff;font-weight:bold;">
                     ${countdown}
                 </span> 
                 seconds.
@@ -182,9 +182,16 @@
         if (countdown <= 0) {
             clearInterval(interval);
             modal.hide(); // Close modal
-            // Navigate to Google Maps after user closes the modal
-        let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-        window.location.href = googleMapsURL; // Navigate within the same tab
+
+            let googleMapsAppURL = `google.navigation:q=${destinationCoords}&mode=w`;
+            let googleMapsWebURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
+
+            // Try opening Google Maps app, fallback to web if not available
+            window.location.href = googleMapsAppURL;
+
+            setTimeout(() => {
+                window.location.href = googleMapsWebURL;
+            }, 3000); // Fallback to browser after 3s if app is not opened
         }
     }, 1000);
 }
