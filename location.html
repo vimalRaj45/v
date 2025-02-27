@@ -156,7 +156,6 @@
     // Create and store modal instance
     const modal = UIkit.modal.dialog(`
         <div class="uk-modal-body">
-            <button class="uk-modal-close-default" type="button" uk-close></button>
             <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" 
                  style="width: 100%; max-width: 300px;" 
                  alt="Navigation Image" 
@@ -165,13 +164,14 @@
         </div>
     `);
 
-    // Automatically close the modal and navigate after 3 seconds
+    // Automatically close the modal and navigate to Google Maps after 3 seconds
     setTimeout(() => {
-        if (modal.isActive()) modal.hide(); // Close modal if it's still open
+        modal.hide(); // Close the modal
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
         window.location.href = googleMapsURL; // Navigate to Google Maps
-    }, 3000);
+    }, 3000); // 3-second delay
 }
+
 
 
         function showError(error) {
