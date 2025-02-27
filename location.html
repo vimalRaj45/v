@@ -148,7 +148,7 @@
             }, 1000);
         }
 
-        function routeToHall(destinationCoords) {
+   function routeToHall(destinationCoords) {
     if (!userCoords) {
         showModal("Error", "Please allow location access before trying to navigate.");
         return;
@@ -160,12 +160,12 @@
     const modal = UIkit.modal.dialog(`
         <div class="uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-           <img src="https://i.ibb.co/zW6n1Nfh/1740680930394.jpg" 
+            <img src="https://i.ibb.co/zW6n1Nfh/1740680930394.jpg" 
                  style="width: 75%; max-width: 400px;" 
                  alt="Navigation Image" 
                  loading="lazy">
-            <p>Please Click Location button and Start  in Google Maps. You will be automatically redirected in 
-                 <span id="countdown" style="color: #007bff;font-weight:bold;">
+            <p>Please Click Location button and Start in Google Maps. You will be automatically redirected in 
+                <span id="countdown" style="color: #007bff; font-weight: bold;">
                     ${countdown}
                 </span> 
                 seconds.
@@ -173,21 +173,15 @@
         </div>
     `);
 
-    // Countdown timer
     const countdownElement = document.getElementById("countdown");
-    const interval = setInterval(() => {
-        countdown--;
-        countdownElement.textContent = countdown;
 
-        // Countdown timer
-    const countdownElement = document.getElementById("countdown");
     const interval = setInterval(() => {
         countdown--;
         countdownElement.textContent = countdown;
 
         if (countdown <= 0) {
             clearInterval(interval);
-            modal.hide(); // Close modal
+            modal.hide(); // Correct usage now
             let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=My+Location&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
             window.location.href = googleMapsURL; // Redirect to Google Maps
         }
