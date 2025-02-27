@@ -153,16 +153,25 @@
         return;
     }
 
-    // Display an image modal using UIkit before navigating
-    UIkit.modal.alert(`
-        <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" style="width: 100%; max-width: 300px;" alt="Navigation Image" loading="lazy">
-        <p>Please Verify in Google maps location is enabled ( press okay to navigate then check that and use satilite view )</p>
-    `).then(() => {
-        // Navigate to Google Maps after user closes the modal
+    // Display an image modal using UIkit
+    UIkit.modal.dialog(`
+        <div class="uk-modal-body">
+           <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" 
+     style="width: 90%; max-width: 250px; height: auto; display: block; margin: 0 auto;" 
+     alt="Navigation Image" 
+     loading="lazy">
+
+            <p>Please Verify in Google Maps that location is enabled. You will be automatically redirected.</p>
+        </div>
+    `);
+
+    // Automatically navigate to Google Maps after 3 seconds
+    setTimeout(() => {
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-        window.location.href = googleMapsURL; // Navigate within the same tab
-    });
+        window.location.href = googleMapsURL; // Navigate to Google Maps
+    }, 3000); // 3-second delay before redirect
 }
+
 
         function showError(error) {
             let msg;
