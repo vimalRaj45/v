@@ -179,18 +179,17 @@
         countdown--;
         countdownElement.textContent = countdown;
 
+        // Countdown timer
+    const countdownElement = document.getElementById("countdown");
+    const interval = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+
         if (countdown <= 0) {
             clearInterval(interval);
             modal.hide(); // Close modal
-
-            let googleMapsAppURL = `google.navigation:q=${destinationCoords}&mode=w`;
-            let googleMapsWebURL = `https://www.google.com/maps/dir/?api=1&origin=My+Location&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-
-            // Open Google Maps app, then fallback to browser if needed
-            window.location.href = googleMapsAppURL;
-            setTimeout(() => {
-                window.location.href = googleMapsWebURL;
-            }, 3000);
+            let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=My+Location&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
+            window.location.href = googleMapsURL; // Redirect to Google Maps
         }
     }, 1000);
 }
