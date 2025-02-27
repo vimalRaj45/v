@@ -114,28 +114,37 @@
     </div>
 
     <script>
-        let apiKey = "908f81b3-d677-438e-a4f0-aac03af858aa";
-        let userCoords;
 
         function getLocation() {
-            document.getElementById("status").innerText = "It may take a few minutes... Getting your location.";
-            document.getElementById("loader").style.display = "block";
+    document.getElementById("status").innerText = "It may take a few moments... Getting your location.";
+    document.getElementById("loader").style.display = "block";
 
-            // Simulate a 3-second delay for loading
-            setTimeout(() => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // Success callback
+                userCoords = `${position.coords.latitude},${position.coords.longitude}`;
                 document.getElementById("status").innerText = "";
                 document.getElementById("loader").style.display = "none";
                 document.getElementById("address").innerText = "Your location is detected. You can now click the 'Route' buttons.";
                 document.getElementById("address").style.display = "block";
+
                 // Show pop-up
                 document.getElementById("location-popup").style.display = "block";
                 document.getElementById("popup-text").innerText = `Location found!`;
-                // Hide pop-up after 5 seconds
                 setTimeout(() => {
                     document.getElementById("location-popup").style.display = "none";
                 }, 700);
-            }, 1200); // 3-second delay
-        }
+            },
+            (error) => {
+                // Error callback
+                showError(error);
+            }
+        );
+    } else {
+        showError({ code: "UNSUPPORTED", message: "Geolocation is not supported by this browser." });
+    }
+}
 
         function routeToHall(destinationCoords) {
             let countdown = 5;
@@ -173,26 +182,29 @@
         }
 
         function showError(error) {
-            let msg;
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    msg = "You denied the request for location services. Please enable location and try again.";
-                    document.getElementById("alertbtn").style.display = "block";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    msg = "Your location is currently unavailable. Please try again later.";
-                    break;
-                case error.TIMEOUT:
-                    msg = "Location request timed out. Please try again.";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    msg = "An unknown error occurred. Please try again.";
-                    break;
-            }
-            document.getElementById("status").innerText = msg;
-            document.getElementById("loader").style.display = "none";
-            showModal("Location Error", msg);
-        }
+    let msg;
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            msg = "You denied the request for location services. Please enable location and try again.";
+            document.getElementById("alertbtn").style.display = "block";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            msg = "Your location is currently unavailable. Please try again later.";
+            break;
+        case error.TIMEOUT:
+            msg = "Location request timed out. Please try again.";
+            break;
+        case error.UNKNOWN_ERROR:
+            msg = "An unknown error occurred. Please try again.";
+            break;
+        default:
+            msg = "Geolocation is not supported by your browser.";
+            break;
+    }
+    document.getElementById("status").innerText = msg;
+    document.getElementById("loader").style.display = "none";
+    showModal("Location Error", msg);
+}
 
         function showModal(title, message) {
             document.getElementById("modal-title").innerText = title;
