@@ -5,1206 +5,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sethu Homes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Property Registration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-         * {
-            margin: 0;
-            padding: 0;
-        }
-        #popup-content { text-align: center; }
-        #heading{
-            font-size: 20px;
-            font-weight: 900;
-            color: rgb(101, 184, 46);
-        }
-        
         body {
-            min-height: 100vh;
-            position: relative;
-            /*background-image: url('');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-            background-size: cover;*/
-            background-color: lightgray;
-}
-        nav {
-            background-color: rgb(255, 255, 255);
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
-            position: relative;
+            background: linear-gradient(135deg, #f0f8ff, #e6e6fa);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .form-label {
+            font-size: 1rem;
+            color: #4a4a4a;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            border-radius: 8px;
             padding: 12px;
-            margin: 1px;
-            /*border-radius: 10px;*/
+            border: 1px solid #ddd;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        nav ul {
-            list-style: none;
-            display: flex;
-            align-items: center;
-            padding: 0px;
-            margin: 0;
+        .form-control:focus {
+            border-color: #56b71a;
+            box-shadow: 0 0 8px rgba(45, 203, 30, 0.25);
         }
-        nav li {
-            height: 50px;
+        .btn-primary {
+            background-color: #000000;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        nav a {
-            height: 100%;
-            padding: 0 22px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            color: rgb(15, 17, 17);
-            transition: all 0.5s ease;
-            border-radius: 10px;
-            margin-left: 2px;
-            margin-top: 2px;
+        .btn-primary:hover {
+            background-color: #242121;
+            transform: translateY(-2px);
         }
-        .hidemob{
-            transition: all 500ms ease;
-            font-size: 17px;
-            font-weight: 600;
+        textarea {
+            resize: none;
         }
-        .hidemob:hover{
-            transform: translateY(-3px);
-            a{
-                color: rgba(76, 207, 47,0.6);
-                box-shadow: 2px 4px 4px;
-            }
-        }
-        .how{
-            transition: all ease-in-out;
-            font-size: 17px;
-            font-weight: 600;
-        }
-        .how:hover{
-            transform: translateY(-0.5px);
-            border: solid 1.6px;
-            border-radius: 10px;
-            border-color: rgba(205, 209, 213,500);
-        }
-        .sidebar {
+        .loading {
             position: fixed;
             top: 0;
-            right: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            width: 230px;
-            z-index: 999;
-            background-color: rgba(0,0,0,0);
-            backdrop-filter: blur(15px);
-            box-shadow: -10px 0 10px rgba(0,0,0,0);
             display: none;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            opacity: 0;
-            transition: opacity 250ms linear, transform 500ms linear;
-            border-radius: 2%;
-        }
-        .sidebar.show {
-            border-radius: 1%;;
-            margin: 6px;
-            padding: 10px;
-            display: flex;
-            backdrop-filter: blur(15px);
-            opacity: 1;
-            transform: translateX(0);
-            background-color: rgba(255, 255, 255, 0.5);
-        }
-        .sidebar.hide {
-            display: flex;
-            opacity: 0;
-            transform: translateX(100%);
-        }
-        .sidebar li {
-            width: 100%;
-        }
-        .sidebar a {
-            width: 100%;
-            padding: 10px;
-            color: rgb(17, 2, 2);
-            display: block;
-            text-align: left;
-            transition: all 1s ease;
-        }
-        .sidebar a:hover {
-            background-color: rgba(252, 252, 252, 0.9);
-            box-shadow: 4px 2px 5px;
-        }
-        .menu {
-            display: none;
-        }
-        @media (max-width: 900px) {
-            .hidemob {
-                display: none;
-            }
-            .menu {
-                display: block;
-            }
-        }
-        @media (max-width: 400px) {
-            .sidebar {
-                width: 80%;
-            }
-        }
-        #home {
-            margin-right: auto; 
-        }
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.567);
-      display: none; 
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-
-    }
-    .whatsapp-float {
-            position: fixed;
-            bottom: 80px;
-            right: 25px;
-            width: 50px;
-            height: 50px;
-            background-color: #25D366;
-            border-radius: 50%;
-            display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
-            text-decoration: none; /* Remove underline */
-            animation: zoomInOut 2s infinite; 
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1050;
+            backdrop-filter: blur(5px);
         }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            color: #5a5af3;
         }
-
-        .whatsapp-float i {
+        .modal-header {
+            background-color: #5a5af3;
             color: white;
-            font-size: 30px;
         }
-        
-                .whatsapp2-float {
-            position: fixed;
-            bottom: 140px;
-            right: 25px;
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
-            text-decoration: none; /* Remove underline */
-            animation: zoomInOut 2s infinite; /* Zoom in-out animation */
+        .modal-footer .btn {
+            background-color: #5a5af3;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
         }
-
-        .whatsapp2-float:hover {
-            transform: scale(1.1); /* Slight zoom effect on hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        .modal-footer .btn:hover {
+            background-color: #4848c4;
         }
-
-        /* Gradient color for the WhatsApp icon */
-        .whatsapp2-float i {
-            font-size: 30px;
-            background:  linear-gradient(45deg, #F58529, #D60B53, #8a3ab9, #515BD4);
-            -webkit-background-clip: text;
-            color: transparent; /* Make the icon text transparent so gradient shows */
+        #imagePreview {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
         }
-
-       @keyframes zoomInOut {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1); /* Zoom in */
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-          #property-title {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #333;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 4px solid white; /* Cursor effect */
-            padding-right: 5px;
-        }
-        .card {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: scale(1.03);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Search Bar Container */
-.input-group {
-    max-width: 400px;             /* Limit max width of the search bar */
-    margin: 20px auto;            /* Center the search bar */
-    display: flex;                /* Enable flexbox for alignment */
-    border-radius: 30px;          /* Rounded corners for the container */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Light shadow for modern look */
-}
-
-/* Input Field Style */
-.input-group .form-control {
-    border-radius: 30px;          /* Rounded corners for the input field */
-    border: 1px solid #ccc;       /* Light border */
-    padding: 10px 20px;           /* Adequate padding for the input */
-    font-size: 16px;              /* Slightly larger text */
-    box-shadow: none;             /* Remove default shadow */
-    flex-grow: 1;                 /* Allow the input field to grow */
-    transition: all 0.3s ease;    /* Smooth transition on focus */
-}
-
-.input-group .form-control:focus {
-    border-color: #007bff;        /* Blue border on focus */
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Subtle shadow effect on focus */
-}
-
-/* Input Icon Style */
-.input-group .input-group-text {
-    background-color: #f8f9fa;    /* Light background for the icon */
-    border: none;                  /* Remove border */
-    border-radius: 50%;            /* Round corners for the icon */
-    padding: 10px;                 /* Adequate padding for the icon */
-    cursor: pointer;              /* Pointer cursor on hover */
-    transition: background-color 0.3s ease;  /* Smooth hover transition */
-}
-
-.input-group .input-group-text:hover {
-    background-color: #e2e6ea;    /* Light grey background on hover */
-}
-
-/* Optional: Style for the icon itself */
-.input-group .input-group-text i {
-    font-size: 18px;              /* Adjust the size of the search icon */
-    color: #007bff;               /* Icon color */
-}
-
-i {
-    padding: 0px;
-    opacity: 0.8; /* 60% opacity */
-}
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
-
-.smooth-auto-write-no-cursor {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    font-weight: 800;
-    color: #000;
-    text-align: center;
-    margin-top: 20px;
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    background: linear-gradient(135deg, #000, #fff);
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-    white-space: nowrap;
-    animation: smooth-typing 4s ease-out;
-}
-
-@keyframes smooth-typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: 100%;
-    }
-}
-
-
-.glitter-btn {
-    border-radius: 30px;
-    background: linear-gradient(45deg, #1e7e34, #28a745, #1e7e34);
-    color: white;
-    font-weight: 600;
-    cursor: not-allowed;
-    border: none;
-    padding: 5px 15px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Glitter Effect */
-.glitter-btn::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(46, 204, 113, 0.7) 10%, rgba(46, 204, 113, 0) 70%);
-    transform: rotate(25deg);
-    animation: shimmer 2s infinite linear;
-}
-
-@keyframes shimmer {
-    0% { transform: translateX(-100%) translateY(-100%) rotate(25deg); }
-    100% { transform: translateX(100%) translateY(100%) rotate(25deg); }
-}
-
-/* Dark Theme Styles */
-body.theme-dark, 
-body.theme-dark .footer-section, 
-body.theme-dark li.hidemob a, 
-body.theme-dark .card, 
-body.theme-dark #fort, 
-body.theme-dark li.hidemob a {
-    background-color: black;
-    color: white;
-    border-color: wheat;
-}
-@keyframes glitter1 {
-        0% {
-            background-position: 200% 20%;
-        }
-        50% {
-            background-position: 200% 20%;
-        }
-        100% {
-            background-position: -135% -20%;
-        }
-    }
     </style>
 </head>
 <body>
-     <nav class="sticky-top border rounded" id="fort">
-        <ul class="sidebar hide">
-         
-            <li onclick="hide()" style="padding-top: 10px;">
-                <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="40px" viewBox="0 -960 960 960" fill="#5f6368">
-                  <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
-                </svg>
-              </li>
-              
-            <li class="how"><a href="https://vimalraj45.github.io/v/SRKH"><i class="fa-solid fa-house-user"></i> Home Page</a></li>
-            <li class="how"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
-            <li class="how"><a  href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
-            <li class="how"><a href="https://vimalraj45.github.io/v/fhome"><i class="fa-solid fa-house-circle-check"></i> Homes</a></li>
-            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/formore"><i class="fas fa-info-circle"></i> For More Details</a></li>
-            <li class="how"><a href="#secr"><i class="fas fa-phone"></i> Contact Us</a></li>
-            <li class="how"><a href="https://vsgroupsofcompany.neocities.org/loginsrk"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-        </ul>
-        <ul>
-           <li id="home" style="list-style: none; padding: 0; animation: fadeIn 1s ease-in-out;">
-    <div>
-        <h1 id="heading" style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 1.2px; font-family: 'Poppins', sans-serif;">
-            <span style="font-size: 20px; color: transparent; background-image: linear-gradient(90deg, #41ab31, #549157, #42814a,#c5ce16c3); background-size: 200% 200%; -webkit-background-clip: text; background-clip: text; animation: glitter1 5s infinite linear;">Sethu</span>
-            <span style="color: #495057; font-size: 18px; font-weight: 600; margin-left: 1px;">Properties</span>
-        </h1>
-        <small style="color: #868E96; font-size: 14px; font-style: italic; margin-top: 6px; display: block; font-family: 'Poppins', sans-serif;">
-            "Leave in your dream."
-        </small>
-    </div>
-</li>
-        
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/SRKH"> <i class="fa-solid fa-house-user"></i> Home Page</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/template"><i class="fas fa-map-marker-alt"></i> Lands</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/ploat"><i class="fas fa-map"></i> Plots</a></li>
-            <li class="hidemob"><a href="https://vimalraj45.github.io/v/fhome"><i class="fa-solid fa-house-circle-check"></i> Homes</a></li>
-          <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/formore"><i class="fas fa-info-circle"></i> For More Details</a></li>
-            <li class="hidemob"><a href="#secr"><i class="fas fa-phone"></i> Contact Us</a></li>
-            <li class="hidemob"><a href="https://vsgroupsofcompany.neocities.org/loginsrk"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            <li class="menu" onclick="show()">
-    <a href="#" style="display: inline-flex; align-items: center; justify-content: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#5f6368">
-            <path d="M120-240v-66.67h520V-240H120Zm673.33-48L600.67-480.67l192-192L840-625.33 695.33-480.67l145.34 145.34L793.33-288ZM120-448v-66.67h400V-448H120Zm0-205.33V-720h520v66.67H120Z"></path>
-        </svg>
-    </a>
-</li>
-
-            </ul>
-    </nav>
-    <div class="container" onclick="hide()">
-
-         <label class="theme-switch" style="position: sticky; top: 0; right: 0; padding: 5px; margin-right: 0; z-index: 999; display: block;">
-            <input type="checkbox" class="theme-switch__checkbox" onclick="toggleTheme()" id="check">
-            <div class="theme-switch__container">
-              <div class="theme-switch__clouds"></div>
-              <div class="theme-switch__stars-container">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M135.831 3.00688C135.055 3.85027 134.111 4.29946 133 4.35447C134.111 4.40947 135.055 4.85867 135.831 5.71123C136.607 6.55462 136.996 7.56303 136.996 8.72727C136.996 7.95722 137.172 7.25134 137.525 6.59129C137.886 5.93124 138.372 5.39954 138.98 5.00535C139.598 4.60199 140.268 4.39114 141 4.35447C139.88 4.2903 138.936 3.85027 138.16 3.00688C137.384 2.16348 136.996 1.16425 136.996 0C136.996 1.16425 136.607 2.16348 135.831 3.00688ZM31 23.3545C32.1114 23.2995 33.0551 22.8503 33.8313 22.0069C34.6075 21.1635 34.9956 20.1642 34.9956 19C34.9956 20.1642 35.3837 21.1635 36.1599 22.0069C36.9361 22.8503 37.8798 23.2903 39 23.3545C38.2679 23.3911 37.5976 23.602 36.9802 24.0053C36.3716 24.3995 35.8864 24.9312 35.5248 25.5913C35.172 26.2513 34.9956 26.9572 34.9956 27.7273C34.9956 26.563 34.6075 25.5546 33.8313 24.7112C33.0551 23.8587 32.1114 23.4095 31 23.3545ZM0 36.3545C1.11136 36.2995 2.05513 35.8503 2.83131 35.0069C3.6075 34.1635 3.99559 33.1642 3.99559 32C3.99559 33.1642 4.38368 34.1635 5.15987 35.0069C5.93605 35.8503 6.87982 36.2903 8 36.3545C7.26792 36.3911 6.59757 36.602 5.98015 37.0053C5.37155 37.3995 4.88644 37.9312 4.52481 38.5913C4.172 39.2513 3.99559 39.9572 3.99559 40.7273C3.99559 39.563 3.6075 38.5546 2.83131 37.7112C2.05513 36.8587 1.11136 36.4095 0 36.3545ZM56.8313 24.0069C56.0551 24.8503 55.1114 25.2995 54 25.3545C55.1114 25.4095 56.0551 25.8587 56.8313 26.7112C57.6075 27.5546 57.9956 28.563 57.9956 29.7273C57.9956 28.9572 58.172 28.2513 58.5248 27.5913C58.8864 26.9312 59.3716 26.3995 59.9802 26.0053C60.5976 25.602 61.2679 25.3911 62 25.3545C60.8798 25.2903 59.9361 24.8503 59.1599 24.0069C58.3837 23.1635 57.9956 22.1642 57.9956 21C57.9956 22.1642 57.6075 23.1635 56.8313 24.0069ZM81 25.3545C82.1114 25.2995 83.0551 24.8503 83.8313 24.0069C84.6075 23.1635 84.9956 22.1642 84.9956 21C84.9956 22.1642 85.3837 23.1635 86.1599 24.0069C86.9361 24.8503 87.8798 25.2903 89 25.3545C88.2679 25.3911 87.5976 25.602 86.9802 26.0053C86.3716 26.3995 85.8864 26.9312 85.5248 27.5913C85.172 28.2513 84.9956 28.9572 84.9956 29.7273C84.9956 28.563 84.6075 27.5546 83.8313 26.7112C83.0551 25.8587 82.1114 25.4095 81 25.3545ZM136 36.3545C137.111 36.2995 138.055 35.8503 138.831 35.0069C139.607 34.1635 139.996 33.1642 139.996 32C139.996 33.1642 140.384 34.1635 141.16 35.0069C141.936 35.8503 142.88 36.2903 144 36.3545C143.268 36.3911 142.598 36.602 141.98 37.0053C141.372 37.3995 140.886 37.9312 140.525 38.5913C140.172 39.2513 139.996 39.9572 139.996 40.7273C139.996 39.563 139.607 38.5546 138.831 37.7112C138.055 36.8587 137.111 36.4095 136 36.3545ZM101.831 49.0069C101.055 49.8503 100.111 50.2995 99 50.3545C100.111 50.4095 101.055 50.8587 101.831 51.7112C102.607 52.5546 102.996 53.563 102.996 54.7273C102.996 53.9572 103.172 53.2513 103.525 52.5913C103.886 51.9312 104.372 51.3995 104.98 51.0053C105.598 50.602 106.268 50.3911 107 50.3545C105.88 50.2903 104.936 49.8503 104.16 49.0069C103.384 48.1635 102.996 47.1642 102.996 46C102.996 47.1642 102.607 48.1635 101.831 49.0069Z" fill="currentColor"></path>
-                </svg>
-              </div>
-              <div class="theme-switch__circle-container">
-                <div class="theme-switch__sun-moon-container">
-                  <div class="theme-switch__moon">
-                    <div class="theme-switch__spot"></div>
-                    <div class="theme-switch__spot"></div>
-                    <div class="theme-switch__spot"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </label>
-         <p class="smooth-auto-write-no-cursor">Sethu Homes</p>
-
-         
-
-
-          <style>
-                  /* From Uiverse.io by Galahhad */ 
-.theme-switch {
-  --toggle-size: 9px;
-  /* the size is adjusted using font-size,
-     this is not transform scale,
-     so you can choose any size */
-  --container-width: 5.625em;
-  --container-height: 2.5em;
-  --container-radius: 6.25em;
-  /* radius 0 - minecraft mode :) */
-  --container-light-bg: #3D7EAE;
-  --container-night-bg: #1D1F2C;
-  --circle-container-diameter: 3.375em;
-  --sun-moon-diameter: 2.125em;
-  --sun-bg: #ECCA2F;
-  --moon-bg: #C4C9D1;
-  --spot-color: #959DB1;
-  --circle-container-offset: calc((var(--circle-container-diameter) - var(--container-height)) / 2 * -1);
-  --stars-color: #fff;
-  --clouds-color: #F3FDFF;
-  --back-clouds-color: #AACADF;
-  --transition: .5s cubic-bezier(0, -0.02, 0.4, 1.25);
-  --circle-transition: .3s cubic-bezier(0, -0.02, 0.35, 1.17);
-}
-
-.theme-switch, .theme-switch *, .theme-switch *::before, .theme-switch *::after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-size: var(--toggle-size);
-}
-
-.theme-switch__container {
-  width: var(--container-width);
-  height: var(--container-height);
-  background-color: var(--container-light-bg);
-  border-radius: var(--container-radius);
-  overflow: hidden;
-  cursor: pointer;
-  -webkit-box-shadow: 0em -0.062em 0.062em rgba(0, 0, 0, 0.25), 0em 0.062em 0.125em rgba(255, 255, 255, 0.94);
-  box-shadow: 0em -0.062em 0.062em rgba(0, 0, 0, 0.25), 0em 0.062em 0.125em rgba(255, 255, 255, 0.94);
-  -webkit-transition: var(--transition);
-  -o-transition: var(--transition);
-  transition: var(--transition);
-  position: relative;
-}
-
-.theme-switch__container::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  -webkit-box-shadow: 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset, 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
-  box-shadow: 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset, 0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
-  border-radius: var(--container-radius)
-}
-
-.theme-switch__checkbox {
-  display: none;
-}
-
-.theme-switch__circle-container {
-  width: var(--circle-container-diameter);
-  height: var(--circle-container-diameter);
-  background-color: rgba(255, 255, 255, 0.1);
-  position: absolute;
-  left: var(--circle-container-offset);
-  top: var(--circle-container-offset);
-  border-radius: var(--container-radius);
-  -webkit-box-shadow: inset 0 0 0 3.375em rgba(255, 255, 255, 0.1), inset 0 0 0 3.375em rgba(255, 255, 255, 0.1), 0 0 0 0.625em rgba(255, 255, 255, 0.1), 0 0 0 1.25em rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 0 0 3.375em rgba(255, 255, 255, 0.1), inset 0 0 0 3.375em rgba(255, 255, 255, 0.1), 0 0 0 0.625em rgba(255, 255, 255, 0.1), 0 0 0 1.25em rgba(255, 255, 255, 0.1);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-transition: var(--circle-transition);
-  -o-transition: var(--circle-transition);
-  transition: var(--circle-transition);
-  pointer-events: none;
-}
-
-.theme-switch__sun-moon-container {
-  pointer-events: auto;
-  position: relative;
-  z-index: 2;
-  width: var(--sun-moon-diameter);
-  height: var(--sun-moon-diameter);
-  margin: auto;
-  border-radius: var(--container-radius);
-  background-color: var(--sun-bg);
-  -webkit-box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset, 0em -0.062em 0.062em 0em #a1872a inset;
-  box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset, 0em -0.062em 0.062em 0em #a1872a inset;
-  -webkit-filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25)) drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
-  filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25)) drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
-  overflow: hidden;
-  -webkit-transition: var(--transition);
-  -o-transition: var(--transition);
-  transition: var(--transition);
-}
-
-.theme-switch__moon {
-  -webkit-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  transform: translateX(100%);
-  width: 100%;
-  height: 100%;
-  background-color: var(--moon-bg);
-  border-radius: inherit;
-  -webkit-box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset, 0em -0.062em 0.062em 0em #969696 inset;
-  box-shadow: 0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset, 0em -0.062em 0.062em 0em #969696 inset;
-  -webkit-transition: var(--transition);
-  -o-transition: var(--transition);
-  transition: var(--transition);
-  position: relative;
-}
-
-.theme-switch__spot {
-  position: absolute;
-  top: 0.75em;
-  left: 0.312em;
-  width: 0.75em;
-  height: 0.75em;
-  border-radius: var(--container-radius);
-  background-color: var(--spot-color);
-  -webkit-box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
-  box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
-}
-
-.theme-switch__spot:nth-of-type(2) {
-  width: 0.375em;
-  height: 0.375em;
-  top: 0.937em;
-  left: 1.375em;
-}
-
-.theme-switch__spot:nth-last-of-type(3) {
-  width: 0.25em;
-  height: 0.25em;
-  top: 0.312em;
-  left: 0.812em;
-}
-
-.theme-switch__clouds {
-  width: 1.25em;
-  height: 1.25em;
-  background-color: var(--clouds-color);
-  border-radius: var(--container-radius);
-  position: absolute;
-  bottom: -0.625em;
-  left: 0.312em;
-  -webkit-box-shadow: 0.937em 0.312em var(--clouds-color), -0.312em -0.312em var(--back-clouds-color), 1.437em 0.375em var(--clouds-color), 0.5em -0.125em var(--back-clouds-color), 2.187em 0 var(--clouds-color), 1.25em -0.062em var(--back-clouds-color), 2.937em 0.312em var(--clouds-color), 2em -0.312em var(--back-clouds-color), 3.625em -0.062em var(--clouds-color), 2.625em 0em var(--back-clouds-color), 4.5em -0.312em var(--clouds-color), 3.375em -0.437em var(--back-clouds-color), 4.625em -1.75em 0 0.437em var(--clouds-color), 4em -0.625em var(--back-clouds-color), 4.125em -2.125em 0 0.437em var(--back-clouds-color);
-  box-shadow: 0.937em 0.312em var(--clouds-color), -0.312em -0.312em var(--back-clouds-color), 1.437em 0.375em var(--clouds-color), 0.5em -0.125em var(--back-clouds-color), 2.187em 0 var(--clouds-color), 1.25em -0.062em var(--back-clouds-color), 2.937em 0.312em var(--clouds-color), 2em -0.312em var(--back-clouds-color), 3.625em -0.062em var(--clouds-color), 2.625em 0em var(--back-clouds-color), 4.5em -0.312em var(--clouds-color), 3.375em -0.437em var(--back-clouds-color), 4.625em -1.75em 0 0.437em var(--clouds-color), 4em -0.625em var(--back-clouds-color), 4.125em -2.125em 0 0.437em var(--back-clouds-color);
-  -webkit-transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
-  -o-transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
-  transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
-}
-
-.theme-switch__stars-container {
-  position: absolute;
-  color: var(--stars-color);
-  top: -100%;
-  left: 0.312em;
-  width: 2.75em;
-  height: auto;
-  -webkit-transition: var(--transition);
-  -o-transition: var(--transition);
-  transition: var(--transition);
-}
-
-/* actions */
-
-.theme-switch__checkbox:checked + .theme-switch__container {
-  background-color: var(--container-night-bg);
-}
-
-.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
-  left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter));
-}
-
-.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container:hover {
-  left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter) - 0.187em)
-}
-
-.theme-switch__circle-container:hover {
-  left: calc(var(--circle-container-offset) + 0.187em);
-}
-
-.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon {
-  -webkit-transform: translate(0);
-  -ms-transform: translate(0);
-  transform: translate(0);
-}
-
-.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__clouds {
-  bottom: -4.062em;
-}
-
-.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__stars-container {
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-          </style>
-
-
-
-<div class="search-bar">
-            <div class="input-group" style="max-width:600px">
-                <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-addon" id="searchInput">
-                <button class="btn btn-secondary" type="button" >
-                        <i class="fas fa-search"></i>
-                    </button>
-            </div>
+<div class="container">
+    <h2>Property Registration</h2>
+    <form id="propertyForm" onsubmit="handleSubmit(event)">
+        <div class="mb-3">
+            <label for="propertyType" class="form-label">Property Type</label>
+            <select name="propertyType" id="propertyType" class="form-control" required>
+                <option value="land">Land</option>
+                <option value="plot">Plot</option>
+                <option value="home">Home</option>
+            </select>
         </div>
-        <style>
-            .search-bar {
-    max-width: 500px;
-    margin: auto auto;
-}
+        <div class="mb-3">
+            <label for="propertyImage" class="form-label">Upload Property Image (small size preferred)</label>
+            <input type="file" name="propertyImage" id="propertyImage" accept="image/*" multiple required class="form-control">
+            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;" height="60%" width="50%">
+            <button type="button" class="btn btn-secondary mt-2" id="showImageOnlyBtn" onclick="disp()" style="display: none;" >Show Image Only</button>
+        </div>
+        <div class="mb-3">
+            <label for="propertyTitle" class="form-label">Property Title (unique names)</label>
+            <input type="text" name="propertyTitle" id="propertyTitle" placeholder="Enter Property Title" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="locationUrl" class="form-label">Location URL</label>
+            <input type="text" name="locationUrl" id="locationUrl" placeholder="Enter Location URL" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" id="description" rows="4" placeholder="Enter Property Description" required class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" name="email" id="email" placeholder="Enter Email Address" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" name="location" id="location" placeholder="Enter Location" required class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="column1" class="form-label">Rate</label>
+            <input type="text" name="column1" id="column1" placeholder="Enter Rate" required class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+</div>
 
-.search-bar .input-group {
-    border-radius: 30px;
-    overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.search-bar .form-control {
-    border: none;
-    padding-left: 20px;
-}
-
-.search-bar .btn {
-    border: none;
-    padding: 10px 20px;
-}
-        </style>
-        <div class="row" id="homes-container"></div>
+<!-- Loading Spinner -->
+<div class="loading" id="loading">
+    <div>
+        <div class="spinner-border" role="status"></div>
+        <div class="mt-2 text-white">Submitting...</div>
     </div>
+</div>
 
-    <!-- Floating "View All Properties" button -->
-<button id="view-all-btn" class="btn btn-sm btn-secondary" onclick="showAllProperties()" 
-    style="position: fixed; top: 140px; right: 20px; z-index: 1000; display: none;">
-    View All Properties
-</button>
-<center style="margin-top: 10%;"><div class="text bold" id="no-record-found" style="display:none;font-size: xx-large;">No Record Found <br>
-    <small style="font-size: smaller; font-weight: 200;">Property Sold</small>
-</div></center>
-
-    
-
-    <script>
-
-
-
-function toggleTheme() {
-// Toggle the 'theme-dark' class on the body
-document.body.classList.toggle('theme-dark');
-
-  // Optionally, save the theme preference in localStorage so it persists
-  if (document.body.classList.contains('theme-dark')) {
-    localStorage.setItem('theme', 1);
-  } else {
-    localStorage.setItem('theme', 0);
-  }
-}
-
-setTimeout(function() {
-        // Check theme preference
-        let val = localStorage.getItem("theme");
-        const themeCheckbox = document.getElementById('check');
-        
-        // Apply theme and set checkbox state
-        if (val == 1) {
-            themeCheckbox.checked = true;
-        } else {
-            themeCheckbox.checked = false;
-        }
-    }, 50);
-
-
-function toggleTheme() {
-// Toggle the 'theme-dark' class on the body
-document.body.classList.toggle('theme-dark');
-
-  // Optionally, save the theme preference in localStorage so it persists
-  if (document.body.classList.contains('theme-dark')) {
-    localStorage.setItem('theme', 1);
-  } else {
-    localStorage.setItem('theme', 0);
-  }
-}
-
-
-      function show() {
-    const side = document.querySelector('.sidebar');
-    side.classList.remove('hide');
-    side.classList.add('show');
-}
-
-function hide() {
-    const side = document.querySelector('.sidebar');
-    side.classList.remove('show');
-    side.classList.add('hide');
-}
-
-
-
-const sheetID = "1jhWfY1GSk0b-8RvHGyTmc2OjcguNulBXtZCIjhbaZFo"; // Replace with your Sheet ID
-const sheetTab = "sheet1"; // Replace with your sheet tab name
-const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k"; // Your API keylet isLoadingBatches = false; // Flag to prevent multiple triggers
-let isLoadingBatches = false; // Prevent multiple batch loads
-const showSectionFromHash = async () => {
-    const hash = window.location.hash;
-    const propertyId = decodeURIComponent(hash.substring(1));
-
-    if (!propertyId) return;
-
-    const noRecordElement = document.getElementById('no-record-found');
-    if (noRecordElement) noRecordElement.style.display = 'none';
-
-    let targetSection = document.getElementById(propertyId);
-
-    // Check if the property is already loaded
-    if (targetSection) {
-
-
-        // Use a flag to reload only once
-        if (!sessionStorage.getItem('hasReloaded')) {
-            sessionStorage.setItem('hasReloaded', 'true'); // Mark as reloaded
-        }
-
-        targetSection.style.display = 'block';
-        
-        // Remove hash from the URL without reloading
-        window.history.replaceState(null, null, ' ');
-
-        document.getElementById('view-all-btn').style.display = 'block';
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-
-        return; // No need to load more batches
-    }
-
-    // Property not found - load more batches until it's found
-    isLoadingBatches = true;
-    while (!document.getElementById(propertyId) && currentIndex < allHomesData.length) {
-        loadNextBatch(); // Load the next batch of data
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Add a small delay for smooth batch loading
-    }
-
-    // Property should now be loaded
-    targetSection = document.getElementById(propertyId);
-    if (targetSection) {
-        // Hide all property cards before showing the target
-        const allSections = document.querySelectorAll('.home-card');
-        allSections.forEach(section => section.style.display = 'none');
-
-        targetSection.style.display = 'block';
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-
-    isLoadingBatches = false;
-};
-
-// Function to load the next batch of data
-const loadNextBatch = () => {
-    if (currentIndex >= allHomesData.length) return; // No more data to load
-
-    const homesDataBatch = allHomesData.slice(currentIndex, currentIndex + batchSize);
-    currentIndex += batchSize;
-
-    renderHomesData(homesDataBatch); // Render the new batch of data
-};
-
-
-// Function to show all properties
-const showAllProperties = () => {
-// Hide all property cards before showing the target
-const allSections = document.querySelectorAll('.home-card');
-        allSections.forEach(section => section.style.display = 'block');
-        document.getElementById('view-all-btn').style.display = 'none';
-
-};
-
-// Call the function on page load to handle the initial hash
-window.addEventListener('load', showSectionFromHash);
-
-// Call the function on hash change to update the displayed property
-window.addEventListener('hashchange', showSectionFromHash);
-
-
-function shareProperty(propertyTitle) {
-    const shareText = `Check out this property: ${propertyTitle}`;
-    const shareURL = window.location.href.split('#')[0] + `#${encodeURIComponent(propertyTitle)}`;
-    
-    if (navigator.share) {
-        // Use Web Share API if supported
-        navigator.share({
-            title: 'Property Details',
-            text: shareText,
-            url: shareURL
-        }).then(() => {
-            console.log('Property shared successfully!');
-        }).catch(err => {
-            console.error('Error sharing the property:', err);
-        });
-    } else {
-        // Fallback for browsers that don't support Web Share API
-        const dummyInput = document.createElement('input');
-        dummyInput.value = shareURL;
-        document.body.appendChild(dummyInput);
-        dummyInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummyInput);
-        alert('Property link copied to clipboard: ' + shareURL);
-    }
-}
-
-
-let allHomesData = []; // Store all fetched data
-let currentIndex = 0;  // Track the current index
-const batchSize = 4; // Number of records to fetch at a time (set to 5)
-
-
-const fetchData = async () => {
-    const sheetID = "1pPutacocg5-9_xLJiEGN1Iwypf5W7eXwo7pxD2laDMY";
-    const sheetTab = "sheet1";
-    const API_KEY = "AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetTab}?key=${API_KEY}`;
-
-    document.getElementById("homes-container").classList.add("hidden");
-    let loadingMessage = document.getElementById('loading-message');
-
-// If the loading message doesn't already exist, create it
-if (!loadingMessage) {
-    loadingMessage = document.createElement('p');
-    loadingMessage.id = 'loading-message';
-    loadingMessage.textContent = 'Loading data, please wait...';
-    loadingMessage.style.textAlign = 'center';
-    loadingMessage.style.fontWeight = 'bold';
-    loadingMessage.style.fontSize = '20px';
-    document.body.appendChild(loadingMessage); // Append the message to the body
-}
-
-try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const rows = data.values || [];
-
-    const headers = rows[0].map(header => header.trim().toLowerCase());
-    allHomesData = rows.slice(1).map(row => {
-        const home = {};
-        headers.forEach((header, index) => {
-            home[header] = row[index] || "";
-        });
-        return home;
-    });
-
-    // Initially load the first batch
-    loadNextBatch();
-
-    // Remove loading message after data is fully loaded
-    loadingMessage.remove();
-} catch (error) {
-    console.error("Error fetching property data:", error);
-    loadingMessage.textContent = "Failed to load data. Please try again.";
-}
-};
-// Declare a global variable to keep track of the index
-let globalIndex = 0;
-
-// Function to render homes data efficiently using the provided structure
-const renderHomesData = (homesData) => {
-    const container = document.getElementById("homes-container");
-
-    homesData.forEach((home) => {
-        const propertyId = `property-${home['property title'].replace(/\s+/g, '_')}`;
-        const imageSrc = home['propertiy img url']
-            ? home['propertiy img url'].startsWith('data:image')
-                ? home['propertiy img url']
-                : `data:image/jpeg;base64,${home['propertiy img url']}`
-            : 'default-image.jpg';
-
-        // Log home data for debugging
-        console.log(`Rendering property: ${home['property title']} at index: ${globalIndex}`);
-        console.log(`Location URL: ${home['location url']}`);  // Log the location URL to verify
-
-        container.insertAdjacentHTML('beforeend', `
-            <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
-                <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
-                    <img src="${imageSrc}" class="card-img-top" alt="${home['property title']}" style="width: 100%; height: 75%; border-radius: 10px 10px 0 0; display: block;" loading="lazy" width="600" height="400">
-                    <div class="card-body">
-                        <p class="card-text text-muted d-flex justify-content-between align-items-center">
-                            <span class="type"> ${home['property title']}</span>
-                            <button style="padding: 2px 5px; font-size: 12px; border: 1px solid #28a745; border-radius: 30px; background-color: #28a745; color: white; cursor: not-allowed; font-weight: 600;" disabled class="glitter-btn">Available</button>
-                        </p>
-                        <p class="location text-secondary"><i class="fas fa-map-marker-alt"></i> ${home['location']}</p>
-                        <p class="card-text">${home['description']}</p>
-                        <div class="d-flex justify-content-end align-items-center pb-1 pe-1 mb-2">
-                            <h6 class="text-dark fw-bold mb-0">Rate: ${home['column 1']} ₹</h6>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center mt-1 gap-1">
-                            <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#enquiryModal${propertyId}" style="background: #205375; color: white;">
-                                <i class="fas fa-envelope" style="font-size:11px"></i> Enquire
-                            </a>
-                            <button type="button" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal${globalIndex}" style="background: #4682B4; color: white;">
-                                <i class="fas fa-map-marker-alt" style="font-size:11px"></i> View Map
-                            </button>
-                            <button class="btn btn-sm ms-auto" onclick="shareProperty('${home['property title']}')" style="background: #008080; color: white;">
-                                <i class="fas fa-share-alt" style="font-size:11px"></i> Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Enquiry Modal -->
-            <div class="modal fade" id="enquiryModal${propertyId}" tabindex="-1" aria-labelledby="enquiryModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background: #1F2937; color: white;">
-                            <h5 class="modal-title" id="enquiryModalLabel">Enquire About ${home['property title']}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Would you like to get in touch with us via:</p>
-                            <button type="button" class="btn" onclick="makeCall()" style="margin: 1px; background: linear-gradient(135deg, #17a2b8, #138496); font-size:13px color: white; border: none;">
-                                <i class="fas fa-phone-alt" style="font-size:11px"></i> Call
-                            </button>
-                            <button type="button" class="btn btn-primary" style="font-size:13px" onclick="sendEmail('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
-                                <i class="fas fa-envelope" style="font-size:11px"></i> Email
-                            </button>
-                            <button type="button" class="btn btn-success" style="font-size:13px" onclick="sendMsg('${home['property title']}', '${home['location']}', '${home['column 1']} ₹')" style="margin: 2px;">
-                                <i class="fab fa-whatsapp" style="font-size:11px"></i> WhatsApp
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Map Modal -->
-
-<div class="modal fade" id="mapModal${globalIndex}" tabindex="-1" aria-labelledby="mapModalLabel${globalIndex}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="background: #374151; color: white;">
-                <h5 class="modal-title" id="mapModalLabel${globalIndex}">${home['property title']} - Location</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
             </div>
             <div class="modal-body">
-                <div class="map-container">
-                    ${/^https?:\/\/[^\s]+$/.test(home['location url']) 
-                        ? (home['location url'].includes("google.com/maps/embed")
-                            ? `<iframe src="${home['location url']}" width="100%" height="400" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy"></iframe>`
-                            : `<a href="${home['location url']}" target="_blank" class="btn btn-primary">View Location</a>`)
-                        : `<p style="color: red;">Invalid location URL.</p>`
-                    }
-                </div>
+                Your property details have been submitted successfully!
             </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-sm text-white" data-bs-dismiss="modal" id="addAnotherBtn">Add Another Property</button>
+                <button type="button" class="btn btn-sm text-white" id="viewAllBtn">Go to Our Web</button>
+            </div>
+            
         </div>
     </div>
-            </div>
-        `);
+</div>
 
-        // Increment the global index
-        globalIndex++;
-    });
-
-    container.classList.remove("hidden");
-
-    // Debugging if map modal is working
-    console.log("Homes data rendered.");
-    showSectionFromHash();
-};
-
-
-
-
-
-// Combined window.onload
-window.onload = function() {
-
-
-    // Call fetchData
-    fetchData();
-    window.addEventListener('scroll', () => {
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 200){
-            loadNextBatch()
+<script>// Function to handle image previews
+    document.getElementById('propertyImage').addEventListener('change', function (event) {
+        const files = event.target.files;
+        const imagePreviewsContainer = document.getElementById('imagePreviews');
+        imagePreviewsContainer.innerHTML = ''; // Clear previous previews
+    
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+    
+            reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100px';
+                img.style.margin = '5px';
+                imagePreviewsContainer.appendChild(img);
+            };
+    
+            reader.readAsDataURL(file);
         }
     });
-    // Check theme preference
-    let val = localStorage.getItem("theme");
-    const themeCheckbox = document.getElementById('check');
-    if (val == 1) {
-        themeCheckbox.checked = true;
-        toggleTheme();
-    } else {
-        themeCheckbox.checked = false;
-    }
-};
-
-// Event listener for hash changes
-window.addEventListener('hashchange', showSectionFromHash);
-
-// Enhanced send email function
-function sendEmail(title, location, rate) {
-    const email = "vimalraj5207@gmail.com";
-    const subject = `Property%20Enquiry%20-%20${encodeURIComponent(title)}`;
-    const body = `Hello,%0D%0A%0D%0AI am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.%0D%0A%0D%0AThank you!`;
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-}
-
-// Make call function
-function makeCall() {
-    window.location.href = `tel:+918807099288`;
-}
-
-// Send WhatsApp message function
-function sendMsg(title, location, rate) {
-    const message = `Hello, I am interested in the property titled "${title}" located in "${location}" priced at "${rate}". Please provide more details.`;
-    const encodedMessage = encodeURIComponent(message);
-    window.location.href = `https://wa.me/918807099288?text=${encodedMessage}`;
-}
-
-
-// Function to filter properties based on input
-const filterProperties = () => {
-     document.getElementById('view-all-btn').style.display = 'none';
-    const input = document.getElementById('searchInput').value.trim().toLowerCase(); // Get the input value and convert to lowercase
-    const cards = document.querySelectorAll('.home-card'); // Get all property cards
-    let found = false; // Variable to track if any card is found
-
-    // Loop through each property card initially
-    cards.forEach(card => {
-        const titleElement = card.querySelector('.type');
-        const locationElement = card.querySelector('.location');
-        const rateElement = card.querySelector('.fw-bold');
-        const title = titleElement ? titleElement.textContent.toLowerCase() : '';
-        const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : '';
-        const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
-
-        // Check if the input matches any of the fields (title, location, rate)
-        if (title.includes(input) || location.includes(input) || rate.includes(input)) {
-            card.style.display = "block";  // Show card if it matches
-            found = true;  // Set found to true if at least one card matches
-        } else {
-            card.style.display = "none";  // Hide card if no match
-        }
-    });
-
-    // Show "No property found" message if no matches
-    const noSearchMessage = document.getElementById('no-search-message');
-    if (!found) {
-        // If no card matches, show the "No Property found" message
-        if (!noSearchMessage) {
-            const message = document.createElement('p');
-            message.id = 'no-search-message';
-            message.textContent = 'No Property found';
-            message.style.textAlign = 'center';
-            message.style.fontWeight = 'bold';
-            message.style.fontSize = '22px';
-            document.body.appendChild(message); // Append to body or a specific element
-        }
-
-        // Start loading more data until a match is found
-        const loadInterval = setInterval(() => {
-            // Try loading the next batch of data
-            const loaded = loadNextBatch(); // Try loading the next batch of homes
-
-            // If a batch was loaded, check the newly loaded cards for a match
-            if (loaded) {
-                const newCards = document.querySelectorAll('.home-card');
-                newCards.forEach(card => {
-                    const titleElement = card.querySelector('.type');
-                    const locationElement = card.querySelector('.location');
-                    const rateElement = card.querySelector('.fw-bold');
-                    const title = titleElement ? titleElement.textContent.toLowerCase() : '';
-                    const location = locationElement ? locationElement.textContent.toLowerCase().replace(/[\n\r\s]+/g, ' ').trim() : '';
-                    const rate = rateElement ? rateElement.textContent.toLowerCase() : '';
-
-                    // If a match is found in the newly loaded cards, stop loading and display the result
-                    if (title.includes(input) || location.includes(input) || rate.includes(input)) {
-                        card.style.display = "block";
-                        found = true; // Match found
+    
+    // Function to compress an image
+    function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+    
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+    
+                let width = img.width;
+                let height = img.height;
+    
+                // Calculate new dimensions to maintain aspect ratio
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
                     }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+    
+                canvas.width = width;
+                canvas.height = height;
+    
+                // Draw the image on the canvas
+                ctx.drawImage(img, 0, 0, width, height);
+    
+                // Convert the canvas to a Blob with the specified quality
+                canvas.toBlob(
+                    (blob) => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error('Failed to compress image'));
+                        }
+                    },
+                    'image/jpeg',
+                    quality
+                );
+            };
+    
+            img.onerror = (error) => reject(error);
+        });
+    }
+    
+    // Function to upload images to ImgBB in parallel
+    async function uploadImagesToImgBB(files) {
+        const imgbbApiKey = '76954d664f0beaf57b8c5a5b0eca84e6'; // Replace with your ImgBB API key
+        const imgbbUrl = `https://api.imgbb.com/1/upload?key=${imgbbApiKey}`;
+    
+        // Compress and upload images in parallel
+        const uploadPromises = files.map(async (file) => {
+            try {
+                const compressedFile = await compressImage(file);
+                const imgbbFormData = new FormData();
+                imgbbFormData.append('image', compressedFile);
+    
+                const response = await fetch(imgbbUrl, {
+                    method: 'POST',
+                    body: imgbbFormData,
                 });
+                const result = await response.json();
+    
+                if (result.success) {
+                    return result.data.url; // Return the image URL
+                } else {
+                    throw new Error('Image upload to ImgBB failed');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                throw error;
             }
-
-            // If a match is found, stop the interval
-            if (found) {
-                clearInterval(loadInterval);
-            }
-        }, 10); // Load new batch every 50ms
-    } else {
-        // If matches are found, remove the "No Property found" message
-        if (noSearchMessage) {
-            noSearchMessage.remove();
+        });
+    
+        // Wait for all uploads to complete
+        return Promise.all(uploadPromises);
+    }
+    
+    // Function to handle form submission
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const form = document.getElementById('propertyForm');
+        const formData = new FormData(form);
+        const imageFiles = Array.from(formData.getAll('propertyImage')); // Get all uploaded files
+    
+        document.getElementById('loading').style.display = 'flex';
+    
+        try {
+            // Upload images to ImgBB in parallel
+            const imageUrls = await uploadImagesToImgBB(imageFiles);
+    
+            // Add comma-separated image URLs to the form data
+            formData.set('propertyImgUrl', imageUrls.join(','));
+    
+            // Submit form data to Google Sheets
+            const propertyType = formData.get('propertyType');
+            const actionLinks = {
+                land: "https://script.google.com/macros/s/AKfycbzNns6qA7Sh7cIkvxPDOin6TBRlkxLWyz7HHNqBTEjT2HWxyR84f2EBybmUFTfyh8f_/exec",
+                plot: "https://script.google.com/macros/s/AKfycbwoL14OffR4L1nR-Z9G3_5kbckVITnQYTVGNKyqelQ6y1CVeIHXH4NQm0hnTsI3ZFcl/exec",
+                home: "https://script.google.com/macros/s/AKfycbycTr0NIggwx-WRyl_QrdkXw9msk8322CgcreHTLD7gRviJ9uyXw3nSi2dWHrPR2WhLxw/exec"
+            };
+    
+            const googleSheetsResponse = await fetch(actionLinks[propertyType], {
+                method: 'POST',
+                body: formData,
+            });
+            const googleSheetsResult = await googleSheetsResponse.text();
+    
+            document.getElementById('loading').style.display = 'none';
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            alert("Error: " + error.message);
         }
     }
-};
-
-// Adding event listener to input field for filtering
-document.getElementById('searchInput').addEventListener('keyup', filterProperties);
-window.onscroll = function() { 
-    let btn = document.getElementById("arr");
-    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        btn.style.display = "block";
-    } else {
-        btn.style.display = "none";
-    }
-};
-
-function goToTop() {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-    </script>
-
-    <!-- WhatsApp Floating Button -->
- <a href="https://wa.me/918807099288" target="_blank" class="whatsapp-float">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-  
-      <!-- Instagram Icon Link -->
-      <a href="https://www.instagram.com/vimalraj____s" target="_blank" class="whatsapp2-float">
-          <i class="fab fa-instagram instagram-icon"></i>
-      </a>
-      <i class="fa-solid fa-angles-up" id="arr" onclick="goToTop()" 
-      style="position: fixed; bottom: 70px; left: 20px; z-index: 99; font-size: 18px; color: black; cursor: pointer; opacity: 0.8; transition: transform 0.2s ease, opacity 0.3s ease; display: none;
-      background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(6px); padding: 10px; border-radius: 50%; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);"
-      onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='1';" 
-      onmouseout="this.style.transform='scale(1)'; this.style.opacity='0.8';">
-   </i>
-
+    
+    // Reset form and previews
+    document.getElementById('addAnotherBtn').addEventListener('click', function () {
+        document.getElementById('propertyForm').reset();
+        document.getElementById('imagePreviews').innerHTML = '';
+    });
+    
+    // Redirect to homepage
+    document.getElementById('viewAllBtn').addEventListener('click', function () {
+        window.location.href = "https://vsgroupsofcompany.neocities.org/srkhomepage";
+    });
+    
+    // Replace spaces with underscores in the "Property Title" input field
+    document.getElementById('propertyTitle').addEventListener('input', function (event) {
+        this.value = this.value.replace(/\s+/g, '_');
+    });
+</script>
 </body>
 </html>
