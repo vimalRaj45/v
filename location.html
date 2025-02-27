@@ -147,30 +147,30 @@
             }, 1000);
         }
 
-        function routeToHall(destinationCoords) {
+       function routeToHall(destinationCoords) {
     if (!userCoords) {
         showModal("Error", "Please allow location access before trying to navigate.");
         return;
     }
 
-    // Display an image modal using UIkit
-    UIkit.modal.dialog(`
+    // Create and store modal instance
+    const modal = UIkit.modal.dialog(`
         <div class="uk-modal-body">
-           <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" 
-     style="width: 90%; max-width: 250px; height: auto; display: block; margin: 0 auto;" 
-     alt="Navigation Image" 
-     loading="lazy">
-
-            <p>Please Verify in Google Maps that location is enabled. You will be automatically redirected.</p>
+            <button class="uk-modal-close-default" type="button" uk-close></button>
+            <img src="https://i.ibb.co/v4BgdwKy/1740190637891.jpg" 
+                 style="width: 100%; max-width: 300px;" 
+                 alt="Navigation Image" 
+                 loading="lazy">
+            <p>Please verify in Google Maps that location is enabled. You will be automatically redirected.</p>
         </div>
     `);
 
-    // Automatically navigate to Google Maps after 3 seconds
+    // Automatically close the modal and navigate after 3 seconds
     setTimeout(() => {
-         modal.hide();
+        if (modal.isActive()) modal.hide(); // Close modal if it's still open
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
         window.location.href = googleMapsURL; // Navigate to Google Maps
-    }, 3000); // 3-second delay before redirect
+    }, 3000);
 }
 
 
