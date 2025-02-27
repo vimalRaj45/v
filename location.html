@@ -167,6 +167,7 @@
 
     // Automatically navigate to Google Maps after 3 seconds
     setTimeout(() => {
+         modal.hide();
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
         window.location.href = googleMapsURL; // Navigate to Google Maps
     }, 3000); // 3-second delay before redirect
