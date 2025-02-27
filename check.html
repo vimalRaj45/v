@@ -960,25 +960,36 @@ const renderHomesData = (homesData) => {
         container.insertAdjacentHTML('beforeend', `
             <div class="col-md-3 home-card mb-3" id="${home['property title']}" style="display: block;">
                 <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease; position: relative;">
-                    <!-- Bootstrap Carousel for Images -->
-                    <div id="carousel-${globalIndex}" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            ${imageUrls.map((url, index) => `
-                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                    <img src="${url}" class="d-block w-100" alt="Property Image ${index + 1}" style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                                </div>
-                            `).join('')}
-                        </div>
-                        <!-- Carousel Controls -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${globalIndex}" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-${globalIndex}" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
+                   <!-- Bootstrap Carousel with Indicators -->
+<div id="carousel-${globalIndex}" class="carousel slide" data-bs-ride="carousel">
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+        ${imageUrls.map((_, index) => `
+            <button type="button" data-bs-target="#carousel-${globalIndex}" data-bs-slide-to="${index}" 
+                class="${index === 0 ? 'active' : ''}" aria-label="Slide ${index + 1}"></button>
+        `).join('')}
+    </div>
+
+    <div class="carousel-inner">
+        ${imageUrls.map((url, index) => `
+            <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                <img src="${url}" class="d-block w-100" alt="Property Image ${index + 1}" 
+                     style="height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+            </div>
+        `).join('')}
+    </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${globalIndex}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel-${globalIndex}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
                     <div class="card-body">
                         <p class="card-text text-muted d-flex justify-content-between align-items-center">
                             <span class="type"> ${home['property title']}</span>
