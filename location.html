@@ -154,14 +154,14 @@
         return;
     }
 
-    let countdown = 10;
+    let countdown = 5;
 
     // Create modal with countdown in a rectangular shape with rounded corners
     const modal = UIkit.modal.dialog(`
         <div class="uk-modal-body">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <img src="https://i.ibb.co/ymxFvjvz/1740680398303.jpg" 
-                 style="width: 100%; max-width: 300px;" 
+                 style="width: 80%; max-width: 300px;" 
                  alt="Navigation Image" 
                  loading="lazy">
             <p>Please Click Start Button in Google Maps. You will be automatically redirected in 
@@ -186,7 +186,7 @@
         let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
         window.location.href = googleMapsURL; // Navigate within the same tab
         }
-    }, 500);
+    }, 1000);
 }
 
 
