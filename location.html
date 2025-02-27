@@ -182,8 +182,9 @@
         if (countdown <= 0) {
             clearInterval(interval);
             modal.hide(); // Close modal
-            let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
-            window.location.href = googleMapsURL; // Redirect to Google Maps
+            // Navigate to Google Maps after user closes the modal
+        let googleMapsURL = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat},${userCoords.lng}&destination=${destinationCoords}&travelmode=walking&maptype=satellite`;
+        window.location.href = googleMapsURL; // Navigate within the same tab
         }
     }, 1000);
 }
