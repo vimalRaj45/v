@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceed to Payment</title>
+</head>
+<body>
+    <h2>Pay via Razorpay</h2>
+    <p>Enter your email to receive your QR Code and Payment Link:</p>
+    
+    <input type="email" id="userEmail" placeholder="Enter your email" required>
+    <button onclick="generateQR()">Get QR Code & Pay</button>
+
+    <h3>Your QR Code:</h3>
+    <img id="qrCode" src="" alt="QR Code will appear here" width="200">
+
+    <br>
+    <a id="payNow" href="#" target="_blank">
+        <button id="payButton" style="display: none;">Proceed to Payment</button>
+    </a>
+
+    <script>
+        function generateQR() {
+            let email = document.getElementById("userEmail").value;
+            if (!email) return alert("Please enter your email!");
+
+            let appsScriptURL = "https://script.google.com/macros/s/AKfycbzwoprMdw8WegQhIu_u5YH1aBoZeS6kqk9O7DXffGhLWxaB-tJmB1LgihCfpK6AAW1ykg/exec?email=" + encodeURIComponent(email);
+
+            fetch(appsScriptURL)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("qrCode").src = data.qr;
+                document.getElementById("payNow").href = data.link;
+                document.getElementById("payButton").style.display = "block";
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
