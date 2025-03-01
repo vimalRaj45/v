@@ -366,6 +366,7 @@
                         if (xhr.status === 200) {
                             // Show success message
                             $('#successToast').toast('show');
+			    document.getElementById("myForm").reset();
                         }
                     };
                     xhr.send(data);
