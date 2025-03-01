@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -179,8 +180,8 @@
     <div class="container mt-5" id="formContainer">
         <h2 class="text-center">Event Registration Form</h2>
         <form id="myForm" action="javascript:void(0);" method="POST" onsubmit="handleSubmit()">
-            <label for="eventType">Event Type (You Can Select Multiple Events)</label>
-            <select name="eventType" id="eventType" required class="form-control mb-2" multiple>
+            <label for="eventType">Event Type </label>
+            <select name="eventType" id="eventType" required class="form-control mb-2">
                 <optgroup label="Technical Events">
                     <option value="Innovation Sprout">Innovation Sprout</option>
                     <option value="Quiz to Quirk">Quiz to Quirk</option>
@@ -332,55 +333,146 @@
     </div>
 
     <script>
+        
         $(document).ready(function () {
-            $('#eventType').select2();
-           
-            window.handleSubmit = function() {
-                const selectedEvents = $('#eventType').val();
-                const actionLinks = {
-                    "Innovation Sprout": "https://script.google.com/macros/s/AKfycbw9JXmJlhRPVWFNQmI-KixQZiujT_XsHPPSUMLDBbJomrpcazMS7_reG8Kgi1zPQXP_/exec",
-                    "Quiz to Quirk": "https://script.google.com/macros/s/AKfycbz8eyyDQTzm6B7jGD_EG9Pbj85DPPk4_AOyI0c7ZfyAs52b-0H44JVWAFZt-4pHPmpXYQ/exec",
-                    "IOT InnovateXpo": "https://script.google.com/macros/s/AKfycbzviASqzMLHfr3p-ngYc1z2X5btM3F2P7frRxnj5et5qe5ogVB2IW1G-bXNuvyxHiHB/exec",
-                    "UI Design": "https://script.google.com/macros/s/AKfycbyyMF01jBzvCCMX5f59Ddy7CRuetR4UAs3ntpZSR-DuZPphc1-CMNvngbRX7YXhJ1C0_g/exec",
-                    "Game Development": "https://script.google.com/macros/s/AKfycbwKsuVBmQ-z_hmPg__54Z2rrww0O6THmNosJqBA65JB1-a9XLedlkXc1gjR7KSxwH-Qnw/exec",
-                    "ML Fusion": "https://script.google.com/macros/s/AKfycbxdOrLi7cKX1d1Ex_M7rhFGLkPW9kjC4c0S-KSCmE7I4frR3mzkqWfmedu5TTzYi5ggSQ/exec",
-                    "AI Fusion": "https://script.google.com/macros/s/AKfycbyIsj32n0g_oqttjETqulJUEe4gNQ2YtQ_GFDZXa9f-RVUQRZyD-k_c1AAx8G2YgRfbPg/exec",
-                    "Dashing Boards": "https://script.google.com/macros/s/AKfycbws4wHuLyULQqyp0H2g8ZQWnnfMv6VnPC26uDt1CcKxkGFNuLVV6xi-QQ3wlL69T7dDJQ/exec",
-                    "Appventure": "https://script.google.com/macros/s/AKfycbzF58OUeU5Zl3Af-SUoRRAY4FbICZGSUKcJhtHR4DgDAWbHy01F16BL4keIbCKn22S0/exec",
-                    "Memo O Mania": "https://script.google.com/macros/s/AKfycbxrtdpOJS7ZzNHCrX6cNkfiVYSZzeTrcLAPdK77u88gPl8NAX5YkpI5_vX4HkUUtOwE/exec",
-                    "Charde Fusion": "https://script.google.com/macros/s/AKfycbzco9K-FyqV6ZnniPz_Bgk-rkUbNJcEFVDgdy4ZL9M0y_1buBC4ysw4ZrBh9g2hpew0/exec",
-                    "Karaoke": "https://script.google.com/macros/s/AKfycbzIKffhb8b5HzzDtnw6YzKDS-HTaq9KKD_y6knH2giE_gEzHHy0fxH_WvXsMOzfsU8f/exec",
-                    "Funfest": "https://script.google.com/macros/s/AKfycbwj4OtnZmAi5ltEpJH_yZoPqToXxFVXaUHCXy13GyxeVu7xi4yU4HNeR60cmAGt1cEuQ/exec",
-                    "Image Finder": "https://script.google.com/macros/s/AKfycbzCRYbZ9N_UV1EUsxG_O50n_2CoUzy30hhV3-Cf9A0bhchz8iSFMbFrq_l0_JefIQzH/exec",
-                    "Aperture Magic": "https://script.google.com/macros/s/AKfycbxUicNq9rMmMfvhNaW8h74RhiTkN2D5tRHahzPCmJ_K4VeqOGwY0uWhiPPZq1zGID4g/exec"
-                };
+  // Initialize Select2 for eventType dropdown
+  $('#eventType').select2();
 
-                const form = document.getElementById('myForm');
-                const selectedEventURLs = selectedEvents.map(event => actionLinks[event]);
 
-                const data = new FormData(form);
 
-                // Show loading spinner
-                $('#loading').show();
+  // Function to save form data to local storage (excluding transaction ID)
+  function saveFormDataToLocalStorage() {
+    const formData = {
+      eventType: $('#eventType').val(),
+      regNo: $('input[name="Regno"]').val(),
+      name: $('input[name="name"]').val(),
+      department: $('#dept').val(),
+      year: $('select[name="year"]').val(),
+      section: $('input[name="section"]').val(),
+      teamMembers: $('input[name="teammember"]').value,
+      teamLeader: $('input[name="teamleder"]').val(),
+    };
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }
 
-                selectedEventURLs.forEach((url) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", url, true);
-                    xhr.onload = function () {
-                        // Hide loading spinner
-                        $('#loading').hide();
-                        if (xhr.status === 200) {
-                            // Show success message
-                            $('#successToast').toast('show');
-			    document.getElementById("myForm").reset();
-                        }
-                    };
-                    xhr.send(data);
-                });
-            };
-        });
+  // Function to populate form fields from local storage
+  function populateFormFromLocalStorage() {
+    const savedData = JSON.parse(localStorage.getItem("formData"));
+    if (savedData) {
+      $('#eventType').val(savedData.eventType).trigger('change');
+      $('input[name="Regno"]').val(savedData.regNo);
+      $('input[name="name"]').val(savedData.name);
+      $('#dept').val(savedData.department).trigger('change');
+      $('select[name="year"]').val(savedData.year).trigger('change');
+      $('input[name="section"]').val(savedData.section);
+      $('input[name="teammember"]').val(savedData.teamMembers);
+      $('input[name="teamleder"]').val(savedData.teamLeader);
+    }
+  }
+
+  // Show success modal after registration
+  function showSuccessModal() {
+    const modal = document.createElement("div");
+    modal.style.position = "fixed";
+    modal.style.top = "50%";
+    modal.style.left = "50%";
+    modal.style.transform = "translate(-50%, -50%)";
+    modal.style.backgroundColor = "white";
+    modal.style.padding = "20px";
+    modal.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+    modal.style.zIndex = "1000";
+
+    modal.innerHTML = `
+  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 8px; z-index: 1000; width: 300px; text-align: center;">
+    <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Registered successfully!</p>
+    <p style="font-size: 14px; margin-bottom: 20px;">Would you like to participate in more events?</p>
+    <button id="addMoreEvents" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; font-size: 14px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Yes</button>
+    <button id="closeModal" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; font-size: 14px; border-radius: 4px; cursor: pointer;">No</button>
+  </div>
+`;
+
+    document.body.appendChild(modal);
+
+    // Handle "Yes" button click
+    document.getElementById("addMoreEvents").addEventListener("click", () => {
+      populateFormFromLocalStorage();
+      $("#submitBtn").hide();
+      modal.remove();
+    });
+
+    // Handle "No" button click
+    document.getElementById("closeModal").addEventListener("click", () => {
+      modal.remove();
+    });
+  }
+
+  window.handleSubmit = function () {
+  // Get selected events and ensure it's always an array
+  const selectedEvents = $('#eventType').val() || []; // Default to an empty array if null
+
+  // Ensure selectedEvents is an array
+  const eventArray = Array.isArray(selectedEvents) ? selectedEvents : [selectedEvents];
+
+  // Check if at least one event is selected
+  if (eventArray.length === 0) {
+    alert("Please select at least one event.");
+    return;
+  }
+
+  // Save form data to local storage (excluding transaction ID)
+  saveFormDataToLocalStorage();
+
+  // Define action links for each event
+  const actionLinks = {
+    "Innovation Sprout": "https://script.google.com/macros/s/AKfycbw9JXmJlhRPVWFNQmI-KixQZiujT_XsHPPSUMLDBbJomrpcazMS7_reG8Kgi1zPQXP_/exec",
+    "Quiz to Quirk": "https://script.google.com/macros/s/AKfycbz8eyyDQTzm6B7jGD_EG9Pbj85DPPk4_AOyI0c7ZfyAs52b-0H44JVWAFZt-4pHPmpXYQ/exec",
+    "IOT InnovateXpo": "https://script.google.com/macros/s/AKfycbzviASqzMLHfr3p-ngYc1z2X5btM3F2P7frRxnj5et5qe5ogVB2IW1G-bXNuvyxHiHB/exec",
+    "UI Design": "https://script.google.com/macros/s/AKfycbyyMF01jBzvCCMX5f59Ddy7CRuetR4UAs3ntpZSR-DuZPphc1-CMNvngbRX7YXhJ1C0_g/exec",
+    "Game Development": "https://script.google.com/macros/s/AKfycbwKsuVBmQ-z_hmPg__54Z2rrww0O6THmNosJqBA65JB1-a9XLedlkXc1gjR7KSxwH-Qnw/exec",
+    "ML Fusion": "https://script.google.com/macros/s/AKfycbxdOrLi7cKX1d1Ex_M7rhFGLkPW9kjC4c0S-KSCmE7I4frR3mzkqWfmedu5TTzYi5ggSQ/exec",
+    "AI Fusion": "https://script.google.com/macros/s/AKfycbyIsj32n0g_oqttjETqulJUEe4gNQ2YtQ_GFDZXa9f-RVUQRZyD-k_c1AAx8G2YgRfbPg/exec",
+    "Dashing Boards": "https://script.google.com/macros/s/AKfycbws4wHuLyULQqyp0H2g8ZQWnnfMv6VnPC26uDt1CcKxkGFNuLVV6xi-QQ3wlL69T7dDJQ/exec",
+    "Appventure": "https://script.google.com/macros/s/AKfycbzF58OUeU5Zl3Af-SUoRRAY4FbICZGSUKcJhtHR4DgDAWbHy01F16BL4keIbCKn22S0/exec",
+    "Memo O Mania": "https://script.google.com/macros/s/AKfycbxrtdpOJS7ZzNHCrX6cNkfiVYSZzeTrcLAPdK77u88gPl8NAX5YkpI5_vX4HkUUtOwE/exec",
+    "Charde Fusion": "https://script.google.com/macros/s/AKfycbzco9K-FyqV6ZnniPz_Bgk-rkUbNJcEFVDgdy4ZL9M0y_1buBC4ysw4ZrBh9g2hpew0/exec",
+    "Karaoke": "https://script.google.com/macros/s/AKfycbzIKffhb8b5HzzDtnw6YzKDS-HTaq9KKD_y6knH2giE_gEzHHy0fxH_WvXsMOzfsU8f/exec",
+    "Funfest": "https://script.google.com/macros/s/AKfycbwj4OtnZmAi5ltEpJH_yZoPqToXxFVXaUHCXy13GyxeVu7xi4yU4HNeR60cmAGt1cEuQ/exec",
+    "Image Finder": "https://script.google.com/macros/s/AKfycbzCRYbZ9N_UV1EUsxG_O50n_2CoUzy30hhV3-Cf9A0bhchz8iSFMbFrq_l0_JefIQzH/exec",
+    "Aperture Magic": "https://script.google.com/macros/s/AKfycbxUicNq9rMmMfvhNaW8h74RhiTkN2D5tRHahzPCmJ_K4VeqOGwY0uWhiPPZq1zGID4g/exec"
+  };
+
+  // Map selected events to their corresponding URLs
+  const selectedEventURLs = eventArray.map(event => actionLinks[event]);
+
+  // Create FormData object from the form
+  const form = document.getElementById('myForm');
+  const data = new FormData(form);
+
+  // Show loading spinner
+  $('#loading').show();
+
+  // Send POST requests for each selected event
+  selectedEventURLs.forEach((url) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.onload = function () {
+      // Hide loading spinner
+      $('#loading').hide();
+      if (xhr.status === 200) {
+        // Show success message
+        $('#successToast').toast('show');
+        document.getElementById("myForm").reset();
+
+        // Show success modal
+        showSuccessModal();
+      }
+    };
+    xhr.send(data);
+  });
+};
+});
     </script>
-    
+
 </body>
 </html
 >
