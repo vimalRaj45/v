@@ -251,12 +251,16 @@
     $(document).ready(function () {
         // Function to check Payment ID in Google Sheets
         async function checkPaymentId(paymentId) {
-            const scriptUrl = "https://script.google.com/macros/s/AKfycby_bepDkTKJXz_J5XAXieooXVykGbXyZkzkYtWeO_4b05OPtoezKbuNkIdq7Z2oZ3mm/exec"; // Replace with your actual Apps Script URL
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbyXz-nZg0ST8vI--ZYC0RyocgaNfU3S34vaGBYNBPzuNmuDMrARrr852LmT8CpfuenB/exec"; // Replace with your actual Apps Script URL
+            $("#loading").show();
             try {
-                const response = await fetch(`${scriptUrl}?paymentId=${paymentId}`);
-                const data = await response.json();
-                return data.valid;  // Expected response: { "valid": true } if ID exists
-            } catch (error) {
+            const response = await fetch(`${scriptUrl}?transactionId=${paymentId}`); // Ensure the correct query parameter
+            const data = await response.json();
+            
+            
+            return data.valid;
+           
+        } catch (error) {
                 console.error("Error checking Payment ID:", error);
                 return false;
             }
@@ -269,14 +273,17 @@
                 const isValid = await checkPaymentId(paymentId);
                 if (isValid) {
                     alert("Payment Verified! You can now register.");
+                    $("#loading").hide();
                     $("#submitBtn").show();
                 } else {
                     alert("Invalid Payment ID! Please enter a valid one.");
                     $("#submitBtn").hide();
+                    $("#loading").hide();
                 }
             } else {
                 alert("Please enter a valid Payment ID.");
                 $("#submitBtn").hide();
+                $("#loading").hide();
             }
         });
     });
@@ -373,6 +380,7 @@
             };
         });
     </script>
+    
 </body>
 </html
 >
