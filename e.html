@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -235,8 +236,54 @@
 
             <label>Team Leader</label>
             <input type="text" name="teamleder" placeholder="Enter Team Leader Name" required class="form-control mb-2">
+           <!-- Payment Link -->
+<a href="https://rzp.io/rzp/hGqYFvVj" target="_blank" class="btn btn-primary">Pay Amount</a>
 
-            <button type="submit" class="btn btn-secondary" class="but">Submit</button>
+<!-- Payment ID Input -->
+<label for="paymentId">Enter Payment ID (Transaction ID)</label>
+<input type="text" name="paymentId" id="paymentId" placeholder="Enter Payment ID" required class="form-control mb-2">
+
+<!-- Verify Payment Button -->
+<button type="button" class="btn btn-info" id="verifyBtn">Verify</button>
+
+<!-- Submit Button (Initially Hidden) -->
+<button type="submit" class="btn btn-secondary but" id="submitBtn" style="display: none;">Register</button>
+
+<script>
+    $(document).ready(function () {
+        // Function to check Payment ID in Google Sheets
+        async function checkPaymentId(paymentId) {
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbxUPtTWFM4sRWYvwm-8a51Si5dX6qMcX5Je2_zgupRZ03HsEmVj0q27vkMBdKLoVemR8A/exec"; // Replace with your actual Apps Script URL
+            try {
+                const response = await fetch(`${scriptUrl}?paymentId=${paymentId}`);
+                const data = await response.json();
+                return data.valid;  // Expected response: { "valid": true } if ID exists
+            } catch (error) {
+                console.error("Error checking Payment ID:", error);
+                return false;
+            }
+        }
+
+        // Verify Payment ID when clicking "Verify" button
+        $("#verifyBtn").click(async function () {
+            const paymentId = $("#paymentId").val().trim();
+            if (paymentId.length > 5) { // Check only if input is valid length
+                const isValid = await checkPaymentId(paymentId);
+                if (isValid) {
+                    alert("Payment Verified! You can now register.");
+                    $("#submitBtn").show();
+                } else {
+                    alert("Invalid Payment ID! Please enter a valid one.");
+                    $("#submitBtn").hide();
+                }
+            } else {
+                alert("Please enter a valid Payment ID.");
+                $("#submitBtn").hide();
+            }
+        });
+    });
+</script>
+
         </form>
     </div>
 
