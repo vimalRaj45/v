@@ -1,1 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            cursor: pointer;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .pagination button {
+            padding: 5px 10px;
+            margin: 5px;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
 
+    <h2>Transaction Dashboard</h2>
+
+    <div class="filter-container">
+        <input type="text" id="searchBox" placeholder="Search by any field..." onkeyup="filterTable()">
+        
+        <select id="statusFilter" onchange="filterTable()">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Verified">Verified</option>
+            <option value="Failed">Failed</option>
+        </select>
+        
+        <input type="date" id="startDate" onchange="filterTable()">
+        <input type="date" id="endDate" onchange="filterTable()">
+    </div>
+
+    <table id="transactionTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Transaction ID</th>
+                <th onclick="sortTable(1)">Amount</th>
+                <th onclick="sortTable(2)">Status</th>
+                <th onclick="sortTable(3)">Email</th>
+                <th onclick="sortTable(4)">Created At</th>
+                <th onclick="sortTable(5)">Webhook Event</th>
+            </tr>
+        </thead>
+        <tbody id="transactionBody">
+            <!-- Data will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button id="prevPage" onclick="changePage(-1)">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage" onclick="changePage(1)">Next</button>
+    </div>
+
+    <script>
+        const apiUrl = "https://script.google.com/macros/s/AKfycbwW4quhY1MZy8_V6oUURZKTwOv4-mYPTNsDwbSnRHv0EfWvuDMFnuSeQrXylKlVkLoC/exec"; // Replace with your Apps Script URL
+
+        let transactions = [];
+        let currentPage = 1;
+        const rowsPerPage = 5;
+
+        async function fetchTransactions() {
+            try {
+                const response = await fetch(apiUrl);
+                transactions = await response.json();
+                transactions.forEach(tx => tx.createdAt = new Date(tx.createdAt)); // Convert date strings to Date objects
+                displayTable();
+            } catch (error) {
+                console.error("Error fetching transactions:", error);
+            }
+        }
+
+        function displayTable() {
+            const tbody = document.getElementById("transactionBody");
+            tbody.innerHTML = "";
+
+            const filteredTransactions = filterTableData();
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedData = filteredTransactions.slice(start, end);
+
+            paginatedData.forEach(transaction => {
+                let row = `<tr>
+                    <td>${transaction.transactionId}</td>
+                    <td>${transaction.amount}</td>
+                    <td>${transaction.status}</td>
+                    <td>${transaction.email}</td>
+                    <td>${transaction.createdAt.toISOString().split("T")[0]}</td>
+                    <td>${transaction.webhookEvent}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+
+            updatePagination(filteredTransactions.length);
+        }
+
+        function filterTableData() {
+            const searchValue = document.getElementById("searchBox").value.toLowerCase();
+            const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
+            const startDate = document.getElementById("startDate").value ? new Date(document.getElementById("startDate").value) : null;
+            const endDate = document.getElementById("endDate").value ? new Date(document.getElementById("endDate").value) : null;
+
+            return transactions.filter(transaction => {
+                const matchesSearch = Object.values(transaction).some(value =>
+                    value.toString().toLowerCase().includes(searchValue)
+                );
+
+                const matchesStatus = statusFilter ? transaction.status.toLowerCase() === statusFilter : true;
+                
+                const matchesDate = (!startDate || transaction.createdAt >= startDate) &&
+                                    (!endDate || transaction.createdAt <= endDate);
+
+                return matchesSearch && matchesStatus && matchesDate;
+            });
+        }
+
+        function sortTable(columnIndex) {
+            transactions.sort((a, b) => {
+                const valA = Object.values(a)[columnIndex];
+                const valB = Object.values(b)[columnIndex];
+
+                if (valA instanceof Date) return valA - valB; // Sort dates properly
+                return valA.toString().localeCompare(valB.toString(), undefined, { numeric: true });
+            });
+
+            displayTable();
+        }
+
+        function updatePagination(totalRecords) {
+            const totalPages = Math.ceil(totalRecords / rowsPerPage);
+            document.getElementById("pageInfo").innerText = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById("prevPage").disabled = currentPage === 1;
+            document.getElementById("nextPage").disabled = currentPage === totalPages;
+        }
+
+        function changePage(step) {
+            currentPage += step;
+            displayTable();
+        }
+
+        fetchTransactions();
+    </script>
+
+</body>
+</html>
