@@ -252,7 +252,7 @@
     $(document).ready(function () {
         // Function to check Payment ID in Google Sheets
         async function checkPaymentId(paymentId) {
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbxUPtTWFM4sRWYvwm-8a51Si5dX6qMcX5Je2_zgupRZ03HsEmVj0q27vkMBdKLoVemR8A/exec"; // Replace with your actual Apps Script URL
+            const scriptUrl = "https://script.google.com/macros/s/AKfycbyIhqkALjZMsjtemnph0K60lfy6rL6SVrytnWxx8-vWLCr24yEf_spdFlnoVbO7gKLoJg/exec"; // Replace with your actual Apps Script URL
             try {
                 const response = await fetch(`${scriptUrl}?paymentId=${paymentId}`);
                 const data = await response.json();
