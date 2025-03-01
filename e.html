@@ -236,7 +236,8 @@
 
             <label>Team Leader</label>
             <input type="text" name="teamleder" placeholder="Enter Team Leader Name" required class="form-control mb-2">
-        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Q1UVhLlM6IIeVf" async> </script> </form>
+            <!-- Payment Link -->
+
 <!-- Payment ID Input -->
 <label for="paymentId">Enter Payment ID (Transaction ID Check Your Email)</label>
 <input type="text" name="paymentId" id="paymentId" placeholder="Enter Payment ID" required class="form-control mb-2">
@@ -283,6 +284,8 @@
 </script>
 
         </form>
+        <form class="mt-2"><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Q1UVhLlM6IIeVf" async> </script> </form>
+
     </div>
 
     <!-- Loading Animation -->
@@ -326,7 +329,7 @@
     <script>
         $(document).ready(function () {
             $('#eventType').select2();
-
+           
             window.handleSubmit = function() {
                 const selectedEvents = $('#eventType').val();
                 const actionLinks = {
