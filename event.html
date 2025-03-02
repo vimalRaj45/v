@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background-color: rgb(240, 240, 240);
+
+        } /* Close the general reset block here */
+         
+       
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: whitesmoke;
+            border: 1px solid #000;
+            border-radius: 12px;
+            margin: 1% 0;
+            transition: background-color 0.3s ease;
+        }
+    
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
+    
+        .logo-img {
+            width: 50px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+    
+        .header p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 1em;
+            background-color: rgb(255, 255, 255);
+        }
+    
+        /* Navigation */
+        .nav-links {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start; /* Adjusted for better alignment */
+    background-color: #ffffff;
+}
+
+.nav-links a,
+.dropbtn {
+    text-decoration: none;
+    padding: 10px 15px;
+    color: black;
+    position: relative; /* For positioning the pseudo-element */
+    overflow: hidden; /* Ensures the underline doesn't overflow */
+}
+
+.nav-links a::after,
+.dropbtn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.3px; /* Thickness of the underline */
+    background-color: rgb(41, 37, 37); /* Color of the underline */
+    transform: translateX(-100%); /* Move the underline out of view */
+    transition: transform 0.3s ease; /* Transition for the underline */
+}
+
+.nav-links a:hover::after,
+.dropbtn:hover::after {
+    transform: translateX(0); /* Move the underline into view on hover */
+}
+
+.nav-links a:hover,
+.dropbtn:hover {
+    color: black; /* Change text color if needed */
+    transform: scale(1.05);
+}
+
+/* Dropdown Menu Styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none; /* Hide dropdown content by default */
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    z-index: 1;
+    border-radius: 8px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown content on hover */
+}
+
+.dropdown-content a {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    position: relative; /* For positioning the pseudo-element */
+    overflow: hidden; /* Ensures the underline doesn't overflow */
+}
+
+.dropdown-content a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.3px; /* Thickness of the underline */
+    background-color: rgb(255, 255, 255); /* Color of the underline */
+    transform: translateX(-100%); /* Move the underline out of view */
+    transition: transform 0.3s ease; /* Transition for the underline */
+}
+
+.dropdown-content a:hover::after {
+    transform: translateX(0); /* Move the underline into view on hover */
+}
+
+.dropdown-content a:hover {
+    color: rgb(255, 255, 255); /* Change text color if needed */
+    transform: scale(1.05);
+}
+
+    
+        .register-btn {
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+    
+        .register-btn:hover {
+            background-color: #ff6666;
+            transform: scale(1.05);
+        }
+    
+        /* Menu Toggle (for mobile) */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            color: black;
+        }
+        /* Hero Section */
+        .img {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: url('https://vsgroupsofcompany.neocities.org/spark.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 50px 20px;
+            border-radius: 12px;
+        }
+    
+        .img h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+    
+        .explore-btn {
+            padding: 10px 30px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+    
+        .explore-btn:hover {
+            background-color: #ff6666;
+            transform: scale(1.05);
+        }
+    
+        /* Upcoming Events Section */
+        .events {
+            padding: 50px 20px;
+            text-align: center;
+        }
+    
+        .events h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+    
+        .event-card {
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 300px;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    
+        .event-card h3 {
+            color: #333;
+        }
+    
+        .event-card button {
+            padding: 5px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+    
+        .event-card button:hover {
+            background-color: #555;
+        }
+    
+        /* About Us Section */
+        .about {
+            padding: 50px 20px;
+            background-color: #e0e0e0;
+            text-align: center;
+        }
+    
+        .about h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+    
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+                background-color: whitesmoke;
+                position: absolute;
+                top: 80px;
+                right: 0;
+                padding: 20px;
+                border-radius: 10px;
+            }
+    
+            .nav-links.active {
+                display: flex;
+            }
+    
+            .menu-toggle {
+                display: block;
+            }
+    
+            .event-card {
+                width: 90%;
+            }
+    
+            .hero h1 {
+                font-size: 1.8em;
+            }
+        }
+    
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
+            background-color: rgba(0, 0, 255, 0.85); /* Lightened lavender tone for subtle contrast */
+        }
+    
+        .toast {
+            background-color: #fffafc; /* Slightly off-white to contrast with lavender */
+            border: 1px solid #d1c4e9; /* Soft lavender border */
+            display: none;
+        }
+    
+        .toast-header {
+            color: #108531;
+            font-weight: bold;
+            background-color: #fff; /* Pure white header */
+        }
+    
+        .toast-body {
+            color: #333; /* Darker color for readability */
+        }
+    
+        /* Dropdown Styles */
+        .dropdown {
+    position: relative;
+    display: inline-block;
+    background-color: whitesmoke;
+    border-radius: 5%;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: whitesmoke;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    min-width: 160px;
+    border-radius: 5px;
+    margin-left: 0%;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown on hover */
+    border-radius: 5%;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: rgb(0, 0, 0);
+    position: relative; /* For positioning the pseudo-element */
+    overflow: hidden; /* Ensures the underline doesn't overflow */
+}
+
+.dropdown-content a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px; /* Thickness of the underline */
+    background-color: black; /* Color of the underline */
+    transform: translateX(100%); /* Move the underline out of view */
+    transition: transform 0.3s ease; /* Transition for the underline */
+    border-radius: 5%;
+}
+
+.dropdown-content a:hover::after {
+    transform: translateX(0); /* Move the underline into view on hover */
+}
+
+.dropdown-content a:hover {
+    background-color: #ffffff; /* Background color on hover */
+    color: rgb(0, 0, 0); /* Text color on hover */
+}
+
+/* Optional: For the dropdown button to have the same effect */
+.dropbtn {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    position: relative; /* For positioning the pseudo-element */
+    overflow: hidden; /* Ensures the underline doesn't overflow */
+}
+
+.dropbtn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px; /* Thickness of the underline */
+    background-color: black; /* Color of the underline */
+    transform: translateX(-100%); /* Move the underline out of view */
+    transition: transform 0.3s ease; /* Transition for the underline */
+}
+
+.dropbtn:hover::after {
+    transform: translateX(0); /* Move the underline into view on hover */
+}
+
+        /* Loading Modal */
+        #loadingModal .modal-content {
+            background-color: transparent; /* Dark background for contrast */
+            color: #050706; /* Light text color */
+            border: none;
+        }
+    
+        .spinner-border {
+            filter: blur(4px);
+            color: #020606; /* Light blue spinner color */
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .sidebar {
+            position: fixed; /* Fix the sidebar to the right */
+            right: 0; /* Align it to the right */
+            top: 60px; /* Adjust based on your header height */
+            height: calc(50vh - 4px); /* Full height minus header */
+            padding: 20px; /* Padding for the sidebar */
+            background-color: white; /* Background color for sidebar */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+            overflow-y: auto; /* Enable scrolling if content exceeds view */
+        }
+        .sidebar a {
+            display: block; /* Make links block elements */
+            margin: 10px 0; /* Margin between links */
+            padding: 10px; /* Padding for clickable area */
+            color: black; /* Text color */
+            text-decoration: none; /* Remove underline */
+            border-radius: 4px; /* Rounded corners */
+        }
+        .sidebar a:hover {
+            background-color: #f0f0f0; /* Hover effect */
+        }
+        .main-content {
+            padding: 20px; /* Padding for main content */
+            margin-right: 200px; /* Space for the sidebar */
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative; /* Make sidebar relative on small screens */
+                height: auto; /* Allow height to be auto */
+                margin-bottom: 20px; /* Space below the sidebar */
+            }
+            .main-content {
+                margin-right: 0; /* Reset margin on small screens */
+            }
+        }
+
+        .container1 {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .sidebar1 {
+            flex: 1 1 250px; /* Flex grow, shrink, and basis */
+            padding: 10px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin-right: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar1 button {
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            border: none; /* Remove default button border */
+            border-radius: 5px; /* Add rounded corners to buttons */
+            background-color: #e6e6fa; /* Light background color for buttons */
+            transition: background-color 0.3s; /* Add transition for hover effect */
+        }
+
+        .sidebar1 button:hover {
+            background-color: #6a5acd; /* Change background color on hover */
+            color: #fff; /* Change text color on hover */
+        }
+
+        .iframe-container {
+            flex: 2 1 600px; /* Flex grow, shrink, and basis */
+            display: none;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            max-height: 600px; /* Limit max height */
+            overflow: auto; /* Allow scrolling if content exceeds height */
+        }
+
+        .iframe-container h1 {
+            margin: 0 0 10px;
+        }
+
+        iframe {
+            width: 100%; /* Make iframe take full width */
+            height: 400px; /* Set a fixed height for iframes */
+            border: none; /* Remove border */
+            overflow: auto; /* Allow scrolling */
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack elements vertically on smaller screens */
+            }
+
+            .sidebar1 {
+                margin-right: 0; /* Remove right margin on small screens */
+                margin-bottom: 20px; /* Add margin below sidebar */
+            }
+        }
+
+    </style>
+    
+</head>
+
+<body>
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="jNjufwgMTeNnmOgi0I-dT";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+    <header class="header sticky-top">
+        <div class="logo" style="background-color: whitesmoke;">
+            <img src="https://image3.mouthshut.com/images/imagesp/925717066s.png" alt="College Logo" class="logo-img">
+            <p style="background-color: whitesmoke; font-size: 1.25em;">Sona College Of Technology</p>
+        </div>
+        <nav class="nav-links" style="background-color:whitesmoke;">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <div class="dropdown" >
+                <button class="dropbtn" style="border: none; background-color: whitesmoke;">Department Events</button>
+                <div class="dropdown-content">
+                    <a href="#cse">CSE</a>
+                    <a href="#ece">ECE</a>
+                    <a href="#mech">Mechanical</a>
+                    <a href="#civil">Civil</a>
+                </div>
+            </div>
+            <a href="#upcome">Upcoming Events</a>
+            <a href="#reg">Register Now</a>
+            <a href="#sheets">All Registrations</a>
+            
+        </nav>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <img class="menu-icon" src="https://png.pngtree.com/png-clipart/20190617/original/pngtree-menu-vector-icon-png-image_3876237.jpg" alt="Menu" style="width: 40px;height: auto;">
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    
+
+    <section class="reg" id="reg">
+        <div class="container mt-5" id="formContainer">
+            <h2 class="text-center">Event Registration Form</h2>
+            <form id="myForm" action="" method="POST">
+                <label for="eventType">Event Type</label>
+                <select name="eventType" id="eventType" required class="form-control mb-2">
+                    <option value="">Select Event Type</option>
+                    <optgroup label="Technical Events">
+                        <option value="Innovation Sprout">Innovation Sprout</option>
+                        <option value="Quiz to Quirk">Quiz to Quirk</option>
+                        <option value="IOT InnovateXpo">IOT InnovateXpo</option>
+                        <option value="UI Design">UI Design</option>
+                        <option value="Game Development">Game Development</option>
+                        <option value="ML Fusion">ML Fusion</option>
+                        <option value="AI Fusion">AI Fusion</option>
+                        <option value="Dashing Boards">Dashing Boards</option>
+                        <option value="Appventure">Appventure</option>
+                    </optgroup>
+                    <optgroup label="Non-Technical Events">
+                        <option value="Memo O Mania">Memo O Mania</option>
+                        <option value="Charde Fusion">Charde Fusion</option>
+                        <option value="Karaoke">Karaoke</option>
+                        <option value="Funfest">Fun fest</option>
+                        <option value="Image Finder">Image Finder</option>
+                        <option value="Apture Magic">Aperture Magic</option>
+                    </optgroup>
+                </select>
+    
+                <label>Registration Number</label>
+                <input type="number" name="Regno" placeholder="Enter Registration Number" required class="form-control mb-2">
+    
+                <label>Name</label>
+                <input type="text" name="name" placeholder="Enter Your Name" required class="form-control mb-2">
+    
+                <label for="dept">Department</label>
+                <select name="dept" id="dept" required class="form-control mb-2">
+                    <option value="">Select Department</option>
+                    <option value="CSE">Computer Science and Engineering</option>
+                    <option value="AIML">Artificial Intelligence Machine Learning</option>
+                    <option value="ME">Mechanical Engineering</option>
+                    <option value="EE">Electrical Engineering</option>
+                    <option value="CE">Civil Engineering</option>
+                </select>
+                
+                <label>Year</label>
+                <select name="year" required class="form-control mb-2">
+                    <option value="">Select Year</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+    
+                <label>Section</label>
+                <input type="text" name="section" placeholder="Enter Section" required class="form-control mb-2">
+    
+                <label>Team Members (comma-separated)</label>
+                <input type="text" name="teammember" placeholder="Enter Team Members" required class="form-control mb-2">
+    
+                <label>Team Leader</label>
+                <input type="text" name="teamleder" placeholder="Enter Team Leader Name" required class="form-control mb-2">
+    
+                <button type="submit" class="btn btn-primary ps-5 pe-5 d-flex justify-content-end">Register</button>
+            </form>
+        </div>
+    
+    </section>
+
+    <!-- Upcoming Events Section -->
+    <section class="events" id="upcome">
+        <h2>Upcoming Events</h2>
+        <div class="event-card">
+            <h3>Spark 2024</h3>
+            <p>Date: April 20, 2024</p>
+            <p>Spark 2024 is your go-to platform for discovering and registering for college events. From tech challenges to creative contests, navigate seamlessly through Upcoming, Department, and Live Events. Enjoy quick registration with instant popups and a clean, lavender-themed design—making event participation easy and exciting!.</p>
+            <button onclick="msg()">Register</button>
+        </div>
+        <div class="event-card">
+            <h3>Threads 2024</h3>
+            <p>Date: May 15, 2024</p>
+            <p>Tech and Non Tech</p>
+            <button onclick="msg()">Register</button>
+        </div>
+        <div class="event-card">
+            <h3>Krivas 2025</h3>
+            <p>Date: Jan 10, 2025</p>
+            <p>Experience a celebration of diverse cultures and arts.</p>
+             <button onclick="msg()">Register</button>
+        </div>
+    </section>
+
+    <div class="toast-container">
+        <div class="toast" id="successToast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+            <div class="toast-header">
+                <strong class="mr-auto">Success</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Form submitted successfully!
+            </div>
+        </div>
+    </div>
+    
+      <!-- Loading Modal -->
+      <div class="modal" id="loadingModal" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0" style="background-color: transparent;"> <!-- Darker background -->
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-info" role="status" style="width: 3rem; height: 3rem;"></div> <!-- Spinner color -->
+                    <p class="mt-3" style="color: #000000;">Submitting...</p> <!-- Light green text color -->
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <section id="sheets">
+        <div class="container1">
+            <div class="sidebar1">
+                <h2>Select an Event<span><small class="h6 p-1">To See Detials</small></span></h2>
+                <button onclick="showIframe('ui')">UI</button>
+                <button onclick="showIframe('game')">Game</button>
+                <button onclick="showIframe('ai')">AI</button>
+                <button onclick="showIframe('dashing')">Dashing Boards</button>
+                <button onclick="showIframe('appventure')">Appventure</button>
+                <button onclick="showIframe('innovation')">Innovation Sprout</button>
+                <button onclick="showIframe('quiz')">Quiz to Quiz</button>
+                <button onclick="showIframe('memo')">Memo</button>
+                <button onclick="showIframe('iot')">IoT</button>
+                <button onclick="showIframe('funfest')">Fun Fest</button>
+                <button onclick="showIframe('imgFinder')">Img Finder</button>
+                <button onclick="showIframe('ml')">ML</button>
+                <button onclick="showIframe('charde')">Charde</button>
+            </div>
+        
+            <div class="iframe-container" id="iframe-container">
+                <div id="iframe-content"></div>
+            </div>
+        </div>
+      </section>
+      
+    <section class="cse p-2" id="cse">
+        <aside class="col-md-3 sidebar mt-4">
+            <h4>Quick Links</h4>
+            <a href="#iot">IoT</a>
+            <a href="#innovation-sprout">Innovation Sprout</a>
+            <a href="#project-expo">Project Expo</a>
+            <a href="#technical-expo">Technical Expo</a>
+            <a href="#ml-expo">ML Expo</a>
+            <a href="#gen-ai">Gen AI</a>
+            <a href="#quiz">Quiz to Quiz</a>
+        </aside>
+        <div id="appathon">
+            <h2>APPATHON</h2>
+        
+            <h3>Description:</h3>
+            <p>
+                Appathon is a mobile app development competition for CSE students, challenging participants to create 
+                innovative and functional mobile applications. Over a two-week period, teams will collaborate to design, 
+                develop, and build apps that solve real-world problems. The event promotes hands-on learning, creativity, 
+                and teamwork.
+            </p>
+            <p>
+                Participants will present their final apps during the symposium day, where a panel of judges will evaluate 
+                their work based on innovation, functionality, and technical skills. Additionally, teams will face a 
+                feature-building challenge assigned by the jury during evaluation, testing their adaptability and coding 
+                expertise.
+            </p>
+        
+            <h3>Rules & Regulations:</h3>
+            <ol>
+                <li><strong>Eligibility:</strong>
+                    <ul>
+                        <li>Participants can be 1st, 2nd & 3rd Year CSE students.</li>
+                        <li>Team Participation only.</li>
+                        <li>Teams can consist of 2-4 members.</li>
+                    </ul>
+                </li>
+                <li><strong>App Development:</strong>
+                    <ul>
+                        <li>All app development must be done before the symposium day.</li>
+                        <li>Participants are free to use any platform or framework (Flutter, React Native, Android Studio, etc.).</li>
+                        <li>The app must be fully functional, with a minimum of 3 core features.</li>
+                    </ul>
+                </li>
+                <li><strong>Submission & Presentation:</strong>
+                    <ul>
+                        <li>Teams must submit their app code, progress, and a short demo video (2-3 minutes) that showcases its features, user interface, and functionality.</li>
+                        <li>On the symposium day, teams will present their app and codebase to the judges, followed by the live feature implementation challenge.</li>
+                    </ul>
+                </li>
+                <li><strong>Guidelines for the App:</strong>
+                    <ul>
+                        <li>The app must be original and created specifically for this event.</li>
+                        <li>Teams should focus on building user-friendly, intuitive apps that solve real-world problems.</li>
+                        <li>Teams should be prepared to explain their app’s architecture, key features, and development process.</li>
+                    </ul>
+                </li>
+                <li><strong>Timeframe:</strong>
+                    <ul>
+                        <li>Participants will have up to 2 weeks to complete their app.</li>
+                        <li>Submission of apps and demo videos must be done 24 hours before the symposium day.</li>
+                    </ul>
+                </li>
+                <li><strong>Disqualification:</strong>
+                    <ul>
+                        <li>App code should contain less than 20% plagiarism.</li>
+                        <li>Plagiarism exceeding 20% will lead to disqualification.</li>
+                        <li>Incomplete or non-functional apps will not be considered.</li>
+                    </ul>
+                </li>
+                <li><strong>Live Feature Implementation:</strong>
+                    <ul>
+                        <li>During the final evaluation, participants may be asked to build a new feature specified by the jury on the spot, within a stipulated time (e.g., 1 hour).</li>
+                    </ul>
+                </li>
+                <li><strong>Individual Contribution:</strong>
+                    <ul>
+                        <li>Each team member’s individual contribution will be evaluated. Teams must clearly document who worked on which part of the app.</li>
+                    </ul>
+                </li>
+                <li><strong>Submission & Documentation:</strong>
+                    <ul>
+                        <li>Teams must submit:
+                            <ul>
+                                <li>App code (GitHub link or similar).</li>
+                                <li>Demo video (2-3 minutes) showcasing key features.</li>
+                                <li>Documentation detailing the app's architecture, individual contributions, and technologies used.</li>
+                            </ul>
+                        </li>
+                        <li>Submissions are due by Nov 4, 2024 (48 hours before the symposium).</li>
+                    </ul>
+                </li>
+            </ol>
+        
+            <h3>Themes & Ideas:</h3>
+            
+            <ul>
+                <li>Smart Healthcare Solutions: An app that connects users with healthcare providers, tracks medication, and helps manage chronic conditions through reminders and health data analytics.</li>
+                <li>Disaster Preparedness & Response: An app that provides real-time alerts for natural disasters, helps users prepare emergency kits, and shows nearby shelters and resources during crises.</li>
+                <li>Urban Traffic & Parking Management: An app that offers real-time traffic updates, alternate routes, and helps users locate available parking spaces using crowd-sourced data or sensors.</li>
+                <li>Waste Management & Recycling: A platform that educates users on waste disposal, tracks recycling habits, and rewards eco-friendly behaviors like sorting recyclables or reducing waste.</li>
+                <li>Local Business & Artisan Support: An app that showcases local artisans and small businesses, allowing them to connect with customers, receive orders, and promote community-driven commerce.</li>
+                <li>Food Waste Reduction & Donation: An app that connects restaurants or households with surplus food to local food banks, ensuring real-time donations and minimizing food wastage.</li>
+                <li>Personal Finance & Investment Advisor: A financial app that tracks user expenses, sets budgets, and provides personalized investment advice based on goals and market trends.</li>
+                <li>Inclusive Accessibility Solutions: A tool that helps people with disabilities navigate public spaces, find accessible routes, and request assistance in real-time, promoting inclusivity in urban areas.</li>
+                <li>Peer Tutoring Platform: An app that connects students seeking help in specific subjects with peers who excel in those areas. Students can schedule one-on-one tutoring sessions, either in person or virtually.</li>
+            </ul>
+            <div id="iot">
+                    <h2>IoT Technical Expo</h2>
+                
+                    <h3>Team Size:</h3>
+                    <p>Each team can have up to 4 members (max 4).</p>
+                
+                    <h3>IoT Prototype:</h3>
+                    <ul>
+                        <li>The prototype can be a physical model or a virtual simulation of IoT technology, such as sensors, communication modules, or cloud integration.</li>
+                    </ul>
+                
+                    <h3>Presentation:</h3>
+                    <ul>
+                        <li>Participants are required to explain their IoT demo.</li>
+                        <li>Participants are expected to submit an abstract of 1 page by October 31st.</li>
+                        <li>The demo must be presented with a PowerPoint (PPT) of a maximum of 8 slides.</li>
+                        <li>The presentation time is 5 to 7 minutes.</li>
+                    </ul>
+                
+                    <h3>Prizes:</h3>
+                    <p>The top 3 best-performing teams will be awarded cash prizes.</p>
+                
+                    <h3>Organizers:</h3>
+                    <ul>
+                        <li>Kanishka Devi (CSE B)</li>
+                        <li>Keerthi R (CSE B)</li>
+                        <li>Loga Priya M (CSE B)</li>
+                        <li>Megha R (CSE B)</li>
+                        <li>Madhan Raj (CSE B)</li>
+                        <li>Maharishi (CSE B)</li>
+                    </ul>
+                
+                    <h3>For Registration:</h3>
+                    <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSdlqd3JitdGW0tStRoVOTFs1rBbz2xXV1ktyCqzNc0Z0BuzfQ/viewform?usp=sf_link" target="_blank">Register here</a></p>
+                
+                
+            </div>
+            <div id="innovation-sprout">
+                <h2>Innovation Sprout</h2>
+    <ol>
+        <li>Maximum number of participants in a team is 3.</li>
+        <li>The topics of the idea can be chosen by your own. It is advisable that the presentation focuses on a technical topic (e.g., AI, ML, Blockchain, Cloud Computing, IoT, Web Development, etc.).</li>
+        <li>Abstract should not exceed more than 250 words and slides should not exceed more than 10.</li>
+        <li>Kindly bring your PowerPoint presentation as a hard copy.</li>
+        <li>The presentation must include a prototype/poster.</li>
+        <li>Kindly mail your abstract, paper, and PPT to <a href="mailto:subashree.0731@gmail.com">subashree.0731@gmail.com</a>.</li>
+        <li>The teams will get 7 minutes for presentation followed by a question and answer session.</li>
+        <li>The mail with submissions should contain: Title - theme of the paper & Phone number of any one of the team members.</li>
+        <li>The first slide of the PPT should contain the title of the presentation followed by team members' names along with their email IDs.</li>
+        <li>The abstract mail should contain the abstract, references, your email ID, and mobile number.</li>
+        <li>The decision of juries will be final and no arguments or appeals will be entertained.</li>
+    </ol>
+    
+    <div class="contact-info">
+        <h3>For any queries, contact:</h3>
+        <ul>
+            <li>Sreemathi - 75985 54167</li>
+            <li>Subashree - 6369293240</li>
+            <li>Sonali - 9487208866</li>
+            <li>Thishanthan - 883827081</li>
+            <li>Vasuda - 9361744277</li>
+            <li>Vaishnavi M - 9940813379</li>
+        </ul>
+    </div>
+            </div>
+            <div id="project-expo">
+                <h2>Project Expo</h2>
+    
+                <h3>Organizers:</h3>
+                <ol>
+                    <li>Geetharanjani S.</li>
+                    <li>Hari Vignesh S.</li>
+                    <li>Mithun K.</li>
+                    <li>Rajaganapathi S.</li>
+                    <li>Rajakumari P.</li>
+                    <li>Sidharth K.</li>
+                </ol>
+                
+                <h3>Description:</h3>
+                <h4>Track 01: User Interface (UI) Design</h4>
+                <p><strong>Domains:</strong></p>
+                <ol>
+                    <li>Redesign the UI of Sona College website</li>
+                    <li>Design a UI for Spark 24 and Threads 24</li>
+                    <li>Redesign the UI of IT companies</li>
+                </ol>
+                <p><strong>Rules:</strong></p>
+                <ol>
+                    <li>Participants must submit their projects under one of the three specified domains.</li>
+                    <li>Teams can consist of up to 2 members.</li>
+                    <li>All submissions must include wireframes, mockups, and a working prototype or demo.</li>
+                    <li>Design software such as Figma, Adobe XD, Sketch, or similar tools can be used.</li>
+                    <li>Projects must be original and not copied from any pre-existing designs or templates.</li>
+                    <li>Each submission must be accompanied by a short write-up (500 words max) explaining the design choices and how they improve user experience.</li>
+                </ol>
+            
+                <h4>Track 02: Game Development</h4>
+                <p>No specific domains are set, but participants must present unique and creative concepts for their games. Any genre is allowed, and projects will be judged based on innovation, creativity, and execution.</p>
+                <p><strong>Rules:</strong></p>
+                <ol>
+                    <li>Teams can have up to 4 members.</li>
+                    <li>Participants can develop any genre of game but must focus on a unique and creative concept.</li>
+                    <li>Games can be developed using any platform, including Unity, Unreal Engine, Godot, or custom-built engines.</li>
+                    <li>Games must be original and not clones of existing games.</li>
+                    <li>Participants should submit a playable prototype along with the project.</li>
+                    <li>Use of pre-built assets is allowed, but the primary game mechanics, storyline, and core gameplay must be original.</li>
+                    <li>Each submission must be accompanied by a documentation file (500 words max) outlining the game's concept, mechanics, and development process.</li>
+                </ol>
+            </div>
+            <div id="technical-expo">
+                <h2>Technical Expo</h2>
+    
+                <h3>Organizers:</h3>
+                <ol>
+                    <li>Nishapriya</li>
+                    <li>Jafrin Nidha</li>
+                    <li>Rithika</li>
+                    <li>Madhu Mitha</li>
+                    <li>Sanju Sree</li>
+                    <li>Hema Shruthi</li>
+                </ol>
+                
+                <h3>Description:</h3>
+                <h4>Task Name: Dashing Boards</h4>
+                <p><strong>Sources:</strong></p>
+                <ul>
+                    <li>Power BI</li>
+                    <li>Tableau</li>
+                </ul>
+                <p><strong>Rules:</strong></p>
+                <ol>
+                    <li>Teams can consist of up to 3 members.</li>
+                    <li>All submissions must have at least 8 charts consisting of a dashboard.</li>
+                    <li>Design a dashboard for the given scenario with a suitable dataset and include relevant data visualizations and descriptions that best address the problem, which should be innovative and creative.</li>
+                    <li>The dashboard must be original and not copied from any pre-existing designs or templates.</li>
+                    <li>Each submission should be within the time limit and share your respective dashboard as a document in WhatsApp.</li>
+                    <li>A creative and professional dashboard will be selected by the jury, and the selected participants must explain their own dashboard layout.</li>
+                </ol>
+            
+                <h3>Prizes:</h3>
+                <p>Cash prizes will be awarded to the top 3 selected teams based on their performance and creativity.</p>
+            </div>
+            <div id="ml-expo">
+                <h2>Machine Learning Expo</h2>
+
+    <h3>Team Size:</h3>
+    <p>Each team can have up to 4 members (max 4).</p>
+
+    <h3>Topics:</h3>
+    <ul>
+        <li>
+            <strong>Handwritten Digit Recognition:</strong>
+            <p>Implement a machine learning model to recognize handwritten digits (0-9) using image classification techniques.</p>
+        </li>
+        <li>
+            <strong>Cancer Prediction:</strong>
+            <p>Build a model to classify whether a tumor is malignant or benign based on medical data (features such as size, shape, etc.).</p>
+        </li>
+        <li>
+            <strong>Stock Price Prediction:</strong>
+            <p>Develop a model to predict future stock prices based on historical data.</p>
+        </li>
+        <li>
+            <strong>Sentiment Analysis Using Voting Ensemble:</strong>
+            <p>Create a sentiment analysis model that classifies customer reviews as positive or negative. By using ensemble methods, participants can combine the strengths of multiple models for more accurate sentiment classification.</p>
+        </li>
+        <li>
+            <strong>Air Quality Prediction with Bagging and Boosting:</strong>
+            <p>Create a regression model to predict air quality levels based on features like CO2 levels, temperature, and humidity. Ensemble methods such as bagging and boosting can help improve predictive accuracy for time-series data.</p>
+        </li>
+    </ul>
+
+    <h3>Task Overview:</h3>
+    <p>Participants are required to choose one of the given topics and train a machine learning model that meets the following criteria:</p>
+    <ul>
+        <li><strong>Dataset Requirements:</strong> The dataset used must be large and comprehensive with a sufficient number of features.</li>
+        <li><strong>Data Preprocessing:</strong> Participants must preprocess the dataset appropriately by handling missing data, scaling features, encoding categorical variables, and addressing class imbalances where applicable.</li>
+        <li><strong>High Accuracy:</strong> The model must demonstrate a high level of accuracy through proper tuning and validation.</li>
+        <li><strong>Live Testing:</strong> The model should be tested in a live environment to showcase its performance.</li>
+        <li><strong>Model Validation:</strong> Include additional metrics such as precision, recall, F1-score, and a confusion matrix to validate the model’s performance effectively.</li>
+        <li><strong>Generalization:</strong> Ensure the model generalizes well to unseen data by preventing overfitting and underfitting through techniques like cross-validation and regularization.</li>
+    </ul>
+
+    <h3>Submission Requirements:</h3>
+    <ul>
+        <li><strong>Abstract Submission:</strong> A one-page abstract must be submitted by October 31st, detailing the chosen topic, approach, expected outcomes, and algorithm used with justification.</li>
+        <li><strong>Presentation:</strong> The model must be presented through a PowerPoint (PPT) presentation of a maximum of 8 slides.</li>
+        <li><strong>Time Limit:</strong> The presentation should last between 5 to 7 minutes.</li>
+    </ul>
+
+    <h3>Awards:</h3>
+    <p>The top 3 best-performing teams will be awarded cash prizes.</p>
+
+    <h3>Organizers:</h3>
+    <ol>
+        <li>Sri Devi R</li>
+        <li>Dharshana</li>
+        <li>Thameena F</li>
+        <li>Karthik Sriram M</li>
+        <li>Rohith K</li>
+    </ol>
+            </div>
+            <div id="gen-ai">
+                <h2>GEN AI Hackathon: Innovate Beyond Boundaries</h2>
+
+    <h3>Event Organizers:</h3>
+    <ul>
+        <li>Shanmithaa S</li>
+        <li>Pranitha M</li>
+        <li>Abinaya G M</li>
+        <li>Navin S</li>
+        <li>Arun A M</li>
+        <li>Girish M</li>
+    </ul>
+
+    <h3>Hackathon Rules & Guidelines:</h3>
+    <ul>
+        <li><strong>Eligibility:</strong> Open to all students and developers passionate about AI and technology. Teams may consist of 2-4 participants.</li>
+        <li><strong>App Development Requirements:</strong> Participants must use AI models to build a functional app with at least 4 core features. Generative AI models should play a central role in the solution.</li>
+        <li><strong>Submission Requirements:</strong> Teams should submit their code along with a 2-3 minute demo video explaining their app's functionality and AI integration.</li>
+    </ul>
+
+    <h3>Themes & Ideas:</h3>
+    <ol>
+        <li>
+            <strong>Generative AI for Climate Change Awareness:</strong>
+            <p>Develop a platform where users receive AI-generated reports, visualizations, and predictions on climate change based on historical data, geographic location, and current events. The AI could also generate actionable suggestions for reducing an individual’s carbon footprint.</p>
+        </li>
+        <li>
+            <strong>AI-Powered Educational Content Creation:</strong>
+            <p>Create a generative AI tool that helps educators by creating lesson plans, quizzes, and educational material automatically. Teachers can input the subject and grade level, and the AI generates personalized study materials, tailored to learning objectives.</p>
+        </li>
+        <li>
+            <strong>AI in Art and Music Generation:</strong>
+            <p>Develop an AI platform where users can create unique artwork or music. By inputting parameters like theme, mood, or style, the AI generates paintings or musical compositions, offering both entertainment and creative exploration.</p>
+        </li>
+        <li>
+            <strong>Sustainability Solutions with AI-Generated Design:</strong>
+            <p>Create an AI-driven solution that generates eco-friendly product designs, building architectures, or urban planning layouts based on sustainability principles. The AI could analyze environmental impacts and suggest the most energy-efficient designs.</p>
+        </li>
+        <li>
+            <strong>AI-Generated Virtual Fitness Coach:</strong>
+            <p>Build a fitness app that creates personalized workout routines, diet plans, and motivational tips based on user preferences and progress. The generative AI could adapt routines dynamically based on real-time feedback from wearable devices.</p>
+        </li>
+        <li>
+            <strong>AI for Personalized News Generation:</strong>
+            <p>Develop a news platform where the AI curates, summarizes, and generates personalized news articles or newsletters based on user interests, ensuring users stay informed on topics that matter to them without being overwhelmed by information.</p>
+        </li>
+        <li>
+            <strong>AI-Enhanced Urban Safety Systems:</strong>
+            <p>Design a safety application that uses generative AI to predict and visualize safe routes, based on crime statistics and real-time updates. The AI could also generate emergency alerts and safety tips for specific locations.</p>
+        </li>
+        <li>
+            <strong>AI-Generated Virtual Reality Environments:</strong>
+            <p>Create a generative AI app that builds immersive virtual environments for VR experiences. Whether for gaming, training, or education, the AI could generate unique, user-specific worlds and interactive experiences in real-time.</p>
+        </li>
+        <li>
+            <strong>AI-Powered Storytelling for Interactive Fiction:</strong>
+            <p>Build a platform that uses generative AI to co-create stories with users. Users can set the plot or character prompts, and the AI generates evolving narratives, allowing for endless variations and dynamic storytelling.</p>
+        </li>
+        <li>
+            <strong>AI in Fashion and Design:</strong>
+            <p>Develop an app where users input their style preferences, and the AI generates clothing designs, accessories, or fashion trends. The platform could also allow users to visualize how different styles would look on them through AI-generated fashion visuals.</p>
+        </li>
+        <li>
+            <strong>AI for Legal Document Generation:</strong>
+            <p>Create an AI-driven legal assistant that generates contracts, legal summaries, or briefs. Users could provide minimal input, and the AI would generate drafts for legal documents, easing the workload for lawyers and legal professionals.</p>
+        </li>
+        <li>
+            <strong>AI-Driven Virtual Shopping Assistant:</strong>
+            <p>Develop an AI that helps users shop by generating personalized product recommendations, outfits, or home decor ideas. The AI could also assist in generating budget-friendly shopping lists and even suggest sustainable alternatives.</p>
+        </li>
+        <li>
+            <strong>Generative AI for Smart Home Customization:</strong>
+            <p>Create an AI tool that personalizes smart home setups, generating schedules for lighting, heating, and device usage based on user preferences and patterns. The AI could also suggest energy-saving configurations.</p>
+        </li>
+        <li>
+            <strong>AI-Generated Language Learning Assistant:</strong>
+            <p>Design a language learning app that dynamically generates dialogues, exercises, and cultural insights to help users immerse themselves in a new language. The AI could personalize lessons based on progress and proficiency levels.</p>
+        </li>
+        <li>
+            <strong>Deepfake Detection & Media Authenticity:</strong>
+            <p>Build an AI-driven tool that detects deepfakes in video or audio content. The system should analyze media for inconsistencies in facial expressions, voice patterns, or unnatural behaviors, flagging suspicious content in real-time. Additionally, the app could generate reports on the likelihood of manipulation and provide tips on identifying fake media, helping users discern between genuine and altered information. This would promote media authenticity and combat misinformation.</p>
+        </li>
+    </ol>
+
+    <h3>Evaluation Criteria:</h3>
+    <ul>
+        <li><strong>Innovation:</strong> How creatively is generative AI used?</li>
+        <li><strong>Functionality:</strong> Is the app fully functional and solves a real-world problem?</li>
+        <li><strong>AI Integration:</strong> How effectively does the app leverage AI models?</li>
+        <li><strong>Impact:</strong> Does the solution provide meaningful value to users?</li>
+        <li><strong>Presentation:</strong> How well is the app demonstrated during the presentation?</li>
+    </ul>
+            </div>
+            <div id="quiz"> <h2>Quiz to Quirk</h2>
+
+                <h3>ORGANIZER’S</h3>
+                <ul>
+                    <li>Akshaya S.D.K</li>
+                    <li>Dharsini S</li>
+                    <li>Hinduja E</li>
+                    <li>Dinesh P</li>
+                    <li>Hari Krishnan J</li>
+                    <li>Hari Arjun M</li>
+                </ul>
+            
+                <h3>Description</h3>
+                <p>
+                    "Our event is all about showcasing websites or web apps that your team has built using tools 
+                    like HTML for structure, CSS for design, and JavaScript (React.js) for interactive elements. In 
+                    the first round, you'll attend a quiz, and in the final round, we’ll ask you to make some 
+                    modifications based on your project. It’s a great opportunity to show your skills and improve 
+                    your project!"
+                </p>
+            
+                <h3>Round 1: HTML and CSS Quiz (MCQ)</h3>
+                <ul>
+                    <li><strong>Team Composition:</strong> Each team can have a maximum of 3 members.</li>
+                    <li><strong>Requirements:</strong> At least one person from the team must have a laptop to project 
+                    your project.</li>
+                    <li><strong>Question Format:</strong> There will be 25 multiple choice questions and 5 viva covering 
+                    HTML, CSS, and JS (React.js) concepts.</li>
+                    <li><strong>Selection Criteria:</strong> Teams with the highest scores will qualify for the second round.</li>
+                </ul>
+            
+                <h3>Round 2: Refine Your Web, Claim the Crown!</h3>
+                <ul>
+                    <li><strong>Challenge:</strong> Teams will be given some modifications on their website, and they will 
+                    be asked to satisfy the modifications using HTML, CSS, and JavaScript (React.js).</li>
+                    <li><strong>Time Limit:</strong> Teams will have 60 minutes to complete the web page.</li>
+                    <li><strong>Evaluation Criteria:</strong>
+                        <ul>
+                            <li><strong>Responsiveness:</strong> The webpage must be fully responsive on all screen sizes.</li>
+                            <li><strong>Designs and Layout:</strong> Visual appeal, colour scheme, and structure will be evaluated.</li>
+                            <li><strong>Originality:</strong> The page should be designed from scratch. Plagiarism will be checked.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Presentation:</strong> After completion, teams will briefly present their work, explaining the thought process behind their design.</li>
+                    <li><strong>Results:</strong> The decision of juries will be final, and no arguments or appeals will be entertained.</li>
+                </ul>
+            </div>
+        </div>
+        
+    </section>
+
+
+    <section class="home p-2" id="home">
+        <p class="container pt-2">
+    
+            <div class="img">
+                <p style="background-color: transparent; color:#e2e2e2;font-size: 2em; font-weight: 800; margin: 13%; color:gold;">Spark` 24</p>
+                <a href="#" class="btn btn-info pe-5 ps-5">Explore Events</a>
+        
+
+
+            </div>
+           
+            Welcome to the <b>Sona College of Technology</b> Event Management Portal! 
+            This platform is designed to be your central hub for accessing, exploring, 
+            and registering for a variety of events hosted by Sona College. From technical hackathons 
+            to cultural festivals, we bring you an array of opportunities to learn, showcase talents, 
+            and build lifelong memories.
+    
+            Whether you’re here to participate, organize, or simply discover the diverse events Sona 
+            College offers, this platform provides a streamlined and engaging experience for everyone.
+            
+            <br><br>
+            <strong>What We Offer</strong><br>
+            Our event management portal is carefully crafted to cater to all interests and academic pursuits. 
+            We understand that students have varied interests, so our events cover a wide range of domains:
+            
+            <br><br>
+            <strong>Technical Events:</strong> These include Innovation Sprout, IOT InnovateXpo, 
+            Quiz to Quirk, ML AL Fusion, and many more. Technical events are designed to inspire innovation 
+            and provide hands-on learning experiences, connecting theoretical knowledge to practical applications.
+            
+            <br><br>
+            <strong>Non-Technical Events:</strong> Non-technical events like Memo O Mania, Karaoke, 
+            and Image Finder allow students to enjoy, relax, and showcase their creative skills outside 
+            of the academic environment.
+            
+            <br><br>
+            Each event listing provides details like the date, time, location, and event theme. Whether 
+            you’re looking to participate in a hackathon, attend a cultural night, or enjoy a technical 
+            exhibition, our platform has something for everyone.
+            
+            <br><br>
+            <strong>Easy Registration Process</strong><br>
+            We have simplified the registration process to save you time. Each event has a specific form 
+            accessible directly from this portal. With options to enter basic details such as name, 
+            registration number, department, and event-specific questions, our forms are quick and easy 
+            to complete. 
+            
+            We ensure that your information is securely handled and registration confirmations are instantly 
+            provided through interactive pop-ups, so you’re notified right away.
+            
+            <br><br>
+            <strong>Department Events</strong><br>
+            The Department Events section categorizes events by department (e.g., CSE, ECE, Mechanical, 
+            Civil), allowing you to explore events specific to your field. This is particularly useful if 
+            you’re interested in networking within your department or finding events that align closely with 
+            your studies and career aspirations. 
+            
+            Each department regularly updates its events, bringing you fresh and relevant experiences.
+            
+            <br><br>
+            <strong>About Us</strong><br>
+            Our event management team is dedicated to providing a seamless, student-focused experience. 
+            At Sona College, we believe that events are essential to student growth and community-building. 
+            Our mission is to make these opportunities accessible, well-organized, and memorable for every 
+            participant. 
+            
+            Events are organized by students, for students, fostering leadership, creativity, and collaboration 
+            among peers.
+            
+            <br><br>
+            <strong>Upcoming Highlights</strong><br>
+            In the Upcoming Events section, you’ll find highlighted events scheduled for the near future. 
+            From Hackathon 2024 to Cultural Fest and Science Exhibition, this section keeps you informed 
+            about what’s coming next. 
+            
+            These events are handpicked to showcase a variety of interests, so you can be sure there’s always 
+            something exciting happening at Sona College.
+            
+            <br><br>
+            <strong>Our Commitment</strong><br>
+            We strive to create an environment where students feel inspired and motivated to participate, 
+            learn, and excel. Our platform is designed for inclusivity, ensuring students from all backgrounds 
+            can find events that suit their unique interests and talents.
+            <br><br>
+            <strong>Payment:</strong>
+                    <!-- Razorpay Embedded Payment Button -->
+    <div class="razorpay-embed-btn" 
+         data-url="https://pages.razorpay.com/pl_Q1CiH3AHaMaQCl/view" 
+         data-text="Pay Now" 
+         data-color="#528FF0" 
+         data-size="small">
+    </div>
+            
+            In line with our commitment to enhancing the student experience, we continuously update our 
+            portal to improve usability and accessibility, making it as efficient and user-friendly as possible.
+            
+            <br><br>
+            So dive in, explore, and make the most of your college experience through Sona College’s Event 
+            Management Portal. We’re thrilled to have you here and can’t wait to see the positive impact 
+            you’ll bring to our events.
+            <button onclick="pay()">Pay Now</button>
+        </p>
+        <div id="vimal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero sint voluptate illum? In aliquam deserunt, omnis officiis tenetur voluptates nesciunt at corrupti repudiandae autem cumque, neque, inventore dignissimos doloremque fugit?</div>
+     
+    </section>
+    
+    <!-- About Us Section -->
+    <section class="about" id="about">
+        <h2>About Us</h2>
+        <form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Q1QtLqcXOPyO4P" async> </script> </form>
+        <p>We are dedicated to organizing college events that inspire and engage students.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-light rounded sticky-bottom ps-4">
+        <p class=" m-2 bg-light rounded text-dark"> &copy; 2024 Sona College Of Technology. All rights reserved.</p>
+    </footer>
+
+    <script>
+    function pay() {
+    // Store the current page URL in localStorage before redirecting
+    localStorage.setItem("lastVisitedPage", window.location.href);
+
+    // Redirect to the Razorpay payment page
+    window.location.href = "https://script.google.com/macros/s/AKfycby5LunloD4Sq3YFlRoG_FVQegHGZukWhZq5T5tXCBwsyNgAq3mPDW2ur8ZaU_ZQph06pQ/exec";
+  }
+     (function() {
+        var d = document; 
+        var x = !d.getElementById('razorpay-embed-btn-js');
+        if (x) { 
+          var s = d.createElement('script'); 
+          s.defer = true;
+          s.id = 'razorpay-embed-btn-js';
+          s.src = 'https://cdn.razorpay.com/static/embed_btn/bundle.js';
+          d.body.appendChild(s);
+        } else {
+          var rzp = window['__rzp__'];
+          rzp && rzp.init && rzp.init();
+        }
+      })();
+        function toggleMenu() {
+     const navLinks = document.querySelector('.nav-links');
+     navLinks.classList.toggle('active');
+ }
+ 
+ // Add an event listener to handle clicks outside of the menu
+ document.addEventListener('click', function(event) {
+     const navLinks = document.querySelector('.nav-links');
+     const menuIcon = document.querySelector('.menu-icon');
+ 
+     // Check if the click is outside both the menu icon and the nav links
+     if (!navLinks.contains(event.target) && !menuIcon.contains(event.target) && navLinks.classList.contains('active')) {
+         navLinks.classList.remove('active');
+     }
+ });
+ 
+         const actionLinks = {
+             "Innovation Sprout": "https://script.google.com/macros/s/AKfycbw9JXmJlhRPVWFNQmI-KixQZiujT_XsHPPSUMLDBbJomrpcazMS7_reG8Kgi1zPQXP_/exec",
+             "Quiz to Quirk": "https://script.google.com/macros/s/AKfycbz8eyyDQTzm6B7jGD_EG9Pbj85DPPk4_AOyI0c7ZfyAs52b-0H44JVWAFZt-4pHPmpXYQ/exec",
+             "IOT InnovateXpo": "https://script.google.com/macros/s/AKfycbzviASqzMLHfr3p-ngYc1z2X5btM3F2P7frRxnj5et5qe5ogVB2IW1G-bXNuvyxHiHB/exec",
+             "UI Design": "https://script.google.com/macros/s/AKfycbyyMF01jBzvCCMX5f59Ddy7CRuetR4UAs3ntpZSR-DuZPphc1-CMNvngbRX7YXhJ1C0_g/exec",
+             "Game Development": "https://script.google.com/macros/s/AKfycbwKsuVBmQ-z_hmPg__54Z2rrww0O6THmNosJqBA65JB1-a9XLedlkXc1gjR7KSxwH-Qnw/exec",
+             "ML Fusion": "https://script.google.com/macros/s/AKfycbxdOrLi7cKX1d1Ex_M7rhFGLkPW9kjC4c0S-KSCmE7I4frR3mzkqWfmedu5TTzYi5ggSQ/exec",
+             "AI Fusion":"https://script.google.com/macros/s/AKfycbyIsj32n0g_oqttjETqulJUEe4gNQ2YtQ_GFDZXa9f-RVUQRZyD-k_c1AAx8G2YgRfbPg/exec",
+             "Dashing Boards": "https://script.google.com/macros/s/AKfycbxWCw7NayhfobkZ2s7kcxBv3eo-oLc7EaQujhEwsh8ItKBKk-Aro-M87RsskXy2-vEU/exec",
+             "Appventure": "https://script.google.com/macros/s/AKfycbzzcvvTfLy66nE51m5qOPCJ80pbQKYpkANBR4mj-ESuxehz9Q3dhT7kqSPqMreRoCJ6/exec",
+             "Memo O Mania": "https://script.google.com/macros/s/AKfycbwnprwTm6ZncT37mglcHLmnYERo487imoscor-7rQtg5SzTjEt41L7clV27o78Ure9yGw/exec",
+             "Charde Fusion": "https://script.google.com/macros/s/AKfycbxyKPfWnRlib479V2vYHTaZSzEUSKRdKxneY16i64GO2xOsLlByYiKi2ou3Bb7RMKQarQ/exec",
+             "Karaoke": "https://script.google.com/macros/s/AKfycbz6F73gY7Zu86MpWjiFUitiLJ_Q_--pziaX6M3ZFv9PJTEGsKMHZ3bvF649_3NbowjUxA/exec",
+             "Image Finder": "https://script.google.com/macros/s/AKfycbwlpEfp1WnA2h7tQg23n0_GLgcx3sTCg7SniM_g-A42fD62l_04aUcBdQlPAu6wyg1FRQ/exec",
+             "Apture Magic": "https://script.google.com/macros/s/AKfycbwP7UGHt-MquIMLdGoWSKSB-GiE2s9TfabzUM6xoVDHa8U5ssRAkcbFcgnHNYG4eIZS/exec",
+             "Funfest":"https://script.google.com/macros/s/AKfycbynNqeePV9ve_L2NFZ65KUCxR5fLkBMcoYltO-jEFYAgr3zlLB6I3aXZsLzhvzADVBzgg/exec",
+         };
+ 
+         // Update the form action based on selected event type
+         document.getElementById('eventType').addEventListener('change', function() {
+             const selectedEvent = this.value;
+             document.getElementById('myForm').action = actionLinks[selectedEvent] || '';
+         });
+ 
+         document.getElementById('myForm').addEventListener('submit', function(event) {
+     event.preventDefault();
+ 
+     // Blur background and show loading modal
+    
+     $(document).ready(function () {
+     $('#myForm').on('submit', function (event) {
+         event.preventDefault();
+         const eventType = $('#eventType').val();
+         const actionUrl = actionLinks[eventType];
+ 
+         if (actionUrl) {
+             // Show loading modal and apply blur background
+             $('#formContainer').addClass('blur-bg');
+             $('#loadingModal').modal('show');
+             
+             // Use fetch to submit the form data
+             fetch(actionUrl, {
+                 method: this.method,
+                 body: new FormData(this)
+             }).then(response => response.text())
+             .then(data => {
+                 // Hide loading modal and remove blur background
+                 $('#loadingModal').modal('hide');
+                 $('#formContainer').removeClass('blur-bg');
+ 
+                 this.reset();  // Reset the form
+ 
+                 // Show success toast
+                 $('#successToast').toast('show');
+             }).catch(error => {
+                 $('#loadingModal').modal('hide'); // Ensure loading modal is hidden in case of error
+                 $('#formContainer').removeClass('blur-bg');
+                 
+                 alert('Use Local Host For Submitting Form.');
+                 console.error('Error:', error);
+             });
+         } else {
+             alert('Please select a valid event type.');
+         }
+     });
+ 
+ 
+         // Initialize toast
+         $('.toast').toast({ autohide: true, delay: 3000 });
+     });
+ });
+ 
+     // Show the selected section and hide others
+     function showSection(sectionId) {
+         // Hide all sections
+         const sections = document.querySelectorAll('section');
+         sections.forEach(section => {
+             section.style.display = 'none';
+         });
+ 
+         // Show the selected section
+         const targetSection = document.getElementById(sectionId);
+         if (targetSection) {
+             targetSection.style.display = 'block';
+         }
+     }
+ 
+     // Set up click listeners for nav links
+     document.querySelectorAll('.nav-links a, .dropdown-content a').forEach(link => {
+         link.addEventListener('click', (event) => {
+             event.preventDefault();
+             const targetId = link.getAttribute('href').substring(1); // Remove # from id
+             showSection(targetId); // Show the targeted section
+         });
+     });
+ 
+     // Initially hide all sections except 'home' (or whichever section should be visible by default)
+     showSection('home');
+
+     function showIframe(event) {
+        const iframeContainer = document.getElementById('iframe-container');
+        const iframeContent = document.getElementById('iframe-content');
+
+        // Reset iframe content
+        iframeContent.innerHTML = '';
+
+        let title = '';
+        let src = '';
+
+        switch (event) {
+            case 'ui':
+                title = 'UI';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS61_wkZj6VlKsx22mZ5Ak7XN5Hf8Xyf-iS7tLKou0Dhwh8uzzSzbIvICwkZwp4yajjLMtK2GvFD8kN/pubhtml?widget=true&headers=false';
+                break;
+            case 'game':
+                title = 'Game';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSW9HjPz_G82tWjTt0Ec1d59GKYmj6o7GACQb76G16oQPLdb4UXvJHT3m10s4HHOuzO8auO1m6aaPps/pubhtml?widget=true&headers=false';
+                break;
+            case 'ai':
+                title = 'AI';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSP3iCedxuQAQYPOpMPZDWvQ2eG7hKfpNJPLJiHEFN-rGA0F6rdstDgJUlxmTxeIK6pxrmO-K3KNd4r/pubhtml?widget=true&headers=false';
+                break;
+            case 'dashing':
+                title = 'Dashing Boards';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7_A8QniC9yUmRiiKQbNmnRSGpA_EXWSW_rSGYuY9n5XlDyKE2AYuj0G6W7dKaEStDSJlRUUdPe3Ss/pubhtml?widget=true&headers=false';
+                break;
+            case 'appventure':
+                title = 'Appventure';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSI5tu9ZH5KxBJt12AhpaweqmZ4BUyZnWkyEBy35SWe474oR3zlZNWobkE-aje5MLGXRYvXjLQkqhPh/pubhtml?widget=true&headers=false';
+                break;
+            case 'innovation':
+                title = 'Innovation Sprout';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTo5Ee7gmPCd5IpC1P8p4k-4INhVKymWUPfeZmzaTkFE7INK2iaTfZxN1DwgKWODAE-egmGPlmyEmPT/pubhtml?widget=true&headers=false';
+                break;
+            case 'quiz':
+                title = 'Quiz to Quiz';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRP-atCS8nUzUPrkWlh-NJZbi8L8z0y0m56_RJIDlojNfZaL6mLTfadhAuh8njj_zWpjQdgIG-tSd3s/pubhtml?widget=true&headers=false';
+                break;
+            case 'memo':
+                title = 'Memo';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEA8hzbUd6qiKbyEEgJmO5-tBu6DX4AYqnrWUzPvFTgqTBfqpFdHwk1VlRe2GbzCyNQWa8MrfBoisi/pubhtml?widget=true&headers=false';
+                break;
+            case 'iot':
+                title = 'IoT';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT7s078iceF5SVuRgqtYV7ZxbAx3f9DeHyLXVKnwZJgfan-cO143Pobygprku06I7lXevPX_alFxgsL/pubhtml?widget=true&headers=false';
+                break;
+            case 'funfest':
+                title = 'Fun Fest';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR7l8CPwBod1RsC6wmWD4VtXniNQwR_HvLQzV7VshCInEfcAYX4_WqUMW4TOQFvd5aCaVDDZeC1OGIe/pubhtml?widget=true&headers=false';
+                break;
+            case 'imgFinder':
+                title = 'Img Finder';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vStuZt_z_1tJJJZVHTOwipu-dQLN_FVG5O-RjgKNR9Ic7oXxHBUrk3RiqIYq-QJr_Cg3X-Y0CdMtFRx/pubhtml?widget=true&amp;headers=false';
+                break;
+            case 'ml':
+                title = 'ML';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVRpuubXE5tyLMfJrCzL-AMCASpDdEasi9bkERvmAs2Oofvst9oiJtekh8J_rCcZ_Hgowlq5CPUki1/pubhtml?widget=true&amp;headers=false';
+                break;
+            case 'charde':
+                title = 'Charde Fusion';
+                src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQKMP9_2bdjlGyHySLf0QvNvHQKc-dv-rUCw4Fpvnx4EIvwPY7claOV1vIxfhGUpy51lot1L4UY_AB6/pubhtml?widget=true&amp;headers=false';
+                break;
+        }
+
+        if (title && src) {
+            iframeContainer.style.display = 'block'; // Show the iframe container
+            iframeContent.innerHTML = `<h1>${title}</h1><iframe src="${src}" frameborder="0"></iframe>`;
+        }
+    }
+    function msg(){
+      alert("open nav bar and click Register Now button")}
+     </script>
+</body>
+
+</html>
