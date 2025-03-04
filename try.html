@@ -10,10 +10,10 @@
     <h2>Login with Outlook</h2>
     <button onclick="signInWithOutlook()">Sign in with Outlook</button>
 
-   <script>
-    const CLIENT_ID = "90b07e76-8707-47bd-9911-9e6ecfbd80fc"; // Your App (Client) ID
-    const TENANT_ID = "common"; // Use "common" for all users, or "a5bd300c-c3b3-41d8-87e0-1f5c8d364af3" for your organization
-    const REDIRECT_URI = "https://vimalraj45.github.io/v/try";
+  <script>
+    const CLIENT_ID = "90b07e76-8707-47bd-9911-9e6ecfbd80fc"; // Your App Client ID
+    const TENANT_ID = "common"; // Use "common" for all users
+    const REDIRECT_URI = "https://vimalraj45.github.io/v/after";
 
     function signInWithOutlook() {
         const authUrl = `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize
@@ -27,6 +27,8 @@
         window.location.href = authUrl;
     }
 </script>
+<button onclick="signInWithOutlook()">Sign in with Outlook</button>
+
 <button onclick="signInWithOutlook()">Sign in with Outlook</button>
 
 
