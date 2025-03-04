@@ -7,32 +7,31 @@
 </head>
 <body>
     <h2>Sign in with Outlook</h2>
-    <button onclick="signInWithOutlook()">Sign in with Outlook</button>
 
     <a href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize
     ?client_id=3689c71b-e171-42dc-b794-f25937355139
     &response_type=token
     &redirect_uri=https://vimalraj45.github.io/v/after
     &scope=openid profile email User.Read
-    &state=12345">
+    &state=12345" class="btn">
     Login with Microsoft
 </a>
+<style>
+  .btn {
+    display: inline-block;
+    background-color: #0078D4; /* Microsoft Blue */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+  }
 
+  .btn:hover {
+    background-color: #005A9E; /* Darker shade on hover */
+  }
+</style>
 
-    <script>
-        function signInWithOutlook() {
-            const clientId = "3689c71b-e171-42dc-b794-f25937355139"; // Replace with your Client ID
-            const redirectUri = "https://vimalraj45.github.io/v/after";
-            const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize
-                ?client_id=${clientId}
-                &response_type=token
-                &redirect_uri=${redirectUri}
-                &scope=openid email profile
-                &response_mode=fragment
-                &state=12345`;
-
-            window.location.href = authUrl;
-        }
-    </script>
 </body>
 </html>
