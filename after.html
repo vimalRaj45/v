@@ -1,27 +1,8 @@
-<script>
-    function getUserFromUrl() {
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const idToken = params.get("id_token");
-
-        if (idToken) {
-            localStorage.setItem("outlook_id_token", idToken);
-            document.getElementById("user-info").innerText = `Signed in successfully!`;
-        } else {
-            const savedToken = localStorage.getItem("outlook_id_token");
-            if (!savedToken) {
-                window.location.href = "https://vimalraj45.github.io/v/try"; // Redirect back to login if not signed in
-            }
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem("outlook_id_token");
-        window.location.href = "https://vimalraj45.github.io/v/try"; // Redirect to login page
-    }
-
-    getUserFromUrl();
-</script>
-
-<h2 id="user-info"></h2>
-<button onclick="logout()">Logout</button>
+<html>
+    <title>
+        vs grps
+    </title>
+    <body>
+        after
+    </body>
+</html>
