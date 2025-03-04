@@ -3,40 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login with Google</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <title>Login with Outlook</title>
 </head>
 <body>
 
-    <h2>Login with Google</h2>
-
-    <div id="g_id_onload"
-        data-client_id="219533956445-5ngdi5t36u33fugnognh1ti2aim7e2sa.apps.googleusercontent.com"
-        data-context="signin"
-        data-ux_mode="popup"
-        data-callback="handleCredentialResponse"
-        data-auto_select="true">
-    </div>
-
-    <div class="g_id_signin" data-type="standard"></div>
+    <h2>Login with Outlook</h2>
+    <button onclick="signInWithOutlook()">Sign in with Outlook</button>
 
     <script>
-        // Check if the user is already signed in
-        if (localStorage.getItem("google_user")) {
-            window.location.href = "https://vimalraj45.github.io/v/after";
-        }
+        const CLIENT_ID = "YOUR_MICROSOFT_CLIENT_ID"; // Replace with your actual Client ID
+        const REDIRECT_URI = "https://vimalraj45.github.io/v/"; // Your redirect URL
 
-        function handleCredentialResponse(response) {
-            const idToken = response.credential;
-            
-            // Decode JWT to get user info
-            const user = JSON.parse(atob(idToken.split('.')[1]));
+        function signInWithOutlook() {
+            const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+                ?client_id=${CLIENT_ID}
+                &response_type=token
+                &redirect_uri=${encodeURIComponent(REDIRECT_URI)}
+                &scope=openid email profile`;
 
-            // Store user data in localStorage
-            localStorage.setItem("google_user", JSON.stringify(user));
-
-            // Redirect to the main page
-            window.location.href = "https://vimalraj45.github.io/v/after";
+            window.location.href = authUrl;
         }
     </script>
 
