@@ -8,46 +8,32 @@
 <body>
     <h2>Sign in with Outlook</h2>
 
-    <a id="loginBtn" href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+    <a href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize
     ?client_id=3689c71b-e171-42dc-b794-f25937355139
     &response_type=token
     &redirect_uri=https://vimalraj45.github.io/v/after
     &scope=openid profile email User.Read
     &state=12345
-    &domain_hint=organizations
-    &prompt=none" class="btn">
-        Login with Microsoft
-    </a>
+    &prompt=select_account" class="btn">
+    Login with Microsoft
+</a>
 
-    <style>
-        .btn {
-            display: inline-block;
-            background-color: #0078D4; /* Microsoft Blue */
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+<style>
+  .btn {
+    display: inline-block;
+    background-color: #0078D4; /* Microsoft Blue */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+  }
 
-        .btn:hover {
-            background-color: #005A9E; /* Darker shade on hover */
-        }
-    </style>
+  .btn:hover {
+    background-color: #005A9E; /* Darker shade on hover */
+  }
+</style>
 
-    <script>
-        function autoSSO() {
-            window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
-                + "?client_id=3689c71b-e171-42dc-b794-f25937355139"
-                + "&response_type=token"
-                + "&redirect_uri=https://vimalraj45.github.io/v/after"
-                + "&scope=openid profile email User.Read"
-                + "&prompt=none"
-                + "&domain_hint=organizations";
-        }
-
-        autoSSO(); // Automatically attempts SSO
-    </script>
 </body>
-</html>
+</html>  
