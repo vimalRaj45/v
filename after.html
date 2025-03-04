@@ -8,42 +8,55 @@
 <body>
     <h2>Fetching your details...</h2>
 
-   <script>
-    async function fetchUserDetails() {
-        const accessToken = getAccessToken();
-        if (!accessToken) {
-            document.body.innerHTML = "<h3>Login failed. No token received.</h3>";
-            return;
+    <script>
+        // ✅ Function to extract Access Token from URL
+        function getAccessToken() {
+            const hash = window.location.hash.substring(1); // Remove '#'
+            const params = new URLSearchParams(hash);
+            return params.get("access_token");
         }
 
-        try {
-            const response = await fetch("https://graph.microsoft.com/v1.0/me", {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Accept": "application/json"
-                }
-            });
-
-            const userData = await response.json();
-            console.log("User Data:", userData); // Debugging: Log user data
-
-            if (userData.error) {
-                document.body.innerHTML = `<h3>Error: ${userData.error.message}</h3>`;
+        // ✅ Function to fetch user details
+        async function fetchUserDetails() {
+            const accessToken = getAccessToken();
+            if (!accessToken) {
+                document.body.innerHTML = "<h3>Login failed. No token received.</h3>";
                 return;
             }
 
-            document.body.innerHTML = `<h3>Welcome, ${userData.displayName || "Unknown"}</h3>
-                                       <p>Email: ${userData.mail || userData.userPrincipalName || "Not Available"}</p>
-                                       <button onclick="logout()">Logout</button>`;
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-            document.body.innerHTML = "<h3>Could not retrieve user details.</h3>";
+            try {
+                const response = await fetch("https://graph.microsoft.com/v1.0/me", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Accept": "application/json"
+                    }
+                });
+
+                const userData = await response.json();
+                console.log("User Data:", userData); // Debugging: Log user data
+
+                if (userData.error) {
+                    document.body.innerHTML = `<h3>Error: ${userData.error.message}</h3>`;
+                    return;
+                }
+
+                document.body.innerHTML = `<h3>Welcome, ${userData.displayName || "Unknown"}</h3>
+                                           <p>Email: ${userData.mail || userData.userPrincipalName || "Not Available"}</p>
+                                           <button onclick="logout()">Logout</button>`;
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                document.body.innerHTML = "<h3>Could not retrieve user details.</h3>";
+            }
         }
-    }
 
-    fetchUserDetails();
-</script>
+        // ✅ Logout function
+        function logout() {
+            window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/logout";
+        }
 
+        // ✅ Call the function when the page loads
+        fetchUserDetails();
+    </script>
 </body>
 </html>
