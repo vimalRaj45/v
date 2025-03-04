@@ -3,30 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in with Outlook</title>
+    <title>Microsoft SSO Login</title>
+    <script src="https://alcdn.msauth.net/browser/2.32.0/js/msal-browser.min.js"></script>
 </head>
 <body>
-    <h2>Sign in with Outlook</h2>
-
-    <a id="loginBtn" href="#" class="btn">Login with Microsoft</a>
+    <h2>Sign in with Microsoft</h2>
+    <button id="loginBtn" class="btn">Login with Microsoft</button>
 
     <script>
-        function checkSSO() {
-            const token = sessionStorage.getItem("access_token");
-            if (token) {
-                window.location.href = "https://vimalraj45.github.io/v/after"; // Redirect if already signed in
+        const msalConfig = {
+            auth: {
+                clientId: "3689c71b-e171-42dc-b794-f25937355139",
+                authority: "https://login.microsoftonline.com/common",
+                redirectUri: "https://vimalraj45.github.io/v/after"
+            }
+        };
+
+        const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+        async function signIn() {
+            try {
+                const loginRequest = {
+                    scopes: ["openid", "profile", "email", "User.Read"]
+                };
+
+                const loginResponse = await msalInstance.loginPopup(loginRequest);
+                console.log("User signed in:", loginResponse);
+
+                sessionStorage.setItem("access_token", loginResponse.accessToken);
+                window.location.href = "https://vimalraj45.github.io/v/after";
+            } catch (error) {
+                console.error("Login failed:", error);
             }
         }
 
-        document.getElementById("loginBtn").href = 
-            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
-            + "?client_id=3689c71b-e171-42dc-b794-f25937355139"
-            + "&response_type=token"
-            + "&redirect_uri=https://vimalraj45.github.io/v/after"
-            + "&scope=openid profile email User.Read"
-            + "&prompt=select_account";
+        async function signInWithSSO() {
+            try {
+                const silentRequest = {
+                    scopes: ["openid", "profile", "email", "User.Read"]
+                };
 
-        checkSSO();
+                const silentResponse = await msalInstance.ssoSilent(silentRequest);
+                console.log("SSO successful:", silentResponse);
+
+                sessionStorage.setItem("access_token", silentResponse.accessToken);
+                window.location.href = "https://vimalraj45.github.io/v/after";
+            } catch (error) {
+                console.log("SSO failed, requiring manual login.");
+            }
+        }
+
+        document.getElementById("loginBtn").addEventListener("click", signIn);
+
+        // Try SSO first
+        signInWithSSO();
     </script>
 
     <style>
@@ -36,13 +66,14 @@
         color: white;
         padding: 10px 20px;
         font-size: 16px;
-        text-decoration: none;
+        border: none;
         border-radius: 5px;
         font-weight: bold;
+        cursor: pointer;
       }
       .btn:hover {
         background-color: #005A9E;
       }
     </style>
 </body>
-</html>  
+</html>
