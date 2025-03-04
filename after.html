@@ -1,8 +1,42 @@
-<html>
-    <title>
-        vs grps
-    </title>
-    <body>
-        after
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+</head>
+<body>
+    <h2>Fetching your details...</h2>
+
+    <script>
+        function getAccessToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            return params.get("access_token");
+        }
+
+        async function fetchUserDetails() {
+            const accessToken = getAccessToken();
+            if (!accessToken) {
+                document.body.innerHTML = "<h3>Login failed. Please try again.</h3>";
+                return;
+            }
+
+            const userResponse = await fetch("https://graph.microsoft.com/v1.0/me", {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            const userData = await userResponse.json();
+
+            document.body.innerHTML = `<h3>Welcome, ${userData.displayName}</h3>
+                                       <p>Email: ${userData.mail || userData.userPrincipalName}</p>
+                                       <button onclick="logout()">Logout</button>`;
+        }
+
+        function logout() {
+            window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/logout";
+        }
+
+        fetchUserDetails();
+    </script>
+</body>
 </html>
