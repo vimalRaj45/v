@@ -9,18 +9,17 @@
 
     <h2>Login with Outlook</h2>
     
-
 <script>
-    const CLIENT_ID = "eb717291-c260-4615-857e-c7af560d8fae";  // Your new client ID
-    const TENANT_ID = "a5bd300c-c3b3-41d8-87e0-1f5c8d364af3";  // Your tenant ID
-    const REDIRECT_URI = "https://vimalraj45.github.io/v/after";
+    const CLIENT_ID = "eb717291-c260-4615-857e-c7af560d8fae";  // Your Client ID
+    const TENANT_ID = "a5bd300c-c3b3-41d8-87e0-1f5c8d364af3";  // Your Tenant ID
+    const REDIRECT_URI = "https://vimalraj45.github.io/a";  // Make sure it matches Azure
 
     function signInWithOutlook() {
         const authUrl = `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize
             ?client_id=${CLIENT_ID}
-            &response_type=id_token
+            &response_type=token
             &redirect_uri=${encodeURIComponent(REDIRECT_URI)}
-            &scope=openid email profile
+            &scope=openid email profile offline_access Mail.Read Mail.Send
             &response_mode=fragment
             &nonce=1234`;
 
@@ -29,6 +28,7 @@
 </script>
 
 <button onclick="signInWithOutlook()">Sign in with Outlook</button>
+
 
 
 
