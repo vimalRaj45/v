@@ -10,20 +10,25 @@
     <h2>Login with Outlook</h2>
     <button onclick="signInWithOutlook()">Sign in with Outlook</button>
 
-    <script>
-        const CLIENT_ID = "90b07e76-8707-47bd-9911-9e6ecfbd80fc"; // Replace with your actual Client ID
-        const REDIRECT_URI = "https://vimalraj45.github.io/v/try"; // Your redirect URL
+   <script>
+    const CLIENT_ID = "90b07e76-8707-47bd-9911-9e6ecfbd80fc"; // Your App (Client) ID
+    const TENANT_ID = "common"; // Use "common" for all users, or "a5bd300c-c3b3-41d8-87e0-1f5c8d364af3" for your organization
+    const REDIRECT_URI = "https://vimalraj45.github.io/v/try";
 
-        function signInWithOutlook() {
-            const authUrl = `https://login.microsoftonline.com/common/oauth2/v2.0/authorize
-                ?client_id=${CLIENT_ID}
-                &response_type=token
-                &redirect_uri=${encodeURIComponent(REDIRECT_URI)}
-                &scope=openid email profile`;
+    function signInWithOutlook() {
+        const authUrl = `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize
+            ?client_id=${CLIENT_ID}
+            &response_type=id_token
+            &redirect_uri=${encodeURIComponent(REDIRECT_URI)}
+            &scope=openid email profile
+            &response_mode=fragment
+            &nonce=1234`;
 
-            window.location.href = authUrl;
-        }
-    </script>
+        window.location.href = authUrl;
+    }
+</script>
+<button onclick="signInWithOutlook()">Sign in with Outlook</button>
+
 
 </body>
 </html>
