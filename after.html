@@ -1,34 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
-</head>
-<body>
+<script>
+    function getUserFromUrl() {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const idToken = params.get("id_token");
 
-    <h2>Welcome!</h2>
-    <p id="user-info"></p>
-
-    <button onclick="logout()">Logout</button>
-
-    <script>
-        // Check if the user is logged in
-        const userData = localStorage.getItem("google_user");
-
-        if (!userData) {
-            // Redirect to login page if not signed in
-            window.location.href = "https://vimalraj45.github.io/v/try";
+        if (idToken) {
+            localStorage.setItem("outlook_id_token", idToken);
+            document.getElementById("user-info").innerText = `Signed in successfully!`;
         } else {
-            const user = JSON.parse(userData);
-            document.getElementById("user-info").innerText = `Hello, ${user.name}!`;
+            const savedToken = localStorage.getItem("outlook_id_token");
+            if (!savedToken) {
+                window.location.href = "https://vimalraj45.github.io/v/try"; // Redirect back to login if not signed in
+            }
         }
+    }
 
-        function logout() {
-            localStorage.removeItem("google_user");
-            window.location.href = "https://vimalraj45.github.io/v/try";
-        }
-    </script>
+    function logout() {
+        localStorage.removeItem("outlook_id_token");
+        window.location.href = "https://vimalraj45.github.io/v/try"; // Redirect to login page
+    }
 
-</body>
-</html>
+    getUserFromUrl();
+</script>
+
+<h2 id="user-info"></h2>
+<button onclick="logout()">Logout</button>
