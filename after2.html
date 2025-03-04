@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+</head>
+<body>
+
+    <h2>Welcome!</h2>
+    <p id="user-info"></p>
+
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        // Check if the user is logged in
+        const userData = localStorage.getItem("google_user");
+
+        if (!userData) {
+            // Redirect to login page if not signed in
+            window.location.href = "https://vimalraj45.github.io/v/try";
+        } else {
+            const user = JSON.parse(userData);
+            document.getElementById("user-info").innerText = Hello, ${user.name}!;
+        }
+
+        function logout() {
+            localStorage.removeItem("google_user");
+            window.location.href = "https://vimalraj45.github.io/v/try";
+        }
+    </script>
+
+</body>
+</html>
