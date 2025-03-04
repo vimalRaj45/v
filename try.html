@@ -10,25 +10,19 @@
     <h2>Login with Outlook</h2>
     
 
- <script>
-    const CLIENT_ID = "eb717291-c260-4615-857e-c7af560d8fae";  // Your new client ID
-    const TENANT_ID = "a5bd300c-c3b3-41d8-87e0-1f5c8d364af3";  // Your tenant ID
-    const REDIRECT_URI = "https://vimalraj45.github.io/v/";
-
+<script>
     function signInWithOutlook() {
-        const authUrl = `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize
-            ?client_id=${CLIENT_ID}
-            &response_type=id_token
-            &redirect_uri=${encodeURIComponent(REDIRECT_URI)}
-            &scope=openid email profile
-            &response_mode=fragment
-            &nonce=1234`;
-
-        window.location.href = authUrl;
+        window.location.href = "https://login.microsoftonline.com/a5bd300c-c3b3-41d8-87e0-1f5c8d364af3/oauth2/v2.0/authorize" +
+            "?client_id=eb717291-c260-4615-857e-c7af560d8fae" +
+            "&response_type=code" +
+            "&redirect_uri=https%3A%2F%2Fvimalraj45.github.io%2Fv%2F" +
+            "&scope=openid%20email%20profile" +
+            "&response_mode=form_post";
     }
 </script>
 
 <button onclick="signInWithOutlook()">Sign in with Outlook</button>
+
 
 
 
