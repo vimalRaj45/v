@@ -6,37 +6,26 @@
     <title>Sign in with Outlook</title>
 </head>
 <body>
-    <h1>v</h1>
     <h2>Sign in with Outlook</h2>
 
     <a id="loginBtn" href="#" class="btn">Login with Microsoft</a>
 
     <script>
-        // Check if the user is already signed in
         function checkSSO() {
-            const token = sessionStorage.getItem("id_token");
+            const token = sessionStorage.getItem("access_token");
             if (token) {
                 window.location.href = "https://vimalraj45.github.io/v/after"; // Redirect if already signed in
             }
         }
 
-        // Configure the login URL
-        const clientId = "3689c71b-e171-42dc-b794-f25937355139"; // Replace with your app's client ID
-        const redirectUri = "https://vimalraj45.github.io/v/after"; // Replace with your redirect URI
-        const scopes = "openid profile email User.Read"; // Scopes for ID token and user info
+        document.getElementById("loginBtn").href = 
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
+            + "?client_id=3689c71b-e171-42dc-b794-f25937355139"
+            + "&response_type=token"
+            + "&redirect_uri=https://vimalraj45.github.io/v/after"
+            + "&scope=openid profile email User.Read"
+            + "&prompt=select_account";
 
-        const loginUrl = 
-            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize" +
-            "?client_id=" + encodeURIComponent(clientId) +
-            "&response_type=id_token" + // Request an ID token for SSO
-            "&redirect_uri=" + encodeURIComponent(redirectUri) +
-            "&scope=" + encodeURIComponent(scopes) +
-            "&response_mode=fragment" + // Recommended for SPAs
-            "&prompt=none"; // Enable silent SSO
-
-        document.getElementById("loginBtn").href = loginUrl;
-
-        // Check for SSO on page load
         checkSSO();
     </script>
 
@@ -56,4 +45,4 @@
       }
     </style>
 </body>
-</html>
+</html>  
