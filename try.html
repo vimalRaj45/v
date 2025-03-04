@@ -1,141 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Drive File Upload and Share</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f0f0f0;
-    }
-    .container {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-      border: none;
-      color: white;
-      background-color: #4285F4;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #3367D6;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Google</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-  <div class="container">
-    <h2>Google Drive File Upload and Share</h2>
-    <button id="authorize-button">Authorize Google Drive</button>
-    <br><br>
-    <input type="file" id="file-input">
-    <button id="upload-button">Upload to Google Drive</button>
-  </div>
+    <h2>Login with Google</h2>
+    
+    <div id="g_id_onload"
+        data-client_id="219533956445-5ngdi5t36u33fugnognh1ti2aim7e2sa.apps.googleusercontent.com"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+    </div>
+    
+    <div class="g_id_signin" data-type="standard"></div>
 
-  <script>
-    // Your client ID from Google Cloud Console
-    const CLIENT_ID = '219533956445-53qckbd9fn4af8s110un72ukgrsohe3u.apps.googleusercontent.com';
-    const API_KEY = 'AIzaSyB3ssjHCBkGZwMz4oI8QF5Sf38tOKTbh_k';
+    <script>
+        function handleCredentialResponse(response) {
+            const idToken = response.credential;
+            
+            // Store in localStorage
+            localStorage.setItem("google_token", idToken);
 
-    // Google Drive API scopes
-    const SCOPES = 'https://www.googleapis.com/auth/drive.file';
-
-    let tokenClient;
-    let gapiLoaded = false;
-
-    function gapiLoadedCallback() {
-      gapiLoaded = true;
-    }
-
-   function initializeAuth() {
-  // Ensure you load Google's JavaScript client library before calling this
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID, // Replace with your actual client ID from Google Cloud
-    scope: SCOPES, // Ensure SCOPES includes necessary permissions (e.g., 'https://www.googleapis.com/auth/drive.file')
-    callback: (tokenResponse) => {
-      gapi.client.setApiKey(API_KEY); // Optional, depending on your setup
-      gapi.client.setToken(tokenResponse); // Sets the token after successful authentication
-      alert('Authorization successful!');
-    },
-    redirect_uri: 'https://vimalraj45.github.io', // Match with the registered redirect URI
-  });
-
-  // Request the access token (triggers the OAuth flow)
-  tokenClient.requestAccessToken();
-}
-
-
-
-    async function uploadFile() {
-      const fileInput = document.getElementById('file-input');
-      const file = fileInput.files[0];
-
-      if (!file) {
-        alert('Please select a file to upload.');
-        return;
-      }
-
-      const metadata = {
-        name: file.name,
-        mimeType: file.type,
-      };
-
-      const formData = new FormData();
-      formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-      formData.append('file', file);
-
-      const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
-        },
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      if (result.id) {
-        alert('File uploaded successfully!');
-        shareFile(result.id);
-      } else {
-        alert('Error uploading file.');
-      }
-    }
-
-    async function shareFile(fileId) {
-      const response = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}/permissions`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${gapi.client.getToken().access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          role: 'reader',
-          type: 'anyone',
-        }),
-      });
-
-      if (response.ok) {
-        alert('File shared successfully!');
-      } else {
-        alert('Error sharing file.');
-      }
-    }
-
-    document.getElementById('authorize-button').addEventListener('click', initializeAuth);
-    document.getElementById('upload-button').addEventListener('click', uploadFile);
-  </script>
-
-  <!-- Google API Loader -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://apis.google.com/js/api.js?onload=gapiLoadedCallback" async defer></script>
+            // Redirect to the main page after login
+            window.location.href = "https://vimalraj45.github.io/v/";
+        }
+    </script>
 </body>
 </html>
