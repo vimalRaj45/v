@@ -11,9 +11,9 @@
     
 
 <script>
-    const CLIENT_ID = "eb717291-c260-4615-857e-c7af560d8fae";  // Your client ID
+    const CLIENT_ID = "eb717291-c260-4615-857e-c7af560d8fae";  // Your new client ID
     const TENANT_ID = "a5bd300c-c3b3-41d8-87e0-1f5c8d364af3";  // Your tenant ID
-    const REDIRECT_URI = "https://vimalraj45.github.io/v/after";  // MUST match Azure
+    const REDIRECT_URI = "https://vimalraj45.github.io/v/after";
 
     function signInWithOutlook() {
         const authUrl = `https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/authorize
@@ -21,7 +21,7 @@
             &response_type=id_token
             &redirect_uri=${encodeURIComponent(REDIRECT_URI)}
             &scope=openid email profile
-            &response_mode=form_post
+            &response_mode=fragment
             &nonce=1234`;
 
         window.location.href = authUrl;
