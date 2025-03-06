@@ -9,9 +9,13 @@
     <h2>Welcome, <span id="userName">Loading...</span></h2>
     <p>Email: <span id="userEmail">Loading...</span></p>
     <button onclick="logout()" class="btn">Logout</button>
-    <a href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=3689c71b-e171-42dc-b794-f25937355139&response_type=token&redirect_uri=https://vimalraj45.github.io/v/after&scope=openid%20profile%20email%20User.Read&prompt=login" target="_blank">
-    Login (Force Password Prompt)
-    </a>
+    <button onclick="logout()">Sign Out & Forget</button>
+
+<script>
+function logout() {
+    window.location.href = "https://login.microsoftonline.com/common/oauth2/logout";
+}
+</script>
     <script>
         function getAccessToken() {
             // 🔹 Get token from localStorage instead of sessionStorage
