@@ -3,48 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in with Outlook</title>
+    <title>Embedded Full-Screen Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>Sign in with Outlook</h2>
-
-    <a id="loginBtn" href="#" class="btn">Login with Microsoft</a>
-
-    <script>
-        function checkSSO() {
-            const token = localStorage.getItem("access_token");
-            console.log(token);
-     
-            if (token) {
-                window.location.href = "https://vimalraj45.github.io/v/after"; // Redirect if already signed in
-            }
-        }
-
-        document.getElementById("loginBtn").href = 
-            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
-            + "?client_id=3689c71b-e171-42dc-b794-f25937355139"
-            + "&response_type=token"
-            + "&redirect_uri=https://vimalraj45.github.io/v/after"
-            + "&scope=openid profile email User.Read"
-            + "&prompt=select_account";
-
-        checkSSO();
-    </script>
-
-    <style>
-      .btn {
-        display: inline-block;
-        background-color: #0078D4;
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-      }
-      .btn:hover {
-        background-color: #005A9E;
-      }
-    </style>
+    <iframe src="https://vimalraj45.github.io/v/try" sandbox="allow-scripts allow-same-origin"></iframe>
 </body>
-</html>  
+</html>
