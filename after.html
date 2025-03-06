@@ -68,16 +68,19 @@
             document.getElementById("userEmail").textContent = user.mail || user.userPrincipalName;
         }
 
-    function logout() {
-    // ❌ Remove stored user data and tokens
+   function logout() {
+    // ❌ Remove stored tokens & user data
     localStorage.removeItem("access_token");
     localStorage.removeItem("microsoft_user");
     sessionStorage.clear();
 
-    // 🔹 Force Microsoft Logout (without user.mail)
-    window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/logout?post_logout_redirect_uri=https://login.live.com/logout.srf";
+    // 🔹 Redirect to Microsoft logout & force re-login
+    const logoutURL = "https://login.microsoftonline.com/common/oauth2/v2.0/logout";
+    const loginRedirect = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+    
+    // Redirect to logout first, then force login again
+    window.location.href = `${logoutURL}?post_logout_redirect_uri=${encodeURIComponent(loginRedirect)}`;
 }
-
 
 
 
