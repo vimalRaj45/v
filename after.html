@@ -68,19 +68,28 @@
             document.getElementById("userEmail").textContent = user.mail || user.userPrincipalName;
         }
 
-   function logout() {
-    // ❌ Remove stored tokens & user data
+  function logout() {
+    // ❌ Clear local session data
     localStorage.removeItem("access_token");
     localStorage.removeItem("microsoft_user");
     sessionStorage.clear();
 
-    // 🔹 Redirect to Microsoft logout & force re-login
+    // 🔹 Force Microsoft logout
     const logoutURL = "https://login.microsoftonline.com/common/oauth2/v2.0/logout";
-    const loginRedirect = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
     
-    // Redirect to logout first, then force login again
+    // 🔹 Redirect to an additional logout page to clear session cookies
+    const extraLogout = "https://outlook.office365.com/owa/logoff.owa";
+
+    // 🔹 Redirect to login after logout
+    const loginRedirect = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+
+    // 🔹 Open Microsoft logout in a new tab to ensure all sessions are cleared
+    window.open(extraLogout, "_blank");
+
+    // 🔹 Redirect user to Microsoft's main logout page
     window.location.href = `${logoutURL}?post_logout_redirect_uri=${encodeURIComponent(loginRedirect)}`;
 }
+
 
 
 
