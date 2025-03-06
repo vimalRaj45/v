@@ -69,11 +69,14 @@
         }
 
         function logout() {
-            // ❌ Clear both token and user details from localStorage
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("microsoft_user");
-            window.location.href = "https://vimalraj45.github.io/v/try"; // Redirect to login
-        }
+    // ❌ Clear both token and user details from localStorage
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("microsoft_user");
+
+    // 🔹 Force Microsoft logout
+    window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/logout?post_logout_redirect_uri=https://vimalraj45.github.io/v/try";
+}
+
 
         // ✅ Fetch user details when the page loads
         fetchUserDetails();
