@@ -3,94 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Outlook Sign-In</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+    <title>Sign in with Outlook</title>
 </head>
 <body>
+    <h2>Sign in with Outlook</h2>
 
-    <iframe id="secureFrame" srcdoc='
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Sign in with Outlook</title>
-            <style>
-                body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-                .btn {
-                    display: inline-block;
-                    background-color: #0078D4;
-                    color: white;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    font-weight: bold;
-                }
-                .btn:hover { background-color: #005A9E; }
-            </style>
-        </head>
-        <body>
-            <h2>Sign in with Outlook</h2>
-            <a id="loginBtn" href="#" class="btn">Login with Microsoft</a>
-            <script>
-                function checkSSO() {
-                    const token = localStorage.getItem("access_token");
-                    console.log(token);
-                    if (token) {
-                        window.location.href = "https://vimalraj45.github.io/v/after"; // Redirect if already signed in
-                    }
-                }
-                document.getElementById("loginBtn").href =
-                    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
-                    + "?client_id=3689c71b-e171-42dc-b794-f25937355139"
-                    + "&response_type=token"
-                    + "&redirect_uri=https://vimalraj45.github.io/v/after"
-                    + "&scope=openid profile email User.Read"
-                    + "&prompt=select_account";
-                checkSSO();
-            </script>
-        </body>
-        </html>
-    ' sandbox="allow-scripts allow-same-origin"></iframe>
+    <a id="loginBtn" href="#" class="btn">Login with Microsoft</a>
 
     <script>
-        // Disable right-click
-        document.addEventListener("contextmenu", event => event.preventDefault());
+        function checkSSO() {
+            const token = localStorage.getItem("access_token");
+            console.log(token);
+     
+            if (token) {
+                window.location.href = "https://vimalraj45.github.io/v/after"; // Redirect if already signed in
+            }
+        }
 
-        // Disable common developer tool shortcuts
-        document.addEventListener("keydown", function(event) {
-            if (event.ctrlKey && (event.key === "u" || event.key === "U" || event.key === "s" || event.key === "S" || event.key === "i" || event.key === "I" || event.key === "j" || event.key === "J")) {
-                event.preventDefault();
-            }
-            if (event.keyCode === 123) { // F12
-                event.preventDefault();
-            }
-        });
+        document.getElementById("loginBtn").href = 
+            "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
+            + "?client_id=3689c71b-e171-42dc-b794-f25937355139"
+            + "&response_type=token"
+            + "&redirect_uri=https://vimalraj45.github.io/v/after"
+            + "&scope=openid profile email User.Read"
+            + "&prompt=select_account";
 
-        // Detect DevTools and remove iframe content if detected
-        setInterval(() => {
-            if (window.outerWidth - window.innerWidth > 200 || window.outerHeight - window.innerHeight > 200) {
-                document.body.innerHTML = "<h1>Access Denied</h1>";
-            }
-        }, 1000);
+        checkSSO();
     </script>
 
+    <style>
+      .btn {
+        display: inline-block;
+        background-color: #0078D4;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .btn:hover {
+        background-color: #005A9E;
+      }
+    </style>
 </body>
-</html>
+</html>  
