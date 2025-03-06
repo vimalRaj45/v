@@ -68,19 +68,16 @@
             document.getElementById("userEmail").textContent = user.mail || user.userPrincipalName;
         }
 
-      function logout() {
-    // ❌ Clear stored tokens & user details
+     function logout() {
+    // ❌ Remove stored login data
     localStorage.removeItem("access_token");
     localStorage.removeItem("microsoft_user");
+    sessionStorage.clear();
 
-    // 🔹 Force Microsoft Logout & Prevent Auto Sign-in
-    window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/logout?post_logout_redirect_uri=https://vimalraj45.github.io/v/try";
-
-    // 🔄 Reload the page after a short delay to ensure complete logout
-    setTimeout(() => {
-        location.reload();
-    }, 500);
+    // 🔹 Force Microsoft full logout
+    window.location.href = "https://login.microsoftonline.com/common/oauth2/v2.0/logout?post_logout_redirect_uri=https://login.microsoft.com/logout.srf";
 }
+
 
 
 
