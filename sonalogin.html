@@ -13,7 +13,7 @@
 
     <style>
         body {
-            background: linear-gradient(135deg, #004aad, #cb6ce6); /* Professional Gradient */
+            background: linear-gradient(135deg, #004aad, #cb6ce6);
             color: white;
             font-family: 'Arial', sans-serif;
             min-height: 100vh;
@@ -22,17 +22,32 @@
             align-items: center;
         }
         .login-card {
-            width: 350px;
+            width: 400px;
             padding: 30px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
             text-align: center;
             color: black;
         }
         .login-card h2 {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: #004aad;
+        }
+        .profile-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .profile-container img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+        .loading {
+            display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -53,6 +68,18 @@
 
                 <div class="g_id_signin" data-type="standard"></div>
 
+                <div class="loading uk-text-center">
+                    <span uk-spinner="ratio: 1.5"></span>
+                    <p>Authenticating...</p>
+                </div>
+
+                <div class="profile-container">
+                    <img id="user-photo" src="" alt="Profile Picture">
+                    <h3 id="user-name"></h3>
+                    <p id="user-email"></p>
+                    <button class="uk-button uk-button-danger" onclick="logout()">Logout</button>
+                </div>
+
                 <p class="uk-text-meta uk-margin-top">Secure login powered by Google</p>
             </div>
         </div>
@@ -63,16 +90,43 @@
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit-icons.min.js"></script>
 
     <script>
-        if (localStorage.getItem("google_user")) {
-            window.location.href = "https://vimalraj45.github.io/v/sonahome";
-        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = JSON.parse(localStorage.getItem("google_user"));
+
+            if (user) {
+                displayUserProfile(user);
+            }
+        });
 
         function handleCredentialResponse(response) {
-            const idToken = response.credential;
-            const user = JSON.parse(atob(idToken.split('.')[1]));
+            document.querySelector('.loading').style.display = 'block';
+            
+            setTimeout(() => {
+                const idToken = response.credential;
+                const user = JSON.parse(atob(idToken.split('.')[1]));
 
-            localStorage.setItem("google_user", JSON.stringify(user));
-            window.location.href = "https://vimalraj45.github.io/v/sonahome";
+                localStorage.setItem("google_user", JSON.stringify(user));
+
+                displayUserProfile(user);
+
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = "https://vimalraj45.github.io/v/sonahome";
+                }, 2000);
+            }, 1500);
+        }
+
+        function displayUserProfile(user) {
+            document.querySelector('.g_id_signin').style.display = 'none';
+            document.querySelector('.profile-container').style.display = 'block';
+            document.getElementById('user-photo').src = user.picture;
+            document.getElementById('user-name').textContent = user.name;
+            document.getElementById('user-email').textContent = user.email;
+        }
+
+        function logout() {
+            localStorage.removeItem("google_user");
+            window.location.reload();
         }
     </script>
 
