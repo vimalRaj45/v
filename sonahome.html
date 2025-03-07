@@ -7,54 +7,19 @@
     
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/css/uikit.min.css" />
-
-    <style>
-        body {
-            background: linear-gradient(135deg, #004aad, #cb6ce6);
-            color: white;
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .main-card {
-            width: 400px;
-            padding: 30px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            color: black;
-        }
-        .profile-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .profile-container img {
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
-<body>
+<body class="uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-background-primary uk-light" uk-height-viewport>
 
-    <div class="uk-container">
-        <div class="uk-flex uk-flex-center">
-            <div class="main-card">
-                <h2>Welcome to Sona Event</h2>
+    <div class="uk-card uk-card-default uk-card-body uk-width-medium uk-text-center uk-box-shadow-large uk-border-rounded">
+        <h2 class="uk-card-title">Welcome to Sona Event</h2>
 
-                <div class="profile-container">
-                    <img id="user-photo" src="" alt="Profile Picture">
-                    <h3 id="user-name"></h3>
-                    <p id="user-email"></p>
-                </div>
-
-                <button class="uk-button uk-button-danger uk-margin-top" onclick="logout()">Logout</button>
-            </div>
+        <div class="uk-margin">
+            <img id="user-photo" class="uk-border-circle" width="80" height="80" alt="Profile Picture">
+            <h3 id="user-name" class="uk-margin-small-top"></h3>
+            <p id="user-email" class="uk-text-meta"></p>
         </div>
+
+        <button class="uk-button uk-button-danger uk-width-1-1" onclick="logout()">Logout</button>
     </div>
 
     <!-- UIkit JS -->
@@ -66,7 +31,6 @@
         const userData = localStorage.getItem("google_user");
 
         if (!userData) {
-            // Redirect to login page if not signed in
             window.location.href = "https://vimalraj45.github.io/v/sonalogin";
         } else {
             const user = JSON.parse(userData);
