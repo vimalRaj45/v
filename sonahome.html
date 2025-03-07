@@ -3,14 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    <title>Sona Event - Main Page</title>
+    
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/css/uikit.min.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #004aad, #cb6ce6);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main-card {
+            width: 400px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: black;
+        }
+        .profile-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .profile-container img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <h2>Welcome!</h2>
-    <p id="user-info"></p>
+    <div class="uk-container">
+        <div class="uk-flex uk-flex-center">
+            <div class="main-card">
+                <h2>Welcome to Sona Event</h2>
 
-    <button onclick="logout()">Logout</button>
+                <div class="profile-container">
+                    <img id="user-photo" src="" alt="Profile Picture">
+                    <h3 id="user-name"></h3>
+                    <p id="user-email"></p>
+                </div>
+
+                <button class="uk-button uk-button-danger uk-margin-top" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit-icons.min.js"></script>
 
     <script>
         // Check if the user is logged in
@@ -21,7 +70,9 @@
             window.location.href = "https://vimalraj45.github.io/v/sonalogin";
         } else {
             const user = JSON.parse(userData);
-            document.getElementById("user-info").innerText = `Hello, ${user.name}!`;
+            document.getElementById("user-name").textContent = `Hello, ${user.name}!`;
+            document.getElementById("user-email").textContent = user.email;
+            document.getElementById("user-photo").src = user.picture;
         }
 
         function logout() {
