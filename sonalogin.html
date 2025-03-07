@@ -3,74 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sona Events - Login</title>
+    <title>Sona Event - Login</title>
+    
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/css/uikit.min.css" />
+    
+    <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/css/uikit.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/js/uikit-icons.min.js"></script>
+
     <style>
         body {
+            background: linear-gradient(135deg, #004aad, #cb6ce6); /* Professional Gradient */
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(to right, #003366, #0066cc);
         }
-        .login-container {
-            padding: 40px;
-            background: #fff;
+        .login-card {
+            width: 350px;
+            padding: 30px;
+            background: white;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             text-align: center;
-            max-width: 400px;
-            width: 100%;
+            color: black;
         }
-        .uk-button-google {
-            background-color: #db4437;
-            color: white;
-            width: 100%;
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .uk-button-google:hover {
-            background-color: #c1351d;
-        }
-        .logo {
-            width: 80px;
-            margin-bottom: 20px;
+        .login-card h2 {
+            margin-bottom: 15px;
+            color: #004aad;
         }
     </style>
 </head>
 <body>
-    <div class="login-container uk-card uk-card-default uk-card-body">
-        <img src="https://upload.wikimedia.org/wikipedia/en/4/4c/Sona_College_of_Technology_logo.png" alt="Sona Events" class="logo">
-        <h2 class="uk-heading-divider">Sona Events Login</h2>
-        <p class="uk-text-muted">Use your Google account to continue</p>
-        <div id="g_id_onload"
-            data-client_id="219533956445-97sljinum07ttk14sr1fotf03gv4os3v.apps.googleusercontent.com"
-            data-context="signin"
-            data-ux_mode="popup"
-            data-callback="handleCredentialResponse">
+
+    <div class="uk-container">
+        <div class="uk-flex uk-flex-center">
+            <div class="login-card">
+                <h2>Login to Sona Event</h2>
+
+                <div id="g_id_onload"
+                    data-client_id="219533956445-97sljinum07ttk14sr1fotf03gv4os3v.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="handleCredentialResponse"
+                    data-auto_select="true">
+                </div>
+
+                <div class="g_id_signin" data-type="standard"></div>
+
+                <p class="uk-text-meta uk-margin-top">Secure login powered by Google</p>
+            </div>
         </div>
-        <div class="g_id_signin" data-type="standard"></div>
     </div>
 
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit-icons.min.js"></script>
+
     <script>
-        if (sessionStorage.getItem("google_user")) {
+        if (localStorage.getItem("google_user")) {
             window.location.href = "https://vimalraj45.github.io/v/sonahome";
         }
 
         function handleCredentialResponse(response) {
-            try {
-                const idToken = response.credential;
-                const user = JSON.parse(atob(idToken.split('.')[1]));
-                sessionStorage.setItem("google_user", JSON.stringify(user));
-                window.location.href = "https://vimalraj45.github.io/v/sonahome";
-            } catch (error) {
-                console.error("Login failed:", error);
-            }
+            const idToken = response.credential;
+            const user = JSON.parse(atob(idToken.split('.')[1]));
+
+            localStorage.setItem("google_user", JSON.stringify(user));
+            window.location.href = "https://vimalraj45.github.io/v/sonahome";
         }
     </script>
+
 </body>
 </html>
