@@ -3,31 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/css/uikit.min.css" />
+    <title>Login with Google</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.10/dist/js/uikit-icons.min.js"></script>
 </head>
 <body>
-    <div class="uk-section uk-flex uk-flex-center uk-flex-middle" style="height: 100vh;">
-        <div class="uk-card uk-card-default uk-card-body uk-width-medium">
-            <h3 class="uk-card-title uk-text-center">Login</h3>
-            
-            <div id="g_id_onload"
-                data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                data-callback="handleCredentialResponse"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" data-type="standard"></div>
-        </div>
+
+    <h2>Login with Google</h2>
+
+    <div id="g_id_onload"
+        data-client_id="219533956445-97sljinum07ttk14sr1fotf03gv4os3v.apps.googleusercontent.com"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleCredentialResponse"
+        data-auto_select="true">
     </div>
 
+    <div class="g_id_signin" data-type="standard"></div>
+
     <script>
+        // Check if the user is already signed in
+        if (localStorage.getItem("google_user")) {
+            window.location.href = "https://vimalraj45.github.io/v/sonahome";
+        }
+
         function handleCredentialResponse(response) {
-            console.log("Encoded JWT ID token: " + response.credential);
-            // Here you can send the token to your backend for verification
+            const idToken = response.credential;
+            
+            // Decode JWT to get user info
+            const user = JSON.parse(atob(idToken.split('.')[1]));
+
+            // Store user data in localStorage
+            localStorage.setItem("google_user", JSON.stringify(user));
+
+            // Redirect to the main page
+            window.location.href = "https://vimalraj45.github.io/v/sonahome";
         }
     </script>
+
 </body>
 </html>
