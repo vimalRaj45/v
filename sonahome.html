@@ -23,6 +23,17 @@
             localStorage.removeItem("google_user");
             window.location.href = "https://vimalraj45.github.io/v/sonalogin";
         }
+        document.addEventListener("DOMContentLoaded", function () {
+    let links = document.querySelectorAll("nav li a");
+    links.forEach(link => {
+        if (link.getAttribute("href") === window.location.hash) {
+            link.parentElement.classList.add("uk-active");
+        } else {
+            link.parentElement.classList.remove("uk-active");
+        }
+    });
+});
+
     </script>
     <style>
         .uk-logo img {
@@ -36,18 +47,18 @@
     <div class="uk-navbar-left">
       <!-- Top Sona Text -->
 <div class="uk-padding-small ">
-    <span class="uk-heading" style="display: block; padding-left: 10px; font-weight: 650;">Sona College of </span>
-    <span class="uk-heading" style="display: block; padding-left: 10px; font-weight: 650;">Technology ,salem</span>
+    <span class="uk-heading" style="display: block; padding-left: 1vh; font-weight: 650;">Sona College of </span>
+    <span class="uk-heading" style="display: block; padding-left: 1vh; font-weight: 650;">Technology , salem</span>
 </div>
  
     </div>
     <div class="uk-navbar-right">
       <!-- Hamburger Menu Icon for Mobile (Hidden on Laptop and Larger) -->
-      <a class="uk-navbar-toggle uk-hidden@l" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-nav"></a>
+      <a class="uk-navbar-toggle uk-hidden@l" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-nav"  style="margin-right: 7%; padding: 10px;"></a>
       <!-- Navigation Items (Visible on Laptop and Larger) -->
       <div class="uk-visible@l" >
         <ul class="uk-navbar-nav">
-          <li><a href="#home">Home</a></li>
+            <li class="uk-active"><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li>
             <a href="#department">Department</a>
@@ -61,14 +72,14 @@
           <li><a href="#events">Events</a></li>
           <li><a href="#upcoming-event">Upcoming Event</a></li>
           <li><a href="#register" style="margin-right: 20px;">Register</a></li>
-          <li><button style="margin-right: 20px;" onclick="logout()">Logout</button></li>
+          <li><a href="#" class="uk-text-danger uk-text-bold" style="margin-right: 20px;" onclick="logout()">Logout</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
   <!-- Off-Canvas Menu for Mobile -->
-  <div id="offcanvas-nav" uk-offcanvas="overlay: true" style="margin-right:4px">
+  <div id="offcanvas-nav" uk-offcanvas="overlay: true">
     <div class="uk-offcanvas-bar">
       <button class="uk-offcanvas-close" type="button" uk-close></button>
       <ul class="uk-nav uk-nav-default">
@@ -84,41 +95,45 @@
         <li><a href="#events">Events</a></li>
         <li><a href="#upcoming-event">Upcoming Event</a></li>
         <li><a href="#register">Register</a></li>
-        <li><button style="margin-right: 20px;" onclick="logout()">Logout</button></li>
       </ul>
     </div>
   </div>
 
   <!-- Sections -->
   <section id="home" class="uk-section">
-    <div class="uk-container">
-      <h2 style="margin-top: 5%;">Home</h2>
-      <p>Welcome to the Sona College of Technology Event Management Portal! This platform is designed to be your central hub for accessing, exploring, and registering for a variety of events hosted by Sona College. From technical hackathons to cultural festivals, we bring you an array of opportunities to learn, showcase talents, and build lifelong memories. Whether you’re here to participate, organize, or simply discover the diverse events Sona College offers, this platform provides a streamlined and engaging experience for everyone.
+    <div style="margin: 2%; padding-top: 7%;">
+        <div class="uk-grid-collapse uk-child-width-1-2@m" uk-grid >
+            <!-- Left Side: One Large Card -->
+            <div >
+                <div class="uk-card uk-card-default uk-card-body" 
+     style="height: 80vh; width: 99%; border-radius: 10px; margin-top: 1%; 
+            background-image: 
+                        url('https://static.vecteezy.com/system/resources/previews/027/183/857/large_2x/college-student-walking-to-university-campus-education-banner-concept-free-photo.jpg'); 
+            background-size: cover; background-position: center;">
+</div>
 
-        What We Offer
-        Our event management portal is carefully crafted to cater to all interests and academic pursuits. We understand that students have varied interests, so our events cover a wide range of domains:
-        
-        Technical Events: These include Innovation Sprout, IOT InnovateXpo, Quiz to Quirk, ML AL Fusion, and many more. Technical events are designed to inspire innovation and provide hands-on learning experiences, connecting theoretical knowledge to practical applications.
-        
-        Non-Technical Events: Non-technical events like Memo O Mania, Karaoke, and Image Finder allow students to enjoy, relax, and showcase their creative skills outside of the academic environment.
-        
-        Each event listing provides details like the date, time, location, and event theme. Whether you’re looking to participate in a hackathon, attend a cultural night, or enjoy a technical exhibition, our platform has something for everyone.
-        
-        Easy Registration Process
-        We have simplified the registration process to save you time. Each event has a specific form accessible directly from this portal. With options to enter basic details such as name, registration number, department, and event-specific questions, our forms are quick and easy to complete. We ensure that your information is securely handled and registration confirmations are instantly provided through interactive pop-ups, so you’re notified right away.
-        
-        Department Events
-        The Department Events section categorizes events by department (e.g., CSE, ECE, Mechanical, Civil), allowing you to explore events specific to your field. This is particularly useful if you’re interested in networking within your department or finding events that align closely with your studies and career aspirations. Each department regularly updates its events, bringing you fresh and relevant experiences.
-        
-        About Us
-        Our event management team is dedicated to providing a seamless, student-focused experience. At Sona College, we believe that events are essential to student growth and community-building. Our mission is to make these opportunities accessible, well-organized, and memorable for every participant. Events are organized by students, for students, fostering leadership, creativity, and collaboration among peers.
-        
-        Upcoming Highlights
-        In the Upcoming Events section, you’ll find highlighted events scheduled for the near future. From Hackathon 2024 to Cultural Fest and Science Exhibition, this section keeps you informed about what’s coming next. These events are handpicked to showcase a variety of interests, so you can be sure there’s always something exciting happening at Sona College.
-        
-        Our Commitment
-        We strive to create an environment where students feel inspired and motivated to participate, learn, and excel. Our platform is designed for inclusivity, ensuring students from all backgrounds can find events that suit their unique interests and talents.</p>
+            </div>
+    
+            <!-- Right Side: Two Stacked Cards -->
+            <div>
+                <div class="uk-child-width-1-1 uk-grid-small" uk-grid>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-body" style="height: 40vh; background-color: rgb(15, 124, 124); border-radius: 10px; margin-top: 1%;">
+                            <h3 class="uk-card-title">Top Card</h3>
+                            <p>First half-height card.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-body" style="height: 38vh; background-color: aqua; border-radius: 10px;">
+                            <h3 class="uk-card-title">Bottom Card</h3>
+                            <p>Second half-height card.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
   </section>
 
   <section id="about" class="uk-section uk-section-muted">
