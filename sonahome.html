@@ -13,11 +13,135 @@
     <div class="uk-card uk-card-default uk-card-body uk-width-medium uk-text-center uk-box-shadow-large uk-border-rounded">
         <h2 class="uk-card-title">Welcome to Sona Event</h2>
 
-        <div class="uk-margin">
-            <img id="user-photo" class="uk-border-circle" width="80" height="80" alt="Profile Picture">
-            <h3 id="user-name" class="uk-margin-small-top"></h3>
-            <p id="user-email" class="uk-text-meta"></p>
-        </div>
+           <style>
+        .uk-logo img {
+          width: 30vh;
+          height:12vh;
+        }
+      </style>
+
+  <!-- Navbar -->
+  <nav class="uk-navbar-container uk-position-top uk-position-fixed" uk-navbar>
+    <div class="uk-navbar-left">
+      <!-- Top Sona Text -->
+<div class="uk-padding-small ">
+    <span class="uk-heading" style="display: block; padding-left: 15px; font-weight: 650;">Sona College of </span>
+    <span class="uk-heading" style="display: block; padding-left: 15px; font-weight: 650;">Technology ,salem</span>
+</div>
+ 
+    </div>
+    <div class="uk-navbar-right">
+      <!-- Hamburger Menu Icon for Mobile (Hidden on Laptop and Larger) -->
+      <a class="uk-navbar-toggle uk-hidden@l" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-nav"></a>
+      <!-- Navigation Items (Visible on Laptop and Larger) -->
+      <div class="uk-visible@l" >
+        <ul class="uk-navbar-nav">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li>
+            <a href="#department">Department</a>
+            <div class="uk-navbar-dropdown">
+              <ul class="uk-nav uk-navbar-dropdown-nav">
+                <li><a href="#">Sub-item 1</a></li>
+                <li><a href="#">Sub-item 2</a></li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#upcoming-event">Upcoming Event</a></li>
+          <li><a href="#register" style="margin-right: 20px;">Register</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Off-Canvas Menu for Mobile -->
+  <div id="offcanvas-nav" uk-offcanvas="overlay: true">
+    <div class="uk-offcanvas-bar">
+      <button class="uk-offcanvas-close" type="button" uk-close></button>
+      <ul class="uk-nav uk-nav-default">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li class="uk-parent">
+          <a href="#department">Department</a>
+          <ul class="uk-nav-sub">
+            <li><a href="#">Sub-item 1</a></li>
+            <li><a href="#">Sub-item 2</a></li>
+          </ul>
+        </li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#upcoming-event">Upcoming Event</a></li>
+        <li><a href="#register">Register</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sections -->
+  <section id="home" class="uk-section">
+    <div class="uk-container">
+      <h2 style="margin-top: 5%;">Home</h2>
+      <p>Welcome to the Sona College of Technology Event Management Portal! This platform is designed to be your central hub for accessing, exploring, and registering for a variety of events hosted by Sona College. From technical hackathons to cultural festivals, we bring you an array of opportunities to learn, showcase talents, and build lifelong memories. Whether you’re here to participate, organize, or simply discover the diverse events Sona College offers, this platform provides a streamlined and engaging experience for everyone.
+
+        What We Offer
+        Our event management portal is carefully crafted to cater to all interests and academic pursuits. We understand that students have varied interests, so our events cover a wide range of domains:
+        
+        Technical Events: These include Innovation Sprout, IOT InnovateXpo, Quiz to Quirk, ML AL Fusion, and many more. Technical events are designed to inspire innovation and provide hands-on learning experiences, connecting theoretical knowledge to practical applications.
+        
+        Non-Technical Events: Non-technical events like Memo O Mania, Karaoke, and Image Finder allow students to enjoy, relax, and showcase their creative skills outside of the academic environment.
+        
+        Each event listing provides details like the date, time, location, and event theme. Whether you’re looking to participate in a hackathon, attend a cultural night, or enjoy a technical exhibition, our platform has something for everyone.
+        
+        Easy Registration Process
+        We have simplified the registration process to save you time. Each event has a specific form accessible directly from this portal. With options to enter basic details such as name, registration number, department, and event-specific questions, our forms are quick and easy to complete. We ensure that your information is securely handled and registration confirmations are instantly provided through interactive pop-ups, so you’re notified right away.
+        
+        Department Events
+        The Department Events section categorizes events by department (e.g., CSE, ECE, Mechanical, Civil), allowing you to explore events specific to your field. This is particularly useful if you’re interested in networking within your department or finding events that align closely with your studies and career aspirations. Each department regularly updates its events, bringing you fresh and relevant experiences.
+        
+        About Us
+        Our event management team is dedicated to providing a seamless, student-focused experience. At Sona College, we believe that events are essential to student growth and community-building. Our mission is to make these opportunities accessible, well-organized, and memorable for every participant. Events are organized by students, for students, fostering leadership, creativity, and collaboration among peers.
+        
+        Upcoming Highlights
+        In the Upcoming Events section, you’ll find highlighted events scheduled for the near future. From Hackathon 2024 to Cultural Fest and Science Exhibition, this section keeps you informed about what’s coming next. These events are handpicked to showcase a variety of interests, so you can be sure there’s always something exciting happening at Sona College.
+        
+        Our Commitment
+        We strive to create an environment where students feel inspired and motivated to participate, learn, and excel. Our platform is designed for inclusivity, ensuring students from all backgrounds can find events that suit their unique interests and talents.</p>
+    </div>
+  </section>
+
+  <section id="about" class="uk-section uk-section-muted">
+    <div class="uk-container">
+      <h2>About</h2>
+      <p>Learn more about us.</p>
+    </div>
+  </section>
+
+  <section id="department" class="uk-section">
+    <div class="uk-container">
+      <h2>Department</h2>
+      <p>Explore our departments.</p>
+    </div>
+  </section>
+
+  <section id="events" class="uk-section uk-section-muted">
+    <div class="uk-container">
+      <h2>Events</h2>
+      <p>Check out our events.</p>
+    </div>
+  </section>
+
+  <section id="upcoming-event" class="uk-section">
+    <div class="uk-container">
+      <h2>Upcoming Event</h2>
+      <p>Details about the upcoming event.</p>
+    </div>
+  </section>
+
+  <section id="register" class="uk-section uk-section-muted">
+    <div class="uk-container">
+      <h2>Register</h2>
+      <p>Register for the event here.</p>
+    </div>
+  </section>
 
         <button class="uk-button uk-button-danger uk-width-1-1" onclick="logout()">Logout</button>
     </div>
