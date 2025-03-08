@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sona Event - Main Page</title>
-    
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/css/uikit.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Navbar with UIKit</title>
+  <!-- UIKit CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/css/uikit.min.css" />
 </head>
-<body class="uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-background-primary uk-light" uk-height-viewport>
+<body>
+    <script>
+        // Check if the user is logged in
+        const userData = localStorage.getItem("google_user");
 
-    <div class="uk-card uk-card-default uk-card-body uk-width-medium uk-text-center uk-box-shadow-large uk-border-rounded">
-        <h2 class="uk-card-title">Welcome to Sona Event</h2>
+        if (!userData) {
+            window.location.href = "https://vimalraj45.github.io/v/sonalogin";
+        } else {
+            const user = JSON.parse(userData);
+            alert(user.name)
+        }
 
-           <style>
+        function logout() {
+            localStorage.removeItem("google_user");
+            window.location.href = "https://vimalraj45.github.io/v/sonalogin";
+        }
+    </script>
+    <style>
         .uk-logo img {
           width: 30vh;
           height:12vh;
@@ -50,6 +61,7 @@
           <li><a href="#events">Events</a></li>
           <li><a href="#upcoming-event">Upcoming Event</a></li>
           <li><a href="#register" style="margin-right: 20px;">Register</a></li>
+          <li><button style="margin-right: 20px;" onclick="logout()">Logout</button></li>
         </ul>
       </div>
     </div>
@@ -143,31 +155,8 @@
     </div>
   </section>
 
-        <button class="uk-button uk-button-danger uk-width-1-1" onclick="logout()">Logout</button>
-    </div>
-
-    <!-- UIkit JS -->
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.10/dist/js/uikit-icons.min.js"></script>
-
-    <script>
-        // Check if the user is logged in
-        const userData = localStorage.getItem("google_user");
-
-        if (!userData) {
-            window.location.href = "https://vimalraj45.github.io/v/sonalogin";
-        } else {
-            const user = JSON.parse(userData);
-            document.getElementById("user-name").textContent = `Hello, ${user.name}!`;
-            document.getElementById("user-email").textContent = user.email;
-            document.getElementById("user-photo").src = user.picture;
-        }
-
-        function logout() {
-            localStorage.removeItem("google_user");
-            window.location.href = "https://vimalraj45.github.io/v/sonalogin";
-        }
-    </script>
-
+  <!-- UIKit JS -->
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit-icons.min.js"></script>
 </body>
 </html>
