@@ -9,38 +9,31 @@
 </head>
 <body>
     <script>
-        // Check if the user is logged in
+    document.addEventListener("DOMContentLoaded", function () {
+        // Retrieve Google user data
         const userData = localStorage.getItem("google_user");
 
         if (!userData) {
+            // Redirect if not logged in
             window.location.href = "https://vimalraj45.github.io/v/sonalogin";
         } else {
+            // Parse user data
             const user = JSON.parse(userData);
-            alert(user.name)
-            document.getElementById('user-photo').src = user.picture;
-        }
 
-        function logout() {
-            localStorage.removeItem("google_user");
-            window.location.href = "https://vimalraj45.github.io/v/sonalogin";
-        }
-        document.addEventListener("DOMContentLoaded", function () {
-    let links = document.querySelectorAll("nav li a");
-    let profileImg = document.getElementById("user-profile-img");
+            // Set profile image correctly
+            const profileImg = document.getElementById("user-photo");
             if (profileImg) {
-                profileImg.src = user.picture; // Google profile image URL
+                profileImg.src = user.picture; // Google profile image
             }
-    links.forEach(link => {
-        if (link.getAttribute("href") === window.location.hash) {
-            link.parentElement.classList.add("uk-active");
-        } else {
-            link.parentElement.classList.remove("uk-active");
         }
-        
     });
-});
 
-    </script>
+    function logout() {
+        localStorage.removeItem("google_user");
+        window.location.href = "https://vimalraj45.github.io/v/sonalogin";
+    }
+</script>
+
     <style>
         .uk-logo img {
           width: 30vh;
