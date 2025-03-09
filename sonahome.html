@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/css/uikit.min.css" />
 </head>
 <body>
-    <script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Retrieve Google user data
         const userData = localStorage.getItem("google_user");
@@ -20,11 +20,11 @@
             // Parse user data
             const user = JSON.parse(userData);
 
-            // Set profile image correctly
-            const profileImg = document.getElementById("user-photo");
-            if (profileImg) {
-                profileImg.src = user.picture; // Google profile image
-            }
+
+            // Set user details in navbar
+            document.getElementById("user-photo").src = user.picture;
+            document.getElementById("user-name").textContent = user.name;
+            document.getElementById("user-email").textContent = user.email;
         }
     });
 
@@ -41,48 +41,56 @@
         }
       </style>
 
-  <!-- Navbar -->
-  <nav class="uk-navbar-container uk-position-top uk-position-fixed " uk-navbar  >
-    <div class="uk-navbar-left">
+ <!-- Navbar -->
+<nav class="uk-navbar-container uk-position-top uk-position-fixed" uk-navbar>
+  <div class="uk-navbar-left">
       <!-- Top Sona Text -->
-<div class="uk-padding-small ">
-    <span class="uk-heading" style="display: block; padding-left: 1vh; font-weight: 650;">Sona College of </span>
-    <span class="uk-heading" style="display: block; padding-left: 1vh; font-weight: 650;">Technology , salem</span>
-</div>
- 
-    </div>
-    <div class="uk-navbar-right">
-      <!-- Hamburger Menu Icon for Mobile (Hidden on Laptop and Larger) -->
-      <a class="uk-navbar-toggle uk-hidden@l" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-nav"  style="margin-right: 7%; padding: 10px;"></a>
-      <!-- Navigation Items (Visible on Laptop and Larger) -->
-      <div class="uk-visible@l" >
-        <ul class="uk-navbar-nav uk-flex uk-flex-middle">
-          <li class="uk-muted"><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li>
-              <a href="#department">Department</a>
-              <div class="uk-navbar-dropdown">
-                  <ul class="uk-nav uk-navbar-dropdown-nav">
-                      <li><a href="#">Sub-item 1</a></li>
-                      <li><a href="#">Sub-item 2</a></li>
-                  </ul>
-              </div>
-          </li>
-          <li><a href="#events">Events</a></li>
-          <li><a href="#upcoming-event">Upcoming Event</a></li>
-      
-          <!-- Profile Image with Proper Alignment -->
-          <li class="uk-flex uk-flex-middle">
-              <img class="uk-border-pill" id="user-photo" src="" width="40" height="40" alt="Profile">
-          </li>
-      
-          <li><a href="#register" style="margin-right: 20px;">Register</a></li>
-          <li><a href="#" class="uk-text-danger uk-text-bold" style="margin-right: 20px;" onclick="logout()">Logout</a></li>
-      </ul>
-      
+      <div class="uk-padding-small">
+          <span class="uk-heading" style="display: block; padding-left: 1vh; font-weight: 650;">Sona College of </span>
+          <span class="uk-heading" style="display: block; padding-left: 1vh; font-weight: 650;">Technology, Salem</span>
       </div>
-    </div>
-  </nav>
+  </div>
+
+  <div class="uk-navbar-right">
+      <!-- Hamburger Menu Icon for Mobile -->
+      <a class="uk-navbar-toggle uk-hidden@l" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-nav" style="margin-right: 7%; padding: 10px;"></a>
+
+      <!-- Navigation Items -->
+      <div class="uk-visible@l">
+          <ul class="uk-navbar-nav uk-flex uk-flex-middle">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li>
+                  <a href="#department">Department</a>
+                  <div class="uk-navbar-dropdown">
+                      <ul class="uk-nav uk-navbar-dropdown-nav">
+                          <li><a href="#">Sub-item 1</a></li>
+                          <li><a href="#">Sub-item 2</a></li>
+                      </ul>
+                  </div>
+              </li>
+              <li><a href="#events">Events</a></li>
+              <li><a href="#upcoming-event">Upcoming Event</a></li>
+              <li><a href="#register">Register</a></li>
+
+              <!-- Profile Dropdown -->
+              <li>
+                  <a href="#" id="profile-menu" class="uk-flex uk-flex-middle">
+                      <img class="uk-border-pill" id="user-photo" src="" width="40" height="40" alt="Profile">
+                  </a>
+                  <div uk-dropdown="mode: click; pos: bottom-right">
+                      <ul class="uk-nav uk-dropdown-nav">
+                          <li class="uk-text-bold" id="user-name">User Name</li>
+                          <li class="uk-text-small uk-text-muted" id="user-email">user@example.com</li>
+                          <li class="uk-nav-divider"></li>
+                          <li><a href="#" class="uk-text-danger" onclick="logout()">Logout</a></li>
+                      </ul>
+                  </div>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>
 
  <!-- Off-Canvas Navigation -->
 <div id="offcanvas-nav" uk-offcanvas="mode: reveal; overlay: true">
