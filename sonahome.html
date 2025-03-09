@@ -17,8 +17,7 @@
         } else {
             const user = JSON.parse(userData);
             alert(user.name)
-            alert(user.photo)
-
+            document.getElementById('user-photo').src = user.picture;
         }
 
         function logout() {
@@ -81,7 +80,7 @@
       
           <!-- Profile Image with Proper Alignment -->
           <li class="uk-flex uk-flex-middle">
-              <img class="uk-border-pill" id="user-profile-img" src=user.photo width="40" height="40" alt="Profile">
+              <img class="uk-border-pill" id="user-photo" src="" width="40" height="40" alt="Profile">
           </li>
       
           <li><a href="#register" style="margin-right: 20px;">Register</a></li>
