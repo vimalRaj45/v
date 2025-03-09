@@ -21,10 +21,13 @@
             const user = JSON.parse(userData);
 
 
-            // Set user details in navbar
-            document.getElementById("user-photo").src = user.picture;
+           // Set user details in navbar and off-canvas menu
+           document.getElementById("user-photo").src = user.picture;
+            document.getElementById("offcanvas-user-photo").src = user.picture;
             document.getElementById("user-name").textContent = user.name;
+            document.getElementById("offcanvas-user-name").textContent = user.name;
             document.getElementById("user-email").textContent = user.email;
+            document.getElementById("offcanvas-user-email").textContent = user.email;
         }
     });
 
@@ -92,12 +95,22 @@
   </div>
 </nav>
 
- <!-- Off-Canvas Navigation -->
+<!-- Off-Canvas Navigation -->
 <div id="offcanvas-nav" uk-offcanvas="mode: reveal; overlay: true">
   <div class="uk-offcanvas-bar uk-background-primary uk-light">
 
       <!-- Close Button -->
       <button class="uk-offcanvas-close" type="button" uk-close></button>
+
+      <!-- Profile Section -->
+      <div class="uk-text-center uk-margin">
+          <img class="uk-border-pill" id="offcanvas-user-photo" src="" width="80" height="80" alt="Profile">
+          <p class="uk-text-bold uk-margin-small" id="offcanvas-user-name">User Name</p>
+          <p class="uk-text-small uk-text-muted" id="offcanvas-user-email">user@example.com</p>
+          <button class="uk-button uk-button-danger uk-button-small" onclick="logout()">Logout</button>
+      </div>
+
+      <hr class="uk-divider-icon">
 
       <!-- Navigation List -->
       <ul class="uk-nav uk-nav-default">
@@ -121,7 +134,6 @@
           <li><a href="#"><span class="uk-margin-xsmall-right" uk-icon="icon: table"></span> Dashboard</a></li>
           <li><a href="#"><span class="uk-margin-xsmall-right" uk-icon="icon: thumbnails"></span> Gallery</a></li>
           <li><a href="#"><span class="uk-margin-xsmall-right" uk-icon="icon: trash"></span> Delete</a></li>
-          <li><img class="uk-border-pill" src="images/avatar.jpg" width="200" height="200" alt="Border pill"></ul></li>
       </ul>
 
   </div>
