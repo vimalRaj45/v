@@ -31,6 +31,10 @@
         } else {
             link.parentElement.classList.remove("uk-active");
         }
+        let profileImg = document.getElementById("user-profile-img");
+            if (profileImg) {
+                profileImg.src = user.picture; // Google profile image URL
+            }
     });
 });
 
@@ -43,7 +47,7 @@
       </style>
 
   <!-- Navbar -->
-  <nav class="uk-navbar-container uk-position-top uk-position-fixed" uk-navbar>
+  <nav class="uk-navbar-container uk-position-top uk-position-fixed " uk-navbar  >
     <div class="uk-navbar-left">
       <!-- Top Sona Text -->
 <div class="uk-padding-small ">
@@ -57,83 +61,116 @@
       <a class="uk-navbar-toggle uk-hidden@l" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-nav"  style="margin-right: 7%; padding: 10px;"></a>
       <!-- Navigation Items (Visible on Laptop and Larger) -->
       <div class="uk-visible@l" >
-        <ul class="uk-navbar-nav">
-            <li class="uk-active"><a href="#home">Home</a></li>
+        <ul class="uk-navbar-nav uk-flex uk-flex-middle">
+          <li class="uk-muted"><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li>
-            <a href="#department">Department</a>
-            <div class="uk-navbar-dropdown">
-              <ul class="uk-nav uk-navbar-dropdown-nav">
-                <li><a href="#">Sub-item 1</a></li>
-                <li><a href="#">Sub-item 2</a></li>
-              </ul>
-            </div>
+              <a href="#department">Department</a>
+              <div class="uk-navbar-dropdown">
+                  <ul class="uk-nav uk-navbar-dropdown-nav">
+                      <li><a href="#">Sub-item 1</a></li>
+                      <li><a href="#">Sub-item 2</a></li>
+                  </ul>
+              </div>
           </li>
           <li><a href="#events">Events</a></li>
           <li><a href="#upcoming-event">Upcoming Event</a></li>
+      
+          <!-- Profile Image with Proper Alignment -->
+          <li class="uk-flex uk-flex-middle">
+              <img class="uk-border-pill" id="user-profile-img" src="https://cdn2.iconfinder.com/data/icons/business-bzzricon-filled-lines/512/01_Businessman-1024.png" width="40" height="40" alt="Profile">
+          </li>
+      
           <li><a href="#register" style="margin-right: 20px;">Register</a></li>
           <li><a href="#" class="uk-text-danger uk-text-bold" style="margin-right: 20px;" onclick="logout()">Logout</a></li>
-        </ul>
+      </ul>
+      
       </div>
     </div>
   </nav>
 
-  <!-- Off-Canvas Menu for Mobile -->
-  <div id="offcanvas-nav" uk-offcanvas="overlay: true">
-    <div class="uk-offcanvas-bar">
-      <button class="uk-offcanvas-close" type="button" uk-close></button>
-      <ul class="uk-nav uk-nav-default">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li class="uk-parent">
-          <a href="#department">Department</a>
-          <ul class="uk-nav-sub">
-            <li><a href="#">Sub-item 1</a></li>
-            <li><a href="#">Sub-item 2</a></li>
-          </ul>
-        </li>
-        <li><a href="#events">Events</a></li>
-        <li><a href="#upcoming-event">Upcoming Event</a></li>
-        <li><a href="#register">Register</a></li>
-        <li><a href="#" onclick="logout()">Logout</a></li>
-      </ul>
-    </div>
-  </div>
+ <!-- Off-Canvas Navigation -->
+<div id="offcanvas-nav" uk-offcanvas="mode: reveal; overlay: true">
+  <div class="uk-offcanvas-bar uk-background-primary uk-light">
 
-  <!-- Sections -->
-  <section id="home" class="uk-section">
-    <div style="margin: 2%; padding-top: 7%;">
-        <div class="uk-grid-collapse uk-child-width-1-2@m" uk-grid >
-            <!-- Left Side: One Large Card -->
-            <div >
-                <div class="uk-card uk-card-default uk-card-body" 
-     style="height: 80vh; width: 99%; border-radius: 10px; margin-top: 1%; 
-            background-image: 
-                        url('https://static.vecteezy.com/system/resources/previews/027/183/857/large_2x/college-student-walking-to-university-campus-education-banner-concept-free-photo.jpg'); 
-            background-size: cover; background-position: center;">
+      <!-- Close Button -->
+      <button class="uk-offcanvas-close" type="button" uk-close></button>
+
+      <!-- Navigation List -->
+      <ul class="uk-nav uk-nav-default">
+          <li class="uk-active"><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+
+          <li class="uk-parent">
+              <a href="#">Department</a>
+              <ul class="uk-nav-sub">
+                  <li><a href="#">Sub-item 1</a></li>
+                  <li><a href="#">Sub-item 2</a></li>
+              </ul>
+          </li>
+
+          <li><a href="#events">Events</a></li>
+          <li><a href="#upcoming-event">Upcoming Event</a></li>
+          <li><a href="#register">Register</a></li>
+
+          <!-- Divider & Extra Links -->
+          <li class="uk-nav-divider"></li>
+          <li><a href="#"><span class="uk-margin-xsmall-right" uk-icon="icon: table"></span> Dashboard</a></li>
+          <li><a href="#"><span class="uk-margin-xsmall-right" uk-icon="icon: thumbnails"></span> Gallery</a></li>
+          <li><a href="#"><span class="uk-margin-xsmall-right" uk-icon="icon: trash"></span> Delete</a></li>
+          <li><img class="uk-border-pill" src="images/avatar.jpg" width="200" height="200" alt="Border pill"></ul></li>
+      </ul>
+
+  </div>
 </div>
 
-            </div>
-    
-            <!-- Right Side: Two Stacked Cards -->
-            <div>
-                <div class="uk-child-width-1-1 uk-grid-small" uk-grid>
-                    <div>
-                        <div class="uk-card uk-card-default uk-card-body" style="height: 40vh; background-color: rgb(15, 124, 124); border-radius: 10px; margin-top: 1%;">
-                            <h3 class="uk-card-title">Top Card</h3>
-                            <p>First half-height card.</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="uk-card uk-card-default uk-card-body" style="height: 38vh; background-color: aqua; border-radius: 10px;">
-                            <h3 class="uk-card-title">Bottom Card</h3>
-                            <p>Second half-height card.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+  <!-- Sections -->
+<section id="home" class="uk-section">
+  <div style="margin: 2%; padding-top: 7%;">
+      <div class="uk-grid-collapse uk-child-width-1-2@m" uk-grid>
+
+          <!-- Left Side: One Large Card (Scroll Triggered) -->
+          <div uk-scrollspy="cls: uk-animation-slide-left uk-animation-fade; delay: 100; repeat: true" 
+               style="z-index: -999;">
+              <div class="uk-card uk-card-default uk-card-body"
+                   style="height: 80vh; width: 99%; border-radius: 10px; margin-top: 1%;
+                          background-image: url('https://static.vecteezy.com/system/resources/previews/027/183/857/large_2x/college-student-walking-to-university-campus-education-banner-concept-free-photo.jpg'); 
+                          background-size: cover; background-position: center; z-index: -999;">
+              </div>
+          </div>
+
+          <!-- Right Side: Two Stacked Cards (Scroll Triggered One by One) -->
+          <div class="uk-child-width-1-1 uk-grid-small" uk-grid style="z-index: -999;">
+
+              <!-- Top Card -->
+              <div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 400; repeat: true" 
+                   style="z-index: -999;">
+                  <div class="uk-card uk-card-default uk-card-body" 
+                       style="height: 40vh; background-color: rgb(15, 124, 124); border-radius: 10px; margin-top: 1%; z-index: -999;">
+                      <h3 class="uk-card-title">Top Card</h3>
+                      <p>First half-height card.</p>
+                  </div>
+              </div>
+
+              <!-- Bottom Card -->
+              <div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 700; repeat: true" 
+                   style="z-index: -999;">
+                  <div class="uk-card uk-card-default uk-card-body" 
+                       style="height: 38vh; background-color: aqua; border-radius: 10px; z-index: -999;">
+                      <h3 class="uk-card-title">Bottom Card</h3>
+                      <p>Second half-height card.</p>
+                  </div>
+              </div>
+
+          </div>
+
+      </div>
+  </div>
+</section>
+
+  <section>
     
   </section>
 
