@@ -17,6 +17,8 @@
         } else {
             const user = JSON.parse(userData);
             alert(user.name)
+            alert(user.photo)
+
         }
 
         function logout() {
@@ -25,16 +27,17 @@
         }
         document.addEventListener("DOMContentLoaded", function () {
     let links = document.querySelectorAll("nav li a");
+    let profileImg = document.getElementById("user-profile-img");
+            if (profileImg) {
+                profileImg.src = user.picture; // Google profile image URL
+            }
     links.forEach(link => {
         if (link.getAttribute("href") === window.location.hash) {
             link.parentElement.classList.add("uk-active");
         } else {
             link.parentElement.classList.remove("uk-active");
         }
-        let profileImg = document.getElementById("user-profile-img");
-            if (profileImg) {
-                profileImg.src = user.picture; // Google profile image URL
-            }
+        
     });
 });
 
@@ -78,7 +81,7 @@
       
           <!-- Profile Image with Proper Alignment -->
           <li class="uk-flex uk-flex-middle">
-              <img class="uk-border-pill" id="user-profile-img" src="https://cdn2.iconfinder.com/data/icons/business-bzzricon-filled-lines/512/01_Businessman-1024.png" width="40" height="40" alt="Profile">
+              <img class="uk-border-pill" id="user-profile-img" src=user.photo width="40" height="40" alt="Profile">
           </li>
       
           <li><a href="#register" style="margin-right: 20px;">Register</a></li>
