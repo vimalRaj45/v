@@ -54,9 +54,9 @@
 
     // Run animation when page loads
     document.addEventListener("DOMContentLoaded", function () {
-        animateCount("tech-events", 0, 35, 2000);   // 0 to 35 in 2 seconds
-        animateCount("non-tech-events", 0, 20, 2500); // 0 to 20 in 2.5 seconds
-        animateCount("workshops", 0, 15, 3000);     // 0 to 15 in 3 seconds
+        animateCount("tech-events", 0, 35, 4000);   // 0 to 35 in 2 seconds
+        animateCount("non-tech-events", 0, 20, 4000); // 0 to 20 in 2.5 seconds
+        animateCount("workshops", 0, 15, 4000);     // 0 to 15 in 3 seconds
     });
 </script>
 
@@ -71,7 +71,7 @@
 body {
     margin: 0;
     padding: 0;
-    height: 120vh;
+    height: 125vh;
     background: linear-gradient(135deg, #380036, #7a00a3, #ff00ff);
     background-size: 300% 300%;
     animation: shimmer 3s infinite alternate ease-in-out;
@@ -128,46 +128,23 @@ body::after {
     100% { transform: translateY(0); }
 }
 
-/* UK Card Styling */
-#card {
-    height: 80vh;
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba(56, 0, 54, 0.5), rgba(122, 0, 163, 0.5), rgba(255, 0, 255, 0.5));
-    background-size: 300% 300%;
-    animation: shimmer 3s infinite alternate ease-in-out;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    margin: 1%;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
-    position: relative;
-    overflow: hidden;
-}
 
-/* Glitter Overlay for the Card */
-#card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(rgba(255, 255, 255, 0.2), transparent);
-    background-size: 200% 200%;
-    animation: twinkle 2s infinite ease-in-out;
-    pointer-events: none;
-}
-
-/* Shimmer Effect */
-@keyframes shimmer {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 100% 100%; }
-}
 
 /* Twinkling Glitter Effect */
 @keyframes twinkle {
     0%, 100% { opacity: 0.2; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(1.05); }
 }
+
+#card {
+  background-color: rgba(255, 255, 255, 0.2); /* Light white with transparency */
+  backdrop-filter: blur(5px); /* Blurs only the background */
+  color: black; /* Text remains clear */
+  padding: 20px; /* Optional: for better spacing */
+  border-radius: 10px; /* Optional: for a smooth look */
+}
+
+
 
 
       </style>
@@ -271,21 +248,22 @@ body::after {
 
   <!-- Sections -->
 <section id="home" class="uk-section" >
-  <div style="margin: 2%; padding-top: 7%; color: transparent;">
+  <p style="margin-top:7%;">.</p>
+  <div>
       <div class="uk-grid-collapse uk-child-width-1-2@m" uk-grid>
 
           <!-- Left Side: One Large Card (Scroll Triggered) -->
           <div uk-scrollspy="cls: uk-animation-slide-left uk-animation-fade; delay: 100; repeat: true" 
-               style="z-index: -999;;">
+               style="z-index: -999;;" id="card">
               
                           <!-- Left Side: Event Branding & Logo -->
-          <div uk-scrollspy="cls: uk-animation-slide-left uk-animation-fade; delay: 100;" id="card">
+          <div uk-scrollspy="cls: uk-animation-slide-left uk-animation-fade; delay: 100;" id="card" >
             <div class="uk-card uk-card-default uk-card-body uk-flex uk-flex-middle"
-                style="height: 80vh; border-radius: 10px;background: #f5f3ff; margin: 1%;">
-                <div class="uk-text-center uk-width-1-1">
-                    <img src="https://www.sonatech.ac.in/blog/wp-content/uploads/2024/08/NIRF-ranking-2024.jpg" alt="Event Logo" style="max-width: 60%; height: auto; border-radius: 10px;">
+                style="height: 80vh; border-radius: 10px; margin: 1%;" id="card">
+                <div class="uk-text-center uk-width-1-1" id="card">
+                    <img src="https://www.sonatech.ac.in/blog/wp-content/uploads/2024/08/NIRF-ranking-2024.jpg" alt="Event Logo" style="width: 70%; height: auto; border-radius: 10px;">
                     <h1 class="uk-text-bold uk-text-uppercase" style="color: #4c1d95;">Spark 25</h1>
-                    <p class="uk-text-large uk-text-bold" style="color: #6b21a8;">Powered by Students</p>
+                    <p class="uk-text-large uk-text-bold" style="color: #6b21a8;">Powered by Sona Students</p>
                     <div class="uk-flex uk-flex-center uk-margin-medium-top">
                         <a href="#" class="uk-icon-button uk-margin-small-right" uk-icon="instagram"></a>
                         <a href="#" class="uk-icon-button uk-margin-small-right" uk-icon="mail"></a>
@@ -301,10 +279,10 @@ body::after {
           <div class="uk-child-width-1-1 uk-grid-small" uk-grid style="z-index: -999;">
 
            <!-- Event Stats Card -->
-<div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 400; repeat:true">
+<div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 400; repeat:true" style="margin-left: 2%;">
   <div class="uk-card uk-card-default uk-card-body uk-text-center"
        style="height: auto; background: #f5f3ff;
-              border-radius: 12px; margin-top: 1%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+              border-radius: 10px; margin-top: 1%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
               color: white; display: flex; flex-direction: column; justify-content: center;">
 
       <!-- Event Highlights Title -->
@@ -350,9 +328,9 @@ body::after {
               <div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 700; repeat: true" 
                    style="z-index: -999;">
                  <!-- Event Date & Theme -->
-                <div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 600;">
+                <div uk-scrollspy="cls: uk-animation-slide-right uk-animation-fade; delay: 600;" style="margin-left: 2%;">
                   <div class="uk-card uk-card-default uk-card-body"
-                      style="height: 38vh; background: #f5f3ff; border-radius: 20px; text-align: center;">
+                      style="height: 40vh; background: #f5f3ff; border-radius: 10px; text-align: center;">
                       <h2 style="color: #6d28d9;" class="uk-text-bold">March 14, 15, 16</h2>
                       <h3 class="uk-text-large uk-text-bold uk-text-uppercase" style="color: #4c1d95;">
                           Learning is a celebration
