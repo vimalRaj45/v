@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload PDF to Google Drive</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 600px;
+      margin-top: 50px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .form-control {
+      margin-bottom: 20px;
+    }
+    .preview-box {
+      margin-top: 20px;
+      text-align: center;
+      border: 1px dashed #ccc;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+    .loader {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .loader img {
+      width: 50px;
+    }
+    .success-box {
+      margin-top: 20px;
+      display: none;
+      background-color: #d4edda;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3 class="text-center mb-4">📄 Upload PDF to Google Drive</h3>
+    
+    <!-- File Upload Form -->
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" id="fileInput" class="form-control" accept=".pdf" required />
+      <input type="text" id="description" class="form-control" placeholder="Enter file description (optional)" />
+      <button type="submit" class="btn btn-primary w-100">📤 Upload File</button>
+    </form>
+
+    <!-- Preview Box -->
+    <div class="preview-box" id="previewBox">
+      <p><strong>File Preview:</strong></p>
+      <p id="fileName"></p>
+    </div>
+
+    <!-- Loader Animation -->
+    <div class="loader" id="loader">
+      <img src="https://i.gifer.com/4V0b.gif" alt="Uploading..." />
+      <p>Uploading, please wait...</p>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-box" id="successBox">
+      <strong>✅ File Uploaded Successfully!</strong>
+      <p id="fileLink"></p>
+    </div>
+  </div>
+
+  <script>
+    // Google Apps Script URL - Replace with your deployment URL
+    const scriptUrl = 'https://script.google.com/macros/s/your_deployment_url/exec';
+
+    document.getElementById('fileInput').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        document.getElementById('fileName').textContent = file.name;
+        document.getElementById('previewBox').style.display = 'block';
+      } else {
+        document.getElementById('previewBox').style.display = 'none';
+      }
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('fileInput').files[0];
+      const description = document.getElementById('description').value || 'No description provided';
+
+      if (!fileInput) {
+        alert('Please select a file first!');
+        return;
+      }
+
+      // Show loader
+      document.getElementById('loader').style.display = 'block';
+      document.getElementById('successBox').style.display = 'none';
+
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        const fileData = e.target.result.split(',')[1];
+
+        // Send data to Google Apps Script
+        const formData = new URLSearchParams();
+        formData.append('fileData', fileData);
+        formData.append('fileName', fileInput.name);
+        formData.append('mimeType', fileInput.type);
+        formData.append('description', description);
+
+        try {
+          const response = await fetch(scriptUrl, {
+            method: 'POST',
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.status === 'success') {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('successBox').style.display = 'block';
+            document.getElementById(
+              'fileLink'
+            ).innerHTML = `📥 <a href="${result.fileUrl}" target="_blank">${result.fileName}</a>`;
+          } else {
+            alert('❌ Upload failed: ' + result.message);
+            document.getElementById('loader').style.display = 'none';
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('⚠️ Error uploading file.');
+          document.getElementById('loader').style.display = 'none';
+        }
+      };
+
+      reader.readAsDataURL(fileInput);
+    });
+  </script>
+</body>
+</html>
