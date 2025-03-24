@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .receipt-box {
+            width: 350px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 1px dashed #ccc;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 10px;
+            border-top: 1px dashed #ccc;
+            padding-top: 10px;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form id="receiptForm" action="https://script.google.com/macros/s/AKfycbxzuJwsYoYD7GcoK_CQFB9D5s2WBvu_e-Dssu1imb-c6Tbd7r-39nxIBZyZpp0SwCQz/exec" method="POST">
+            <div class="receipt-box" id="receiptContent">
+                <div class="receipt-header">
+                    <h2>VSGRPS Grocery Store</h2>
+                    <p>Date: <span id="date"></span></p>
+                </div>
+
+                <div>
+                    <div><span>Apple (2kg)</span><span>₹200.00</span></div>
+                    <div><span>Banana (1kg)</span><span>₹50.00</span></div>
+                    <div><span>Milk (1L)</span><span>₹40.00</span></div>
+                </div>
+
+                <div class="footer">
+                    <h4>Total: ₹<span id="totalAmount">290.00</span></h4>
+                    <p>Thank you for shopping with us!</p>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <label for="email">Enter Your Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="btn btn-primary mt-3">Send Receipt</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Set Current Date
+        document.getElementById("date").innerText = new Date().toLocaleDateString();
+
+        // Add receipt data to hidden input before sending
+        document.getElementById("receiptForm").onsubmit = function () {
+            var receiptHTML = document.getElementById("receiptContent").innerHTML;
+            var hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "receiptHTML";
+            hiddenInput.value = receiptHTML;
+            this.appendChild(hiddenInput);
+        };
+    </script>
+
+</body>
+</html>
