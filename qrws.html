@@ -63,6 +63,42 @@
             font-weight: bold;
             background-color: #f9f9f9;
         }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            border-radius: 5px;
+        }
+        .modal-title {
+            margin-top: 0;
+        }
+        .quantity-input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .qty-btn {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +123,7 @@
                 <th>Price</th>
                 <th>Qty</th>
                 <th>Total</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody id="billing-items">
@@ -96,12 +133,26 @@
             <tr class="total-row">
                 <td colspan="4">Grand Total</td>
                 <td id="grand-total">0.00</td>
+                <td></td>
             </tr>
         </tfoot>
     </table>
 
     <div class="controls">
         <button id="clear-btn">Clear All Items</button>
+    </div>
+
+    <!-- Quantity Input Modal -->
+    <div id="quantity-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Enter Quantity</h3>
+            <p>Product: <span id="modal-product-name"></span></p>
+            <input type="number" id="quantity-input" class="quantity-input" min="1" value="1">
+            <div class="modal-buttons">
+                <button id="cancel-qty-btn" class="stop">Cancel</button>
+                <button id="confirm-qty-btn">Confirm</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/html5-qrcode"></script>
@@ -112,6 +163,7 @@
         
         // Billing data
         let items = [];
+        let currentScannedItem = null;
         const productDatabase = {
             '8901725013011': { name: 'Product A', price: 10.99 },
             '8901512540805': { name: 'Product B', price: 15.50 },
@@ -129,6 +181,8 @@
             document.getElementById('start-btn').addEventListener('click', startScanner);
             document.getElementById('stop-btn').addEventListener('click', stopScanner);
             document.getElementById('clear-btn').addEventListener('click', clearAllItems);
+            document.getElementById('confirm-qty-btn').addEventListener('click', confirmQuantity);
+            document.getElementById('cancel-qty-btn').addEventListener('click', closeModal);
             
             // Initialize audio on first user interaction
             document.body.addEventListener('click', initAudio, { once: true });
@@ -206,7 +260,21 @@
         function onScanSuccess(decodedText) {
             document.getElementById('last-scanned').textContent = decodedText;
             playBeep();
-            addItemToBilling(decodedText);
+            
+            const product = productDatabase[decodedText];
+            if (!product) {
+                alert('Product not found in database!');
+                return;
+            }
+            
+            currentScannedItem = {
+                code: decodedText,
+                name: product.name,
+                price: product.price
+            };
+            
+            // Show quantity input modal
+            showQuantityModal(product.name);
         }
         
         // Handle scan error
@@ -214,28 +282,47 @@
             console.log('Scan error:', error);
         }
         
-        // Add item to billing table
-        function addItemToBilling(barcode) {
-            const product = productDatabase[barcode];
-            if (!product) {
-                alert('Product not found in database!');
+        // Show quantity input modal
+        function showQuantityModal(productName) {
+            document.getElementById('modal-product-name').textContent = productName;
+            document.getElementById('quantity-input').value = '1';
+            document.getElementById('quantity-modal').style.display = 'block';
+            document.getElementById('quantity-input').focus();
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('quantity-modal').style.display = 'none';
+            currentScannedItem = null;
+        }
+        
+        // Confirm quantity and add item
+        function confirmQuantity() {
+            const quantity = parseInt(document.getElementById('quantity-input').value);
+            
+            if (isNaN(quantity) || quantity < 1) {
+                alert('Please enter a valid quantity (minimum 1)');
                 return;
             }
             
             // Check if item already exists
-            const existingItem = items.find(item => item.code === barcode);
-            if (existingItem) {
-                existingItem.quantity++;
+            const existingItemIndex = items.findIndex(item => item.code === currentScannedItem.code);
+            
+            if (existingItemIndex !== -1) {
+                // Update existing item quantity
+                items[existingItemIndex].quantity += quantity;
             } else {
+                // Add new item
                 items.push({
-                    code: barcode,
-                    name: product.name,
-                    price: product.price,
-                    quantity: 1
+                    code: currentScannedItem.code,
+                    name: currentScannedItem.name,
+                    price: currentScannedItem.price,
+                    quantity: quantity
                 });
             }
             
             updateBillingTable();
+            closeModal();
         }
         
         // Update billing table display
@@ -245,7 +332,7 @@
             
             let grandTotal = 0;
             
-            items.forEach(item => {
+            items.forEach((item, index) => {
                 const row = document.createElement('tr');
                 const itemTotal = item.price * item.quantity;
                 grandTotal += itemTotal;
@@ -254,8 +341,13 @@
                     <td>${item.code}</td>
                     <td>${item.name}</td>
                     <td>$${item.price.toFixed(2)}</td>
-                    <td>${item.quantity}</td>
+                    <td>
+                        <button class="qty-btn" onclick="changeQuantity(${index}, -1)">-</button>
+                        ${item.quantity}
+                        <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+                    </td>
                     <td>$${itemTotal.toFixed(2)}</td>
+                    <td><button class="stop qty-btn" onclick="removeItem(${index})">Remove</button></td>
                 `;
                 
                 tbody.appendChild(row);
@@ -264,12 +356,39 @@
             document.getElementById('grand-total').textContent = '$' + grandTotal.toFixed(2);
         }
         
+        // Change item quantity
+        function changeQuantity(index, change) {
+            const newQuantity = items[index].quantity + change;
+            
+            if (newQuantity < 1) {
+                if (confirm('Remove this item?')) {
+                    items.splice(index, 1);
+                }
+            } else {
+                items[index].quantity = newQuantity;
+            }
+            
+            updateBillingTable();
+        }
+        
+        // Remove item
+        function removeItem(index) {
+            items.splice(index, 1);
+            updateBillingTable();
+        }
+        
         // Clear all items
         function clearAllItems() {
-            items = [];
-            updateBillingTable();
-            document.getElementById('last-scanned').textContent = 'None';
+            if (items.length === 0 || confirm('Are you sure you want to clear all items?')) {
+                items = [];
+                updateBillingTable();
+                document.getElementById('last-scanned').textContent = 'None';
+            }
         }
+        
+        // Make functions available globally for inline event handlers
+        window.changeQuantity = changeQuantity;
+        window.removeItem = removeItem;
     </script>
 </body>
 </html>
