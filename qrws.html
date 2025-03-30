@@ -24,10 +24,14 @@
             padding: 5px;
             border-bottom: 1px solid #ccc;
         }
+
+        button {
+            margin-top: 10px;
+        }
     </style>
 </head>
 
-<body onload="requestPermissions()"> <!-- Automatically request permissions on page load -->
+<body>
 
     <h3>Generate Barcode</h3>
     <input type="text" id="productId" placeholder="Enter Product ID">
@@ -56,8 +60,9 @@
     <script>
         let html5QrCode;
         let isCameraRunning = false;
+        let audioContext;
 
-        // ✅ Automatically Request Permissions (Camera, Microphone, Audio) on Page Load
+        // ✅ Request Permissions (Camera, Microphone, and Audio) on Button Click
         async function requestPermissions() {
             try {
                 console.log("Requesting camera, microphone, and audio permissions...");
@@ -70,18 +75,14 @@
 
                 console.log("✅ Camera and microphone permissions granted.");
 
-                // ✅ Audio Context to ensure audio permissions are enabled
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                audioContext.resume().then(() => {
-                    console.log("✅ Audio context is ready for playback.");
-                }).catch((err) => {
-                    console.error("❌ Audio context error:", err);
-                    alert("Please allow audio playback permissions in your browser.");
-                });
-
+                // ✅ Initialize Audio Context (Ensure it's user-initiated)
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                await audioContext.resume(); // Ensure audio context is resumed
+                console.log("✅ Audio context is ready for playback.");
+                alert("✅ Permissions granted. You're good to go!");
             } catch (error) {
                 console.error("❌ Permission error:", error);
-                alert("Please allow camera, microphone, and audio playback permissions.");
+                alert("❌ Please allow camera, microphone, and audio permissions to continue.");
             }
         }
 
@@ -151,17 +152,22 @@
             billingList.appendChild(item);
         }
 
-        // ✅ Play Success Sound
+        // ✅ Play Success Sound (Beep Sound)
         function playSuccessSound() {
             const audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
             audio.play().then(() => {
                 console.log("🔔 Beep sound played successfully.");
             }).catch((e) => {
                 console.error("❌ Sound failed to play. Check browser permissions:", e);
-                alert("Audio playback failed. Check browser settings.");
+                alert("Audio playback failed. Ensure permissions and try again.");
             });
         }
     </script>
+
+    <hr>
+
+    <!-- Request Permissions Button -->
+    <button onclick="requestPermissions()">🔐 Grant Permissions</button>
 
 </body>
 
