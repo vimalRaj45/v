@@ -14,6 +14,11 @@
         #barcode {
             margin-top: 10px;
         }
+
+        #soundStatus {
+            color: green;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -21,6 +26,7 @@
 
     <!-- ✅ Enable Sound Button -->
     <button onclick="enableSound()">Enable Sound</button>
+    <p id="soundStatus">Sound not enabled yet.</p>
 
     <h3>Generate Barcode</h3>
     <input type="text" id="productId" placeholder="Enter Product ID or Name">
@@ -57,23 +63,38 @@
         let html5QrCode;
         let isCameraRunning = false;
         const bellSound = document.getElementById('bellSound');
+        const soundStatus = document.getElementById('soundStatus');
 
         // ✅ Enable sound by user interaction
         function enableSound() {
+            bellSound.muted = false; // Unmute the sound
             bellSound.play().then(() => {
                 bellSound.pause();
                 bellSound.currentTime = 0;
-                console.log("Sound enabled!");
+                soundStatus.innerText = "✅ Sound is enabled! Ready for scanning.";
+                console.log("Sound enabled successfully.");
             }).catch((err) => {
+                soundStatus.innerText = "❌ Sound failed to play. Check browser permissions!";
                 console.error("Error enabling sound:", err);
             });
         }
 
+        // ✅ Check if sound is playing properly
+        function checkSound() {
+            if (!bellSound.muted && bellSound.readyState === 4) {
+                console.log("✅ Sound is ready and will play on scan.");
+            } else {
+                console.error("❌ Sound is not ready. Check permissions or browser settings.");
+            }
+        }
+
         // ✅ Play sound after successful scan
         function playBellSound() {
-            bellSound.muted = false; // Unmute
-            bellSound.play().catch((err) => {
-                console.error("Sound play failed:", err);
+            bellSound.muted = false; // Unmute the sound
+            bellSound.play().then(() => {
+                console.log("🔔 Bell sound played successfully!");
+            }).catch((err) => {
+                console.error("❌ Error playing sound:", err);
             });
         }
 
