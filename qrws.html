@@ -4,20 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Billing System</title>
+    <title>Billing System - Barcode Scanner</title>
     <style>
         #reader {
             width: 300px;
             height: 300px;
+            margin-top: 10px;
         }
 
         #barcode {
             margin-top: 10px;
         }
 
-        #soundStatus {
-            color: green;
-            font-weight: bold;
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
         }
     </style>
 </head>
@@ -26,15 +27,16 @@
 
     <!-- ✅ Enable Sound Button -->
     <button onclick="enableSound()">Enable Sound</button>
-    <p id="soundStatus">Sound not enabled yet.</p>
-
-    <h3>Generate Barcode</h3>
-    <input type="text" id="productId" placeholder="Enter Product ID or Name">
-    <button onclick="generateBarcode()">Generate Barcode</button>
-    <svg id="barcode"></svg>
-
     <hr>
 
+    <!-- ✅ Generate Barcode -->
+    <h3>Generate Barcode</h3>
+    <input type="text" id="productId" placeholder="Enter Product ID">
+    <button onclick="generateBarcode()">Generate Barcode</button>
+    <svg id="barcode"></svg>
+    <hr>
+
+    <!-- ✅ Scan Barcode from Camera -->
     <h3>Scan Barcode from Camera</h3>
     <div id="reader"></div>
     <p>Scanned Result: <span id="result">No result</span></p>
@@ -43,58 +45,60 @@
 
     <hr>
 
+    <!-- ✅ Scan Barcode from Gallery -->
     <h3>Scan Barcode from Gallery</h3>
     <button onclick="triggerGalleryScan()">Choose an image to scan</button>
     <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="scanFromGallery()">
 
-    <!-- ✅ Load JsBarcode for barcode generation -->
+    <!-- ✅ Test Sound Button -->
+    <button onclick="testAudio()">Test Sound</button>
+
+    <!-- ✅ Audio Element -->
+    <audio id="bellSound" src="https://www.soundjay.com/button/beep-05.wav" preload="auto"></audio>
+
+    <!-- ✅ JsBarcode for barcode generation -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 
-    <!-- ✅ Load Html5Qrcode for camera scanning -->
+    <!-- ✅ Html5Qrcode for camera scanning -->
     <script src="https://unpkg.com/html5-qrcode"></script>
 
-    <!-- ✅ Load Barcode Detector API Polyfill (for barcode scanning from image) -->
+    <!-- ✅ ZXing Library for barcode scanning from images -->
     <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
-
-    <!-- ✅ Preload Bell Sound -->
-    <audio id="bellSound" src="https://www.soundjay.com/button/beep-05.wav" preload="auto" muted></audio>
 
     <script>
         let html5QrCode;
         let isCameraRunning = false;
-        const bellSound = document.getElementById('bellSound');
-        const soundStatus = document.getElementById('soundStatus');
 
-        // ✅ Enable sound by user interaction
+        // ✅ Enable Sound
         function enableSound() {
-            bellSound.muted = false; // Unmute the sound
+            const bellSound = document.getElementById('bellSound');
+            bellSound.muted = false; // Unmute
             bellSound.play().then(() => {
-                bellSound.pause();
-                bellSound.currentTime = 0;
-                soundStatus.innerText = "✅ Sound is enabled! Ready for scanning.";
-                console.log("Sound enabled successfully.");
+                alert('✅ Sound enabled successfully!');
             }).catch((err) => {
-                soundStatus.innerText = "❌ Sound failed to play. Check browser permissions!";
-                console.error("Error enabling sound:", err);
+                console.error("❌ Error enabling sound:", err);
+                alert('❌ Failed to play sound. Check browser settings.');
             });
         }
 
-        // ✅ Check if sound is playing properly
-        function checkSound() {
-            if (!bellSound.muted && bellSound.readyState === 4) {
-                console.log("✅ Sound is ready and will play on scan.");
-            } else {
-                console.error("❌ Sound is not ready. Check permissions or browser settings.");
-            }
+        // ✅ Test Sound
+        function testAudio() {
+            playBellSound();
         }
 
-        // ✅ Play sound after successful scan
+        // ✅ Play Bell Sound
         function playBellSound() {
-            bellSound.muted = false; // Unmute the sound
+            const bellSound = document.getElementById('bellSound');
+            bellSound.muted = false; // Unmute before playing
             bellSound.play().then(() => {
-                console.log("🔔 Bell sound played successfully!");
+                console.log("✅ Sound played successfully.");
             }).catch((err) => {
-                console.error("❌ Error playing sound:", err);
+                console.error("❌ Sound failed to play. Retrying...", err);
+                setTimeout(() => {
+                    bellSound.play().catch((err) => {
+                        console.error("❌ Still failed after retry:", err);
+                    });
+                }, 100);
             });
         }
 
@@ -111,11 +115,11 @@
                     height: 50
                 });
             } else {
-                alert("Enter valid Product ID or Name!");
+                alert("Enter a valid Product ID!");
             }
         }
 
-        // ✅ Start Camera Scan for Barcode
+        // ✅ Start Camera Scan
         function startCameraScan() {
             if (isCameraRunning) {
                 alert("Camera is already running.");
@@ -125,15 +129,12 @@
             html5QrCode = new Html5Qrcode("reader");
 
             html5QrCode.start(
-                { facingMode: "environment" }, // Use rear camera
-                {
-                    fps: 15, // Faster frame rate
-                    qrbox: { width: 250, height: 250 }
-                },
+                { facingMode: "environment" }, // Rear camera
+                { fps: 15, qrbox: { width: 250, height: 250 } },
                 (decodedText) => {
                     document.getElementById("result").innerText = decodedText;
-                    playBellSound(); // 🔔 Play sound after successful scan
-                    stopCameraScan(); // Stop scanning after success
+                    playBellSound(); // Play sound after successful scan
+                    stopCameraScan(); // Stop scan after successful result
                 },
                 (error) => {
                     console.warn(`Scan error: ${error}`);
@@ -141,7 +142,7 @@
             ).then(() => {
                 isCameraRunning = true;
             }).catch((err) => {
-                console.error("Failed to start scanner: ", err);
+                console.error("❌ Failed to start scanner: ", err);
             });
         }
 
@@ -149,20 +150,20 @@
         function stopCameraScan() {
             if (html5QrCode && isCameraRunning) {
                 html5QrCode.stop().then(() => {
-                    console.log("Scanner stopped.");
+                    console.log("✅ Scanner stopped.");
                     isCameraRunning = false;
                 }).catch((err) => {
-                    console.error("Error stopping scanner: ", err);
+                    console.error("❌ Error stopping scanner: ", err);
                 });
             }
         }
 
-        // ✅ Trigger the file input when "Choose an image to scan" button is clicked
+        // ✅ Trigger File Input for Gallery Scan
         function triggerGalleryScan() {
-            document.getElementById('fileInput').click(); // Open file dialog
+            document.getElementById('fileInput').click();
         }
 
-        // ✅ Scan Barcode from Gallery (Image Upload)
+        // ✅ Scan Barcode from Gallery
         async function scanFromGallery() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
@@ -180,9 +181,9 @@
                     try {
                         const result = await barcodeDetector.decodeFromImage(img);
                         document.getElementById('result').innerText = result.text;
-                        playBellSound(); // 🔔 Play sound after successful scan
+                        playBellSound(); // Play sound after successful scan
                     } catch (err) {
-                        console.error('Barcode not found:', err);
+                        console.error('❌ Barcode not found:', err);
                         alert('No barcode found in the image.');
                     }
                 };
