@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Billing System</title>
+    <style>
+        #reader {
+            width: 300px;
+            height: 300px;
+        }
+
+        #barcode {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ✅ Enable Sound Button -->
+    <button onclick="enableSound()">Enable Sound</button>
+
+    <h3>Generate Barcode</h3>
+    <input type="text" id="productId" placeholder="Enter Product ID or Name">
+    <button onclick="generateBarcode()">Generate Barcode</button>
+    <svg id="barcode"></svg>
+
+    <hr>
+
+    <h3>Scan Barcode from Camera</h3>
+    <div id="reader"></div>
+    <p>Scanned Result: <span id="result">No result</span></p>
+    <button onclick="startCameraScan()">Start Camera Scan</button>
+    <button onclick="stopCameraScan()">Stop Camera Scan</button>
+
+    <hr>
+
+    <h3>Scan Barcode from Gallery</h3>
+    <button onclick="triggerGalleryScan()">Choose an image to scan</button>
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="scanFromGallery()">
+
+    <!-- ✅ Load JsBarcode for barcode generation -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+
+    <!-- ✅ Load Html5Qrcode for camera scanning -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <!-- ✅ Load Barcode Detector API Polyfill (for barcode scanning from image) -->
+    <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
+
+    <!-- ✅ Preload Bell Sound -->
+    <audio id="bellSound" src="https://www.soundjay.com/button/beep-05.wav" preload="auto" muted></audio>
+
+    <script>
+        let html5QrCode;
+        let isCameraRunning = false;
+        const bellSound = document.getElementById('bellSound');
+
+        // ✅ Enable sound by user interaction
+        function enableSound() {
+            bellSound.play().then(() => {
+                bellSound.pause();
+                bellSound.currentTime = 0;
+                console.log("Sound enabled!");
+            }).catch((err) => {
+                console.error("Error enabling sound:", err);
+            });
+        }
+
+        // ✅ Play sound after successful scan
+        function playBellSound() {
+            bellSound.muted = false; // Unmute
+            bellSound.play().catch((err) => {
+                console.error("Sound play failed:", err);
+            });
+        }
+
+        // ✅ Generate Barcode
+        function generateBarcode() {
+            const productId = document.getElementById("productId").value;
+            if (productId.trim() !== "") {
+                JsBarcode("#barcode", productId, {
+                    format: "CODE128",
+                    displayValue: true,
+                    fontSize: 16,
+                    lineColor: "#000",
+                    width: 2,
+                    height: 50
+                });
+            } else {
+                alert("Enter valid Product ID or Name!");
+            }
+        }
+
+        // ✅ Start Camera Scan for Barcode
+        function startCameraScan() {
+            if (isCameraRunning) {
+                alert("Camera is already running.");
+                return;
+            }
+
+            html5QrCode = new Html5Qrcode("reader");
+
+            html5QrCode.start(
+                { facingMode: "environment" }, // Use rear camera
+                {
+                    fps: 15, // Faster frame rate
+                    qrbox: { width: 250, height: 250 }
+                },
+                (decodedText) => {
+                    document.getElementById("result").innerText = decodedText;
+                    playBellSound(); // 🔔 Play sound after successful scan
+                    stopCameraScan(); // Stop scanning after success
+                },
+                (error) => {
+                    console.warn(`Scan error: ${error}`);
+                }
+            ).then(() => {
+                isCameraRunning = true;
+            }).catch((err) => {
+                console.error("Failed to start scanner: ", err);
+            });
+        }
+
+        // ✅ Stop Camera Scan
+        function stopCameraScan() {
+            if (html5QrCode && isCameraRunning) {
+                html5QrCode.stop().then(() => {
+                    console.log("Scanner stopped.");
+                    isCameraRunning = false;
+                }).catch((err) => {
+                    console.error("Error stopping scanner: ", err);
+                });
+            }
+        }
+
+        // ✅ Trigger the file input when "Choose an image to scan" button is clicked
+        function triggerGalleryScan() {
+            document.getElementById('fileInput').click(); // Open file dialog
+        }
+
+        // ✅ Scan Barcode from Gallery (Image Upload)
+        async function scanFromGallery() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select an image with a barcode!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async function (event) {
+                const img = new Image();
+                img.onload = async function () {
+                    const barcodeDetector = new ZXing.BrowserBarcodeReader();
+                    try {
+                        const result = await barcodeDetector.decodeFromImage(img);
+                        document.getElementById('result').innerText = result.text;
+                        playBellSound(); // 🔔 Play sound after successful scan
+                    } catch (err) {
+                        console.error('Barcode not found:', err);
+                        alert('No barcode found in the image.');
+                    }
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+
+</body>
+
+</html>
