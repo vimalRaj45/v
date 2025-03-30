@@ -53,9 +53,6 @@
     <!-- Load Html5Qrcode for barcode scanning -->
     <script src="https://unpkg.com/html5-qrcode"></script>
 
-    <!-- Load ZXing Library for barcode from image -->
-    <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
-
     <script>
         let html5QrCode;
         let isCameraRunning = false;
@@ -63,23 +60,28 @@
         // ✅ Automatically Request Permissions (Camera, Microphone, Audio) on Page Load
         async function requestPermissions() {
             try {
-                console.log("Requesting permissions...");
-                // Request camera and microphone
+                console.log("Requesting camera, microphone, and audio permissions...");
+
+                // Request Camera and Microphone
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: true,
                     audio: true
                 });
 
-                // Check audio context to ensure audio permissions are granted
+                console.log("✅ Camera and microphone permissions granted.");
+
+                // ✅ Audio Context to ensure audio permissions are enabled
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const dummyOscillator = audioContext.createOscillator();
-                dummyOscillator.connect(audioContext.destination);
-                dummyOscillator.start();
-                dummyOscillator.stop();
-                console.log("✅ All permissions granted successfully!");
+                audioContext.resume().then(() => {
+                    console.log("✅ Audio context is ready for playback.");
+                }).catch((err) => {
+                    console.error("❌ Audio context error:", err);
+                    alert("Please allow audio playback permissions in your browser.");
+                });
+
             } catch (error) {
-                console.error("❌ Permissions denied or error occurred:", error);
-                alert("Please allow camera, microphone, and audio playback permissions to continue.");
+                console.error("❌ Permission error:", error);
+                alert("Please allow camera, microphone, and audio playback permissions.");
             }
         }
 
@@ -124,6 +126,7 @@
                 isCameraRunning = true;
             }).catch((err) => {
                 console.error("Failed to start scanner: ", err);
+                alert("Error starting camera. Check permissions and try again.");
             });
         }
 
@@ -155,6 +158,7 @@
                 console.log("🔔 Beep sound played successfully.");
             }).catch((e) => {
                 console.error("❌ Sound failed to play. Check browser permissions:", e);
+                alert("Audio playback failed. Check browser settings.");
             });
         }
     </script>
