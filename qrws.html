@@ -1,267 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Billing System with Sound and Camera Fix</title>
+    <title>Barcode Billing System</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #scanner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
         #reader {
             width: 300px;
             height: 300px;
-            margin-top: 10px;
+            border: 2px solid #ddd;
+            margin-bottom: 10px;
         }
-
-        #barcode {
-            margin-top: 10px;
-        }
-
-        #billingList {
+        #billing-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
         }
-
-        .item {
-            padding: 5px;
-            border-bottom: 1px solid #ccc;
+        #billing-table th, #billing-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
-
+        #billing-table th {
+            background-color: #f2f2f2;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
         button {
-            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
-        
-        #cameraSelect {
-            margin-top: 10px;
-            padding: 5px;
+        button:hover {
+            background-color: #45a049;
+        }
+        button.stop {
+            background-color: #f44336;
+        }
+        button.stop:hover {
+            background-color: #d32f2f;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #f9f9f9;
         }
     </style>
 </head>
-
 <body>
+    <h1>Barcode Billing System</h1>
+    
+    <div id="scanner-container">
+        <h2>Barcode Scanner</h2>
+        <div id="reader"></div>
+        <div class="controls">
+            <button id="start-btn">Start Scanner</button>
+            <button id="stop-btn" class="stop">Stop Scanner</button>
+        </div>
+        <p>Last Scanned: <span id="last-scanned">None</span></p>
+    </div>
 
-    <h3>Generate Barcode</h3>
-    <input type="text" id="productId" placeholder="Enter Product ID">
-    <button onclick="generateBarcode()">Generate Barcode</button>
-    <svg id="barcode"></svg>
+    <h2>Billing Items</h2>
+    <table id="billing-table">
+        <thead>
+            <tr>
+                <th>Item Code</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="billing-items">
+            <!-- Items will be added here -->
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="4">Grand Total</td>
+                <td id="grand-total">0.00</td>
+            </tr>
+        </tfoot>
+    </table>
 
-    <hr>
+    <div class="controls">
+        <button id="clear-btn">Clear All Items</button>
+    </div>
 
-    <h3>Scan Barcode from Camera</h3>
-    <select id="cameraSelect"></select>
-    <div id="reader"></div>
-    <p>Scanned Result: <span id="result">No result</span></p>
-    <button onclick="startCameraScan()">Start Camera Scan</button>
-    <button onclick="stopCameraScan()">Stop Camera Scan</button>
-
-    <hr>
-
-    <h3>Billing List</h3>
-    <div id="billingList"></div>
-
-    <!-- Load JsBarcode for barcode generation -->
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-
-    <!-- Load Html5Qrcode for barcode scanning -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-
     <script>
-        let html5QrCode;
-        let isCameraRunning = false;
+        // Audio setup
         let audioContext;
-        let currentCameraId = null;
-
-        // ✅ Request Camera, Microphone, and Audio Permissions
-        async function requestPermissions() {
+        let isAudioInitialized = false;
+        
+        // Billing data
+        let items = [];
+        const productDatabase = {
+            '8901725013011': { name: 'Product A', price: 10.99 },
+            '8901512540805': { name: 'Product B', price: 15.50 },
+            '3948764022913': { name: 'Product C', price: 7.25 },
+            '8908002720037': { name: 'Product D', price: 22.00 }
+        };
+        
+        // Scanner instance
+        let html5QrCode;
+        let isScanning = false;
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup buttons
+            document.getElementById('start-btn').addEventListener('click', startScanner);
+            document.getElementById('stop-btn').addEventListener('click', stopScanner);
+            document.getElementById('clear-btn').addEventListener('click', clearAllItems);
+            
+            // Initialize audio on first user interaction
+            document.body.addEventListener('click', initAudio, { once: true });
+        });
+        
+        // Initialize audio context
+        function initAudio() {
             try {
-                console.log("Requesting camera, microphone, and audio permissions...");
-
-                // Request Camera and Microphone
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: true
-                });
-
-                // Stop all tracks to release camera
-                stream.getTracks().forEach(track => track.stop());
-                
-                console.log("✅ Camera and microphone permissions granted.");
-                
-                // Populate camera selection dropdown
-                await populateCameraSelect();
-                
-                // ✅ Initialize Audio Context (Ensure it's user-initiated)
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                await audioContext.resume(); // Ensure audio context is resumed
-                console.log("✅ Audio context is ready for playback.");
-                alert("✅ Permissions granted. You can now use the system.");
-            } catch (error) {
-                console.error("❌ Permission error:", error);
-                alert("❌ Please allow camera, microphone, and audio permissions to continue.");
+                isAudioInitialized = true;
+                console.log('Audio initialized');
+            } catch (e) {
+                console.error('Audio initialization error:', e);
             }
-        }
-
-        // Populate camera selection dropdown
-        async function populateCameraSelect() {
-            try {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                const cameraSelect = document.getElementById('cameraSelect');
-                
-                cameraSelect.innerHTML = '';
-                
-                if (videoDevices.length === 0) {
-                    cameraSelect.innerHTML = '<option>No cameras found</option>';
-                    return;
-                }
-                
-                videoDevices.forEach(device => {
-                    const option = document.createElement('option');
-                    option.value = device.deviceId;
-                    option.text = device.label || `Camera ${cameraSelect.length + 1}`;
-                    cameraSelect.appendChild(option);
-                });
-                
-                // Set default camera (first one)
-                if (videoDevices.length > 0) {
-                    currentCameraId = videoDevices[0].deviceId;
-                }
-                
-            } catch (error) {
-                console.error("Error enumerating devices:", error);
-            }
-        }
-
-        // ✅ Generate Barcode
-        function generateBarcode() {
-            const productId = document.getElementById("productId").value;
-            if (productId.trim() !== "") {
-                JsBarcode("#barcode", productId, {
-                    format: "CODE128",
-                    displayValue: true,
-                    lineColor: "#000",
-                    width: 2,
-                    height: 50
-                });
-            } else {
-                alert("Enter a valid Product ID!");
-            }
-        }
-
-        // ✅ Start Camera Scan for Barcode
-        async function startCameraScan() {
-            try {
-                if (isCameraRunning) {
-                    alert("Camera is already running.");
-                    return;
-                }
-
-                // Get selected camera
-                const cameraSelect = document.getElementById('cameraSelect');
-                const selectedCameraId = cameraSelect.value || currentCameraId;
-                
-                if (!selectedCameraId) {
-                    alert("No camera selected. Please check camera permissions.");
-                    return;
-                }
-
-                html5QrCode = new Html5Qrcode("reader");
-
-                const config = {
-                    fps: 15,
-                    qrbox: { width: 250, height: 250 }
-                };
-
-                // Start with specific camera
-                await html5QrCode.start(
-                    selectedCameraId,
-                    config,
-                    (decodedText) => {
-                        document.getElementById("result").innerText = decodedText;
-                        addToBilling(decodedText);
-                        playSuccessSound(); // Play sound on successful scan
-                        stopCameraScan(); // Stop scanning after success
-                    },
-                    (error) => {
-                        console.warn(`Scan error: ${error}`);
-                    }
-                );
-                
-                isCameraRunning = true;
-                console.log("✅ Camera scan started successfully.");
-                
-            } catch (err) {
-                console.error("❌ Error accessing camera:", err);
-                
-                // Try fallback to environment mode if specific camera fails
-                if (err.toString().includes('Could not start video source')) {
-                    try {
-                        await html5QrCode.start(
-                            { facingMode: "environment" },
-                            { fps: 15, qrbox: { width: 250, height: 250 } },
-                            (decodedText) => {
-                                document.getElementById("result").innerText = decodedText;
-                                addToBilling(decodedText);
-                                playSuccessSound();
-                                stopCameraScan();
-                            },
-                            (error) => {
-                                console.warn(`Scan error: ${error}`);
-                            }
-                        );
-                        isCameraRunning = true;
-                        console.log("✅ Camera scan started with environment mode.");
-                    } catch (fallbackErr) {
-                        console.error("❌ Fallback camera access failed:", fallbackErr);
-                        alert("❌ Unable to access the camera. Check permissions and try again.");
-                    }
-                } else {
-                    alert("❌ Error starting camera. Check permissions and try again.");
-                }
-            }
-        }
-
-        // ✅ Stop Camera Scan
-        function stopCameraScan() {
-            if (html5QrCode && isCameraRunning) {
-                html5QrCode.stop().then(() => {
-                    console.log("Scanner stopped.");
-                    isCameraRunning = false;
-                }).catch((err) => {
-                    console.error("Error stopping scanner: ", err);
-                });
-            }
-        }
-
-        // ✅ Add to Billing List
-        function addToBilling(productId) {
-            const billingList = document.getElementById("billingList");
-            const item = document.createElement("div");
-            item.className = "item";
-            item.innerHTML = `✔️ Product ID: <strong>${productId}</strong>`;
-            billingList.appendChild(item);
-        }
-
-        // ✅ Play Success Sound (Beep Sound)
-        function playSuccessSound() {
-            const audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
-            audio.play().then(() => {
-                console.log("🔔 Beep sound played successfully.");
-            }).catch((e) => {
-                console.error("❌ Sound failed to play. Check browser permissions:", e);
-                alert("Audio playback failed. Ensure permissions and try again.");
-            });
         }
         
-        // Initialize camera selection on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            requestPermissions();
-        });
+        // Play beep sound
+        function playBeep() {
+            if (!isAudioInitialized) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = "sine";
+                oscillator.frequency.value = 800;
+                gainNode.gain.value = 0.1;
+                
+                oscillator.start();
+                setTimeout(() => oscillator.stop(), 200);
+            } catch (e) {
+                console.error('Beep error:', e);
+            }
+        }
+        
+        // Start barcode scanner
+        async function startScanner() {
+            if (isScanning) return;
+            
+            try {
+                html5QrCode = new Html5Qrcode("reader");
+                
+                await html5QrCode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: 250 },
+                    onScanSuccess,
+                    onScanError
+                );
+                
+                isScanning = true;
+                console.log('Scanner started');
+            } catch (err) {
+                console.error('Scanner error:', err);
+                alert('Error starting scanner: ' + err.message);
+            }
+        }
+        
+        // Stop barcode scanner
+        async function stopScanner() {
+            if (!isScanning || !html5QrCode) return;
+            
+            try {
+                await html5QrCode.stop();
+                isScanning = false;
+                console.log('Scanner stopped');
+            } catch (err) {
+                console.error('Error stopping scanner:', err);
+            }
+        }
+        
+        // Handle successful scan
+        function onScanSuccess(decodedText) {
+            document.getElementById('last-scanned').textContent = decodedText;
+            playBeep();
+            addItemToBilling(decodedText);
+        }
+        
+        // Handle scan error
+        function onScanError(error) {
+            console.log('Scan error:', error);
+        }
+        
+        // Add item to billing table
+        function addItemToBilling(barcode) {
+            const product = productDatabase[barcode];
+            if (!product) {
+                alert('Product not found in database!');
+                return;
+            }
+            
+            // Check if item already exists
+            const existingItem = items.find(item => item.code === barcode);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                items.push({
+                    code: barcode,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
+            
+            updateBillingTable();
+        }
+        
+        // Update billing table display
+        function updateBillingTable() {
+            const tbody = document.getElementById('billing-items');
+            tbody.innerHTML = '';
+            
+            let grandTotal = 0;
+            
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                const itemTotal = item.price * item.quantity;
+                grandTotal += itemTotal;
+                
+                row.innerHTML = `
+                    <td>${item.code}</td>
+                    <td>${item.name}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${itemTotal.toFixed(2)}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            document.getElementById('grand-total').textContent = '$' + grandTotal.toFixed(2);
+        }
+        
+        // Clear all items
+        function clearAllItems() {
+            items = [];
+            updateBillingTable();
+            document.getElementById('last-scanned').textContent = 'None';
+        }
     </script>
-
-    <hr>
-
-    <!-- Request Permissions Button -->
-    <button onclick="requestPermissions()">🔐 Grant Permissions</button>
-
 </body>
-
 </html>
