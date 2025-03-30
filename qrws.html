@@ -14,6 +14,19 @@
         #barcode {
             margin-top: 10px;
         }
+
+        #startButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        #startButton:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -27,6 +40,7 @@
     <hr>
 
     <h3>Scan Barcode from Camera</h3>
+    <button id="startButton" onclick="enableSound()">Start Scanner</button>
     <div id="reader"></div>
     <p>Scanned Result: <span id="result">No result</span></p>
     <button onclick="startCameraScan()">Start Camera Scan</button>
@@ -34,6 +48,7 @@
 
     <hr>
 
+    <!-- Preload Sound -->
     <audio id="bellSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
 
     <!-- JsBarcode for barcode generation -->
@@ -45,6 +60,20 @@
     <script>
         let html5QrCode;
         let isCameraRunning = false;
+        let isSoundEnabled = false;
+
+        // ✅ Enable Sound after User Action
+        function enableSound() {
+            const bellSound = document.getElementById('bellSound');
+            bellSound.play().then(() => {
+                console.log("Audio enabled successfully!");
+                isSoundEnabled = true;
+                document.getElementById('startButton').style.display = 'none'; // Hide button after enabling
+            }).catch((err) => {
+                console.error("Failed to enable audio:", err);
+                alert("Please allow sound permission and click again!");
+            });
+        }
 
         // ✅ Generate Barcode
         function generateBarcode() {
@@ -80,7 +109,9 @@
                 },
                 (decodedText) => {
                     document.getElementById("result").innerText = decodedText;
-                    playBellSound(); // ✅ Play sound on successful scan
+                    if (isSoundEnabled) {
+                        playBellSound(); // ✅ Play sound after scan
+                    }
                     stopCameraScan(); // Stop after scanning
                 },
                 (error) => {
@@ -105,12 +136,11 @@
             }
         }
 
-        // ✅ Simple Sound Play
+        // ✅ Play Bell Sound
         function playBellSound() {
             const bellSound = document.getElementById('bellSound');
             bellSound.play().catch((err) => {
-                console.error("Sound play failed: ", err);
-                alert('Sound failed to play. Check browser permissions.');
+                console.error("Sound play failed:", err);
             });
         }
     </script>
