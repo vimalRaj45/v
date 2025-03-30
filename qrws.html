@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Billing System with Sound and Permissions</title>
+    <title>Barcode Billing System with Sound and Camera Fix</title>
     <style>
         #reader {
             width: 300px;
@@ -62,7 +62,7 @@
         let isCameraRunning = false;
         let audioContext;
 
-        // ✅ Request Permissions (Camera, Microphone, and Audio) on Button Click
+        // ✅ Request Camera, Microphone, and Audio Permissions
         async function requestPermissions() {
             try {
                 console.log("Requesting camera, microphone, and audio permissions...");
@@ -79,7 +79,7 @@
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 await audioContext.resume(); // Ensure audio context is resumed
                 console.log("✅ Audio context is ready for playback.");
-                alert("✅ Permissions granted. You're good to go!");
+                alert("✅ Permissions granted. You can now use the system.");
             } catch (error) {
                 console.error("❌ Permission error:", error);
                 alert("❌ Please allow camera, microphone, and audio permissions to continue.");
@@ -103,32 +103,47 @@
         }
 
         // ✅ Start Camera Scan for Barcode
-        function startCameraScan() {
-            if (isCameraRunning) {
-                alert("Camera is already running.");
-                return;
-            }
-
-            html5QrCode = new Html5Qrcode("reader");
-
-            html5QrCode.start(
-                { facingMode: "environment" }, // Rear camera for scanning
-                { fps: 15, qrbox: { width: 250, height: 250 } },
-                (decodedText) => {
-                    document.getElementById("result").innerText = decodedText;
-                    addToBilling(decodedText);
-                    playSuccessSound(); // Play sound on successful scan
-                    stopCameraScan(); // Stop scanning after success
-                },
-                (error) => {
-                    console.warn(`Scan error: ${error}`);
+        async function startCameraScan() {
+            try {
+                if (isCameraRunning) {
+                    alert("Camera is already running.");
+                    return;
                 }
-            ).then(() => {
-                isCameraRunning = true;
-            }).catch((err) => {
-                console.error("Failed to start scanner: ", err);
-                alert("Error starting camera. Check permissions and try again.");
-            });
+
+                // Check if camera permission is granted
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const hasCamera = devices.some(device => device.kind === 'videoinput');
+
+                if (!hasCamera) {
+                    alert("❌ No camera device found. Please check your camera.");
+                    return;
+                }
+
+                html5QrCode = new Html5Qrcode("reader");
+
+                html5QrCode.start(
+                    { facingMode: "environment" }, // Rear camera for scanning
+                    { fps: 15, qrbox: { width: 250, height: 250 } },
+                    (decodedText) => {
+                        document.getElementById("result").innerText = decodedText;
+                        addToBilling(decodedText);
+                        playSuccessSound(); // Play sound on successful scan
+                        stopCameraScan(); // Stop scanning after success
+                    },
+                    (error) => {
+                        console.warn(`Scan error: ${error}`);
+                    }
+                ).then(() => {
+                    isCameraRunning = true;
+                    console.log("✅ Camera scan started successfully.");
+                }).catch((err) => {
+                    console.error("❌ Failed to start scanner: ", err);
+                    alert("❌ Error starting camera. Check permissions and try again.");
+                });
+            } catch (err) {
+                console.error("❌ Error accessing camera:", err);
+                alert("❌ Unable to access the camera. Check permissions.");
+            }
         }
 
         // ✅ Stop Camera Scan
