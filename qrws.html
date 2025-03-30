@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Scanner with Sound for Billing</title>
+    <title>Barcode Scanner with Sound</title>
     <style>
         #reader {
             width: 300px;
@@ -34,21 +34,13 @@
 
     <hr>
 
-    <h3>Scan Barcode from Gallery</h3>
-    <button onclick="triggerGalleryScan()">Choose an image to scan</button>
-    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="scanFromGallery()">
-
-    <!-- ✅ Corrected Sound File with Autoplay Fix -->
     <audio id="bellSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
 
-    <!-- Load JsBarcode for barcode generation -->
+    <!-- JsBarcode for barcode generation -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 
-    <!-- Load Html5Qrcode for camera scanning -->
+    <!-- Html5Qrcode for camera scanning -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-
-    <!-- Load ZXing Library for barcode scanning from image -->
-    <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
 
     <script>
         let html5QrCode;
@@ -59,7 +51,7 @@
             const productId = document.getElementById("productId").value;
             if (productId.trim() !== "") {
                 JsBarcode("#barcode", productId, {
-                    format: "CODE128", // You can change to CODE39, EAN, etc.
+                    format: "CODE128",
                     displayValue: true,
                     fontSize: 16,
                     lineColor: "#000",
@@ -81,15 +73,15 @@
             html5QrCode = new Html5Qrcode("reader");
 
             html5QrCode.start(
-                { facingMode: "environment" }, // Use rear camera
+                { facingMode: "environment" }, // Rear camera
                 {
-                    fps: 15, // Faster frame rate
+                    fps: 10,
                     qrbox: { width: 250, height: 250 }
                 },
                 (decodedText) => {
                     document.getElementById("result").innerText = decodedText;
-                    playBellSound(); // Play sound after successful scan
-                    stopCameraScan(); // Stop scanning after a successful result
+                    playBellSound(); // ✅ Play sound on successful scan
+                    stopCameraScan(); // Stop after scanning
                 },
                 (error) => {
                     console.warn(`Scan error: ${error}`);
@@ -113,49 +105,13 @@
             }
         }
 
-        // ✅ Play Bell Sound on Successful Scan
+        // ✅ Simple Sound Play
         function playBellSound() {
             const bellSound = document.getElementById('bellSound');
-            bellSound.play().then(() => {
-                console.log("✅ Sound played successfully.");
-            }).catch((err) => {
-                console.error("❌ Sound failed to play: ", err);
-                alert('Sound failed to play. Check browser permissions or user interaction.');
+            bellSound.play().catch((err) => {
+                console.error("Sound play failed: ", err);
+                alert('Sound failed to play. Check browser permissions.');
             });
-        }
-
-        // ✅ Trigger File Input for Gallery Scan
-        function triggerGalleryScan() {
-            document.getElementById('fileInput').click(); // Open file dialog
-        }
-
-        // ✅ Scan Barcode from Gallery (Image Upload)
-        async function scanFromGallery() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-
-            if (!file) {
-                alert('Please select an image with a barcode!');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = async function (event) {
-                const img = new Image();
-                img.onload = async function () {
-                    const barcodeDetector = new ZXing.BrowserBarcodeReader();
-                    try {
-                        const result = await barcodeDetector.decodeFromImage(img);
-                        document.getElementById('result').innerText = result.text;
-                        playBellSound(); // Play sound after successful gallery scan
-                    } catch (err) {
-                        console.error('Barcode not found:', err);
-                        alert('No barcode found in the image.');
-                    }
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
         }
     </script>
 
