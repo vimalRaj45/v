@@ -28,6 +28,11 @@
         button {
             margin-top: 10px;
         }
+        
+        #cameraSelect {
+            margin-top: 10px;
+            padding: 5px;
+        }
     </style>
 </head>
 
@@ -41,6 +46,7 @@
     <hr>
 
     <h3>Scan Barcode from Camera</h3>
+    <select id="cameraSelect"></select>
     <div id="reader"></div>
     <p>Scanned Result: <span id="result">No result</span></p>
     <button onclick="startCameraScan()">Start Camera Scan</button>
@@ -61,6 +67,7 @@
         let html5QrCode;
         let isCameraRunning = false;
         let audioContext;
+        let currentCameraId = null;
 
         // ✅ Request Camera, Microphone, and Audio Permissions
         async function requestPermissions() {
@@ -73,8 +80,14 @@
                     audio: true
                 });
 
+                // Stop all tracks to release camera
+                stream.getTracks().forEach(track => track.stop());
+                
                 console.log("✅ Camera and microphone permissions granted.");
-
+                
+                // Populate camera selection dropdown
+                await populateCameraSelect();
+                
                 // ✅ Initialize Audio Context (Ensure it's user-initiated)
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 await audioContext.resume(); // Ensure audio context is resumed
@@ -83,6 +96,37 @@
             } catch (error) {
                 console.error("❌ Permission error:", error);
                 alert("❌ Please allow camera, microphone, and audio permissions to continue.");
+            }
+        }
+
+        // Populate camera selection dropdown
+        async function populateCameraSelect() {
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                const cameraSelect = document.getElementById('cameraSelect');
+                
+                cameraSelect.innerHTML = '';
+                
+                if (videoDevices.length === 0) {
+                    cameraSelect.innerHTML = '<option>No cameras found</option>';
+                    return;
+                }
+                
+                videoDevices.forEach(device => {
+                    const option = document.createElement('option');
+                    option.value = device.deviceId;
+                    option.text = device.label || `Camera ${cameraSelect.length + 1}`;
+                    cameraSelect.appendChild(option);
+                });
+                
+                // Set default camera (first one)
+                if (videoDevices.length > 0) {
+                    currentCameraId = videoDevices[0].deviceId;
+                }
+                
+            } catch (error) {
+                console.error("Error enumerating devices:", error);
             }
         }
 
@@ -110,20 +154,26 @@
                     return;
                 }
 
-                // Check if camera permission is granted
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const hasCamera = devices.some(device => device.kind === 'videoinput');
-
-                if (!hasCamera) {
-                    alert("❌ No camera device found. Please check your camera.");
+                // Get selected camera
+                const cameraSelect = document.getElementById('cameraSelect');
+                const selectedCameraId = cameraSelect.value || currentCameraId;
+                
+                if (!selectedCameraId) {
+                    alert("No camera selected. Please check camera permissions.");
                     return;
                 }
 
                 html5QrCode = new Html5Qrcode("reader");
 
-                html5QrCode.start(
-                    { facingMode: "environment" }, // Rear camera for scanning
-                    { fps: 15, qrbox: { width: 250, height: 250 } },
+                const config = {
+                    fps: 15,
+                    qrbox: { width: 250, height: 250 }
+                };
+
+                // Start with specific camera
+                await html5QrCode.start(
+                    selectedCameraId,
+                    config,
                     (decodedText) => {
                         document.getElementById("result").innerText = decodedText;
                         addToBilling(decodedText);
@@ -133,16 +183,39 @@
                     (error) => {
                         console.warn(`Scan error: ${error}`);
                     }
-                ).then(() => {
-                    isCameraRunning = true;
-                    console.log("✅ Camera scan started successfully.");
-                }).catch((err) => {
-                    console.error("❌ Failed to start scanner: ", err);
-                    alert("❌ Error starting camera. Check permissions and try again.");
-                });
+                );
+                
+                isCameraRunning = true;
+                console.log("✅ Camera scan started successfully.");
+                
             } catch (err) {
                 console.error("❌ Error accessing camera:", err);
-                alert("❌ Unable to access the camera. Check permissions.");
+                
+                // Try fallback to environment mode if specific camera fails
+                if (err.toString().includes('Could not start video source')) {
+                    try {
+                        await html5QrCode.start(
+                            { facingMode: "environment" },
+                            { fps: 15, qrbox: { width: 250, height: 250 } },
+                            (decodedText) => {
+                                document.getElementById("result").innerText = decodedText;
+                                addToBilling(decodedText);
+                                playSuccessSound();
+                                stopCameraScan();
+                            },
+                            (error) => {
+                                console.warn(`Scan error: ${error}`);
+                            }
+                        );
+                        isCameraRunning = true;
+                        console.log("✅ Camera scan started with environment mode.");
+                    } catch (fallbackErr) {
+                        console.error("❌ Fallback camera access failed:", fallbackErr);
+                        alert("❌ Unable to access the camera. Check permissions and try again.");
+                    }
+                } else {
+                    alert("❌ Error starting camera. Check permissions and try again.");
+                }
             }
         }
 
@@ -177,6 +250,11 @@
                 alert("Audio playback failed. Ensure permissions and try again.");
             });
         }
+        
+        // Initialize camera selection on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            requestPermissions();
+        });
     </script>
 
     <hr>
