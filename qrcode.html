@@ -1,102 +1,295 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
+
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator & Scanner</title>
+
+    <title>Barcode Generator & Scanner</title>
+
+    <style>
+
+        #reader {
+
+            width: 300px;
+
+            height: 300px;
+
+        }
+
+
+
+        #barcode {
+
+            margin-top: 10px;
+
+        }
+
+    </style>
+
 </head>
+
+
+
 <body>
 
-<h3>Generate QR Code</h3>
-<input type="text" id="productId" placeholder="Enter Product ID or Name">
-<button onclick="generateQR()">Generate QR Code</button>
-<div id="qrcode"></div>
 
-<hr>
 
-<h3>Scan QR Code from Camera</h3>
-<div id="reader" style="width: 250px;"></div>
-<p>Scanned Result: <span id="result">No result</span></p>
+    <h3>Generate Barcode</h3>
 
-<hr>
+    <input type="text" id="productId" placeholder="Enter Product ID or Name">
 
-<h3>Scan QR Code from Gallery</h3>
-<button onclick="triggerGalleryScan()">Choose an image to scan</button>
-<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="scanFromGallery()">
+    <button onclick="generateBarcode()">Generate Barcode</button>
 
-<!-- Load QRCode.js from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <svg id="barcode"></svg>
 
-<!-- Load Html5Qrcode Scanner from CDN -->
-<script src="https://unpkg.com/html5-qrcode"></script>
 
-<!-- Load jsQR for scanning QR code from an image -->
-<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 
-<script>
-    // ✅ Generate QR Code
-    function generateQR() {
-        const productId = document.getElementById("productId").value;
-        document.getElementById("qrcode").innerHTML = "";
-        if (productId.trim() !== "") {
-            new QRCode(document.getElementById("qrcode"), productId);
-        } else {
-            alert("Enter valid Product ID or Name!");
+    <hr>
+
+
+
+    <h3>Scan Barcode from Camera</h3>
+
+    <div id="reader"></div>
+
+    <p>Scanned Result: <span id="result">No result</span></p>
+
+    <button onclick="startCameraScan()">Start Camera Scan</button>
+
+    <button onclick="stopCameraScan()">Stop Camera Scan</button>
+
+
+
+    <hr>
+
+
+
+    <h3>Scan Barcode from Gallery</h3>
+
+    <button onclick="triggerGalleryScan()">Choose an image to scan</button>
+
+    <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="scanFromGallery()">
+
+
+
+    <!-- Load JsBarcode for barcode generation -->
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+
+
+
+    <!-- Load Html5Qrcode for camera scanning -->
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+
+
+    <!-- Load Barcode Detector API Polyfill (for barcode scanning from image) -->
+
+    <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
+
+
+
+    <script>
+
+        let html5QrCode;
+
+        let isCameraRunning = false;
+
+
+
+        // ✅ Generate Barcode
+
+        function generateBarcode() {
+
+            const productId = document.getElementById("productId").value;
+
+            if (productId.trim() !== "") {
+
+                JsBarcode("#barcode", productId, {
+
+                    format: "CODE128", // You can change to CODE39, EAN, etc.
+
+                    displayValue: true,
+
+                    fontSize: 16,
+
+                    lineColor: "#000",
+
+                    width: 2,
+
+                    height: 50
+
+                });
+
+            } else {
+
+                alert("Enter valid Product ID or Name!");
+
+            }
+
         }
-    }
 
-    // ✅ Scan QR Code from Camera
-    const html5QrCode = new Html5Qrcode("reader");
-    html5QrCode.start(
-        { facingMode: "environment" }, // Use rear camera for scanning
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText) => {
-            document.getElementById("result").innerText = decodedText;
-            html5QrCode.stop(); // Stop scanning after successful scan
-        }
-    ).catch((err) => {
-        console.error("Failed to start scanner: ", err);
-    });
 
-    // ✅ Trigger the file input when the "Choose an image to scan" button is clicked
-    function triggerGalleryScan() {
-        document.getElementById('fileInput').click(); // Trigger file input dialog
-    }
 
-    // ✅ Scan QR Code from Gallery (Image Upload)
-    function scanFromGallery() {
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-        
-        if (!file) {
-            alert('Please select an image with a QR code!');
-            return;
-        }
+        // ✅ Start Camera Scan for Barcode
 
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = new Image();
-            img.onload = function() {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        function startCameraScan() {
 
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const qrCodeResult = jsQR(imageData.data, canvas.width, canvas.height);
+            if (isCameraRunning) {
 
-                if (qrCodeResult) {
-                    document.getElementById('result').innerText = qrCodeResult.data;
-                } else {
-                    alert('No QR code found in the image.');
+                alert("Camera is already running.");
+
+                return;
+
+            }
+
+
+
+            html5QrCode = new Html5Qrcode("reader");
+
+
+
+            html5QrCode.start(
+
+                { facingMode: "environment" }, // Use rear camera
+
+                {
+
+                    fps: 15, // Faster frame rate
+
+                    qrbox: { width: 250, height: 250 }
+
+                },
+
+                (decodedText) => {
+
+                    document.getElementById("result").innerText = decodedText;
+
+                    stopCameraScan(); // Stop scanning after successful result
+
+                },
+
+                (error) => {
+
+                    console.warn(`Scan error: ${error}`);
+
                 }
+
+            ).then(() => {
+
+                isCameraRunning = true;
+
+            }).catch((err) => {
+
+                console.error("Failed to start scanner: ", err);
+
+            });
+
+        }
+
+
+
+        // ✅ Stop Camera Scan
+
+        function stopCameraScan() {
+
+            if (html5QrCode && isCameraRunning) {
+
+                html5QrCode.stop().then(() => {
+
+                    console.log("Scanner stopped.");
+
+                    isCameraRunning = false;
+
+                }).catch((err) => {
+
+                    console.error("Error stopping scanner: ", err);
+
+                });
+
+            }
+
+        }
+
+
+
+        // ✅ Trigger the file input when "Choose an image to scan" button is clicked
+
+        function triggerGalleryScan() {
+
+            document.getElementById('fileInput').click(); // Open file dialog
+
+        }
+
+
+
+        // ✅ Scan Barcode from Gallery (Image Upload)
+
+        async function scanFromGallery() {
+
+            const fileInput = document.getElementById('fileInput');
+
+            const file = fileInput.files[0];
+
+
+
+            if (!file) {
+
+                alert('Please select an image with a barcode!');
+
+                return;
+
+            }
+
+
+
+            const reader = new FileReader();
+
+            reader.onload = async function (event) {
+
+                const img = new Image();
+
+                img.onload = async function () {
+
+                    const barcodeDetector = new ZXing.BrowserBarcodeReader();
+
+                    try {
+
+                        const result = await barcodeDetector.decodeFromImage(img);
+
+                        document.getElementById('result').innerText = result.text;
+
+                    } catch (err) {
+
+                        console.error('Barcode not found:', err);
+
+                        alert('No barcode found in the image.');
+
+                    }
+
+                };
+
+                img.src = event.target.result;
+
             };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-</script>
+
+            reader.readAsDataURL(file);
+
+        }
+
+    </script>
+
+
 
 </body>
+
+
+
 </html>
