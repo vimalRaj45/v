@@ -4,43 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Scanner with Sound</title>
+    <title>Barcode Billing System with Sound and Permissions</title>
     <style>
         #reader {
             width: 300px;
             height: 300px;
+            margin-top: 10px;
         }
 
         #barcode {
             margin-top: 10px;
         }
 
-        #startButton {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-bottom: 10px;
+        #billingList {
+            margin-top: 20px;
         }
 
-        #startButton:hover {
-            background-color: #45a049;
+        .item {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
         }
     </style>
 </head>
 
-<body>
+<body onload="requestPermissions()"> <!-- Automatically request permissions on page load -->
 
     <h3>Generate Barcode</h3>
-    <input type="text" id="productId" placeholder="Enter Product ID or Name">
+    <input type="text" id="productId" placeholder="Enter Product ID">
     <button onclick="generateBarcode()">Generate Barcode</button>
     <svg id="barcode"></svg>
 
     <hr>
 
     <h3>Scan Barcode from Camera</h3>
-    <button id="startButton" onclick="enableSound()">Start Scanner</button>
     <div id="reader"></div>
     <p>Scanned Result: <span id="result">No result</span></p>
     <button onclick="startCameraScan()">Start Camera Scan</button>
@@ -48,31 +44,43 @@
 
     <hr>
 
-    <!-- Preload Sound -->
-    <audio id="bellSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+    <h3>Billing List</h3>
+    <div id="billingList"></div>
 
-    <!-- JsBarcode for barcode generation -->
+    <!-- Load JsBarcode for barcode generation -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 
-    <!-- Html5Qrcode for camera scanning -->
+    <!-- Load Html5Qrcode for barcode scanning -->
     <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <!-- Load ZXing Library for barcode from image -->
+    <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
 
     <script>
         let html5QrCode;
         let isCameraRunning = false;
-        let isSoundEnabled = false;
 
-        // ✅ Enable Sound after User Action
-        function enableSound() {
-            const bellSound = document.getElementById('bellSound');
-            bellSound.play().then(() => {
-                console.log("Audio enabled successfully!");
-                isSoundEnabled = true;
-                document.getElementById('startButton').style.display = 'none'; // Hide button after enabling
-            }).catch((err) => {
-                console.error("Failed to enable audio:", err);
-                alert("Please allow sound permission and click again!");
-            });
+        // ✅ Automatically Request Permissions (Camera, Microphone, Audio) on Page Load
+        async function requestPermissions() {
+            try {
+                console.log("Requesting permissions...");
+                // Request camera and microphone
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
+                });
+
+                // Check audio context to ensure audio permissions are granted
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const dummyOscillator = audioContext.createOscillator();
+                dummyOscillator.connect(audioContext.destination);
+                dummyOscillator.start();
+                dummyOscillator.stop();
+                console.log("✅ All permissions granted successfully!");
+            } catch (error) {
+                console.error("❌ Permissions denied or error occurred:", error);
+                alert("Please allow camera, microphone, and audio playback permissions to continue.");
+            }
         }
 
         // ✅ Generate Barcode
@@ -82,17 +90,16 @@
                 JsBarcode("#barcode", productId, {
                     format: "CODE128",
                     displayValue: true,
-                    fontSize: 16,
                     lineColor: "#000",
                     width: 2,
                     height: 50
                 });
             } else {
-                alert("Enter a valid Product ID or Name!");
+                alert("Enter a valid Product ID!");
             }
         }
 
-        // ✅ Start Camera Scan
+        // ✅ Start Camera Scan for Barcode
         function startCameraScan() {
             if (isCameraRunning) {
                 alert("Camera is already running.");
@@ -102,17 +109,13 @@
             html5QrCode = new Html5Qrcode("reader");
 
             html5QrCode.start(
-                { facingMode: "environment" }, // Rear camera
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 }
-                },
+                { facingMode: "environment" }, // Rear camera for scanning
+                { fps: 15, qrbox: { width: 250, height: 250 } },
                 (decodedText) => {
                     document.getElementById("result").innerText = decodedText;
-                    if (isSoundEnabled) {
-                        playBellSound(); // ✅ Play sound after scan
-                    }
-                    stopCameraScan(); // Stop after scanning
+                    addToBilling(decodedText);
+                    playSuccessSound(); // Play sound on successful scan
+                    stopCameraScan(); // Stop scanning after success
                 },
                 (error) => {
                     console.warn(`Scan error: ${error}`);
@@ -136,11 +139,22 @@
             }
         }
 
-        // ✅ Play Bell Sound
-        function playBellSound() {
-            const bellSound = document.getElementById('bellSound');
-            bellSound.play().catch((err) => {
-                console.error("Sound play failed:", err);
+        // ✅ Add to Billing List
+        function addToBilling(productId) {
+            const billingList = document.getElementById("billingList");
+            const item = document.createElement("div");
+            item.className = "item";
+            item.innerHTML = `✔️ Product ID: <strong>${productId}</strong>`;
+            billingList.appendChild(item);
+        }
+
+        // ✅ Play Success Sound
+        function playSuccessSound() {
+            const audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
+            audio.play().then(() => {
+                console.log("🔔 Beep sound played successfully.");
+            }).catch((e) => {
+                console.error("❌ Sound failed to play. Check browser permissions:", e);
             });
         }
     </script>
