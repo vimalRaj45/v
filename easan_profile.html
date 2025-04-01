@@ -43,7 +43,7 @@
     <script>
         // Fetch user data from localStorage on page load
         window.onload = function() {
-            const userData = JSON.parse(localStorage.getItem("google_user")) || {};
+            const userData = JSON.parse(localStorage.getItem("user_data")) || {};
 
             // Set profile image, name, and email from localStorage
             document.getElementById("profile-img").src = userData.picture || "default-profile.jpg";
