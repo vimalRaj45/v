@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Home Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        /* Custom Navbar Style */
+        .custom-navbar {
+            background-image: url('path_to_your_navbar_image.png'); /* Replace with your Canva image */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .hero {
+            background-color: #f8f9fa;
+            padding: 50px 0;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px 0;
+        }
+
+        .footer a {
+            color: #ffffff;
+        }
+
+        /* Custom styles for menu icon */
+        .navbar-toggler {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex align-items-center justify-content-between p-3 custom-navbar">
+        <a class="nav-link" href="#">
+            <i class="bi bi-cart fs-4" style="font-weight: bold; font-size: 2rem;"></i> Cart
+        </a>
+        <h4 class="mx-auto text-center">E-Shop</h4>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+    </div>
+
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Navigation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <!-- Product Section -->
+    <section class="container p-1">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active" data-bs-interval="10000">
+                <img src="https://img.freepik.com/premium-photo/shopping-cart-full-food-yellow-background-grocery-food-store-concept_708636-682.jpg?w=2000" class="d-block w-100 border rounded" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>First slide label</h5>
+                  <p>Some representative placeholder content for the first slide.</p>
+                </div>
+              </div>
+              <div class="carousel-item" data-bs-interval="2000">
+                <img src="https://wallpaperbat.com/img/1301218-3d-grocery-store-with-orange-goods-in-the-background-3d-illustration-of-a-supermarket-hd-photography-photo-background-image-and-wallpaper-for-free-download.png" class="d-block w-100 border rounded" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Second slide label</h5>
+                  <p>Some representative placeholder content for the second slide.</p>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="https://sciexaminer.com/wp-content/uploads/2020/02/E-grocery.jpg" class="d-block w-100 border rounded" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Third slide label</h5>
+                  <p>Some representative placeholder content for the third slide.</p>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+    </section>
+
+      <!-- Shop Categories Section -->
+      <section class="container p-1">
+        <h2>Our Category</h2>
+        <div class="row">
+            <!-- Category 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Category 1" class="category-image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Electronics</h5>
+                        <p class="card-text">Explore the latest gadgets and devices.</p>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Category 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Category 2" class="category-image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Fashion</h5>
+                        <p class="card-text">Discover the latest trends in fashion.</p>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Category 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Category 3" class="category-image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Home & Garden</h5>
+                        <p class="card-text">Find essentials for your home and garden.</p>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Category 4 -->
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Category 4" class="category-image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Books</h5>
+                        <p class="card-text">Browse a wide range of books.</p>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Category 5 -->
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Category 5" class="category-image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Sports</h5>
+                        <p class="card-text">Get your sports gear and equipment.</p>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Category 6 -->
+            <div class="col-md-4 mb-4">
+                <div class="card category-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Category 6" class="category-image">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Toys</h5>
+                        <p class="card-text">Find fun toys for kids of all ages.</p>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center mt-5">
+        <div class="container">
+            <p>© 2023 E-Shop. All Rights Reserved.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
