@@ -22,6 +22,8 @@
                     <!-- User Information (Name & Email from localStorage) -->
                     <h5 id="user-name">Loading...</h5>
                     <p id="user-email">Email: Loading...</p>
+                    <p id="user-contact">Contact: N/A</p>
+                    <p id="user-address">Address: N/A</p>
                     
                     <!-- User Profile Form -->
                     <form id="profile-form">
@@ -42,34 +44,31 @@
     </div>
 
     <script>
-
-
-        // Logout Functionality - Clears All Local Storage Data
-document.getElementById("logout-btn").addEventListener("click", function() {
-    localStorage.clear(); // Clears all stored data
-    alert("Logged out successfully!");
-    window.location.href = "login.html"; // Redirect to login/home page
-});
-
         // Fetch user data from localStorage on page load
         window.onload = function() {
             const userData = JSON.parse(localStorage.getItem("user_data")) || {};
 
-            // Set profile image, name, and email from localStorage
+            // Set profile image, name, email, contact, and address from localStorage
             document.getElementById("profile-img").src = userData.picture || "default-profile.jpg";
             document.getElementById("user-name").innerText = userData.name || "N/A";
             document.getElementById("user-email").innerText = "Email: " + (userData.email || "N/A");
+            document.getElementById("user-contact").innerText = "Contact: " + (userData.contact || "N/A");
+            document.getElementById("user-address").innerText = "Address: " + (userData.address || "N/A");
+
+            // Pre-fill form inputs
+            document.getElementById("contact").value = userData.contact || "";
+            document.getElementById("address").value = userData.address || "";
         };
 
-        // Form Validation and Handling
+        // Form Validation and Saving Data to localStorage
         const profileForm = document.getElementById("profile-form");
         profileForm.addEventListener("submit", function(event) {
             event.preventDefault();
 
-            // Validate the form inputs
+            // Get values from input fields
             const contact = document.getElementById("contact").value;
             const address = document.getElementById("address").value;
-            const contactRegex = /^[0-9]{10}$/; // Validate contact as a 10-digit number
+            const contactRegex = /^[0-9]{10}$/; // Validates 10-digit contact number
 
             if (!contact.match(contactRegex)) {
                 alert("Please enter a valid 10-digit contact number.");
@@ -81,18 +80,28 @@ document.getElementById("logout-btn").addEventListener("click", function() {
                 return;
             }
 
-            // If validation passes, save the data to localStorage (for demo purposes)
-            const updatedUserData = {
-                contact: contact,
-                address: address
-            };
+            // Fetch existing user data from localStorage
+            let currentUserData = JSON.parse(localStorage.getItem("user_data")) || {};
+            
+            // Update user data with contact and address
+            currentUserData.contact = contact;
+            currentUserData.address = address;
 
-            // Optionally, you can store these details to the same `google_user` in localStorage
-            let currentUserData = JSON.parse(localStorage.getItem("google_user")) || {};
-            currentUserData = { ...currentUserData, ...updatedUserData };
-            localStorage.setItem("google_user", JSON.stringify(currentUserData));
+            // Save updated data back to localStorage
+            localStorage.setItem("user_data", JSON.stringify(currentUserData));
+
+            // Update UI instantly
+            document.getElementById("user-contact").innerText = "Contact: " + contact;
+            document.getElementById("user-address").innerText = "Address: " + address;
 
             alert("Profile updated successfully!");
+        });
+
+        // Logout Functionality - Clears All Local Storage Data
+        document.getElementById("logout-btn").addEventListener("click", function() {
+            localStorage.clear(); // Clears all stored data
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // Redirect to login/home page
         });
     </script>
 
