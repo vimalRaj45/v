@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,48 +38,75 @@
         }
 
         /* on smaller screens (smaller than 768px), 4 columns */
-@media (max-width: 768px) {
-    .row.row-cols-lg-4 > .col {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-}
+        @media (max-width: 768px) {
+            .row.row-cols-lg-4 > .col {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
 
-/* On larger screens (1200px and up), 4 columns */
-@media (min-width: 1200px) {
-    .row.row-cols-lg-4 > .col {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
-}
-#map {
-    width: 100%;
-    height: 300px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-sizing: border-box;
-}
+        /* On larger screens (1200px and up), 4 columns */
+        @media (min-width: 1200px) {
+            .row.row-cols-lg-4 > .col {
+                flex: 0 0 25%;
+                max-width: 25%;
+            }
+        }
+        #map {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
 
-/* Make the map responsive */
-@media (max-width: 768px) {
-    #map {
-        height: 200px;
-    }
-}
+        /* Make the map responsive */
+        @media (max-width: 768px) {
+            #map {
+                height: 200px;
+            }
+        }
 
-@media (max-width: 480px) {
-    #map {
-        height: 150px;
-    }
-}
+        @media (max-width: 480px) {
+            #map {
+                height: 150px;
+            }
+        }
+        
+        /* Google Translate Widget Customization */
+        .goog-te-gadget {
+            font-family: Arial, sans-serif !important;
+        }
+        .goog-te-gadget-simple {
+            background-color: #f8f9fa !important;
+            border: 1px solid #dee2e6 !important;
+            padding: 8px !important;
+            border-radius: 4px !important;
+        }
+        .goog-te-menu-value span {
+            color: #212529 !important;
+        }
+        .goog-te-menu-value img {
+            margin-right: 8px !important;
+        }
+        #google_translate_element {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
-  <div class="d-flex align-items-center justify-content-between p-3 custom-navbar sticky-top bg-light">
+    
+    <!-- Language Switcher Button (Fixed Position) -->
+    <div id="google_translate_element"></div>
+
+    <div class="d-flex align-items-center justify-content-between p-3 custom-navbar sticky-top bg-light">
         <a class="nav-link" href="#">
             <i class="bi bi-cart fs-3" style="font-weight: bold; font-size: 1.5rem;"></i> Cart
         </a>
-        <h6 class=" text-center mt-2 text-bold">EASAN SUPERMARKET</h6>
+        <h6 class="text-center mt-2 text-bold">EASAN SUPERMARKET</h6>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <i class="bi bi-list fs-3"></i>
@@ -88,10 +114,10 @@
     </div>
 
     <!-- Offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 400px;">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Navigation</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 class="offcanvas-title mt-4" id="offcanvasNavbarLabel">EASAN SUPERMARKET</h5>
+            <button type="button" class="btn-close mt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -110,8 +136,6 @@
             </ul>
         </div>
     </div>
-
-
 
     <!-- Product Section -->
     <section class="container p-1">
@@ -279,9 +303,6 @@
     }
 </script>
 
-
-</section>
-
 <footer class="footer">
     <div class="container py-4">
         <div class="row">
@@ -289,9 +310,9 @@
                 <h5 class="mb-3">Contact Us</h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Address: palikadu appamasamudram (po) attur (tk) Salem (Dt)</li>
-<li class="mb-2"><i class="bi bi-telephone me-2"></i> Phone: <a href="tel:+919095502548" class="text-white">+91 9095502548</a></li>
-<li class="mb-2"><i class="bi bi-whatsapp me-2"></i> WhatsApp: <a href="https://wa.me/919095502548" target="_blank" class="text-white">+91 9095502548</a></li>
-<li class="mb-2"><i class="bi bi-envelope me-2"></i> Email: <a href="mailto:ivimalraj5207@gmail.com" class="text-white">info@example.com</a></li>
+                    <li class="mb-2"><i class="bi bi-telephone me-2"></i> Phone: <a href="tel:+919095502548" class="text-white">+91 9095502548</a></li>
+                    <li class="mb-2"><i class="bi bi-whatsapp me-2"></i> WhatsApp: <a href="https://wa.me/919095502548" target="_blank" class="text-white">+91 9095502548</a></li>
+                    <li class="mb-2"><i class="bi bi-envelope me-2"></i> Email: <a href="mailto:ivimalraj5207@gmail.com" class="text-white">info@example.com</a></li>
                 </ul>
             </div>
             <div class="col-lg-4 mb-3 mb-lg-0">
@@ -314,12 +335,25 @@
         </div>
     </div>
     <div class="text-center bg-dark text-secondary py-2 mt-4">
-        &copy; 2023 Example.com. All rights reserved.
+        &copy; 2025 Easan.com. All rights reserved.
     </div>
 </footer>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!-- Google Translate Script -->
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ta',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
