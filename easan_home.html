@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,7 +121,7 @@
     </div>
 
    <!-- Offcanvas -->
-   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title mt-4" id="offcanvasNavbarLabel">EASAN SUPERMARKET</h5>
         <button type="button" class="btn-close mt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -136,12 +137,37 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Contact Us</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
+            <!-- Profile Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img id="profile-img" src="default-profile.jpg" alt="Profile Image" class="rounded-circle" width="30" height="30">
+                    Profile
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="#">Name: <span id="user-name">Loading...</span></a></li>
+                    <li><a class="dropdown-item" href="#">Email: <span id="user-email">Loading...</span></a></li>
+                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                </ul>
             </li>
         </ul>
     </div>
 </div>
+
+<script>
+    // Retrieve user details from localStorage and display them in the dropdown
+    window.onload = function() {
+        const userData = JSON.parse(localStorage.getItem("google_user")) || {};
+
+        // Populate the profile dropdown with user name and email
+        document.getElementById("user-name").innerText = userData.name || "N/A";
+        document.getElementById("user-email").innerText = userData.email || "N/A";
+
+        // Set the profile image (if available)
+        const profileImg = userData.picture || "default-profile.jpg"; // Default if no picture is found
+        document.getElementById("profile-img").src = profileImg;
+    };
+</script>
+
 
 
 
@@ -313,6 +339,10 @@
 
 
 </section>
+
+
+
+
 
 <footer class="footer">
     <div class="container py-4">
