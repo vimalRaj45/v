@@ -41,7 +41,7 @@
                                 <option value="Delivered">Delivered</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                        <button type="submit" class="btn btn-primary w-100">Save Profile</button>
                     </form>
                 </div>
                 <button id="logout-btn" class="btn btn-danger w-100 mt-3">Logout</button>
@@ -50,7 +50,7 @@
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxW8XEbDVt9yZ6Q8WnTmhHCz89Ny2pv8F9hK1nWCVrKPVb0VWijwUgDYjD93eynZ1VBUw/exec"; // Replace with your Web App URL
+        const API_URL = "https://script.google.com/macros/s/AKfycbxAOnE69HWGc-M4NoDw-a6y8yxuWNtqx6cV30nrT81TnGdNVPoJ0KC2NVxG5NBwXlfk2Q/exec"; // Replace with your Web App URL
 
         window.onload = async function() {
             const userData = JSON.parse(localStorage.getItem("user_data")) || {};
@@ -106,7 +106,7 @@
                 const result = await response.json();
                 if (result.success) {
                     document.getElementById("user-id").innerText = result.userId;
-                    alert("Account created successfully!");
+                    alert("Profile saved successfully!");
                 } else {
                     alert(result.message);
                 }
@@ -118,7 +118,7 @@
         document.getElementById("logout-btn").addEventListener("click", function() {
             localStorage.clear();
             alert("Logged out successfully!");
-            window.location.href = "https://vimalraj45.github.io/v/easan_login"; // Redirect to login
+            window.location.href = "https://vimalraj45.github.io/v/easan_login"; // Redirect to login page
         });
     </script>
 
