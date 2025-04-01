@@ -36,6 +36,42 @@
         .navbar-toggler {
             border: none;
         }
+
+        /* on smaller screens (smaller than 768px), 4 columns */
+@media (max-width: 768px) {
+    .row.row-cols-lg-4 > .col {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* on larger screens (1200px and up), 8 columns */
+@media (min-width: 1200px) {
+    .row.row-cols-lg-4 > .col {
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+    }
+}
+#map {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Make the map responsive */
+@media (max-width: 768px) {
+    #map {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    #map {
+        height: 150px;
+    }
+}
     </style>
 </head>
 <body>
@@ -118,78 +154,135 @@
           </div>
     </section>
 
-      <!-- Shop Categories Section -->
-      <section class="container p-1">
-        <h2>Our Category</h2>
-        <div class="row">
-            <!-- Category 1 -->
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Category 1" class="category-image">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Electronics</h5>
-                        <p class="card-text">Explore the latest gadgets and devices.</p>
-                        <a href="#" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Category 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Category 2" class="category-image">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Fashion</h5>
-                        <p class="card-text">Discover the latest trends in fashion.</p>
-                        <a href="#" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Category 3 -->
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Category 3" class="category-image">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Home & Garden</h5>
-                        <p class="card-text">Find essentials for your home and garden.</p>
-                        <a href="#" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Category 4 -->
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Category 4" class="category-image">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Books</h5>
-                        <p class="card-text">Browse a wide range of books.</p>
-                        <a href="#" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Category 5 -->
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Category 5" class="category-image">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Sports</h5>
-                        <p class="card-text">Get your sports gear and equipment.</p>
-                        <a href="#" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Category 6 -->
-            <div class="col-md-4 mb-4">
-                <div class="card category-card">
-                    <img src="https://via.placeholder.com/300x200" alt="Category 6" class="category-image">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Toys</h5>
-                        <p class="card-text">Find fun toys for kids of all ages.</p>
-                        <a href="#" class="btn btn-primary">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+     <!-- Shop Categories Section -->
+<section class="container p-1">
+  <h2>Our Category</h2>
+  <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4">
+      <!-- Category 1 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 1" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Electronics</h5>
+                  <p class="card-text">Explore the latest gadgets and devices.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 2 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 2" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Fashion</h5>
+                  <p class="card-text">Discover the latest trends in fashion.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 3 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 3" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Home & Garden</h5>
+                  <p class="card-text">Find essentials for your home and garden.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 4 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 4" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Books</h5>
+                  <p class="card-text">Browse a wide range of books.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 5 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 5" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Sports</h5>
+                  <p class="card-text">Get your sports gear and equipment.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 6 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 6" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Toys</h5>
+                  <p class="card-text">Find fun toys for kids of all ages.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 7 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 7" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Electronics</h5>
+                  <p class="card-text">Explore the latest gadgets and devices.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+      <!-- Category 8 -->
+      <div class="col mb-4">
+          <div class="card category-card">
+              <img src="https://via.placeholder.com/300x200" alt="Category 8" class="category-image">
+              <div class="card-body text-center">
+                  <h5 class="card-title">Fashion</h5>
+                  <p class="card-text">Discover the latest trends in fashion.</p>
+                  <a href="#" class="btn btn-primary">Shop Now</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+  <section class="container p-1">
+    <!-- Your shop location -->
+    <h2>Our Shop Location</h2>
+    <p>Shop Name: EASAN SUPERMARKET</p>
+    <p>Address: palikadu appamasamudram (po) attur (tk) Salem (Dt)</p>
+    <p>Phone Number: 8807099288</p>
+    <button class="uk-button uk-button-primary uk-button-small" onclick="getDirections()">Get Directions</button>
+</section>
+
+<script>
+    function getDirections() {
+        // Get the user's current location
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // Get the user's latitude and longitude
+                const userLatitude = position.coords.latitude;
+                const userLongitude = position.coords.longitude;
+
+                // Define the destination latitude and longitude
+                const destinationLatitude = 11.6457402;
+                const destinationLongitude = 78.5782899;
+
+                // Open the Google Maps URL to navigate to the destination
+                const googleMapsUrl = `https://www.google.com/maps/dir/${userLatitude},${userLongitude}/${destinationLatitude},${destinationLongitude}`;
+                window.open(googleMapsUrl, '_blank');
+            },
+            (error) => {
+                console.error(error);
+                alert("Error getting user's location.");
+            }
+        );
+    }
+</script>
+</section>
 
     <!-- Footer -->
     <footer class="footer text-center mt-5">
