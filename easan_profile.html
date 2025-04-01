@@ -36,11 +36,21 @@
                         <button type="submit" class="btn btn-primary w-100">Save Changes</button>
                     </form>
                 </div>
+                <button id="logout-btn" class="btn btn-danger w-100 mt-3">Logout</button>
             </div>
         </div>
     </div>
 
     <script>
+
+
+        // Logout Functionality - Clears All Local Storage Data
+document.getElementById("logout-btn").addEventListener("click", function() {
+    localStorage.clear(); // Clears all stored data
+    alert("Logged out successfully!");
+    window.location.href = "login.html"; // Redirect to login/home page
+});
+
         // Fetch user data from localStorage on page load
         window.onload = function() {
             const userData = JSON.parse(localStorage.getItem("user_data")) || {};
