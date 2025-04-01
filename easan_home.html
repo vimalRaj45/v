@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,11 +46,11 @@
     }
 }
 
-/* on larger screens (1200px and up), 8 columns */
+/* On larger screens (1200px and up), 4 columns */
 @media (min-width: 1200px) {
     .row.row-cols-lg-4 > .col {
-        flex: 0 0 12.5%;
-        max-width: 12.5%;
+        flex: 0 0 25%;
+        max-width: 25%;
     }
 }
 #map {
@@ -79,7 +80,7 @@
         <a class="nav-link" href="#">
             <i class="bi bi-cart fs-3" style="font-weight: bold; font-size: 1.5rem;"></i> Cart
         </a>
-        <h6 class=" text-center mt-2"><small>Easan Shop</small></h6>
+        <h6 class=" text-center mt-2 text-bold">EASAN SUPERMARKET</h6>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <i class="bi bi-list fs-3"></i>
@@ -249,13 +250,8 @@
   </div>
 </section>
 
-  <section class="container p-1">
-    <!-- Your shop location -->
-    <h2>Our Shop Location</h2>
-    <p>Shop Name: EASAN SUPERMARKET</p>
-    <p>Address: palikadu appamasamudram (po) attur (tk) Salem (Dt)</p>
-    <p>Phone Number: 8807099288</p>
-    <button class="uk-button uk-button-primary uk-button-small" onclick="getDirections()">Get Directions</button>
+  <section class="footer text-center mt-5">
+    <button class="btn btn-success" onclick="getDirections()">Get Directions</button>
 </section>
 
 <script>
@@ -282,15 +278,45 @@
         );
     }
 </script>
+
+
 </section>
 
-    <!-- Footer -->
-    <footer class="footer text-center mt-5">
-        <div class="container">
-            <p>© 2023 E-Shop. All Rights Reserved.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+<footer class="footer">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <h5 class="mb-3">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Address: palikadu appamasamudram (po) attur (tk) Salem (Dt)</li>
+<li class="mb-2"><i class="bi bi-telephone me-2"></i> Phone: <a href="tel:+919095502548" class="text-white">+91 9095502548</a></li>
+<li class="mb-2"><i class="bi bi-whatsapp me-2"></i> WhatsApp: <a href="https://wa.me/919095502548" target="_blank" class="text-white">+91 9095502548</a></li>
+<li class="mb-2"><i class="bi bi-envelope me-2"></i> Email: <a href="mailto:ivimalraj5207@gmail.com" class="text-white">info@example.com</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <h5 class="mb-3">Follow Us</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" target="_blank"><i class="bi bi-facebook me-2"></i> Facebook</a></li>
+                    <li class="mb-2"><a href="#" target="_blank"><i class="bi bi-twitter me-2"></i> Twitter</a></li>
+                    <li class="mb-2"><a href="#" target="_blank"><i class="bi bi-instagram me-2"></i> Instagram</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-0">
+                <h5 class="mb-3">Stay Updated</h5>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </footer>
+    </div>
+    <div class="text-center bg-dark text-secondary py-2 mt-4">
+        &copy; 2023 Example.com. All rights reserved.
+    </div>
+</footer>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
