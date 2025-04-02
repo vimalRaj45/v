@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles */
+    .form-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .spinner-border {
+      width: 30px;
+      height: 30px;
+      color: #0d6efd;
+    }
+
+    .loading-spinner {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4" style="color: #0d6efd;">Register New User</h1>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="text-center mt-2" style="color: #0d6efd;">Please wait...</p>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-container">
+      <form id="registrationForm" class="row g-3">
+        <div class="col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+            <label for="name"><i class="fas fa-user me-2"></i>Name</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+            <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="contact" name="contact" placeholder="Contact" required>
+            <label for="contact"><i class="fas fa-phone me-2"></i>Contact (10 digits)</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating">
+            <textarea class="form-control" id="address" name="address" placeholder="Address" style="height: 100px;" required></textarea>
+            <label for="address"><i class="fas fa-map-marker-alt me-2"></i>Address</label>
+          </div>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary w-100" id="submitButton" style="background-color: #0d6efd; border-color: #0d6efd;">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <i class="fas fa-bell me-2" style="color: #0d6efd;"></i>
+          <strong class="me-auto" id="toastTitle">Notification</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("registrationForm");
+      const toastElement = document.getElementById("liveToast");
+      const toast = new bootstrap.Toast(toastElement);
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      const submitButton = document.getElementById("submitButton");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // Show loading spinner and disable submit button
+        loadingSpinner.style.display = "block";
+        submitButton.disabled = true;
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+          data[key] = value.trim();
+        });
+
+        // Client-side validation
+        if (!data.name || !data.email || !data.contact || !data.address) {
+          showToast("Error", "All fields are required!", "danger");
+          hideLoadingSpinner();
+          return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(data.email)) {
+          showToast("Error", "Invalid email format!", "danger");
+          hideLoadingSpinner();
+          return;
+        }
+
+        const contactRegex = /^\d{10}$/;
+        if (!contactRegex.test(data.contact)) {
+          showToast("Error", "Contact must be 10 digits!", "danger");
+          hideLoadingSpinner();
+          return;
+        }
+
+        try {
+          const response = await fetch("https://script.google.com/macros/s/AKfycbyoZMyojrRlPOrElnyejwJjaUPqHl-KfSDIkcmHP8uypbo211lAqh0Jt2LRK45rNdUw/exec?action=register", {
+            method: "POST",
+            body: new URLSearchParams(data),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+          });
+
+          if (response.ok) {
+            const result = await response.text();
+            showToast("Success", result, "success");
+            form.reset(); // Clear the form
+          } else {
+            const error = await response.text();
+            showToast("Error", error, "danger");
+          }
+        } catch (error) {
+          console.error("Error submitting data:", error);
+          showToast("Error", "An error occurred while registering the user!", "danger");
+        } finally {
+          // Hide loading spinner and re-enable submit button
+          hideLoadingSpinner();
+        }
+      });
+
+      function showToast(title, message, type) {
+        document.getElementById("toastTitle").textContent = title;
+        document.getElementById("toastMessage").textContent = message;
+        toastElement.classList.remove("bg-success", "bg-danger");
+        toastElement.classList.add(`bg-${type}`);
+        toast.show();
+      }
+
+      function hideLoadingSpinner() {
+        loadingSpinner.style.display = "none";
+        submitButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
