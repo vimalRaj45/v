@@ -96,41 +96,50 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
 
-            // Get form data
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
+            // Get form data as URL-encoded string
+            const formData = new URLSearchParams(new FormData(this)).toString();
 
             // Replace with your Google Apps Script Web App URL
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbxiRpQwoxBIxPusf_QcT37qTQkxAmDj0_Kyco745B4n6-gviDo1xUvPx5Ni31J6LXm1/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzQxjn6MmSV-QBt7-77T9WPYkXQ7JjDtU7HZgrR90a-Qhxy19EgExAGLMcb-UBsP1Mw/exec';
 
             // Send data to Google Apps Script
             fetch(scriptUrl, {
                 method: 'POST',
-                body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                mode: 'no-cors',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // First get as text
+            })
+            .then(text => {
+                try {
+                    return JSON.parse(text); // Try to parse as JSON
+                } catch {
+                    throw new Error('Invalid JSON response');
                 }
             })
-            .then(response => response.json())
             .then(data => {
                 const responseDiv = document.getElementById('response');
-                if (data.status === 'success') {
+                if (data && data.status === 'success') {
                     responseDiv.className = 'success';
                     responseDiv.innerHTML = `✅ Success! Data saved to row ${data.row}`;
                     document.getElementById('customerForm').reset();
                 } else {
                     responseDiv.className = 'error';
-                    responseDiv.innerHTML = `❌ Error: ${data.error}`;
+                    responseDiv.innerHTML = `❌ Error: ${data.error || 'Unknown error occurred'}`;
                 }
                 responseDiv.style.display = 'block';
             })
             .catch(error => {
                 const responseDiv = document.getElementById('response');
                 responseDiv.className = 'error';
-                responseDiv.innerHTML = `❌ Network Error: ${error.message}`;
+                responseDiv.innerHTML = `❌ Error: ${error.message}`;
                 responseDiv.style.display = 'block';
             })
             .finally(() => {
