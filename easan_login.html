@@ -1,92 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup with Google or Name/Email</title>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="d-flex justify-content-center align-items-center vh-100 bg-light">
-
-    <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
-        <h4 class="text-center mb-3">Signup</h4>
-
-        <!-- Google Sign-In -->
-        <div class="text-center mb-3">
-            <div id="g_id_onload"
-                data-client_id="219533956445-5ngdi5t36u33fugnognh1ti2aim7e2sa.apps.googleusercontent.com"
-                data-context="signin"
-                data-ux_mode="popup"
-                data-callback="handleCredentialResponse"
-                data-auto_select="false">
-            </div>
-            <div class="g_id_signin" data-type="standard"></div>
-            <p class="text-center mt-2">OR</p>
-        </div>
-
-        <!-- Manual Signup Form (Name and Email) -->
-        <form id="manual-signup-form">
-            <div class="mb-3">
-                <label for="name" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-            </div>
-            <div class="mb-3">
-                <button type="button" class="btn btn-primary w-100" onclick="manualSignup()">Sign Up</button>
-            </div>
-        </form>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Login</h1>
+     
+    <!-- Google Sign-In -->
+    <div class="text-center mb-3">
+      <div id="g_id_onload"
+          data-client_id="219533956445-5ngdi5t36u33fugnognh1ti2aim7e2sa.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_select="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
     </div>
 
-    <script>
-        // Handle Google Sign-In
-        function handleCredentialResponse(response) {
-            const idToken = response.credential;
-            const user = JSON.parse(atob(idToken.split('.')[1])); // Decoding JWT
+    <h4 class="text-center">Or</h4>
+    
+    <form id="loginForm" class="row g-3">
+      <div class="col-12">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="loginCredential" name="loginCredential" placeholder="Email" required>
+          <label for="loginCredential">Email</label>
+        </div>
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </div>
+    </form>
 
-            // Save Google user data in local storage
-            const googleUser = {
-                name: user.name,
-                email: user.email,
-                picture: user.picture
-            };
+    <div id="userDataContainer" class="mt-4 d-none">
+      <h3>User Details</h3>
+      <p><strong>ID:</strong> <span id="userId"></span></p>
+      <p><strong>Name:</strong> <span id="userName"></span></p>
+      <p><strong>Email:</strong> <span id="userEmail"></span></p>
+      <p><strong>Contact:</strong> <span id="userContact"></span></p>
+      <p><strong>Address:</strong> <span id="userAddress"></span></p>
+    </div>
+  </div>
 
-            localStorage.setItem("user_data", JSON.stringify(googleUser));
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function handleCredentialResponse(response) {
+      const idToken = response.credential;
+      const user = JSON.parse(atob(idToken.split('.')[1])); // Decode JWT
 
-            // Redirect to homepage after saving to localStorage
-            window.location.href = "https://vimalraj45.github.io/v/easan_profile"; // Modify URL as needed
+      const googleUser = {
+        name: user.name,
+        email: user.email,
+        picture: user.picture
+      };
+      localStorage.setItem("user_data", JSON.stringify(googleUser));
+      fetchUserDetails(user.email);
+    }
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("loginForm");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const email = document.getElementById("loginCredential").value;
+        fetchUserDetails(email);
+      });
+    });
+
+    async function fetchUserDetails(email) {
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyoZMyojrRlPOrElnyejwJjaUPqHl-KfSDIkcmHP8uypbo211lAqh0Jt2LRK45rNdUw/exec?action=login", {
+          method: "POST",
+          body: new URLSearchParams({ loginCredential: email }),
+          headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          document.getElementById("userId").textContent = userData.id;
+          document.getElementById("userName").textContent = userData.name;
+          document.getElementById("userEmail").textContent = userData.email;
+          document.getElementById("userContact").textContent = userData.contact;
+          document.getElementById("userAddress").textContent = userData.address;
+          document.getElementById("userDataContainer").classList.remove("d-none");
+        } else {
+          alert("User not found!");
         }
-
-        // Manual Signup (Name & Email)
-        function manualSignup() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-
-            if (!name || !email) {
-                alert("Please fill in both fields (Name and Email).");
-                return;
-            }
-
-            // Save manual signup data in local storage
-            const manualUser = {
-                name: name,
-                email: email,
-                picture: "https://static.vecteezy.com/system/resources/previews/020/765/399/original/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" // You can assign a default picture or leave it empty
-            };
-
-            localStorage.setItem("user_data", JSON.stringify(manualUser));
-
-            // Optionally, display a success message and redirect
-            alert(`Successfully signed up! Welcome, ${name}!`);
-
-            // Redirect to homepage after saving to localStorage
-            window.location.href = "https://vimalraj45.github.io/v/easan_profile"; // Modify URL as needed
-        }
-    </script>
-
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        alert("An error occurred while logging in!");
+      }
+    }
+  </script>
 </body>
 </html>
