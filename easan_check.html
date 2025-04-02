@@ -3,150 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Data Submission</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            color: #4285F4;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4285F4;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #3367D6;
-        }
-        #response {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
-            display: none;
-        }
-        .success {
-            background-color: #E6F4EA;
-            color: #0D652D;
-            border: 1px solid #81C995;
-        }
-        .error {
-            background-color: #FCE8E6;
-            color: #D93025;
-            border: 1px solid #F28B82;
-        }
-    </style>
+    <title>Google Sheets Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
-    <h1>Customer Information Form</h1>
-    <form id="customerForm">
-        <div class="form-group">
-            <label for="id">ID:</label>
-            <input type="text" id="id" name="id" required>
-        </div>
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="contact">Contact Number:</label>
-            <input type="tel" id="contact" name="contact" required>
-        </div>
-        <div class="form-group">
-            <label for="address">Address:</label>
-            <textarea id="address" name="address" rows="3" required></textarea>
-        </div>
-        <button type="submit">Submit</button>
+<body class="container mt-4">
+
+    <h2 class="text-center">Google Sheets Data</h2>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            <tr><td colspan="5" class="text-center">Loading data...</td></tr>
+        </tbody>
+    </table>
+
+    <h3 class="mt-4">Add New Entry</h3>
+    <form id="addForm">
+        <input type="text" id="id" class="form-control mb-2" placeholder="ID" required>
+        <input type="text" id="name" class="form-control mb-2" placeholder="Name" required>
+        <input type="email" id="email" class="form-control mb-2" placeholder="Email" required>
+        <input type="text" id="contact" class="form-control mb-2" placeholder="Contact" required>
+        <input type="text" id="address" class="form-control mb-2" placeholder="Address" required>
+        <button type="submit" class="btn btn-primary">Add</button>
     </form>
-    <div id="response"></div>
 
     <script>
-        document.getElementById('customerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show loading state
-            const submitBtn = document.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+        const scriptURL = "https://script.google.com/macros/s/AKfycbz2ys7ymLMgdl6h06zfewnTScRsGcfl1xm1suI_uofv2aUl2AIBftkChBAy9DktZ9Xi/exec"; // Replace with your Google Apps Script URL
 
-            // Get form data as URL-encoded string
-            const formData = new URLSearchParams(new FormData(this)).toString();
-
-            // Replace with your Google Apps Script Web App URL
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzQxjn6MmSV-QBt7-77T9WPYkXQ7JjDtU7HZgrR90a-Qhxy19EgExAGLMcb-UBsP1Mw/exec';
-
-            // Send data to Google Apps Script
-            fetch(scriptUrl, {
-                method: 'POST',
+        // Fetch data from Google Sheets
+        function fetchData() {
+            fetch(scriptURL + "?action=getData", {
+                method: "GET",
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                mode: 'no-cors',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text(); // First get as text
-            })
-            .then(text => {
-                try {
-                    return JSON.parse(text); // Try to parse as JSON
-                } catch {
-                    throw new Error('Invalid JSON response');
+                    "Accept": "application/json"
                 }
             })
+            .then(response => response.json())
             .then(data => {
-                const responseDiv = document.getElementById('response');
-                if (data && data.status === 'success') {
-                    responseDiv.className = 'success';
-                    responseDiv.innerHTML = `✅ Success! Data saved to row ${data.row}`;
-                    document.getElementById('customerForm').reset();
-                } else {
-                    responseDiv.className = 'error';
-                    responseDiv.innerHTML = `❌ Error: ${data.error || 'Unknown error occurred'}`;
-                }
-                responseDiv.style.display = 'block';
+                let tableContent = "";
+                data.forEach(row => {
+                    tableContent += `<tr>
+                        <td>${row.id}</td>
+                        <td>${row.name}</td>
+                        <td>${row.email}</td>
+                        <td>${row.contact}</td>
+                        <td>${row.address}</td>
+                    </tr>`;
+                });
+                document.getElementById("dataTable").innerHTML = tableContent;
             })
-            .catch(error => {
-                const responseDiv = document.getElementById('response');
-                responseDiv.className = 'error';
-                responseDiv.innerHTML = `❌ Error: ${error.message}`;
-                responseDiv.style.display = 'block';
+            .catch(error => console.error("Error fetching data:", error));
+        }
+
+        // Handle form submission (Add data)
+        document.getElementById("addForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const id = document.getElementById("id").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const contact = document.getElementById("contact").value;
+            const address = document.getElementById("address").value;
+
+            fetch(scriptURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, name, email, contact, address })
             })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit';
-            });
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                fetchData(); // Refresh the table
+                document.getElementById("addForm").reset();
+            })
+            .catch(error => console.error("Error adding data:", error));
         });
+
+        fetchData(); // Load data on page load
     </script>
 </body>
 </html>
