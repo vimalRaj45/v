@@ -50,6 +50,7 @@
       async function fetchProducts() {
         try {
           const response = await fetch("https://script.google.com/macros/s/AKfycbzlsa0HzA8wkrenQGj3B7ft2X3DkPHB7oAIULGiANxnMnv1pFDNC15_MwKxT2AnShABYg/exec?action=listProducts");
+          
           const products = await response.json();
 
           productList.innerHTML = ""; // Clear previous list
