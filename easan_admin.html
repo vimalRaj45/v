@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Page</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer ID</th>
+        <th>Items</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="orders"></tbody>
+  </table>
+
+  <script>
+    // Redirect to fetch orders when the page loads
+    window.onload = function () {
+      const url = 'https://script.google.com/macros/s/AKfycbyxWJb0CW48Y7NuIkZaMCgR1bhxSM3u_X0wuesGwgwYxrUppTOTgYFCu9DTZM5ZAfPQXg/exec?action=getOrders';
+
+      // Redirect to the Web App URL to fetch orders
+      fetch(url)
+        .then(response => response.json())
+        .then(orders => {
+          const ordersTable = document.getElementById('orders');
+          orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${order.order_id}</td>
+              <td>${order.customer_id}</td>
+              <td>${order.items}</td>
+              <td>${order.quantity}</td>
+              <td>$${order.total}</td>
+              <td>
+                <select onchange="updateStatus('${order.order_id}', this.value)">
+                  <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                  <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                  <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                  <option value="Canceled" ${order.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
+                </select>
+              </td>
+              <td><button onclick="saveStatus('${order.order_id}')">Save</button></td>
+            `;
+            ordersTable.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error fetching orders:', error));
+    };
+
+    // Update order status
+    function updateStatus(orderId, newStatus) {
+      const url = `https://script.google.com/macros/s/AKfycbyxWJb0CW48Y7NuIkZaMCgR1bhxSM3u_X0wuesGwgwYxrUppTOTgYFCu9DTZM5ZAfPQXg/exec?action=updateOrderStatus&order_id=${orderId}&status=${newStatus}`;
+
+      // Redirect to the Web App URL to update the status
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
