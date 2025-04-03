@@ -163,6 +163,7 @@
             const result = await response.text();
             showToast("Success", result, "success");
             form.reset(); // Clear the form
+            window.location.replace("https://vimalraj45.github.io/v/easan_login");
           } else {
             const error = await response.text();
             showToast("Error", error, "danger");
