@@ -1,116 +1,151 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Upload PDF to Google Drive</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File to Google Drive</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin-top: 50px;
-      }
-      input, button, textarea {
-        margin-top: 20px;
-        padding: 10px;
-      }
-      button {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-      }
-      button:hover {
-        background-color: #45a049;
-      }
-      #result {
-        margin-top: 20px;
-      }
-      /* Loader Styles */
-      #loader {
-        display: none;
-        margin-top: 20px;
-      }
-      #loader img {
-        width: 50px;
-      }
+        body {
+            background-color: #f8f9fa;
+        }
+        .upload-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .loader {
+            display: none;
+        }
+        .drop-zone {
+            border: 2px dashed #007bff;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        .progress {
+            display: none;
+        }
     </style>
-  </head>
-  <body>
-    <h2>Upload PDF to Google Drive</h2>
-    <input type="file" id="fileInput" accept="application/pdf" />
-    <br />
-    <textarea id="description" placeholder="Enter file description..." rows="4" cols="50"></textarea>
-    <br />
-    <button onclick="uploadFile()">Upload</button>
-
-    <!-- Loader Animation -->
-    <div id="loader">
-      <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." />
-      <p>Uploading, please wait...</p>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-container">
+            <h3 class="text-center">Upload Notes to Google Drive</h3>
+            <p class="text-center text-muted">You can upload any type of file here.</p>
+            
+            <div class="drop-zone" id="dropZone">Drag & Drop Files Here or Click to Select</div>
+            
+            <form id="uploadForm">
+                <div class="mb-3">
+                    <input type="file" class="form-control" id="fileInput" multiple hidden>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">File Description</label>
+                    <textarea class="form-control" id="description" placeholder="Enter file description..." rows="3"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary w-100" onclick="uploadFile()">
+                        <i class="fas fa-upload"></i> Upload
+                    </button>
+                </div>
+            </form>
+            
+            <div class="progress mt-3">
+                <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+            </div>
+            
+            <div class="loader text-center mt-3">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Uploading, please wait...</p>
+            </div>
+            
+            <div id="result" class="mt-3 text-center"></div>
+        </div>
     </div>
 
-    <div id="result"></div>
-
     <script>
-      // Upload file to Google Drive using Google Apps Script
-      async function uploadFile() {
-        const fileInput = document.getElementById('fileInput');
-        const description = document.getElementById('description').value;
-        const file = fileInput.files[0];
+        document.getElementById('dropZone').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+        document.getElementById('dropZone').addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.target.style.background = "#e9f5ff";
+        });
+        document.getElementById('dropZone').addEventListener('dragleave', (e) => {
+            e.target.style.background = "white";
+        });
+        document.getElementById('dropZone').addEventListener('drop', (e) => {
+            e.preventDefault();
+            document.getElementById('fileInput').files = e.dataTransfer.files;
+        });
 
-        if (!file) {
-          document.getElementById('result').innerHTML = '❌ Please select a file to upload.';
-          return;
-        }
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const description = document.getElementById('description').value;
+            const files = fileInput.files;
+            const loader = document.querySelector('.loader');
+            const progressBar = document.getElementById('progressBar');
+            const resultDiv = document.getElementById('result');
 
-        // Show loader
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('result').innerHTML = ''; // Clear previous result
-
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = async () => {
-          const base64Data = reader.result.split(',')[1];
-          const fileName = file.name;
-          const mimeType = file.type;
-
-          // Google Apps Script Web App URL
-          const url = 'https://script.google.com/macros/s/AKfycbx3lxilv9k8huBg_Wp-FTdh3PZ0HBJ2BuGkpEPyeytF1h93ZmjxK_4xBv2ugA0PVb4/exec'; // Replace with your Web App URL
-
-          // Prepare data for POST request
-          const formData = new URLSearchParams();
-          formData.append('fileData', base64Data);
-          formData.append('fileName', fileName);
-          formData.append('mimeType', mimeType);
-          formData.append('description', description);
-
-          try {
-            // Send file to Google Apps Script
-            const response = await fetch(url, {
-              method: 'POST',
-              body: formData,
-            });
-
-            const result = await response.json();
-
-            // Hide loader after upload
-            document.getElementById('loader').style.display = 'none';
-
-            if (result.status === 'success') {
-              document.getElementById('result').innerHTML = `
-                ✅ File Uploaded Successfully!<br>
-                📄 <strong>${result.fileName}</strong><br>
-                🔗 <a href="${result.fileUrl}" target="_blank">View File</a>
-              `;
-            } else {
-              document.getElementById('result').innerHTML = `❌ Error: ${result.message}`;
+            if (files.length === 0) {
+                resultDiv.innerHTML = '<div class="alert alert-danger">❌ Please select at least one file to upload.</div>';
+                return;
             }
-          } catch (error) {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('result').innerHTML = `⚠️ Upload failed. Please try again later.`;
-          }
-        };
-      }
+
+            loader.style.display = 'block';
+            progressBar.parentElement.style.display = 'block';
+            resultDiv.innerHTML = '';
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    const base64Data = reader.result.split(',')[1];
+                    const fileName = file.name;
+                    const mimeType = file.type;
+                    const url = 'https://script.google.com/macros/s/AKfycbx3lxilv9k8huBg_Wp-FTdh3PZ0HBJ2BuGkpEPyeytF1h93ZmjxK_4xBv2ugA0PVb4/exec';
+                    
+                    const formData = new URLSearchParams();
+                    formData.append('fileData', base64Data);
+                    formData.append('fileName', fileName);
+                    formData.append('mimeType', mimeType);
+                    formData.append('description', description);
+                    
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                        });
+                        
+                        const result = await response.json();
+                        loader.style.display = 'none';
+                        progressBar.style.width = ((i + 1) / files.length * 100) + '%';
+                        
+                        if (result.status === 'success') {
+                            resultDiv.innerHTML += `
+                                <div class="alert alert-success">✅ ${result.fileName} Uploaded Successfully!</div>
+                                <a href="${result.fileUrl}" target="_blank" class="btn btn-success">View File</a>
+                                <hr>
+                            `;
+                        } else {
+                            resultDiv.innerHTML += `<div class="alert alert-danger">❌ Error uploading ${fileName}: ${result.message}</div>`;
+                        }
+                    } catch (error) {
+                        loader.style.display = 'none';
+                        resultDiv.innerHTML += `<div class="alert alert-warning">⚠️ Upload failed for ${fileName}. Please try again later.</div>`;
+                    }
+                };
+            }
+        }
     </script>
-  </body>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
