@@ -31,6 +31,28 @@
         .progress {
             display: none;
         }
+        .file-list {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .file-item span {
+            font-size: 14px;
+        }
+        .file-item .remove-btn {
+            color: red;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -49,6 +71,7 @@
                     <label for="description" class="form-label">File Description</label>
                     <textarea class="form-control" id="description" placeholder="Enter file description..." rows="3"></textarea>
                 </div>
+                <div class="file-list" id="fileList"></div>
                 <div class="text-center">
                     <button type="button" class="btn btn-primary w-100" onclick="uploadFile()">
                         <i class="fas fa-upload"></i> Upload
@@ -70,23 +93,60 @@
     </div>
 
     <script>
-        document.getElementById('dropZone').addEventListener('click', () => {
-            document.getElementById('fileInput').click();
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const fileListDiv = document.getElementById('fileList');
+
+        // Function to display selected file names
+        function displayFileNames(files) {
+            fileListDiv.innerHTML = ''; // Clear previous file list
+            Array.from(files).forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <span>${file.name}</span>
+                    <span class="remove-btn" onclick="removeFile(${index})">×</span>
+                `;
+                fileListDiv.appendChild(fileItem);
+            });
+        }
+
+        // Remove file from the list
+        function removeFile(index) {
+            const files = Array.from(fileInput.files);
+            files.splice(index, 1); // Remove file at the specified index
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            fileInput.files = dataTransfer.files; // Update the file input
+            displayFileNames(fileInput.files); // Re-render the file list
+        }
+
+        // Event listeners for file selection
+        fileInput.addEventListener('change', () => {
+            displayFileNames(fileInput.files);
         });
-        document.getElementById('dropZone').addEventListener('dragover', (e) => {
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
-            e.target.style.background = "#e9f5ff";
+            dropZone.style.background = "#e9f5ff";
         });
-        document.getElementById('dropZone').addEventListener('dragleave', (e) => {
-            e.target.style.background = "white";
+
+        dropZone.addEventListener('dragleave', (e) => {
+            dropZone.style.background = "white";
         });
-        document.getElementById('dropZone').addEventListener('drop', (e) => {
+
+        dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            document.getElementById('fileInput').files = e.dataTransfer.files;
+            fileInput.files = e.dataTransfer.files;
+            displayFileNames(fileInput.files);
+            dropZone.style.background = "white";
         });
 
         async function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
             const description = document.getElementById('description').value;
             const files = fileInput.files;
             const loader = document.querySelector('.loader');
