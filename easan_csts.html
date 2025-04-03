@@ -41,10 +41,7 @@
     // Retrieve customer_id from localStorage
     const customerId = localStorage.getItem('customer_id');
     if (!customerId) {
-      document.getElementById('order-summary').innerHTML = `
-        <p class="error">You are not logged in. Please log in to view your orders.</p>
-        <a href="/login.html">Go to Login Page</a>
-      `;
+      window.location.replace("https://vimalraj45.github.io/v/easan_login");
     } else {
       // Fetch orders for the customer_id
       fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
