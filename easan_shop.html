@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Order Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .product {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    .cart {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Order Page</h1>
+  <div id="products"></div>
+  <div class="cart">
+    <h2>Cart</h2>
+    <ul id="cart-items"></ul>
+    <label for="delivery-time">Expected Delivery Time:</label>
+    <input type="datetime-local" id="delivery-time" required>
+    <button id="place-order">Place Order</button>
+  </div>
+
+  <script>
+    let cart = [];
+
+
+    // Retrieve customer_id from localStorage
+    const customerId = localStorage.getItem('customer_id');
+    if (!customerId) {
+      alert("Please log in to place an order.");
+      //window.location.href = "/login.html"; // Redirect to login page (replace with your actual login URL)
+    }
+
+    // Fetch and display products
+    fetch('https://script.google.com/macros/s/AKfycbzRzDw6G7rf1RETsrlyemxkaM849LM1igDdHdLrbpBAvlaJ3_t1U_ByeSP1hvJtCmW-/exec?action=getProducts')
+      .then(response => response.json())
+      .then(products => {
+        const productsDiv = document.getElementById('products');
+        products.forEach(product => {
+          const productDiv = document.createElement('div');
+          productDiv.className = 'product';
+          productDiv.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>Price: $${product.price}</p>
+            <p>Stock: ${product.stock}</p>
+            <button onclick="addToCart('${product.id}', '${product.name}', ${product.price})">Add to Cart</button>
+          `;
+          productsDiv.appendChild(productDiv);
+        });
+      });
+
+    // Add to cart
+    function addToCart(productId, productName, price) {
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ id: productId, name: productName, price: price, quantity: 1 });
+      }
+      updateCart();
+    }
+
+    // Update cart display
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} x ${item.quantity} ($${item.price * item.quantity})`;
+        cartItems.appendChild(li);
+      });
+    }
+
+    // Place order
+    document.getElementById('place-order').addEventListener('click', () => {
+      const deliveryTime = document.getElementById('delivery-time').value;
+      if (!deliveryTime) {
+        alert("Please select an expected delivery time.");
+        return;
+      }
+
+      const orderData = {
+        order_id: 'ORD' + Math.floor(Math.random() * 100000),
+        customer_id: customerId,
+        items: JSON.stringify(cart.map(item => ({ id: item.id, quantity: item.quantity }))),
+        quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
+        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        status: 'Pending',
+        delivery_time: deliveryTime
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbzRzDw6G7rf1RETsrlyemxkaM849LM1igDdHdLrbpBAvlaJ3_t1U_ByeSP1hvJtCmW-/exec?action=createOrder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(orderData)
+      })
+        .then(response => response.text())
+        .then(message => alert(message))
+        .catch(error => alert('Error: ' + error.message));
+    });
+  </script>
+</body>
+</html>
