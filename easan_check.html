@@ -1,81 +1,422 @@
 <!DOCTYPE html>
+
+
+
 <html lang="en">
+
+
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product List</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+    <meta charset="UTF-8">
 
-    .product-card {
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 15px;
-      background-color: #fff;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .product-card img {
-      max-width: 100px;
-      height: auto;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">Product List</h1>
+    <title>Sethu Properties Intro</title> 
 
-    <!-- Product List -->
-    <div id="productList"></div>
-  </div>
+    <style>
 
-  <!-- Bootstrap 5 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const productList = document.getElementById("productList");
+        /* Base styles */
 
-      // Fetch and display all products
-      async function fetchProducts() {
-        try {
-          const response = await fetch("https://script.google.com/macros/s/AKfycbzlsa0HzA8wkrenQGj3B7ft2X3DkPHB7oAIULGiANxnMnv1pFDNC15_MwKxT2AnShABYg/exec?action=listProducts");
-          
-          const products = await response.json();
+        body {
 
-          productList.innerHTML = ""; // Clear previous list
-          products.forEach(product => {
-            productList.innerHTML += `
-              <div class="product-card d-flex justify-content-between align-items-center">
-                <div>
-                  <p><strong>${product.name}</strong></p>
-                  <p>Price: $${product.price}, Stock: ${product.stock}</p>
-                  <p>Last Updated: ${new Date(product.last_updated).toLocaleString()}</p>
-                </div>
-                <div>
-                  <img src="${product.img_url}" alt="${product.name}">
-                </div>
-              </div>
-            `;
-          });
-        } catch (error) {
-          console.error("Error fetching products:", error);
+            font-family: 'Poppins', sans-serif;
+
+            margin: 0;
+
+            padding: 20px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+            background: linear-gradient(135deg, #f0f8ff, #ffffff);
+
+            overflow: hidden;
+
+            text-align: center;
+
+            box-sizing: border-box;
+
         }
-      }
 
-      // Initial fetch
-      fetchProducts();
-    });
-  </script>
+
+
+        /* Container for logo and text */
+
+        .container {
+
+            padding: 20px 40px;
+
+            box-sizing: border-box;
+
+            max-width: 800px;
+
+            border-radius: 15px;
+
+            background-color: transparent;
+
+            transition: box-shadow 0.5s ease;
+
+        }
+
+/* Glitter Effect Animation */
+
+/* Glitter Effect Animation */
+
+@keyframes glitterEffect {
+
+    0% {
+
+        box-shadow: 
+
+                    0 0 45px 9px rgba(192, 192, 192, 0.4); /* Silver */
+
+    }
+
+    50% {
+
+        box-shadow: 
+
+                    0 0 90px 18px rgba(192, 192, 192, 0.5); /* Silver */
+
+    }
+
+    80% {
+
+        box-shadow: 
+
+                    0 0 15px 30px rgba(192, 192, 192, 0.6); /* Silver */
+
+    }
+
+    100% {
+
+        box-shadow:
+
+                    0 0 45px 9px rgba(192, 192, 192, 0.4); /* Silver */
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+        .glitter {
+
+            animation: glitterEffect 3s infinite;
+
+        }
+
+
+
+        /* Main logo text */
+
+        .logo-text {
+
+            font-size: 50px;
+
+            font-weight: bold;
+
+            color: #2e7d32;
+
+            text-transform: uppercase;
+
+            display: inline-block;
+
+            opacity: 0;
+
+            animation: slideInRight 2s ease-out forwards, glitter 2s infinite 4s;
+
+            letter-spacing: 2px;
+
+            background: linear-gradient(to right, #2e7d32, #66bb6a);
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            margin-bottom: -15px;
+
+        }
+
+
+
+        /* Sub logo text */
+
+        .logo-subtext {
+
+            font-size: 40px;
+
+            font-weight: 300;
+
+            color: #555555;
+
+            display: inline-block;
+
+            opacity: 0;
+
+            animation: slideInLeft 2s ease-out 0.2s forwards;
+
+        }
+
+
+
+        /* Slogan below the logo */
+
+        .logo-slogan {
+
+            font-size: 18px;
+
+            color: #757575;
+
+            margin-top: 15px;
+
+            font-style: italic;
+
+            opacity: 0;
+
+            animation: fadeIn 2s ease-out 2s forwards;
+
+            letter-spacing: 1px;
+
+        }
+
+
+
+        /* Animations */
+
+        @keyframes slideInRight {
+
+            0% {
+
+                transform: translateX(-150%);
+
+                opacity: 0;
+
+            }
+
+            100% {
+
+                transform: translateX(0);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+
+        @keyframes slideInLeft {
+
+            0% {
+
+                transform: translateX(150%);
+
+                opacity: 0;
+
+            }
+
+            100% {
+
+                transform: translateX(0);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+
+        @keyframes fadeIn {
+
+            0% {
+
+                opacity: 0;
+
+            }
+
+            100% {
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+
+        @keyframes glitter {
+
+            0% {
+
+                background-position: 0% 50%;
+
+            }
+
+            50% {
+
+                background-position: 100% 50%;
+
+            }
+
+            100% {
+
+                background-position: 0% 50%;
+
+            }
+
+        }
+
+
+
+        /* Responsive Styles */
+
+        @media (max-width: 768px) {
+
+            .container {
+
+                padding: 15px 20px;
+
+            }
+
+
+
+            .logo-text {
+
+                font-size: 40px;
+
+            }
+
+
+
+            .logo-subtext {
+
+                font-size: 30px;
+
+            }
+
+
+
+            .logo-slogan {
+
+                font-size: 16px;
+
+            }
+
+        }
+
+
+
+        @media (max-width: 480px) {
+
+            body {
+
+                padding: 10px;
+
+            }
+
+
+
+            .container {
+
+                padding: 10px 15px;
+
+            }
+
+
+
+            .logo-text {
+
+                font-size: 40px;
+
+            }
+
+
+
+            .logo-subtext {
+
+                font-size: 30px;
+
+            }
+
+
+
+            .logo-slogan {
+
+                font-size: 14px;
+
+                margin-top: 7px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Logo Section -->
+
+    <div class="container" id="logo" style="background-color: white">
+
+        <img class="logo-text" src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" width="200" height="160" loading="lazy"></img>
+
+        <p class="logo-slogan text-bold" style="margin-top: 7%">"Shop smart, save time!"</p>
+
+    </div>
+
+
+
+    <!-- Script to add glitter effect -->
+
+    <script>
+
+       setTimeout(() => {
+
+            const container = document.querySelector('.container');
+
+            container.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.2)"; // Initial box shadow
+
+            setTimeout(() => {
+
+                container.classList.add('glitter'); // Add glitter effect
+
+            }, 1000); // Delay before glitter effect
+
+        }, 3000); // Delay after animations are complete
+
+
+
+        // Redirect after the glitter effect completes
+
+        setTimeout(() => {
+
+            window.location.href = "#"; // Replace with your target page URL
+
+        }, 4000); 
+
+    </script>
+
 </body>
-</html>
+
+</html
+
+>
+
