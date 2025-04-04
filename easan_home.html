@@ -536,16 +536,32 @@ font-weight: bold;
         ></path>
       </svg>
     </div>
-    <p class="ms-2">Getting Location...</p>
+    <p class="ms-2">Connecting...</p>
   </div>
   
 <script>
-  function getDirections() {
-    // Show loading
-    document.getElementById('loading').style.display = 'flex';
+   function getDirections() {
+    const loading = document.getElementById('loading');
+    loading.style.display = 'flex';
 
-    navigator.geolocation.getCurrentPosition(
+    let locationFound = false;
+
+    // Set a timeout in case geolocation hangs
+    const timeout = setTimeout(() => {
+      if (!locationFound) {
+        loading.style.display = 'none';
+        alert("Location is taking too long. Please check GPS or try again.");
+      }
+    }, 8000); // 8 seconds timeout
+
+    const watchId = navigator.geolocation.watchPosition(
       (position) => {
+        if (locationFound) return;
+        locationFound = true;
+
+        clearTimeout(timeout);
+        navigator.geolocation.clearWatch(watchId);
+
         const userLatitude = position.coords.latitude;
         const userLongitude = position.coords.longitude;
 
@@ -554,14 +570,19 @@ font-weight: bold;
 
         const url = `https://www.google.com/maps/dir/${userLatitude},${userLongitude}/${destinationLatitude},${destinationLongitude}`;
 
-        // Hide loading and open maps
-        document.getElementById('loading').style.display = 'none';
+        loading.style.display = 'none';
         window.open(url, '_blank');
       },
       (error) => {
-        document.getElementById('loading').style.display = 'none';
+        clearTimeout(timeout);
+        loading.style.display = 'none';
         alert("Error getting your location.");
         console.error(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,  // fallback in geolocation itself
+        maximumAge: 0
       }
     );
   }
