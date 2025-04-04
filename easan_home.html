@@ -115,8 +115,12 @@
             <i class="bi bi-cart fs-3" style="font-weight: bold; font-size: 1.5rem;"></i>
         </a>
         <div class="text-center">
-            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo" style="width: 250px; height: 42px; object-fit: contain;">
-          </div>          
+            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo" 
+                 id="logo-img"
+                 style="width: 250px; height: 42px; object-fit: contain; 
+                        position: relative; top: -100px; opacity: 0; 
+                        transition: top 0.8s ease, opacity 0.8s ease;">
+          </div>        
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <i class="bi bi-list fs-3 fe-3"></i>
@@ -159,6 +163,11 @@
         const profileImg = userData.picture || "default-profile.jpg"; // Default if no picture is found
         document.getElementById("profile-img").src = profileImg;
     };
+    window.onload = function() {
+    const img = document.getElementById("logo-img");
+    img.style.top = "0px"; 
+    img.style.opacity = "1"; 
+  };
 </script>
 
 
