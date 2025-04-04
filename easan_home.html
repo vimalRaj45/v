@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,15 +112,23 @@
     <div id="google_translate_element"></div>
   <div class="d-flex align-items-center justify-content-between p-2 custom-navbar sticky-top bg-white border bordr-dark" style="border-color: #161212;">
         <a class="nav-link" href="https://vimalraj45.github.io/v/easan_csts">
-            <i class="bi bi-person-check fs-3" style="font-weight: bold; font-size: 1.5rem;"></i>
+            <i class="bi bi-person-check-fill fs-3" style="font-weight: bold; font-size: 1.5rem;" style="background-color: #343a40;"></i>
         </a>
-        <div class="text-center">
-            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo" 
-                 id="logo-img"
+        <div class="text-center" style="position: relative; height: 50px; display: flex; justify-content: center; align-items: center;">
+            <!-- First Image -->
+            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" 
+                 id="logo-img1"
                  style="width: 250px; height: 42px; object-fit: contain; 
-                        position: relative; top: -100px; opacity: 0; 
+                        position: absolute; top: -100px; opacity: 0; 
                         transition: top 0.8s ease, opacity 0.8s ease;">
-          </div>        
+          
+            <!-- Second Image (Same Position) -->
+            <img src="https://i.ibb.co/ZpWMsS6B/Whats-App-Image-2025-04-04-at-20-27-11-91a00e2d-1.jpg" alt="Easan Supermarket Logo 2" 
+                 id="logo-img2"
+                 style="width: 250px; height: 48px; object-fit: contain; 
+                        position: absolute; top: -100px; opacity: 0; 
+                        transition: top 0.8s ease, opacity 0.8s ease;">
+          </div>      
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
             aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <i class="bi bi-list fs-3 fe-3"></i>
@@ -161,11 +171,33 @@
         const profileImg = userData.picture || "default-profile.jpg"; // Default if no picture is found
         document.getElementById("profile-img").src = profileImg;
     };
-    window.onload = function() {
-    const img = document.getElementById("logo-img");
-    img.style.top = "0px"; 
-    img.style.opacity = "1"; 
-  };
+    function animateImages() {
+    let img1 = document.getElementById("logo-img1");
+    let img2 = document.getElementById("logo-img2");
+
+    function moveImage(img, delay) {
+      setTimeout(() => {
+        img.style.opacity = "1";  
+        img.style.top = "0px";    // Slide down
+
+        setTimeout(() => {
+          img.style.top = "-100px";  
+          img.style.opacity = "0";  // Slide up
+        }, 3000); // Stay for 2 seconds
+      }, delay);
+    }
+
+    function startAnimation() {
+      moveImage(img1, 0);       // First image animates first
+      moveImage(img2, 3000);    // Second image animates after 3 seconds
+
+      setTimeout(startAnimation, 6000); // Repeat cycle every 6 seconds
+    }
+
+    startAnimation();
+  }
+
+  window.onload = animateImages;
 </script>
 
 
