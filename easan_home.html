@@ -540,27 +540,24 @@ font-weight: bold;
   </div>
   
 <script>
-   function getDirections() {
+  function getDirections() {
     const loading = document.getElementById('loading');
     loading.style.display = 'flex';
 
     let locationFound = false;
 
-    // Set a timeout in case geolocation hangs
+    // Set a timeout in case geolocation takes too long
     const timeout = setTimeout(() => {
       if (!locationFound) {
         loading.style.display = 'none';
         alert("Location is taking too long. Please check GPS or try again.");
       }
-    }, 8000); // 8 seconds timeout
+    }, 8000); // 8-second timeout
 
-    const watchId = navigator.geolocation.watchPosition(
+    navigator.geolocation.getCurrentPosition(
       (position) => {
-        if (locationFound) return;
         locationFound = true;
-
         clearTimeout(timeout);
-        navigator.geolocation.clearWatch(watchId);
 
         const userLatitude = position.coords.latitude;
         const userLongitude = position.coords.longitude;
@@ -570,8 +567,11 @@ font-weight: bold;
 
         const url = `https://www.google.com/maps/dir/${userLatitude},${userLongitude}/${destinationLatitude},${destinationLongitude}`;
 
-        loading.style.display = 'none';
-        window.open(url, '_blank');
+        // Keep the loading for 2 seconds before opening the map
+        setTimeout(() => {
+          loading.style.display = 'none';
+          window.open(url, '_blank');
+        }, 2000); // 2-second delay
       },
       (error) => {
         clearTimeout(timeout);
@@ -581,7 +581,7 @@ font-weight: bold;
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,  // fallback in geolocation itself
+        timeout: 10000,
         maximumAge: 0
       }
     );
