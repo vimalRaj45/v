@@ -1,70 +1,125 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Order Page</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
     }
+    .product-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px; /* Small gap between cards */
+      justify-content: space-between;
+    }
     .product {
       border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 15px;
       border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1 1 calc(50% - 20px); /* Two cards per row with spacing */
+      text-align: center;
     }
     .cart {
       margin-top: 20px;
       border: 1px solid #ccc;
-      padding: 10px;
+      padding: 15px;
       border-radius: 8px;
+    }
+    .cart-total {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .product {
+        flex: 1 1 100%; /* One card per row on small screens */
+      }
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .bi-cart-plus {
+      margin-right: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>Product Order Page</h1>
-  <div id="products"></div>
+  <h1 class="text-center">Product Order Page</h1>
+  <div id="products" class="product-container"></div>
   <div class="cart">
-    <h2>Cart</h2>
-    <ul id="cart-items"></ul>
+    <h2><i class="bi bi-cart-check-fill"></i> Cart</h2>
+    <ul id="cart-items" class="list-unstyled"></ul>
+    <div class="cart-total" id="cart-total">Total: $0</div>
     <label for="delivery-time">Expected Delivery Time:</label>
-    <input type="datetime-local" id="delivery-time" required>
-    <button id="place-order">Place Order</button>
+    <input type="datetime-local" id="delivery-time" required class="form-control mb-3">
+    <button id="place-order" class="w-100"><i class="bi bi-box-arrow-in-right"></i> Place Order</button>
   </div>
 
   <script>
     let cart = [];
 
-
-    // Retrieve customer_id from localStorage
+    // Retrieve customer details from localStorage
     const customerId = localStorage.getItem('customer_id');
-    const customername = localStorage.getItem('customer_name');
-    const customerno = localStorage.getItem('customer_no');
+    const customerName = localStorage.getItem('customer_name');
+    const customerNo = localStorage.getItem('customer_no');
 
     if (!customerId) {
       alert("Please log in to place an order.");
-      window.location.href = "https://vimalraj45.github.io/v/easan_login"; 
+     // window.location.href = "https://vimalraj45.github.io/v/easan_login"; 
     }
 
     // Fetch and display products
     fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=getProducts')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
       .then(products => {
+        if (products.length === 0) {
+          document.getElementById('products').innerHTML = '<p class="text-center">No products available.</p>';
+          return;
+        }
+        console.log(products);
         const productsDiv = document.getElementById('products');
         products.forEach(product => {
           const productDiv = document.createElement('div');
           productDiv.className = 'product';
           productDiv.innerHTML = `
-            <h3>${product.name}</h3>
-            <p>Price: $${product.price}</p>
-            <p>Stock: ${product.stock}</p>
-            <button onclick="addToCart('${product.id}', '${product.name}', ${product.price})">Add to Cart</button>
+          
+  <div class="card h-100 shadow-sm">
+    <img src="${product.img_url}" class="card-img-top img-fluid" alt="${product.name}">
+    <div class="card-body">
+      <h5 class="card-title">${product.name}</h5>
+      <p class="card-text mb-1">Price: ₹${product.price}</p>
+      <p class="card-text mb-2">Stock: ${product.stock}</p>
+      <button class="btn btn-primary w-100" onclick="addToCart('${product.id}', '${product.name}', ${product.price})">
+        <i class="bi bi-cart-plus"></i> Add to Cart
+      </button>
+    </div>
+  </div>
+
           `;
           productsDiv.appendChild(productDiv);
         });
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+        document.getElementById('products').innerHTML = '<p class="text-center">Failed to load products. Please try again later.</p>';
       });
 
     // Add to cart
@@ -76,17 +131,24 @@
         cart.push({ id: productId, name: productName, price: price, quantity: 1 });
       }
       updateCart();
+      alert(`${productName} added to cart!`);
     }
 
     // Update cart display
     function updateCart() {
       const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
       cartItems.innerHTML = '';
+      let total = 0;
+
       cart.forEach(item => {
         const li = document.createElement('li');
         li.textContent = `${item.name} x ${item.quantity} ($${item.price * item.quantity})`;
         cartItems.appendChild(li);
+        total += item.price * item.quantity;
       });
+
+      cartTotal.textContent = `Total: $${total.toFixed(2)}`;
     }
 
     // Place order
@@ -105,8 +167,8 @@
         total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
         status: 'Pending',
         delivery_time: deliveryTime,
-        customer_name:customername,
-        customer_no:customerno
+        customer_name: customerName,
+        customer_no: customerNo
       };
 
       fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
@@ -114,9 +176,19 @@
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(orderData)
       })
-        .then(response => response.text())
-        .then(message => alert(message))
-        .catch(error => alert('Error: ' + error.message));
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.text();
+        })
+        .then(message => {
+          alert(message);
+          cart = []; // Clear the cart after successful order placement
+          updateCart(); // Update the cart UI
+        })
+        .catch(error => {
+          console.error('Error placing order:', error);
+          alert('Error placing order. Please try again later.');
+        });
     });
   </script>
 </body>
