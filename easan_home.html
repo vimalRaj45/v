@@ -11,32 +11,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-        .vsgrps-scroll-container {
-      overflow: hidden;
+            .vsgrps-scroll-container {
+      overflow-x: scroll;
+      white-space: nowrap;
       background: #fff;
-      border-top: 1px solid #e0e0e0;
-      border-bottom: 1px solid #e0e0e0;
       padding: 10px 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      scroll-behavior: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
 
-    .vsgrps-scroll-track {
-      display: flex;
-      width: max-content;
-      animation: vsgrps-scroll 25s linear infinite;
+    .vsgrps-scroll-container::-webkit-scrollbar {
+      display: none;
     }
 
-    @keyframes vsgrps-scroll {
-      0% {
-        transform: translateX(0%);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
+    .vsgrps-track {
+      display: inline-flex;
     }
 
     .vsgrps-card {
       width: 70px;
-      margin-right: 14px;
+      margin: 0 10px;
       text-align: center;
       flex-shrink: 0;
     }
@@ -47,8 +44,6 @@
       object-fit: cover;
       border-radius: 10px;
       border: 1px solid #ccc;
-      display: block;
-      margin: auto;
     }
 
     .vsgrps-subtitle {
@@ -440,17 +435,8 @@
    <!-- Shop Categories Section -->
 <section class="container p-1">
     <h2 style="text-align: start; margin-bottom: 10px; font-family: fantasy;" class="ms-1 text-small h5">Category</h2>
-    <div class="vsgrps-scroll-container">
-  <div class="vsgrps-scroll-track">
-    <!-- One set -->
-    <div class="vsgrps-card"><img src="https://i.ibb.co/LwxFVrf/blob.jpg"><div class="vsgrps-subtitle">Electronics</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/C53DmNgC/blob.jpg"><div class="vsgrps-subtitle">Fashion</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/Ng1nghdG/blob.jpg"><div class="vsgrps-subtitle">Home</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/twMHxVv2/blob.jpg"><div class="vsgrps-subtitle">Books</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/YBcZkrfw/blob.jpg"><div class="vsgrps-subtitle">Sports</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/23y9cx0S/blob.jpg"><div class="vsgrps-subtitle">Toys</div></div>
-
-    <!-- Duplicate set for infinite loop -->
+     <div class="vsgrps-scroll-container" id="carousel">
+  <div class="vsgrps-track" id="track">
     <div class="vsgrps-card"><img src="https://i.ibb.co/LwxFVrf/blob.jpg"><div class="vsgrps-subtitle">Electronics</div></div>
     <div class="vsgrps-card"><img src="https://i.ibb.co/C53DmNgC/blob.jpg"><div class="vsgrps-subtitle">Fashion</div></div>
     <div class="vsgrps-card"><img src="https://i.ibb.co/Ng1nghdG/blob.jpg"><div class="vsgrps-subtitle">Home</div></div>
@@ -458,7 +444,7 @@
     <div class="vsgrps-card"><img src="https://i.ibb.co/YBcZkrfw/blob.jpg"><div class="vsgrps-subtitle">Sports</div></div>
     <div class="vsgrps-card"><img src="https://i.ibb.co/23y9cx0S/blob.jpg"><div class="vsgrps-subtitle">Toys</div></div>
   </div>
-    </div>
+     </div>
   </section>
   
 
@@ -514,6 +500,25 @@ font-weight: bold;
   </div>
   
 <script>
+    const container = document.getElementById("carousel");
+  const track = document.getElementById("track");
+
+  // Duplicate items for looping
+  track.innerHTML += track.innerHTML;
+
+  let scrollSpeed = 0.5;
+
+  function autoScroll() {
+    container.scrollLeft += scrollSpeed;
+
+    if (container.scrollLeft >= track.scrollWidth / 2) {
+      container.scrollLeft = 0;
+    }
+
+    requestAnimationFrame(autoScroll);
+  }
+
+  autoScroll();
   function getDirections() {
     const loading = document.getElementById('loading');
     loading.style.display = 'flex';
