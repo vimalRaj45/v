@@ -1,422 +1,123 @@
+
 <!DOCTYPE html>
-
-
-
 <html lang="en">
-
-
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Sethu Properties Intro</title> 
-
-    <style>
-
-        /* Base styles */
-
-        body {
-
-            font-family: 'Poppins', sans-serif;
-
-            margin: 0;
-
-            padding: 20px;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            height: 100vh;
-
-            background: linear-gradient(135deg, #f0f8ff, #ffffff);
-
-            overflow: hidden;
-
-            text-align: center;
-
-            box-sizing: border-box;
-
-        }
-
-
-
-        /* Container for logo and text */
-
-        .container {
-
-            padding: 20px 40px;
-
-            box-sizing: border-box;
-
-            max-width: 800px;
-
-            border-radius: 15px;
-
-            background-color: transparent;
-
-            transition: box-shadow 0.5s ease;
-
-        }
-
-/* Glitter Effect Animation */
-
-/* Glitter Effect Animation */
-
-@keyframes glitterEffect {
-
-    0% {
-
-        box-shadow: 
-
-                    0 0 45px 9px rgba(192, 192, 192, 0.4); /* Silver */
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Order Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
     }
-
-    50% {
-
-        box-shadow: 
-
-                    0 0 90px 18px rgba(192, 192, 192, 0.5); /* Silver */
-
+    .product {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
     }
-
-    80% {
-
-        box-shadow: 
-
-                    0 0 15px 30px rgba(192, 192, 192, 0.6); /* Silver */
-
+    .cart {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
     }
-
-    100% {
-
-        box-shadow:
-
-                    0 0 45px 9px rgba(192, 192, 192, 0.4); /* Silver */
-
-    }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-        .glitter {
-
-            animation: glitterEffect 3s infinite;
-
-        }
-
-
-
-        /* Main logo text */
-
-        .logo-text {
-
-            font-size: 50px;
-
-            font-weight: bold;
-
-            color: #2e7d32;
-
-            text-transform: uppercase;
-
-            display: inline-block;
-
-            opacity: 0;
-
-            animation: slideInRight 2s ease-out forwards, glitter 2s infinite 4s;
-
-            letter-spacing: 2px;
-
-            background: linear-gradient(to right, #2e7d32, #66bb6a);
-
-            -webkit-background-clip: text;
-
-            -webkit-text-fill-color: transparent;
-
-            margin-bottom: -15px;
-
-        }
-
-
-
-        /* Sub logo text */
-
-        .logo-subtext {
-
-            font-size: 40px;
-
-            font-weight: 300;
-
-            color: #555555;
-
-            display: inline-block;
-
-            opacity: 0;
-
-            animation: slideInLeft 2s ease-out 0.2s forwards;
-
-        }
-
-
-
-        /* Slogan below the logo */
-
-        .logo-slogan {
-
-            font-size: 18px;
-
-            color: #757575;
-
-            margin-top: 15px;
-
-            font-style: italic;
-
-            opacity: 0;
-
-            animation: fadeIn 2s ease-out 2s forwards;
-
-            letter-spacing: 1px;
-
-        }
-
-
-
-        /* Animations */
-
-        @keyframes slideInRight {
-
-            0% {
-
-                transform: translateX(-150%);
-
-                opacity: 0;
-
-            }
-
-            100% {
-
-                transform: translateX(0);
-
-                opacity: 1;
-
-            }
-
-        }
-
-
-
-        @keyframes slideInLeft {
-
-            0% {
-
-                transform: translateX(150%);
-
-                opacity: 0;
-
-            }
-
-            100% {
-
-                transform: translateX(0);
-
-                opacity: 1;
-
-            }
-
-        }
-
-
-
-        @keyframes fadeIn {
-
-            0% {
-
-                opacity: 0;
-
-            }
-
-            100% {
-
-                opacity: 1;
-
-            }
-
-        }
-
-
-
-        @keyframes glitter {
-
-            0% {
-
-                background-position: 0% 50%;
-
-            }
-
-            50% {
-
-                background-position: 100% 50%;
-
-            }
-
-            100% {
-
-                background-position: 0% 50%;
-
-            }
-
-        }
-
-
-
-        /* Responsive Styles */
-
-        @media (max-width: 768px) {
-
-            .container {
-
-                padding: 15px 20px;
-
-            }
-
-
-
-            .logo-text {
-
-                font-size: 40px;
-
-            }
-
-
-
-            .logo-subtext {
-
-                font-size: 30px;
-
-            }
-
-
-
-            .logo-slogan {
-
-                font-size: 16px;
-
-            }
-
-        }
-
-
-
-        @media (max-width: 480px) {
-
-            body {
-
-                padding: 10px;
-
-            }
-
-
-
-            .container {
-
-                padding: 10px 15px;
-
-            }
-
-
-
-            .logo-text {
-
-                font-size: 40px;
-
-            }
-
-
-
-            .logo-subtext {
-
-                font-size: 30px;
-
-            }
-
-
-
-            .logo-slogan {
-
-                font-size: 14px;
-
-                margin-top: 7px;
-
-            }
-
-        }
-
-    </style>
-
+  </style>
 </head>
-
 <body>
+  <h1>Product Order Page</h1>
+  <div id="products"></div>
+  <div class="cart">
+    <h2>Cart</h2>
+    <ul id="cart-items"></ul>
+    <label for="delivery-time">Expected Delivery Time:</label>
+    <input type="datetime-local" id="delivery-time" required>
+    <button id="place-order">Place Order</button>
+  </div>
 
-    <!-- Logo Section -->
-
-    <div class="container" id="logo" style="background-color: white">
-
-        <img class="logo-text" src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" width="200" height="160" loading="lazy"></img>
-
-        <p class="logo-slogan text-bold" style="margin-top: 7%">"Shop smart, save time!"</p>
-
-    </div>
-
-
-
-    <!-- Script to add glitter effect -->
-
-    <script>
-
-       setTimeout(() => {
-
-            const container = document.querySelector('.container');
-
-            container.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.2)"; // Initial box shadow
-
-            setTimeout(() => {
-
-                container.classList.add('glitter'); // Add glitter effect
-
-            }, 1000); // Delay before glitter effect
-
-        }, 3000); // Delay after animations are complete
+  <script>
+    let cart = [];
 
 
+    // Retrieve customer_id from localStorage
+    const customerId = localStorage.getItem('customer_id');
+    const customername = localStorage.getItem('customer_name');
+    const customerno = localStorage.getItem('customer_no');
 
-        // Redirect after the glitter effect completes
+    if (!customerId) {
+      alert("Please log in to place an order.");
+      window.location.href = "https://vimalraj45.github.io/v/easan_login"; 
+    }
 
-        setTimeout(() => {
+    // Fetch and display products
+    fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=getProducts')
+      .then(response => response.json())
+      .then(products => {
+        const productsDiv = document.getElementById('products');
+        products.forEach(product => {
+          const productDiv = document.createElement('div');
+          productDiv.className = 'product';
+          productDiv.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>Price: $${product.price}</p>
+            <p>Stock: ${product.stock}</p>
+            <button onclick="addToCart('${product.id}', '${product.name}', ${product.price})">Add to Cart</button>
+          `;
+          productsDiv.appendChild(productDiv);
+        });
+      });
 
-            window.location.href = "https://vimalraj45.github.io/v/easan_home"; // Replace with your target page URL
+    // Add to cart
+    function addToCart(productId, productName, price) {
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ id: productId, name: productName, price: price, quantity: 1 });
+      }
+      updateCart();
+    }
 
-        }, 4000); 
+    // Update cart display
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      cartItems.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} x ${item.quantity} ($${item.price * item.quantity})`;
+        cartItems.appendChild(li);
+      });
+    }
 
-    </script>
+    // Place order
+    document.getElementById('place-order').addEventListener('click', () => {
+      const deliveryTime = document.getElementById('delivery-time').value;
+      if (!deliveryTime) {
+        alert("Please select an expected delivery time.");
+        return;
+      }
 
+      const orderData = {
+        order_id: 'ORD' + Math.floor(Math.random() * 100000),
+        customer_id: customerId,
+        items: JSON.stringify(cart.map(item => ({ id: item.id, quantity: item.quantity }))),
+        quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
+        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        status: 'Pending',
+        delivery_time: deliveryTime,
+        customer_name:customername,
+        customer_no:customerno
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(orderData)
+      })
+        .then(response => response.text())
+        .then(message => alert(message))
+        .catch(error => alert('Error: ' + error.message));
+    });
+  </script>
 </body>
-
-</html
-
->
-
+</html>
