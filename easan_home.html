@@ -1,7 +1,4 @@
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +11,51 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
+       .scroll-wrapper {
+      overflow: hidden;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+      padding: 10px 0;
+    }
 
+    .scroll-track {
+      display: flex;
+      width: max-content;
+      animation: scroll-left 25s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .card {
+      width: 70px;
+      margin-right: 14px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .card img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      display: block;
+      margin: auto;
+    }
+
+    .card .subtitle {
+      font-size: 11px;
+      margin-top: 4px;
+      color: #333;
+    }
         /* Hide Google Translate feedback button */
     .goog-te-banner-frame.skiptranslate {
         display: none !important;
@@ -398,93 +439,25 @@
    <!-- Shop Categories Section -->
 <section class="container p-1">
     <h2 style="text-align: start; margin-bottom: 10px; font-family: fantasy;" class="ms-1 text-small h5">Category</h2>
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 g-2">
-        
-        <!-- Category 1 -->
-        <div class="col">
-            <div class="card" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
-                <img src="https://i.ibb.co/LwxFVrf/blob.jpg" alt="Electronics" 
-                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body text-center" style="padding: 5px;">
-                    <h6 style="margin: 5px 0;">Electronics</h6>
-                    <p style="font-size: 12px; margin: 0;">Latest gadgets & devices.</p>
-                    <a href="#" style="display: inline-block; padding: 4px 10px; font-size: 12px; 
-                        background: blue; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px;">Shop</a>
-                </div>
-            </div>
-        </div>
-  
-        <!-- Category 2 -->
-        <div class="col">
-            <div class="card" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
-                <img src="https://i.ibb.co/C53DmNgC/blob.jpg" alt="Fashion" 
-                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body text-center" style="padding: 5px;">
-                    <h6 style="margin: 5px 0;">Fashion</h6>
-                    <p style="font-size: 12px; margin: 0;">Latest fashion trends.</p>
-                    <a href="#" style="display: inline-block; padding: 4px 10px; font-size: 12px; 
-                        background: blue; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px;">Shop</a>
-                </div>
-            </div>
-        </div>
-  
-        <!-- Category 3 -->
-        <div class="col">
-            <div class="card" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
-                <img src="https://i.ibb.co/Ng1nghdG/blob.jpg" alt="Home & Garden" 
-                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body text-center" style="padding: 5px;">
-                    <h6 style="margin: 5px 0;">Home & Garden</h6>
-                    <p style="font-size: 12px; margin: 0;">Essentials for home</p>
-                    <a href="#" style="display: inline-block; padding: 4px 10px; font-size: 12px; 
-                        background: blue; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px;">Shop</a>
-                </div>
-            </div>
-        </div>
-  
-        <!-- Category 4 -->
-        <div class="col">
-            <div class="card" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
-                <img src="https://i.ibb.co/twMHxVv2/blob.jpg" alt="Books" 
-                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body text-center" style="padding: 5px;">
-                    <h6 style="margin: 5px 0;">Books</h6>
-                    <p style="font-size: 12px; margin: 0;">Explore books & novels.</p>
-                    <a href="#" style="display: inline-block; padding: 4px 10px; font-size: 12px; 
-                        background: blue; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px;">Shop</a>
-                </div>
-            </div>
-        </div>
-  
-        <!-- Category 5 -->
-        <div class="col">
-            <div class="card" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
-                <img src="https://i.ibb.co/YBcZkrfw/blob.jpg" alt="Sports" 
-                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body text-center" style="padding: 5px;">
-                    <h6 style="margin: 5px 0;">Sports</h6>
-                    <p style="font-size: 12px; margin: 0;">Sports gear & equipment.</p>
-                    <a href="#" style="display: inline-block; padding: 4px 10px; font-size: 12px; 
-                        background: blue; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px;">Shop</a>
-                </div>
-            </div>
-        </div>
-  
-        <!-- Category 6 -->
-        <div class="col">
-            <div class="card" style="border: 1px solid #ddd; border-radius: 10px; padding: 5px;">
-                <img src="https://i.ibb.co/23y9cx0S/blob.jpg" alt="Toys" 
-                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px 10px 0 0;">
-                <div class="card-body text-center" style="padding: 5px;">
-                    <h6 style="margin: 5px 0;">Toys</h6>
-                    <p style="font-size: 12px; margin: 0;">Fun toys for kids.</p>
-                    <a href="#" style="display: inline-block; padding: 4px 10px; font-size: 12px; 
-                        background: blue; color: white; text-decoration: none; border-radius: 5px; margin-top: 5px;">Shop</a>
-                </div>
-            </div>
-        </div>
-  
-    </div>
+  <div class="scroll-wrapper">
+  <div class="scroll-track">
+    <!-- One full set -->
+    <div class="card"><img src="https://i.ibb.co/LwxFVrf/blob.jpg"><div class="subtitle">Electronics</div></div>
+    <div class="card"><img src="https://i.ibb.co/C53DmNgC/blob.jpg"><div class="subtitle">Fashion</div></div>
+    <div class="card"><img src="https://i.ibb.co/Ng1nghdG/blob.jpg"><div class="subtitle">Home</div></div>
+    <div class="card"><img src="https://i.ibb.co/twMHxVv2/blob.jpg"><div class="subtitle">Books</div></div>
+    <div class="card"><img src="https://i.ibb.co/YBcZkrfw/blob.jpg"><div class="subtitle">Sports</div></div>
+    <div class="card"><img src="https://i.ibb.co/23y9cx0S/blob.jpg"><div class="subtitle">Toys</div></div>
+
+    <!-- Duplicate set for seamless loop -->
+    <div class="card"><img src="https://i.ibb.co/LwxFVrf/blob.jpg"><div class="subtitle">Electronics</div></div>
+    <div class="card"><img src="https://i.ibb.co/C53DmNgC/blob.jpg"><div class="subtitle">Fashion</div></div>
+    <div class="card"><img src="https://i.ibb.co/Ng1nghdG/blob.jpg"><div class="subtitle">Home</div></div>
+    <div class="card"><img src="https://i.ibb.co/twMHxVv2/blob.jpg"><div class="subtitle">Books</div></div>
+    <div class="card"><img src="https://i.ibb.co/YBcZkrfw/blob.jpg"><div class="subtitle">Sports</div></div>
+    <div class="card"><img src="https://i.ibb.co/23y9cx0S/blob.jpg"><div class="subtitle">Toys</div></div>
+  </div>
+  </div>
   </section>
   
 
