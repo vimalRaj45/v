@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,13 +41,16 @@
 
     // Retrieve customer_id from localStorage
     const customerId = localStorage.getItem('customer_id');
+    const customername = localStorage.getItem('customer_name');
+    const customerno = localStorage.getItem('customer_no');
+
     if (!customerId) {
       alert("Please log in to place an order.");
       window.location.href = "https://vimalraj45.github.io/v/easan_login"; 
     }
 
     // Fetch and display products
-    fetch('https://script.google.com/macros/s/AKfycbzRzDw6G7rf1RETsrlyemxkaM849LM1igDdHdLrbpBAvlaJ3_t1U_ByeSP1hvJtCmW-/exec?action=getProducts')
+    fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=getProducts')
       .then(response => response.json())
       .then(products => {
         const productsDiv = document.getElementById('products');
@@ -100,10 +104,12 @@
         quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
         total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
         status: 'Pending',
-        delivery_time: deliveryTime
+        delivery_time: deliveryTime,
+        customer_name:customername,
+        customer_no:customerno
       };
 
-      fetch('https://script.google.com/macros/s/AKfycbzRzDw6G7rf1RETsrlyemxkaM849LM1igDdHdLrbpBAvlaJ3_t1U_ByeSP1hvJtCmW-/exec?action=createOrder', {
+      fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(orderData)
