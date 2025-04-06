@@ -17,23 +17,23 @@
       margin-bottom: 20px;
     }
     .product-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 4 cards per row on mobile */
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-@media (min-width: 768px) {
-  .product-grid {
-    grid-template-columns: repeat(5, 1fr); /* 6 cards per row on larger screens */
-  }
-}
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 4 cards per row on mobile */
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(5, 1fr); /* 6 cards per row on larger screens */
+      }
+    }
     .product-card {
       border: 1px solid #ddd;
       border-radius: 10px;
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
       background: white;
+      position: relative;
     }
     .product-card:hover {
       transform: translateY(-5px);
@@ -79,16 +79,31 @@
       padding: 20px;
     }
     
-    /* Cart Sidebar Styles */
     .cart-icon {
   position: fixed;
-  top: 20px;
-  left: 20px; /* Changed from right to left */
+  top: 48px;
+  left: 20px;
   z-index: 1000;
   background: white;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 40px; /* Smaller */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.favorite-icon {
+  position: fixed;
+  top: 48px;
+  left: 70px; /* Position it next to the cart icon with spacing */
+  z-index: 1000;
+  background: white;
+  border-radius: 50%;
+  width: 40px; /* Same size as cart */
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +125,21 @@
       align-items: center;
       justify-content: center;
     }
-    .cart-sidebar {
+    .favorite-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #d32f2f;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-sidebar, .favorites-sidebar {
       position: fixed;
       top: 0;
       right: -400px;
@@ -123,10 +152,10 @@
       padding: 20px;
       overflow-y: auto;
     }
-    .cart-sidebar.active {
+    .cart-sidebar.active, .favorites-sidebar.active {
       right: 0;
     }
-    .cart-overlay {
+    .cart-overlay, .favorites-overlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -136,10 +165,10 @@
       z-index: 998;
       display: none;
     }
-    .cart-overlay.active {
+    .cart-overlay.active, .favorites-overlay.active {
       display: block;
     }
-    .close-cart {
+    .close-cart, .close-favorites {
       position: absolute;
       top: 15px;
       right: 15px;
@@ -172,19 +201,40 @@
       font-size: 12px;
       margin-top: 5px;
     }
+    .favorite-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .favorite-btn i {
+      font-size: 16px;
+    }
+    .favorite-btn.active i {
+      color: #d32f2f;
+    }
   </style>
 </head>
 <body>
   <div class="container py-4">
-    <h1 class="text-center mb-4">Product Order Page</h1>
+    <h1 class="text-center mb-4 mt-5">Product Order Page</h1>
     
-   <!-- Search Box -->
-<div class="search-container d-flex sticky-top" style="background-color: #fff; padding: 10px; z-index: 0;">
-  <div class="input-group w-100">
-    <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
-    <button class="btn btn-outline-secondary" type="button" id="clearSearch">Clear</button>
-  </div>
-</div>
+    <!-- Search Box -->
+    <div class="search-container d-flex sticky-top" style="background-color: #fff; padding: 10px; z-index: 1000;">
+      <div class="input-group w-100">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search products..." style="outline: none; box-shadow: none;">
+        <button class="btn btn-outline-primary" type="button" id="clearSearch" style="outline: none; box-shadow: none;">Clear</button>
+      </div>
+    </div>
 
     <!-- Product Grid -->
     <div id="loadingSpinner" class="loading-spinner">
@@ -203,10 +253,15 @@
     <div class="cart-badge" id="cartBadge">0</div>
   </div>
 
+  <!-- Favorite Icon -->
+  <div class="favorite-icon" id="favoriteIcon">
+    <i class="bi bi-heart" style="font-size: 24px;"></i>
+    <div class="favorite-badge" id="favoriteBadge">0</div>
+  </div>
+
   <!-- Cart Sidebar -->
   <div class="cart-overlay" id="cartOverlay"></div>
   <div class="cart-sidebar" id="cartSidebar" style="width: 280px;height: 92vh; overflow-y: auto;z-index: 1000;">
-    
     <h2 class="mb-4"><i class="bi bi-cart-check-fill"></i> Your Cart</h2>
     <div id="cartItems" class="mb-3"></div>
     
@@ -225,10 +280,23 @@
     </div>
   </div>
 
+  <!-- Favorites Sidebar -->
+  <div class="favorites-overlay" id="favoritesOverlay"></div>
+  <div class="favorites-sidebar" id="favoritesSidebar" style="width: 280px;height: 92vh; overflow-y: auto;z-index: 1000;">
+    <h2 class="mb-4"><i class="bi bi-heart-fill"></i> Your Favorites</h2>
+    <div id="favoriteItems" class="mb-3"></div>
+    <div class="border-top pt-3">
+      <button id="clear-favorites" class="btn btn-danger w-100 py-2">
+        <i class="bi bi-trash"></i> Clear All Favorites
+      </button>
+    </div>
+  </div>
+
   <script>
     let cart = [];
     let allProducts = [];
     let filteredProducts = [];
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     const productsPerPage = 100;
     let currentPage = 1;
     let isLoading = false;
@@ -267,13 +335,30 @@
       // Cart toggle
       document.getElementById('cartIcon').addEventListener('click', toggleCart);
       document.getElementById('cartOverlay').addEventListener('click', toggleCart);
-      document.getElementById('closeCart').addEventListener('click', toggleCart);
+      
+      // Favorites toggle
+      document.getElementById('favoriteIcon').addEventListener('click', toggleFavorites);
+      document.getElementById('favoritesOverlay').addEventListener('click', toggleFavorites);
+      
+      // Clear favorites
+      document.getElementById('clear-favorites').addEventListener('click', clearFavorites);
+      
+      updateFavoriteBadge();
     });
 
     // Toggle cart sidebar
     function toggleCart() {
       document.getElementById('cartSidebar').classList.toggle('active');
       document.getElementById('cartOverlay').classList.toggle('active');
+    }
+
+    // Toggle favorites sidebar
+    function toggleFavorites() {
+      document.getElementById('favoritesSidebar').classList.toggle('active');
+      document.getElementById('favoritesOverlay').classList.toggle('active');
+      if (document.getElementById('favoritesSidebar').classList.contains('active')) {
+        renderFavorites();
+      }
     }
 
     // Fetch products
@@ -344,30 +429,157 @@
       }
       
       products.forEach(product => {
+        const isFavorite = favorites.some(fav => fav.id === product.id);
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
         productCard.innerHTML = `
           <div class="product-card">
-  <img src="${product.img_url || 'https://via.placeholder.com/150'}" class="product-img w-100" alt="${product.name}">
-  <div class="product-body p-3">
-    <h5 class="product-title mb-2">${product.name}</h5>
-    <div class="product-price text-danger fw-bold mb-2">₹${product.price}</div>
-    <div class="product-stock mb-3">
-      ${product.stock > 0 
-        ? `<span class="badge bg-success me-2">In Stock</span><span class="badge bg-info">${product.stock} Available</span>` 
-        : `<span class="badge bg-danger">Out of Stock</span>`}
-    </div>
-    <button class="btn btn-primary w-10 add-to-cart" 
-      onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, ${product.stock})"
-      ${product.stock <= 0 ? 'disabled' : ''}>
-      <i class="bi bi-cart-plus"></i> Add to Cart
-    </button>
-    
-  </div>
-</div>
+            <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.img_url || 'https://via.placeholder.com/150'}', this)">
+              <i class="bi ${isFavorite ? 'bi-heart-fill' : 'bi-heart'}"></i>
+            </button>
+            <img src="${product.img_url || 'https://via.placeholder.com/150'}" class="product-img w-100" alt="${product.name}">
+            <div class="product-body p-3">
+              <h5 class="product-title mb-2">${product.name}</h5>
+              <div class="product-price text-danger fw-bold mb-2">₹${product.price}</div>
+              <div class="product-stock mb-3">
+                ${product.stock > 0 
+                  ? `<span class="badge bg-success me-2">In Stock</span><span class="badge bg-info">${product.stock} Available</span>` 
+                  : `<span class="badge bg-danger">Out of Stock</span>`}
+              </div>
+              <button class="btn btn-primary w-10 add-to-cart" 
+                onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, ${product.stock})"
+                ${product.stock <= 0 ? 'disabled' : ''}>
+                <i class="bi bi-cart-plus"></i> Add to Cart
+              </button>
+            </div>
+          </div>
         `;
         productsDiv.appendChild(productCard);
       });
+    }
+
+    // Toggle favorite status
+    function toggleFavorite(productId, productName, price, imageUrl, button) {
+      const favoriteIndex = favorites.findIndex(fav => fav.id === productId);
+      
+      if (favoriteIndex === -1) {
+        // Add to favorites
+        favorites.push({
+          id: productId,
+          name: productName,
+          price: price,
+          image: imageUrl
+        });
+        showToast(`${productName} added to favorites!`);
+      } else {
+        // Remove from favorites
+        favorites.splice(favoriteIndex, 1);
+        showToast(`${productName} removed from favorites!`);
+      }
+      
+      // Update local storage
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      
+      // Update button appearance
+      if (button) {
+        button.classList.toggle('active');
+        const icon = button.querySelector('i');
+        icon.classList.toggle('bi-heart');
+        icon.classList.toggle('bi-heart-fill');
+      }
+      
+      updateFavoriteBadge();
+      
+      // If favorites sidebar is open, update it
+      if (document.getElementById('favoritesSidebar').classList.contains('active')) {
+        renderFavorites();
+      }
+    }
+
+    // Render favorites in sidebar
+    function renderFavorites() {
+      const favoriteItemsDiv = document.getElementById('favoriteItems');
+      
+      if (favorites.length === 0) {
+        favoriteItemsDiv.innerHTML = '<p class="text-center text-muted">Your favorites list is empty</p>';
+        return;
+      }
+      
+      favoriteItemsDiv.innerHTML = '';
+      
+      favorites.forEach((favorite, index) => {
+        const favoriteItem = document.createElement('div');
+        favoriteItem.className = 'favorite-item mb-3 pb-3 border-bottom';
+        favoriteItem.innerHTML = `
+          <div class="d-flex align-items-center">
+            <img src="${favorite.image}" style="width: 60px; height: 60px; object-fit: contain; margin-right: 10px;" alt="${favorite.name}">
+            <div style="flex-grow: 1;">
+              <h6 class="mb-1">${favorite.name}</h6>
+              <div class="product-price text-danger fw-bold mb-2">₹${favorite.price}</div>
+            </div>
+            <div class="d-flex">
+              <button class="btn btn-sm btn-primary me-2" onclick="addToCart('${favorite.id}', '${favorite.name.replace(/'/g, "\\'")}', ${favorite.price}, 100)">
+                <i class="bi bi-cart-plus"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="removeFromFavorites('${favorite.id}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        favoriteItemsDiv.appendChild(favoriteItem);
+      });
+    }
+
+    // Remove item from favorites
+    function removeFromFavorites(productId) {
+      const favoriteIndex = favorites.findIndex(fav => fav.id === productId);
+      if (favoriteIndex !== -1) {
+        const removedItem = favorites.splice(favoriteIndex, 1)[0];
+        showToast(`${removedItem.name} removed from favorites!`);
+        
+        // Update local storage
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        
+        // Update favorite button in product grid if visible
+        const favoriteButton = document.querySelector(`.favorite-btn[onclick*="${productId}"]`);
+        if (favoriteButton) {
+          favoriteButton.classList.remove('active');
+          const icon = favoriteButton.querySelector('i');
+          icon.classList.remove('bi-heart-fill');
+          icon.classList.add('bi-heart');
+        }
+        
+        updateFavoriteBadge();
+        renderFavorites();
+      }
+    }
+
+    // Clear all favorites
+    function clearFavorites() {
+      if (favorites.length === 0) return;
+      
+      if (confirm('Are you sure you want to clear all favorites?')) {
+        favorites = [];
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        
+        // Update all favorite buttons in product grid
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+          button.classList.remove('active');
+          const icon = button.querySelector('i');
+          icon.classList.remove('bi-heart-fill');
+          icon.classList.add('bi-heart');
+        });
+        
+        updateFavoriteBadge();
+        renderFavorites();
+        showToast('All favorites cleared!');
+      }
+    }
+
+    // Update favorite badge count
+    function updateFavoriteBadge() {
+      document.getElementById('favoriteBadge').textContent = favorites.length;
     }
 
     // Add to cart
