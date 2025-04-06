@@ -523,7 +523,15 @@
 .search-container input {
   font-size: 0.85rem;
 }
+.no-outline {
+    box-shadow: none !important;
+    outline: none !important;
+  }
 
+  .no-outline:focus {
+    box-shadow: none !important;
+    outline: none !important;
+  }
 
   </style>
 </head>
@@ -667,14 +675,12 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     <a href="#" class="fw-bold text-dark flex-shrink-0" style="font-size: 1rem; text-decoration: none; white-space: nowrap;">
       Easan Shop
     </a>
-    
-    <!-- Search bar -->
-    <div class="search-container flex-grow-1 d-flex">
-      <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search for products, brands and more" style="min-width: 0;">
-      <button class="btn btn-outline-secondary btn-sm ms-1" id="searchBtn">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
+<!-- Search Input -->
+<div class="search-container flex-grow-1 d-flex">
+  <input type="text" id="searchInput" class="form-control form-control-sm no-outline"
+    placeholder="Search for products, brands and more"
+    style="min-width: 0; outline: white;">
+</div>
   </div>
 </header>
 
