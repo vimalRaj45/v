@@ -3,204 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Order Page</title>
+  <title>Flipkart Style Store</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
+ :root {
+      --flipkart-blue: #2874f0;
+      --flipkart-yellow: #ffe500;
+      --flipkart-dark: #172337;
+      --flipkart-light: #f1f3f6;
+    }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
+      font-family: 'Arial', sans-serif;
+      background-color: var(--flipkart-light);
+      color: #212121;
     }
+    
+    /* Header Styles */
+    .header {
+      background-color: var(--flipkart-blue);
+      color: white;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .logo {
+      font-weight: bold;
+      font-size: 24px;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo span {
+      color: var(--flipkart-yellow);
+      font-style: italic;
+      margin-left: 2px;
+    }
+    
     .search-container {
-      margin-bottom: 20px;
+      display: flex;
+      margin: 0 15px;
     }
+    
+    .search-input {
+      width: 100%;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 2px 0 0 2px;
+      outline: none;
+      font-size: 14px;
+    }
+    
+    .search-btn {
+      background-color: white;
+      border: none;
+      border-radius: 0 2px 2px 0;
+      padding: 0 20px;
+      cursor: pointer;
+      color: var(--flipkart-blue);
+      font-weight: 500;
+    }
+    
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .action-btn {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .action-btn i {
+      font-size: 20px;
+    }
+    
+    /* Main Content */
+    .container {
+      padding-top: 20px;
+      padding-bottom: 50px;
+    }
+    
+    .page-title {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--flipkart-dark);
+    }
+    
+    /* Product Grid */
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* 4 cards per row on mobile */
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       margin-bottom: 30px;
     }
+    
     @media (min-width: 768px) {
       .product-grid {
-        grid-template-columns: repeat(5, 1fr); /* 6 cards per row on larger screens */
+        grid-template-columns: repeat(4, 1fr);
       }
     }
+    
+    @media (min-width: 992px) {
+      .product-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+    
     .product-card {
-      border: 1px solid #ddd;
-      border-radius: 10px;
+      background: white;
+      border-radius: 8px;
       overflow: hidden;
       transition: transform 0.3s, box-shadow 0.3s;
-      background: white;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.1);
       position: relative;
     }
+    
     .product-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
-    .product-img {
+    
+    .product-img-container {
       height: 180px;
-      object-fit: contain;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 10px;
-      background: #fff;
+      border-bottom: 1px solid #f0f0f0;
     }
+    
+    .product-img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    
     .product-body {
       padding: 15px;
     }
+    
     .product-title {
-      font-size: 16px;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 500;
       margin-bottom: 8px;
       height: 40px;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-    }
-    .product-price {
-      font-size: 18px;
-      font-weight: bold;
-      color: #d32f2f;
-    }
-    .product-stock {
-      font-size: 14px;
-      color: #388e3c;
-      margin-bottom: 10px;
-    }
-    .add-to-cart {
-      width: 100%;
-      border-radius: 5px;
-      font-weight: 500;
-    }
-    .loading-spinner {
-      display: none;
-      text-align: center;
-      padding: 20px;
+      color: #212121;
     }
     
-    .cart-icon {
-  position: fixed;
-  top: 48px;
-  left: 20px;
-  z-index: 1000;
-  background: white;
-  border-radius: 50%;
-  width: 40px; /* Smaller */
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-.favorite-icon {
-  position: fixed;
-  top: 48px;
-  left: 70px; /* Position it next to the cart icon with spacing */
-  z-index: 1000;
-  background: white;
-  border-radius: 50%;
-  width: 40px; /* Same size as cart */
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-    .cart-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #d32f2f;
+    .product-price {
+      font-size: 16px;
+      font-weight: bold;
+      color: #388e3c;
+      margin-bottom: 8px;
+    }
+    
+    .original-price {
+      font-size: 14px;
+      color: #878787;
+      text-decoration: line-through;
+      margin-right: 8px;
+    }
+    
+    .discount {
+      font-size: 13px;
+      color: #388e3c;
+    }
+    
+    .product-rating {
+      background-color: #388e3c;
       color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
       font-size: 12px;
-      display: flex;
+      padding: 2px 4px;
+      border-radius: 3px;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
+      margin-bottom: 8px;
     }
-    .favorite-badge {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #d32f2f;
-      color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
+    
+    .product-rating i {
+      font-size: 10px;
+      margin-left: 2px;
+    }
+    
+    .product-stock {
       font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #878787;
+      margin-bottom: 10px;
     }
-    .cart-sidebar, .favorites-sidebar {
-      position: fixed;
-      top: 0;
-      right: -400px;
-      width: 400px;
-      height: 100vh;
-      background: white;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-      z-index: 999;
-      transition: right 0.3s;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .cart-sidebar.active, .favorites-sidebar.active {
-      right: 0;
-    }
-    .cart-overlay, .favorites-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
+    
+    .add-to-cart {
       width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 998;
-      display: none;
-    }
-    .cart-overlay.active, .favorites-overlay.active {
-      display: block;
-    }
-    .close-cart, .close-favorites {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 24px;
+      border-radius: 2px;
+      font-weight: 500;
+      background-color: var(--flipkart-blue);
+      border: none;
+      padding: 8px;
+      color: white;
       cursor: pointer;
-    }
-    .quantity-control {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 5px;
     }
-    .quantity-btn {
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #ddd;
-      background: #f8f9fa;
-      cursor: pointer;
+    
+    .add-to-cart:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
-    .remove-item {
-      color: #d32f2f;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .stock-warning {
-      color: #ff9800;
-      font-size: 12px;
-      margin-top: 5px;
-    }
+    
     .favorite-btn {
       position: absolute;
       top: 10px;
@@ -215,27 +244,443 @@
       justify-content: center;
       cursor: pointer;
       z-index: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
+    
     .favorite-btn i {
       font-size: 16px;
+      color: #878787;
     }
+    
     .favorite-btn.active i {
       color: #d32f2f;
     }
+    
+    /* Sidebars */
+    .cart-icon, .favorite-icon {
+      position: fixed;
+      top: 80px;
+      z-index: 1000;
+      background: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+    
+    .cart-icon {
+      left: 20px;
+    }
+    
+    .favorite-icon {
+      left: 80px;
+    }
+    
+    .cart-badge, .favorite-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #d32f2f;
+      color: white;
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cart-sidebar, .favorites-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 350px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      z-index: 1100;
+      transition: right 0.3s;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .cart-sidebar.active, .favorites-sidebar.active {
+      right: 0;
+    }
+    
+    .cart-overlay, .favorites-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+      display: none;
+    }
+    
+    .cart-overlay.active, .favorites-overlay.active {
+      display: block;
+    }
+    
+    .close-cart, .close-favorites {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #878787;
+    }
+    
+    /* Loading Spinner */
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    /* Toast Notification */
+    .toast-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .toast-notification.success {
+      background-color: #388e3c;
+    }
+    
+    .toast-notification.danger {
+      background-color: #d32f2f;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .header {
+        padding: 10px 0;
+      }
+      
+      .logo {
+        font-size: 20px;
+      }
+      
+      .search-container {
+        margin: 10px 0;
+      }
+      
+      .user-actions {
+        gap: 10px;
+      }
+      
+      .action-btn {
+        font-size: 12px;
+      }
+      
+      .action-btn i {
+        font-size: 16px;
+      }
+    }
+
+
+    .loader {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff; /* Optional: Add background during loading */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+
+
+.truckWrapper {
+      width: 200px;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      align-items: center;
+      justify-content: flex-end;
+      overflow-x: hidden;
+      transform: scale(1.5);
+    }
+/* truck upper body */
+.truckBody {
+  width: 130px;
+  height: fit-content;
+  margin-bottom: 6px;
+  animation: motion 1s linear infinite;
+}
+/* truck suspension animation*/
+@keyframes motion {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+/* truck's tires */
+.truckTires {
+  width: 130px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 10px 0px 15px;
+  position: absolute;
+  bottom: 0;
+}
+.truckTires svg {
+  width: 24px;
+}
+
+.road {
+  width: 100%;
+  height: 1.5px;
+  background-color: #282828;
+  position: relative;
+  bottom: 0;
+  align-self: flex-end;
+  border-radius: 3px;
+}
+.road::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  background-color: #282828;
+  right: -50%;
+  border-radius: 3px;
+  animation: roadAnimation 1.4s linear infinite;
+  border-left: 10px solid white;
+}
+.road::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  background-color: #282828;
+  right: -65%;
+  border-radius: 3px;
+  animation: roadAnimation 1.4s linear infinite;
+  border-left: 4px solid white;
+}
+
+.lampPost {
+  position: absolute;
+  bottom: 0;
+  right: -90%;
+  height: 90px;
+  animation: roadAnimation 1.4s linear infinite;
+}
+
+@keyframes roadAnimation {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(-350px);
+  }
+}
+.text-loader {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+  font-family: "Segoe UI", sans-serif;
+  animation: fadeText 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeText {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+
   </style>
 </head>
 <body>
-  <div class="container py-4">
-    <h1 class="text-center mb-4 mt-5">Product Order Page</h1>
-    
-    <!-- Search Box -->
-    <div class="search-container d-flex sticky-top" style="background-color: #fff; padding: 10px; z-index: 10;">
-      <div class="input-group w-100">
-        <input type="text" id="searchInput" class="form-control" placeholder="Search products..." style="outline: none; box-shadow: none;">
-        <button class="btn btn-outline-primary" type="button" id="clearSearch" style="outline: none; box-shadow: none;">Clear</button>
-      </div>
+  <!-- From Uiverse.io by vinodjangid07 --> 
+<div class="loader" id="loadertruck" style="display: none;">
+  <div class="text-loader">Placing your order…</div>
+  <div class="truckWrapper">
+    <div class="truckBody">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 198 93"
+        class="trucksvg"
+      >
+        <path
+          stroke-width="3"
+          stroke="#282828"
+          fill="#F83D3D"
+          d="M135 22.5H177.264C178.295 22.5 179.22 23.133 179.594 24.0939L192.33 56.8443C192.442 57.1332 192.5 57.4404 192.5 57.7504V89C192.5 90.3807 191.381 91.5 190 91.5H135C133.619 91.5 132.5 90.3807 132.5 89V25C132.5 23.6193 133.619 22.5 135 22.5Z"
+        ></path>
+        <path
+          stroke-width="3"
+          stroke="#282828"
+          fill="#7D7C7C"
+          d="M146 33.5H181.741C182.779 33.5 183.709 34.1415 184.078 35.112L190.538 52.112C191.16 53.748 189.951 55.5 188.201 55.5H146C144.619 55.5 143.5 54.3807 143.5 53V36C143.5 34.6193 144.619 33.5 146 33.5Z"
+        ></path>
+        <path
+          stroke-width="2"
+          stroke="#282828"
+          fill="#282828"
+          d="M150 65C150 65.39 149.763 65.8656 149.127 66.2893C148.499 66.7083 147.573 67 146.5 67C145.427 67 144.501 66.7083 143.873 66.2893C143.237 65.8656 143 65.39 143 65C143 64.61 143.237 64.1344 143.873 63.7107C144.501 63.2917 145.427 63 146.5 63C147.573 63 148.499 63.2917 149.127 63.7107C149.763 64.1344 150 64.61 150 65Z"
+        ></path>
+        <rect
+          stroke-width="2"
+          stroke="#282828"
+          fill="#FFFCAB"
+          rx="1"
+          height="7"
+          width="5"
+          y="63"
+          x="187"
+        ></rect>
+        <rect
+          stroke-width="2"
+          stroke="#282828"
+          fill="#282828"
+          rx="1"
+          height="11"
+          width="4"
+          y="81"
+          x="193"
+        ></rect>
+        <rect
+          stroke-width="3"
+          stroke="#282828"
+          fill="#DFDFDF"
+          rx="2.5"
+          height="90"
+          width="121"
+          y="1.5"
+          x="6.5"
+        ></rect>
+        <rect
+          stroke-width="2"
+          stroke="#282828"
+          fill="#DFDFDF"
+          rx="2"
+          height="4"
+          width="6"
+          y="84"
+          x="1"
+        ></rect>
+      </svg>
+    </div>
+    <div class="truckTires">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 30 30"
+        class="tiresvg"
+      >
+        <circle
+          stroke-width="3"
+          stroke="#282828"
+          fill="#282828"
+          r="13.5"
+          cy="15"
+          cx="15"
+        ></circle>
+        <circle fill="#DFDFDF" r="7" cy="15" cx="15"></circle>
+      </svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 30 30"
+        class="tiresvg"
+      >
+        <circle
+          stroke-width="3"
+          stroke="#282828"
+          fill="#282828"
+          r="13.5"
+          cy="15"
+          cx="15"
+        ></circle>
+        <circle fill="#DFDFDF" r="7" cy="15" cx="15"></circle>
+      </svg>
+    </div>
+    <div class="road"></div>
+
+    <svg
+      xml:space="preserve"
+      viewBox="0 0 453.459 453.459"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns="http://www.w3.org/2000/svg"
+      id="Capa_1"
+      version="1.1"
+      fill="#000000"
+      class="lampPost"
+    >
+      <path
+        d="M252.882,0c-37.781,0-68.686,29.953-70.245,67.358h-6.917v8.954c-26.109,2.163-45.463,10.011-45.463,19.366h9.993
+c-1.65,5.146-2.507,10.54-2.507,16.017c0,28.956,23.558,52.514,52.514,52.514c28.956,0,52.514-23.558,52.514-52.514
+c0-5.478-0.856-10.872-2.506-16.017h9.992c0-9.354-19.352-17.204-45.463-19.366v-8.954h-6.149C200.189,38.779,223.924,16,252.882,16
+c29.952,0,54.32,24.368,54.32,54.32c0,28.774-11.078,37.009-25.105,47.437c-17.444,12.968-37.216,27.667-37.216,78.884v113.914
+h-0.797c-5.068,0-9.174,4.108-9.174,9.177c0,2.844,1.293,5.383,3.321,7.066c-3.432,27.933-26.851,95.744-8.226,115.459v11.202h45.75
+v-11.202c18.625-19.715-4.794-87.527-8.227-115.459c2.029-1.683,3.322-4.223,3.322-7.066c0-5.068-4.107-9.177-9.176-9.177h-0.795
+V196.641c0-43.174,14.942-54.283,30.762-66.043c14.793-10.997,31.559-23.461,31.559-60.277C323.202,31.545,291.656,0,252.882,0z
+M232.77,111.694c0,23.442-19.071,42.514-42.514,42.514c-23.442,0-42.514-19.072-42.514-42.514c0-5.531,1.078-10.957,3.141-16.017
+h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
+      ></path>
+    </svg>
+  </div>
+</div>
+
+  <!-- Header -->
+<header class="bg-white shadow-sm sticky-top" style="padding: 5px 10px; z-index: 1020;">
+  <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap gap-2">
+
+    <!-- Shop Name -->
+    <a href="#" class="fw-bold text-dark flex-shrink-0" style="font-size: 1rem; text-decoration: none; white-space: nowrap;">
+      Easan Grocery
+    </a>
+
+    <div class="search-container flex-grow-1 mb-2 mb-md-0">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search for products, brands and more">
+      <button class="search-btn" id="searchBtn">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
 
+
+  </div>
+  </header>
+
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1 class="page-title text-end">All Products</h1>
+    
     <!-- Product Grid -->
     <div id="loadingSpinner" class="loading-spinner">
       <div class="spinner-border text-primary" role="status">
@@ -261,7 +706,8 @@
 
   <!-- Cart Sidebar -->
   <div class="cart-overlay" id="cartOverlay"></div>
-  <div class="cart-sidebar" id="cartSidebar" style="width: 280px;height: 92vh; overflow-y: auto;z-index: 1000;">
+  <div class="cart-sidebar" id="cartSidebar">
+    <i class="bi bi-x-lg close-cart" id="closeCart"></i>
     <h2 class="mb-4"><i class="bi bi-cart-check-fill"></i> Your Cart</h2>
     <div id="cartItems" class="mb-3"></div>
     
@@ -282,7 +728,8 @@
 
   <!-- Favorites Sidebar -->
   <div class="favorites-overlay" id="favoritesOverlay"></div>
-  <div class="favorites-sidebar" id="favoritesSidebar" style="width: 280px;height: 92vh; overflow-y: auto;z-index: 1000;">
+  <div class="favorites-sidebar" id="favoritesSidebar">
+    <i class="bi bi-x-lg close-favorites" id="closeFavorites"></i>
     <h2 class="mb-4"><i class="bi bi-heart-fill"></i> Your Favorites</h2>
     <div id="favoriteItems" class="mb-3"></div>
     <div class="border-top pt-3">
@@ -297,7 +744,7 @@
     let allProducts = [];
     let filteredProducts = [];
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const productsPerPage = 100;
+    const productsPerPage = 50;
     let currentPage = 1;
     let isLoading = false;
 
@@ -319,10 +766,8 @@
         filterProducts(this.value);
       });
       
-      // Clear search
-      document.getElementById('clearSearch').addEventListener('click', function() {
-        document.getElementById('searchInput').value = '';
-        filterProducts('');
+      document.getElementById('searchBtn').addEventListener('click', function() {
+        filterProducts(document.getElementById('searchInput').value);
       });
       
       // Infinite scroll
@@ -335,10 +780,12 @@
       // Cart toggle
       document.getElementById('cartIcon').addEventListener('click', toggleCart);
       document.getElementById('cartOverlay').addEventListener('click', toggleCart);
+      document.getElementById('closeCart').addEventListener('click', toggleCart);
       
       // Favorites toggle
       document.getElementById('favoriteIcon').addEventListener('click', toggleFavorites);
       document.getElementById('favoritesOverlay').addEventListener('click', toggleFavorites);
+      document.getElementById('closeFavorites').addEventListener('click', toggleFavorites);
       
       // Clear favorites
       document.getElementById('clear-favorites').addEventListener('click', clearFavorites);
@@ -432,24 +879,38 @@
         const isFavorite = favorites.some(fav => fav.id === product.id);
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
+        
+        // Calculate discount for demo purposes (random between 5-30%)
+        const discountPercent = Math.floor(Math.random() * 25) + 5;
+        const originalPrice = Math.round(product.price * (1 + discountPercent/100));
+        
         productCard.innerHTML = `
           <div class="product-card">
             <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.img_url || 'https://via.placeholder.com/150'}', this)">
               <i class="bi ${isFavorite ? 'bi-heart-fill' : 'bi-heart'}"></i>
             </button>
-            <img src="${product.img_url || 'https://via.placeholder.com/150'}" class="product-img w-100" alt="${product.name}">
-            <div class="product-body p-3">
-              <h5 class="product-title mb-2">${product.name}</h5>
-              <div class="product-price text-danger fw-bold mb-2">₹${product.price}</div>
-              <div class="product-stock mb-3">
+            <div class="product-img-container">
+              <img src="${product.img_url || 'https://via.placeholder.com/150'}" class="product-img" alt="${product.name}">
+            </div>
+            <div class="product-body">
+              <h5 class="product-title">${product.name}</h5>
+              <div class="product-rating">
+                ${(Math.random() * 1 + 4).toFixed(1)} <i class="bi bi-star-fill"></i>
+              </div>
+              <div class="product-price">
+                <span class="original-price">₹${originalPrice}</span>
+                <span>₹${product.price}</span>
+                <span class="discount">${discountPercent}% off</span>
+              </div>
+              <div class="product-stock">
                 ${product.stock > 0 
-                  ? `<span class="badge bg-success me-2">In Stock</span><span class="badge bg-info">${product.stock} Available</span>` 
+                  ? `<span class="badge bg-success">In Stock</span>` 
                   : `<span class="badge bg-danger">Out of Stock</span>`}
               </div>
-              <button class="btn btn-primary w-10 add-to-cart" 
+              <button class="add-to-cart" 
                 onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, ${product.stock})"
                 ${product.stock <= 0 ? 'disabled' : ''}>
-                <i class="bi bi-cart-plus"></i> Add to Cart
+                <i class="bi bi-cart-plus"></i> ADD TO CART
               </button>
             </div>
           </div>
@@ -470,11 +931,11 @@
           price: price,
           image: imageUrl
         });
-        showToast(`${productName} added to favorites!`);
+        showToast(`${productName} added to favorites!`, 'success');
       } else {
         // Remove from favorites
         favorites.splice(favoriteIndex, 1);
-        showToast(`${productName} removed from favorites!`);
+        showToast(`${productName} removed from favorites!`, 'danger');
       }
       
       // Update local storage
@@ -536,7 +997,7 @@
       const favoriteIndex = favorites.findIndex(fav => fav.id === productId);
       if (favoriteIndex !== -1) {
         const removedItem = favorites.splice(favoriteIndex, 1)[0];
-        showToast(`${removedItem.name} removed from favorites!`);
+        showToast(`${removedItem.name} removed from favorites!`, 'danger');
         
         // Update local storage
         localStorage.setItem('favorites', JSON.stringify(favorites));
@@ -573,7 +1034,7 @@
         
         updateFavoriteBadge();
         renderFavorites();
-        showToast('All favorites cleared!');
+        showToast('All favorites cleared!', 'danger');
       }
     }
 
@@ -602,7 +1063,7 @@
         });
       }
       updateCart();
-      showToast(`${productName} added to cart!`);
+      showToast(`${productName} added to cart!`, 'success');
     }
 
     // Update cart display
@@ -663,7 +1124,7 @@
       }
       
       if (newQuantity > item.stock) {
-        showToast(`Only ${item.stock} items available in stock!`);
+        showToast(`Only ${item.stock} items available in stock!`, 'danger');
         return;
       }
       
@@ -673,9 +1134,9 @@
 
     // Remove item from cart
     function removeFromCart(index) {
-      cart.splice(index, 1);
+      const removedItem = cart.splice(index, 1)[0];
       updateCart();
-      showToast('Item removed from cart');
+      showToast(`${removedItem.name} removed from cart`, 'danger');
     }
 
     // Place order
@@ -701,6 +1162,8 @@
         customer_name: customerName,
         customer_no: customerNo
       };
+      
+      document.getElementById('loadertruck').style.display = 'flex';
 
       fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
         method: 'POST',
@@ -712,6 +1175,7 @@
           return response.text();
         })
         .then(message => {
+          document.getElementById('loadertruck').style.display = 'none';
           showToast(message, 'success');
           cart = [];
           updateCart();
@@ -731,18 +1195,16 @@
     // Show toast notification
     function showToast(message, type = 'success') {
       const toast = document.createElement('div');
-      toast.className = `position-fixed bottom-0 end-0 p-3`;
-      toast.style.zIndex = '1100';
+      toast.className = `toast-notification ${type}`;
       toast.innerHTML = `
-        <div class="toast show align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="d-flex">
-            <div class="toast-body">
-              ${message}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>
+        <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle'}"></i>
+        <span>${message}</span>
       `;
+      
+      // Remove any existing toasts
+      const existingToasts = document.querySelectorAll('.toast-notification');
+      existingToasts.forEach(toast => toast.remove());
+      
       document.body.appendChild(toast);
       
       setTimeout(() => {
