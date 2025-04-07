@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,15 +65,14 @@
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxRDPYWaN_jexaIXM1RGLd51hrgrlcpkWvREGeW2wJbp8sku-Ht82OQLgvW_gO8Pbi5/exec";
         const customerEmail = localStorage.getItem('customer_mail');
-        alert(localStorage.getItem('customer_mail'));
+
+        // Declare userData globally
         let email;
-        if (customerEmail){
-            email=customerEmail;
-        }
-        else{
-        // Retrieve user data from localStorage
         const userData = JSON.parse(localStorage.getItem("user_data")) || {};
-        if (!userData.email) {
+
+        if (customerEmail) {
+            email = customerEmail;
+        } else if (!userData.email) {
             alert("No user data found in localStorage. Please log in first.");
         } else {
             // Display user profile information
@@ -86,16 +84,20 @@
             window.onload = () => {
                 document.getElementById("fetch-user-btn").click();
             };
-        }}
+        }
 
         // Function to fetch user details
         async function fetchUserDetails(email) {
             try {
+                console.log("Fetching user details for email:", email);
+
                 const response = await fetch(`${API_URL}?action=fetchUser&email=${encodeURIComponent(email)}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
+
                 const result = await response.json();
+                console.log("API Response:", result);
 
                 const userDetailsDiv = document.getElementById("user-details");
                 if (result.id) {
@@ -128,16 +130,16 @@
 
         // Fetch User Details Button
         document.getElementById("fetch-user-btn").addEventListener("click", function () {
-            if (!userData.email) {
+            if (!userData.email && !email) {
                 alert("No email found in localStorage. Please log in first.");
                 return;
             }
-            fetchUserDetails(userData.email);
+            fetchUserDetails(userData.email || email);
         });
 
         // Delete Account
         document.getElementById("delete-account-btn").addEventListener("click", async function () {
-            if (!userData.email) {
+            if (!userData.email && !email) {
                 alert("No email found in localStorage. Please log in first.");
                 return;
             }
@@ -149,7 +151,7 @@
                 const response = await fetch(`${API_URL}?action=deleteUser`, {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `email=${encodeURIComponent(userData.email)}`
+                    body: `email=${encodeURIComponent(userData.email || email)}`
                 });
 
                 const result = await response.text();
@@ -169,7 +171,7 @@
                     `;
                 }
             } catch (error) {
-                alert("Error deleting user: " + error);
+                alert("Error deleting user: " + error.message);
             }
         });
     </script>
