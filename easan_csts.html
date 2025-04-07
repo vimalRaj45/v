@@ -4,38 +4,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Order Summary</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* General Styles */
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafb;
+      color: #333;
     }
     h1 {
       text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+      color: #2c3e50;
     }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Loading Spinner */
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      margin: 50px 0;
+      color: #777;
+    }
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      color: #ccc;
+    }
+
+    /* Table Styles */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
+      padding: 12px 15px;
       text-align: left;
+      border-bottom: 1px solid #e0e0e0;
     }
     th {
       background-color: #f2f2f2;
+      font-weight: 700;
+      color: #333;
     }
-    .error {
-      color: red;
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    /* Responsive Table */
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        display: none;
+      }
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      td {
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        font-weight: bold;
+        text-align: left;
+        width: 45%;
+      }
+    }
+
+    /* Status Indicators */
+    .status {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      text-transform: capitalize;
       font-weight: bold;
-      text-align: center;
+    }
+    .status-delivered {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .status-processing {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    .status-cancelled {
+      background-color: #f8d7da;
+      color: #721c24;
     }
   </style>
 </head>
 <body>
-  <h1>Customer Order Summary</h1>
+  <div class="container">
+    <h1>Recent Orders</h1>
 
-  <div id="order-summary"></div>
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i> Loading...
+    </div>
+
+    <!-- Order Summary -->
+    <div id="order-summary" style="display: none;"></div>
+  </div>
 
   <script>
     // Retrieve customer_id from localStorage
@@ -43,18 +144,31 @@
     if (!customerId) {
       window.location.replace("https://vimalraj45.github.io/v/easan_login");
     } else {
+      const orderSummaryDiv = document.getElementById('order-summary');
+      const loadingSpinner = document.getElementById('loading-spinner');
+
       // Fetch orders for the customer_id
       fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
         .then(response => response.json())
         .then(orders => {
-          const orderSummaryDiv = document.getElementById('order-summary');
-          orderSummaryDiv.innerHTML = '';
+          // Hide loading spinner
+          loadingSpinner.style.display = 'none';
 
           if (orders.length === 0) {
-            orderSummaryDiv.innerHTML = '<p class="error">No orders found for this Customer ID.</p>';
+            // Display empty state
+            orderSummaryDiv.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-box-open"></i>
+                <p>No orders found for this Customer ID.</p>
+              </div>
+            `;
             return;
           }
 
+          // Sort orders by order_time (most recent first)
+          orders.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
+
+          // Create table
           const table = document.createElement('table');
           table.innerHTML = `
             <thead>
@@ -74,23 +188,37 @@
           const tbody = table.querySelector('tbody');
           orders.forEach(order => {
             const row = document.createElement('tr');
+            const statusClass = `status-${order.status.toLowerCase().replace(/\s+/g, '-')}`;
+
             row.innerHTML = `
-              <td>${order.order_id}</td>
-              <td>${order.items}</td>
-              <td>${order.quantity}</td>
-              <td>$${order.total.toFixed(2)}</td>
-              <td>${order.status}</td>
-              <td>${order.order_time}</td>
-              <td>${order.delivery_time || 'N/A'}</td>
+              <td data-label="Order ID">${order.order_id}</td>
+              <td data-label="Items">${order.items}</td>
+              <td data-label="Quantity">${order.quantity}</td>
+              <td data-label="Total">$${order.total.toFixed(2)}</td>
+              <td data-label="Status">
+                <span class="status ${statusClass}">${order.status}</span>
+              </td>
+              <td data-label="Order Time">${new Date(order.order_time).toLocaleString()}</td>
+              <td data-label="Delivery Time">${order.delivery_time || 'N/A'}</td>
             `;
             tbody.appendChild(row);
           });
 
+          // Show the table
+          orderSummaryDiv.style.display = 'block';
           orderSummaryDiv.appendChild(table);
         })
         .catch(error => {
-          const orderSummaryDiv = document.getElementById('order-summary');
-          orderSummaryDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+          // Hide loading spinner
+          loadingSpinner.style.display = 'none';
+
+          // Display error message
+          orderSummaryDiv.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Error: ${error.message}</p>
+            </div>
+          `;
         });
     }
   </script>
