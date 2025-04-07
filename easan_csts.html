@@ -32,23 +32,30 @@
       border-radius: 5px;
       width: 200px;
     }
+    .table-container {
+      max-height: 400px; /* Fixed height for scrollable table */
+      overflow-y: auto; /* Enable vertical scrolling */
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
     }
     th, td {
       padding: 12px 15px;
       text-align: left;
       border-bottom: 1px solid #e0e0e0;
+      white-space: nowrap; /* Prevent text wrapping */
     }
     th {
       background-color: #f2f2f2;
       font-weight: 700;
       color: #333;
+      position: sticky;
+      top: 0; /* Make headers sticky */
+      z-index: 1;
     }
     tr:hover {
       background-color: #f9f9f9;
@@ -82,6 +89,20 @@
       margin-bottom: 10px;
       color: #ccc;
     }
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      font-size: 1.2rem;
+      color: #555;
+    }
+    @media (max-width: 768px) {
+      .filters {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -95,12 +116,29 @@
     </div>
 
     <!-- Loading Spinner -->
-    <div id="loading-spinner" class="text-center mt-4">
+    <div id="loading-spinner" class="loading-spinner">
       <i class="fas fa-spinner fa-spin"></i> Loading...
     </div>
 
     <!-- Order Summary -->
-    <div id="order-summary" style="display: none;"></div>
+    <div id="order-summary" style="display: none;">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Items</th>
+              <th>Quantity</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Order Time</th>
+              <th>Delivery Time</th>
+            </tr>
+          </thead>
+          <tbody id="order-table-body"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -152,11 +190,11 @@
 
     // Render the table
     function renderTable(filteredOrders) {
-      const orderSummaryDiv = document.getElementById('order-summary');
-      orderSummaryDiv.innerHTML = '';
+      const tbody = document.getElementById('order-table-body');
+      tbody.innerHTML = '';
 
       if (filteredOrders.length === 0) {
-        orderSummaryDiv.innerHTML = `
+        document.getElementById('order-summary').innerHTML = `
           <div class="empty-state">
             <i class="fas fa-search"></i>
             <p>No matching orders found.</p>
@@ -165,23 +203,6 @@
         return;
       }
 
-      const table = document.createElement('table');
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Items</th>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Order Time</th>
-            <th>Delivery Time</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      `;
-
-      const tbody = table.querySelector('tbody');
       filteredOrders.forEach(order => {
         const row = document.createElement('tr');
         const statusClass = `status-${order.status.toLowerCase().replace(/\s+/g, '-')}`;
@@ -192,13 +213,11 @@
           <td>${order.quantity}</td>
           <td>$${order.total.toFixed(2)}</td>
           <td><span class="status ${statusClass}">${order.status}</span></td>
-          <td>${new Date(order.order_time).toLocaleDateString()}</td>
-          <td>${order.delivery_time || 'N/A'}</td>
+          <td>${new Date(order.order_time).toLocaleString()}</td>
+          <td>${order.delivery_time ? new Date(order.delivery_time).toLocaleString() : 'N/A'}</td>
         `;
         tbody.appendChild(row);
       });
-
-      orderSummaryDiv.appendChild(table);
     }
 
     // Filter orders based on date and product
