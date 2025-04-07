@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easan Grocery SPA</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Manrope&family=Plus+Jakarta+Sans&family=Outfit&family=Space+Grotesk&family=Playfair+Display&family=DM+Serif+Display&family=Sora&family=Syne&display=swap" rel="stylesheet">
+    <style>
+        /* Full-screen iframe */
+        #main-content {
+            position: fixed;
+            top: 60px; /* Height of the navbar */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        #main-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Sticky Navbar */
+        .custom-navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1020; /* Lower than offcanvas */
+        }
+
+        /* Fixed Bottom Footer */
+        footer.fixed-bottom-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f6f7f7;
+            border-top: 1px solid #ddd;
+            z-index: 1020; /* Lower than offcanvas */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        /* Logo Animation */
+        .logo-container {
+            position: relative;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-container img {
+            width: 250px;
+            height: auto;
+            object-fit: contain;
+            position: absolute;
+            top: -100px;
+            opacity: 0;
+            transition: top 0.8s ease, opacity 0.8s ease;
+        }
+
+        /* Ensure offcanvas has the highest z-index */
+        .offcanvas {
+            z-index: 1050 !important;
+        }
+    </style>
+</head>
+<body style="font-family: 'Outfit', sans-serif;">
+    <!-- Navigation Bar -->
+    <nav class="d-flex align-items-center justify-content-between ps-2 pe-2 pt-1 pb-1 custom-navbar sticky-top bg-white border bordr-dark" style="border-color: #161212;">
+        <a class="nav-link" href="#" onclick="loadPage('account')">
+            <i class="bi bi-person-check-fill fs-3" style="font-weight: bold; font-size: 1.5rem;"></i>
+        </a>
+        <div class="logo-container text-center">
+<!-- First Image -->
+<img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" 
+id="logo-img1"
+style="width: 250px; height: 42px; object-fit: contain; 
+       position: absolute; top: -100px; opacity: 0; 
+       transition: top 0.8s ease, opacity 0.8s ease; margin-top: 5px;">
+
+<!-- Second Image (Same Position) -->
+<img src="https://i.ibb.co/GfDVQfBh/easan-ta.jpg" alt="Easan Supermarket Logo 2" 
+id="logo-img2"
+style="width: 250px; height: 54px; object-fit: contain; 
+       position: absolute; top: -100px; opacity: 0; 
+       transition: top 0.8s ease, opacity 0.8s ease;">
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-3 fe-3"></i>
+        </button>
+    </nav>
+
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title mt-4" id="offcanvasNavbarLabel">EASAN SUPERMARKET</h5>
+            <button type="button" class="btn-close mt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" onclick="loadPage('home')">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('shop')">Shop Now</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('contact')">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('orders')">My Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://script.google.com/macros/s/AKfycbw9piNQOCjCDz8YybuSEbRmPjzJfUgwnW3gtzfcFVEgxpkcYQBuwKlGlqRQIWfqN5MZ/exec" class="nav-link">Admin Orders</a>
+                </li>
+                <li class="nav-item">
+                    <button onclick="localStorage.clear(); alert('Logged out successfully!');" style="float:right; margin:10px; padding:8px 16px; background-color:crimson; color:white; border:none; border-radius:5px;" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+        <iframe id="content-frame" src="https://vimalraj45.github.io/v/easan_home"></iframe>
+    </div>
+
+    <!-- Fixed Bottom Footer -->
+    <footer class="fixed-bottom-footer">
+        <a href="#" class="nav-link text-center" onclick="loadPage('home')">
+            <i class="bi bi-house-door-fill"></i><br>Home
+        </a>
+        <a href="#" class="nav-link text-center" onclick="loadPage('shop')">
+            <i class="bi bi-bag-check-fill"></i><br>Shop Now
+        </a>
+        <a href="#" class="nav-link text-center" onclick="loadPage('account')">
+            <i class="bi bi-person-circle"></i><br>Account
+        </a>
+        <a href="#" class="nav-link text-center" onclick="loadPage('help')">
+            <i class="bi bi-question-circle-fill"></i><br>Help
+        </a>
+    </footer>
+
+    <script>
+        // Function to dynamically load content into the iframe
+        function loadPage(page) {
+            const iframe = document.getElementById('content-frame');
+            switch (page) {
+                case 'home':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_home';
+                    break;
+                case 'shop':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_shop';
+                    break;
+                case 'contact':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_contact';
+                    break;
+                case 'orders':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_csts';
+                    break;
+                case 'account':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_account';
+                    break;
+                case 'help':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_help';
+                    break;
+                default:
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_home'; // Default to home
+            }
+        }
+
+        // Load Home Page by Default
+        window.onload = () => {
+            loadPage('home');
+            animateImages();
+            setupOffcanvasAutoHide();
+        };
+
+        // Logo Animation
+        function animateImages() {
+            let img1 = document.getElementById("logo-img1");
+            let img2 = document.getElementById("logo-img2");
+
+            function moveImage(img, delay) {
+                setTimeout(() => {
+                    img.style.opacity = "1";
+                    img.style.top = "0px"; // Slide down
+
+                    setTimeout(() => {
+                        img.style.top = "-100px";
+                        img.style.opacity = "0"; // Slide up
+                    }, 3000); // Stay for 3 seconds
+                }, delay);
+            }
+
+            function startAnimation() {
+                moveImage(img1, 0); // First image animates first
+                moveImage(img2, 3000); // Second image animates after 3 seconds
+
+                setTimeout(startAnimation, 6000); // Repeat cycle every 6 seconds
+            }
+
+            startAnimation();
+        }
+
+        // Google Translate Script
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'en,ta',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        // Automatically hide offcanvas when a link is clicked
+        function setupOffcanvasAutoHide() {
+            const offcanvas = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
+
+            // Select all links inside the offcanvas
+            const links = offcanvas.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+                    if (bsOffcanvas) {
+                        bsOffcanvas.hide(); // Hide the offcanvas
+                    }
+                });
+            });
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
