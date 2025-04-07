@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +65,12 @@
     <!-- JavaScript -->
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxRDPYWaN_jexaIXM1RGLd51hrgrlcpkWvREGeW2wJbp8sku-Ht82OQLgvW_gO8Pbi5/exec";
-
+        const customerEmail = localStorage.getItem('customer_mail');
+        let email;
+        if (customerEmail){
+            email=customerEmail;
+        }
+        else{
         // Retrieve user data from localStorage
         const userData = JSON.parse(localStorage.getItem("user_data")) || {};
         if (!userData.email) {
@@ -79,7 +85,7 @@
             window.onload = () => {
                 document.getElementById("fetch-user-btn").click();
             };
-        }
+        }}
 
         // Function to fetch user details
         async function fetchUserDetails(email) {
