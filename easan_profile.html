@@ -47,9 +47,10 @@
         <!-- User Profile Information -->
         <h2>User Profile</h2>
         <div class="profile-info" id="profile-info">
-            <img id="profile-picture" src="" alt="Profile Picture">
+            <img id="profile-picture" src="https://via.placeholder.com/150" alt="Profile Picture">
             <h4 id="profile-name">Loading...</h4>
             <p id="profile-email">Email: Loading...</p>
+            <p id="profile-contact">Contact: Loading...</p>
         </div>
 
         <!-- Fetch User Details -->
@@ -64,26 +65,34 @@
     <!-- JavaScript -->
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxRDPYWaN_jexaIXM1RGLd51hrgrlcpkWvREGeW2wJbp8sku-Ht82OQLgvW_gO8Pbi5/exec";
-        const customerEmail = localStorage.getItem('customer_mail');
+        const customerMail = localStorage.getItem('customer_mail');
+        const customerName = localStorage.getItem('customer_name');
+        const customerNo = localStorage.getItem('customer_no');
 
-        // Declare userData globally
-        let email;
-        const userData = JSON.parse(localStorage.getItem("user_data")) || {};
-
-        if (customerEmail) {
-            email = customerEmail;
-        } else if (!userData.email) {
-            alert("No user data found in localStorage. Please log in first.");
-        } else {
-            // Display user profile information
-            document.getElementById("profile-picture").src = userData.picture || "default-profile.jpg";
-            document.getElementById("profile-name").innerText = userData.name || "N/A";
-            document.getElementById("profile-email").innerText = "Email: " + (userData.email || "N/A");
+        // Check if customer_mail exists in localStorage
+        if (customerMail) {
+            // Display user profile information from localStorage
+            document.getElementById("profile-picture").src = "https://via.placeholder.com/150"; // Default image
+            document.getElementById("profile-name").innerText = customerName || "N/A";
+            document.getElementById("profile-email").innerText = "Email: " + (customerMail || "N/A");
+            document.getElementById("profile-contact").innerText = "Contact: " + (customerNo || "N/A");
 
             // Auto-fetch user details on page load
             window.onload = () => {
                 document.getElementById("fetch-user-btn").click();
             };
+        } else {
+            // Retrieve user data from localStorage (fallback)
+            const userData = JSON.parse(localStorage.getItem("user_data")) || {};
+            if (!userData.email) {
+                alert("No user data found in localStorage. Please log in first.");
+            } else {
+                // Display user profile information
+                document.getElementById("profile-picture").src = userData.picture || "https://via.placeholder.com/150";
+                document.getElementById("profile-name").innerText = userData.name || "N/A";
+                document.getElementById("profile-email").innerText = "Email: " + (userData.email || "N/A");
+                document.getElementById("profile-contact").innerText = "Contact: " + (userData.contact || "N/A");
+            }
         }
 
         // Function to fetch user details
@@ -130,16 +139,18 @@
 
         // Fetch User Details Button
         document.getElementById("fetch-user-btn").addEventListener("click", function () {
-            if (!userData.email && !email) {
+            const email = customerMail || JSON.parse(localStorage.getItem("user_data"))?.email;
+            if (!email) {
                 alert("No email found in localStorage. Please log in first.");
                 return;
             }
-            fetchUserDetails(userData.email || email);
+            fetchUserDetails(email);
         });
 
         // Delete Account
         document.getElementById("delete-account-btn").addEventListener("click", async function () {
-            if (!userData.email && !email) {
+            const email = customerMail || JSON.parse(localStorage.getItem("user_data"))?.email;
+            if (!email) {
                 alert("No email found in localStorage. Please log in first.");
                 return;
             }
@@ -151,7 +162,7 @@
                 const response = await fetch(`${API_URL}?action=deleteUser`, {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `email=${encodeURIComponent(userData.email || email)}`
+                    body: `email=${encodeURIComponent(email)}`
                 });
 
                 const result = await response.text();
@@ -162,7 +173,7 @@
                             User deleted successfully!
                         </div>
                     `;
-                    localStorage.removeItem("user_data"); // Clear user data from localStorage
+                    localStorage.clear(); // Clear all localStorage data
                 } else {
                     deleteMessageDiv.innerHTML = `
                         <div class="alert alert-danger">
