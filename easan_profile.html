@@ -15,33 +15,22 @@
 
             <div class="row mt-4">
                 <div class="col-md-12">
-                    <h5>User ID: <span id="user-id">Generating...</span></h5>
                     <h5 id="user-name">Loading...</h5>
                     <p id="user-email">Email: Loading...</p>
 
-                    <form id="profile-form">
+                    <form id="profile-form" novalidate>
                         <div class="mb-3">
                             <label for="contact" class="form-label">Contact Number</label>
-                            <input type="tel" class="form-control" id="contact" placeholder="Enter your contact number" required>
+                            <input type="tel" class="form-control" id="contact" placeholder="Enter your contact number" pattern="[0-9]{10}" required>
+                            <div class="invalid-feedback">Please enter a valid 10-digit contact number.</div>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label">Address</label>
                             <input type="text" class="form-control" id="address" placeholder="Enter your address" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="orderId" class="form-label">Order ID</label>
-                            <input type="text" class="form-control" id="orderId" placeholder="Enter your order ID" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-control" id="status">
-                                <option value="Pending">Pending</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Shipped">Shipped</option>
-                                <option value="Delivered">Delivered</option>
-                            </select>
+                            <div class="invalid-feedback">Please enter your address.</div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Save Profile</button>
+                        <button type="button" class="btn btn-secondary w-100 mt-2" onclick="resetForm()">Cancel</button>
                     </form>
                 </div>
                 <button id="logout-btn" class="btn btn-danger w-100 mt-3">Logout</button>
@@ -58,30 +47,38 @@
             document.getElementById("user-email").innerText = "Email: " + (userData.email || "N/A");
 
             if (userData.email) {
-                const response = await fetch(`${API_URL}?email=${encodeURIComponent(userData.email)}`);
-                const result = await response.json();
-                
-                if (result.exists) {
-                    document.getElementById("user-id").innerText = result.userId;
-                    document.getElementById("contact").value = result.contact || "";
-                    document.getElementById("address").value = result.address || "";
-                    document.getElementById("orderId").value = result.orderId || "";
-                    document.getElementById("status").value = result.status || "Pending";
-                } else {
-                    document.getElementById("user-id").innerText = "New User (Generated on Submit)";
+                try {
+                    const response = await fetch(`${API_URL}?email=${encodeURIComponent(userData.email)}`);
+                    const result = await response.json();
+
+                    if (result.exists) {
+                        document.getElementById("contact").value = result.contact || "";
+                        document.getElementById("address").value = result.address || "";
+                    }
+                } catch (error) {
+                    alert("Error fetching user data: " + error);
                 }
             }
         };
 
+        function resetForm() {
+            document.getElementById("profile-form").reset();
+        }
+
         document.getElementById("profile-form").addEventListener("submit", async function(event) {
             event.preventDefault();
 
+            // Validate form
+            const form = event.target;
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+
             const contact = document.getElementById("contact").value;
             const address = document.getElementById("address").value;
-            const orderId = document.getElementById("orderId").value;
-            const status = document.getElementById("status").value;
             const userData = JSON.parse(localStorage.getItem("user_data")) || {};
-            
+
             if (!userData.email) {
                 alert("User not found. Please sign up first.");
                 return;
@@ -91,9 +88,7 @@
                 name: userData.name,
                 email: userData.email,
                 contact: contact,
-                address: address,
-                orderId: orderId,
-                status: status
+                address: address
             };
 
             try {
@@ -105,10 +100,9 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    document.getElementById("user-id").innerText = result.userId;
                     alert("Profile saved successfully!");
                 } else {
-                    alert(result.message);
+                    alert(result.message || "Failed to save profile.");
                 }
             } catch (error) {
                 alert("Error saving data: " + error);
