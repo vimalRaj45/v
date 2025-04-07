@@ -74,17 +74,15 @@
             document.getElementById("profile-picture").src = userData.picture || "default-profile.jpg";
             document.getElementById("profile-name").innerText = userData.name || "N/A";
             document.getElementById("profile-email").innerText = "Email: " + (userData.email || "N/A");
+
+            // Auto-fetch user details on page load
+            fetchUserDetails(userData.email);
         }
 
-        // Fetch User Details
-        document.getElementById("fetch-user-btn").addEventListener("click", async function () {
-            if (!userData.email) {
-                alert("No email found in localStorage. Please log in first.");
-                return;
-            }
-
+        // Function to fetch user details
+        async function fetchUserDetails(email) {
             try {
-                const response = await fetch(`${API_URL}?action=fetchUser&email=${encodeURIComponent(userData.email)}`);
+                const response = await fetch(`${API_URL}?action=fetchUser&email=${encodeURIComponent(email)}`);
                 const result = await response.json();
 
                 const userDetailsDiv = document.getElementById("user-details");
@@ -109,6 +107,15 @@
             } catch (error) {
                 alert("Error fetching user details: " + error);
             }
+        }
+
+        // Fetch User Details Button
+        document.getElementById("fetch-user-btn").addEventListener("click", function () {
+            if (!userData.email) {
+                alert("No email found in localStorage. Please log in first.");
+                return;
+            }
+            fetchUserDetails(userData.email);
         });
 
         // Delete Account
