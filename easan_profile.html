@@ -3,118 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Easan Supermarket - User Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
+    <div class="container">
+        <!-- Fetch User Details -->
+        <h2>Fetch User Details</h2>
+        <button id="fetch-user-btn" class="btn btn-primary">Fetch My Details</button>
+        <div id="user-details" class="mt-3"></div>
 
-    <div class="container mt-5">
-        <div class="card p-4 shadow">
-            <h3 class="text-center">User Profile</h3>
-
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <h5 id="user-name">Loading...</h5>
-                    <p id="user-email">Email: Loading...</p>
-
-                    <form id="profile-form" novalidate>
-                        <div class="mb-3">
-                            <label for="contact" class="form-label">Contact Number</label>
-                            <input type="tel" class="form-control" id="contact" placeholder="Enter your contact number" pattern="[0-9]{10}" required>
-                            <div class="invalid-feedback">Please enter a valid 10-digit contact number.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" placeholder="Enter your address" required>
-                            <div class="invalid-feedback">Please enter your address.</div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Save Profile</button>
-                        <button type="button" class="btn btn-secondary w-100 mt-2" onclick="resetForm()">Cancel</button>
-                    </form>
-                </div>
-                <button id="logout-btn" class="btn btn-danger w-100 mt-3">Logout</button>
-            </div>
-        </div>
+        <!-- Delete User -->
+        <h2 class="mt-5">Delete Account</h2>
+        <button id="delete-user-btn" class="btn btn-danger">Delete My Account</button>
+        <div id="delete-message" class="mt-3"></div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxAOnE69HWGc-M4NoDw-a6y8yxuWNtqx6cV30nrT81TnGdNVPoJ0KC2NVxG5NBwXlfk2Q/exec"; // Replace with your Web App URL
+        const API_URL = "https://script.google.com/macros/s/AKfycbxRDPYWaN_jexaIXM1RGLd51hrgrlcpkWvREGeW2wJbp8sku-Ht82OQLgvW_gO8Pbi5/exec";
 
-        window.onload = async function() {
-            const userData = JSON.parse(localStorage.getItem("user_data")) || {};
-            document.getElementById("user-name").innerText = userData.name || "N/A";
-            document.getElementById("user-email").innerText = "Email: " + (userData.email || "N/A");
+        // Get user email from localStorage
+        const userEmail = localStorage.getItem("user_email");
 
-            if (userData.email) {
-                try {
-                    const response = await fetch(`${API_URL}?email=${encodeURIComponent(userData.email)}`);
-                    const result = await response.json();
-
-                    if (result.exists) {
-                        document.getElementById("contact").value = result.contact || "";
-                        document.getElementById("address").value = result.address || "";
-                    }
-                } catch (error) {
-                    alert("Error fetching user data: " + error);
-                }
-            }
-        };
-
-        function resetForm() {
-            document.getElementById("profile-form").reset();
+        if (!userEmail) {
+            alert("No email found in localStorage. Please log in first.");
         }
 
-        document.getElementById("profile-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
-
-            // Validate form
-            const form = event.target;
-            if (!form.checkValidity()) {
-                form.classList.add('was-validated');
+        // Fetch User Details
+        document.getElementById("fetch-user-btn").addEventListener("click", async function () {
+            if (!userEmail) {
+                alert("No email found in localStorage. Please log in first.");
                 return;
             }
-
-            const contact = document.getElementById("contact").value;
-            const address = document.getElementById("address").value;
-            const userData = JSON.parse(localStorage.getItem("user_data")) || {};
-
-            if (!userData.email) {
-                alert("User not found. Please sign up first.");
-                return;
-            }
-
-            const requestBody = {
-                name: userData.name,
-                email: userData.email,
-                contact: contact,
-                address: address
-            };
 
             try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(requestBody)
-                });
-
+                const response = await fetch(`${API_URL}?action=fetchUser&email=${encodeURIComponent(userEmail)}`);
                 const result = await response.json();
-                if (result.success) {
-                    alert("Profile saved successfully!");
+
+                const userDetailsDiv = document.getElementById("user-details");
+                if (result.id) {
+                    userDetailsDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <strong>User Found:</strong><br>
+                            ID: ${result.id}<br>
+                            Name: ${result.name}<br>
+                            Email: ${result.email}<br>
+                            Contact: ${result.contact}<br>
+                            Address: ${result.address}
+                        </div>
+                    `;
                 } else {
-                    alert(result.message || "Failed to save profile.");
+                    userDetailsDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            User not found!
+                        </div>
+                    `;
                 }
             } catch (error) {
-                alert("Error saving data: " + error);
+                alert("Error fetching user details: " + error);
             }
         });
 
-        document.getElementById("logout-btn").addEventListener("click", function() {
-            localStorage.clear();
-            alert("Logged out successfully!");
-            window.location.href = "https://vimalraj45.github.io/v/easan_login"; // Redirect to login page
+        // Delete User
+        document.getElementById("delete-user-btn").addEventListener("click", async function () {
+            if (!userEmail) {
+                alert("No email found in localStorage. Please log in first.");
+                return;
+            }
+
+            const confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+            if (!confirmDelete) return;
+
+            try {
+                const response = await fetch(`${API_URL}?action=deleteUser`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `email=${encodeURIComponent(userEmail)}`
+                });
+
+                const result = await response.text();
+                const deleteMessageDiv = document.getElementById("delete-message");
+                if (result.includes("successfully")) {
+                    deleteMessageDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            User deleted successfully!
+                        </div>
+                    `;
+                    localStorage.removeItem("user_email"); // Clear email from localStorage
+                } else {
+                    deleteMessageDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            Error: ${result}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                alert("Error deleting user: " + error);
+            }
         });
     </script>
-
 </body>
 </html>
