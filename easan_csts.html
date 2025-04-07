@@ -111,7 +111,7 @@
 
     <!-- Filters -->
     <div class="filters">
-      <input type="date" id="date-filter" placeholder="Filter by Date">
+      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)">
       <input type="text" id="product-filter" placeholder="Filter by Product">
     </div>
 
@@ -142,6 +142,16 @@
   </div>
 
   <script>
+    // Function to convert DD/MM/YYYY to YYYY-MM-DD
+    function convertDateFormat(dateStr) {
+      const parts = dateStr.split('/');
+      if (parts.length === 3) {
+        const [day, month, year] = parts;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      }
+      return null; // Invalid format
+    }
+
     // Retrieve customer_id from localStorage
     const customerId = localStorage.getItem('customer_id');
     if (!customerId) {
@@ -221,16 +231,19 @@
     }
 
     // Filter orders based on date and product
-    document.getElementById('date-filter').addEventListener('change', applyFilters);
+    document.getElementById('date-filter').addEventListener('input', applyFilters);
     document.getElementById('product-filter').addEventListener('input', applyFilters);
 
     function applyFilters() {
-      const selectedDate = document.getElementById('date-filter').value;
+      const selectedDate = document.getElementById('date-filter').value.trim();
       const searchTerm = document.getElementById('product-filter').value.toLowerCase();
+
+      // Convert selectedDate to YYYY-MM-DD format
+      const formattedDate = selectedDate ? convertDateFormat(selectedDate) : null;
 
       const filteredOrders = allOrders.filter(order => {
         const orderDate = new Date(order.order_time).toISOString().split('T')[0];
-        const matchesDate = !selectedDate || orderDate === selectedDate;
+        const matchesDate = !formattedDate || orderDate === formattedDate;
         const matchesProduct = !searchTerm || order.items.toLowerCase().includes(searchTerm);
         return matchesDate && matchesProduct;
       });
