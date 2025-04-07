@@ -295,66 +295,9 @@
     </style>
 </head>
 <body style="font-family: 'Outfit', sans-serif;">
-  <div class="d-flex align-items-center justify-content-between ps-2 pe-2 pt-1 pb-1 custom-navbar sticky-top bg-white border bordr-dark" style="border-color: #161212;">
-        <a class="nav-link" href="https://vimalraj45.github.io/v/easan_csts">
-            <i class="bi bi-person-check-fill fs-3" style="font-weight: bold; font-size: 1.5rem;" style="background-color: #343a40;"></i>
-        </a>
-        <div class="text-center" style="position: relative; height: 50px; display: flex; justify-content: center; align-items: center;">
-            <!-- First Image -->
-            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" 
-                 id="logo-img1"
-                 style="width: 250px; height: 42px; object-fit: contain; 
-                        position: absolute; top: -100px; opacity: 0; 
-                        transition: top 0.8s ease, opacity 0.8s ease; margin-top: 5px;">
-          
-            <!-- Second Image (Same Position) -->
-            <img src="https://i.ibb.co/GfDVQfBh/easan-ta.jpg" alt="Easan Supermarket Logo 2" 
-                 id="logo-img2"
-                 style="width: 250px; height: 54px; object-fit: contain; 
-                        position: absolute; top: -100px; opacity: 0; 
-                        transition: top 0.8s ease, opacity 0.8s ease;">
-          </div>      
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <i class="bi bi-list fs-3 fe-3"></i>
-        </button>
-    </div>
+ 
 
-   <!-- Offcanvas -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title mt-4" id="offcanvasNavbarLabel">EASAN SUPERMARKET</h5>
-        <button type="button" class="btn-close mt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://vimalraj45.github.io/v/easan_shop">Order Now</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contact Us</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="https://vimalraj45.github.io/v/easan_csts">My Orders</a>
-            </li>
-            <li class="nav-item">
-                <div id="google_translate_element" class="nav-link"></div>
-            </li>
-            <li class="nav-item">
-                <a href="https://script.google.com/macros/s/AKfycbw9piNQOCjCDz8YybuSEbRmPjzJfUgwnW3gtzfcFVEgxpkcYQBuwKlGlqRQIWfqN5MZ/exec" class="nav-link">Admin Orders</a>
-            </li>
-            <li class="nav-item">
-                <button onclick="localStorage.clear(); alert('Logged out successfully!');" style="float:right; margin:10px; padding:8px 16px; background-color:crimson; color:white; border:none; border-radius:5px;" class="nav-link">
-                  <i class="bi bi-box-arrow-right"></i> Logout
-                </button>
-
-            </li>
-    </div>
-</div>
-
+  
 <script>
     // Retrieve user details from localStorage and display them in the dropdown
     window.onload = function() {
