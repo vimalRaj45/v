@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -817,7 +818,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     // Fetch products
     function fetchProducts() {
       showLoading(true);
-      fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=getProducts')
+      fetch('https://script.google.com/macros/s/AKfycbzV8HWaBw5_7o04KxJgyhmtwQc0zmUbhmhqSB37onjyR01Y4Vrvg-cYknqEK__xKP4TSg/exec?action=getProducts')
         .then(response => {
           if (!response.ok) throw new Error('Network response was not ok');
           return response.json();
@@ -885,10 +886,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         const isFavorite = favorites.some(fav => fav.id === product.id);
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
-        
-        // Calculate discount for demo purposes (random between 5-30%)
-        const discountPercent = Math.floor(Math.random() * 25) + 5;
-        const originalPrice = Math.round(product.price * (1 + discountPercent/100));
+        const discountPercent = Math.round(((product.price - product.our_price) / product.price) * 100);
         
         productCard.innerHTML = `
           <div class="product-card">
@@ -904,7 +902,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
                 ${(Math.random() * 1 + 4).toFixed(1)} <i class="bi bi-star-fill"></i>
               </div>
               <div class="product-price">
-                <span class="original-price">₹${originalPrice}</span>
+                <span class="original-price">₹${product.our_price}</span>
                 <span>₹${product.price}</span>
                 <span class="discount">${discountPercent}% off</span>
               </div>
@@ -1145,53 +1143,52 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
       showToast(`${removedItem.name} removed from cart`, 'danger');
     }
 
-    // Place order
-    document.getElementById('place-order').addEventListener('click', () => {
-      const deliveryTime = document.getElementById('delivery-time').value;
-      if (!deliveryTime) {
-        showToast("Please select an expected delivery time.", 'danger');
-        return;
-      }
-      if (cart.length === 0) {
-        showToast("Your cart is empty. Please add some products.", 'danger');
-        return;
-      }
+    document.getElementById('place-order').addEventListener('click', async () => {
+  const deliveryTime = document.getElementById('delivery-time').value;
+  if (!deliveryTime) return showToast("Please select an expected delivery time.", 'danger');
+  if (!cart.length) return showToast("Your cart is empty. Please add some products.", 'danger');
 
-      const orderData = {
-        order_id: 'ORD' + Math.floor(Math.random() * 100000),
-        customer_id: customerId,
-        items: JSON.stringify(cart.map(item => ({ id: item.id, quantity: item.quantity }))),
-        quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
-        total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        status: 'Pending',
-        delivery_time: deliveryTime,
-        customer_name: customerName,
-        customer_no: customerNo
-      };
-      
-      document.getElementById('loadertruck').style.display = 'flex';
+  const orderId = 'ORD' + Math.floor(Math.random() * 100000);
+  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart.map(item => ({ id: item.id, quantity: item.quantity }));
 
-      fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(orderData)
-      })
-        .then(response => {
-          if (!response.ok) throw new Error('Network response was not ok');
-          return response.text();
-        })
-        .then(message => {
-          document.getElementById('loadertruck').style.display = 'none';
-          showToast(message, 'success');
-          cart = [];
-          updateCart();
-          toggleCart();
-        })
-        .catch(error => {
-          console.error('Error placing order:', error);
-          showToast('Error placing order. Please try again later.', 'danger');
-        });
+  const orderData = {
+    order_id: orderId,
+    customer_id: customerId,
+    items: JSON.stringify(items),
+    quantity: totalQty,
+    total: totalPrice,
+    status: 'Pending',
+    delivery_time: deliveryTime,
+    customer_name: customerName,
+    customer_no: customerNo
+  };
+
+  document.getElementById('loadertruck').style.display = 'flex';
+
+  try {
+    const res = await fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(orderData)
     });
+
+    const msg = await res.text();
+    document.getElementById('loadertruck').style.display = 'none';
+
+    if (!res.ok) throw new Error(msg);
+
+    showToast(msg, 'success');
+    cart = [];
+    updateCart();
+    toggleCart();
+  } catch (err) {
+    document.getElementById('loadertruck').style.display = 'none';
+    console.error('Order Error:', err);
+    showToast('Error placing order. Please try again later.', 'danger');
+  }
+});
 
     // Show loading spinner
     function showLoading(show) {
