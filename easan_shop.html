@@ -769,7 +769,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     const customerNo = localStorage.getItem('customer_no');
 
     if (!customerId) {
-      //window.location.href = "https://vimalraj45.github.io/v/easan_login"; 
+      window.location.href = "https://vimalraj45.github.io/v/easan_login"; 
     }
 
     // Initialize page
@@ -894,7 +894,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         const isFavorite = favorites.some(fav => fav.id === product.id);
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
-        const discountPercent = Math.round(((product.price - product.our_price) / product.price) * 100);
+        const discountPercent = Math.round(((product.our_price - product.price) / -product.price) * 100);
         
         productCard.innerHTML = `
           <div class="product-card">
@@ -910,8 +910,8 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
                 ${(Math.random() * 1 + 4).toFixed(1)} <i class="bi bi-star-fill"></i>
               </div>
               <div class="product-price">
-                <span class="original-price">₹${product.our_price}</span>
-                <span>₹${product.price}</span>
+                <span class="original-price">₹${product.price}</span>
+                <span>₹${product.our_price}</span>
                 <span class="discount">${discountPercent}% off</span>
               </div>
               <div class="product-stock">
