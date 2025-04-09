@@ -1,210 +1,282 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Customer Order Summary</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <title>Easan Grocery Admin</title>
+
+  <!-- Outfit Font -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
   <style>
     body {
+      margin: 0;
       font-family: 'Outfit', sans-serif;
-      background-color: #f9fafb;
+      background: linear-gradient(to bottom right, #eef2f7, #dce6f1);
+      color: #333;
     }
-    h1 {
+
+    .container {
+      max-width: 460px;
+      margin: 5% auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
       text-align: center;
-      margin: 20px 0;
     }
-    .filters {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
+
+    h2 {
+      color: #1e3a8a;
       margin-bottom: 20px;
     }
-    .filters input {
-      padding: 8px;
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 200px;
+      border-radius: 10px;
     }
-    .table-container {
-      max-height: 400px;
-      overflow-y: auto;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    th {
-      background-color: #f2f2f2;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-    tr:hover {
-      background-color: #f0f8ff;
+
+    button {
+      background: #1e3a8a;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-weight: bold;
+      border-radius: 10px;
       cursor: pointer;
+      transition: 0.3s;
     }
-    .modal-body {
-      max-height: 300px;
-      overflow-y: auto;
+
+    button:hover {
+      background: #233876;
+    }
+
+    .logout-btn {
+      background: #dc3545;
+      margin-top: 30px;
+    }
+
+    .loader {
+      margin: 20px auto;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #1e3a8a;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .admin-panel a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #e0e7ff;
+      padding: 15px 20px;
+      margin: 12px 0;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #1e3a8a;
+      font-weight: 500;
+      transition: 0.3s ease;
+    }
+
+    .admin-panel a:hover {
+      background: #c7d2fe;
+    }
+
+    .admin-panel i {
+      font-size: 20px;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .info-box {
+      background: #f0f8ff;
+      padding: 15px 20px;
+      border-left: 5px solid #1e3a8a;
+      border-radius: 10px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .admin-name {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #1e3a8a;
     }
   </style>
 </head>
 <body>
 
-  <div class="container mt-4">
-    <h1 data-aos="fade-down">Customer Order Summary</h1>
+<!-- LOGIN BOX -->
+<div class="container" id="login-box" data-aos="zoom-in">
+  <h2 data-aos="fade-up">Easan Admin Login</h2>
+  <input type="text" id="username" placeholder="Username" data-aos="fade-right">
+  <input type="password" id="password" placeholder="Password" data-aos="fade-left">
+  <button onclick="login()" data-aos="zoom-in">Login</button>
+  <p><a href="#" onclick="sendCredentials()" style="color:#1e3a8a; font-weight:500;">Forgot username or password?</a></p>
+  <div class="loader" id="loader"></div>
+  <p class="note" data-aos="fade-up">Only authorized admin can access the dashboard.</p>
+</div>
 
-    <div class="filters" data-aos="fade-up">
-      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)">
-      <input type="text" id="product-filter" placeholder="Filter by Product">
-    </div>
+<!-- ADMIN PANEL -->
+<div class="container admin-panel" id="panel-box" style="display:none;" data-aos="fade-up">
+  <div class="admin-name" id="adminName" data-aos="fade-right"></div>
+  <h2 data-aos="zoom-in">Easan Grocery Admin Panel</h2>
 
-    <div id="loading-spinner" class="text-center my-4">
-      <i class="fas fa-spinner fa-spin"></i> Loading...
-    </div>
-
-    <div id="order-summary" style="display: none;" data-aos="fade-up">
-      <div class="table-container">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Order Time</th>
-              <th>Delivery Time</th>
-            </tr>
-          </thead>
-          <tbody id="order-table-body"></tbody>
-        </table>
-      </div>
-    </div>
+  <div class="info-box" data-aos="fade-left">
+    <p><strong>Welcome to the Admin Dashboard.</strong> Use the options below to manage your store efficiently:</p>
+    <ul>
+      <li>📦 Manage customer orders</li>
+      <li>➕ Add new grocery products</li>
+      <li>📝 Edit or delete existing items</li>
+    </ul>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content p-3">
-        <div class="modal-header">
-          <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="modal-content"></div>
-      </div>
-    </div>
-  </div>
+  <a href="https://script.google.com/macros/s/AKfycby0iZ1SYLMRBB29W_jf6mVyZ1fZ5GlNseJJQKpXA8BMlcAZC6WHK-7lggQhkqZtlL5t/exec" target="_blank" data-aos="fade-right">
+    <span><i class="bi bi-receipt-cutoff"></i> Orders</span>
+    <i class="bi bi-box-arrow-up-right"></i>
+  </a>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
+  <a href="https://vimalraj45.github.io/v/easan_prod" target="_blank" data-aos="fade-left">
+    <span><i class="bi bi-plus-circle"></i> Add Product</span>
+    <i class="bi bi-box-arrow-up-right"></i>
+  </a>
 
-    function convertDateFormat(dateStr) {
-      const parts = dateStr.split('/');
-      if (parts.length === 3) {
-        const [day, month, year] = parts;
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  <a href="https://vimalraj45.github.io/v/easan_eprod" target="_blank" data-aos="fade-right">
+    <span><i class="bi bi-pencil-square"></i> Edit/Delete Product</span>
+    <i class="bi bi-box-arrow-up-right"></i>
+  </a>
+
+  <button class="logout-btn" onclick="logout()" data-aos="zoom-in"><i class="bi bi-box-arrow-left"></i> Logout</button>
+
+  <p class="note" data-aos="fade-up">Maintain your store seamlessly. Thank you for managing Easan Grocery.</p>
+</div>
+
+<!-- AOS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init();</script>
+
+<!-- SCRIPT -->
+<script>
+  const loginBox = document.getElementById("login-box");
+  const panelBox = document.getElementById("panel-box");
+  const loader = document.getElementById("loader");
+  const adminName = document.getElementById("adminName");
+
+  window.onload = () => {
+    if (localStorage.getItem("validadmin") === "true") {
+      const lastLogin = localStorage.getItem("lastLogin");
+      if (Date.now() - parseInt(lastLogin) < 30 * 60 * 1000) {
+        showPanel();
+        resetTimer();
+      } else {
+        logout();
       }
-      return null;
     }
+  }
 
-    const customerId = localStorage.getItem('customer_id');
-    if (!customerId) {
-      window.location.replace("https://vimalraj45.github.io/v/easan_login");
-    }
+  function login() {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
 
-    let allOrders = [];
+    if (!user || !pass) return alert("Enter username and password");
 
-    fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
-      .then(res => res.json()) 
+    loader.style.display = "block";
+
+    const url = `https://script.google.com/macros/s/AKfycbzxx4S7GcCNmMbHW6mrEItMBIw5IrFNupF-6nzKUStch_JPZ1Pd1wOi-8LmkX1iDn6Z/exec?action=login&username=${user}&password=${pass}`;
+
+    fetch(url)
+      .then(res => res.json())
       .then(data => {
-        document.getElementById('loading-spinner').style.display = 'none';
-
-        if (!data || data.length === 0) {
-          document.getElementById('order-summary').innerHTML = `<p class="text-center text-muted">No orders found.</p>`;
-          return;
+        loader.style.display = "none";
+        if (data.success) {
+          localStorage.setItem("validadmin", "true");
+          localStorage.setItem("adminuser", user);
+          localStorage.setItem("lastLogin", Date.now());
+          showPanel();
+          resetTimer();
+        } else {
+          alert("Invalid credentials");
         }
-
-        allOrders = data.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
-        renderTable(allOrders);
-        document.getElementById('order-summary').style.display = 'block';
       })
-      .catch(err => {
-        document.getElementById('loading-spinner').style.display = 'none';
-        document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
+      .catch(() => {
+        loader.style.display = "none";
+        alert("Error connecting to server.");
       });
+  }
 
-    function renderTable(orders) {
-      const tbody = document.getElementById('order-table-body');
-      tbody.innerHTML = '';
 
-      orders.forEach((order, index) => {
-        const row = document.createElement('tr');
-        row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
-        row.setAttribute('data-aos-delay', index * 50);
+  function sendCredentials() {
+  if (!confirm("Send login credentials to your email?")) return;
 
-        row.innerHTML = `
-          <td>${order.order_id}</td>
-          <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
-          <td>₹${order.total.toFixed(2)}</td>
-          <td>${order.status}</td>
-          <td>${new Date(order.order_time).toLocaleString()}</td>
-          <td>${new Date(order.delivery_time).toLocaleString()}</td>
-        `;
+  loader.style.display = "block";
 
-        tbody.appendChild(row);
-      });
+  fetch("https://script.google.com/macros/s/AKfycbw1qtzYr8PH5sc7m_E23QKX8H0pZzIyU9VK4eiPARmD9COjKsbcLiFB5grKoVDoKhNO/exec?action=sendcredentials")
+    .then(res => res.json())
+    .then(data => {
+      loader.style.display = "none";
+      alert("Credentials sent to your email.");
+    })
+    .catch(() => {
+      loader.style.display = "none";
+      alert("Failed to send email.");
+    });
+}
 
-      document.querySelectorAll('.view-link').forEach(link => {
-        link.addEventListener('click', function (e) {
-          e.preventDefault();
-          const index = parseInt(this.dataset.index);
-          showModal(orders[index]);
-        });
-      });
 
-      AOS.refresh();
-    }
+  function showPanel() {
+    loginBox.style.display = "none";
+    panelBox.style.display = "block";
+    const user = localStorage.getItem("adminuser") || "Admin";
+    adminName.innerHTML = `<i class="bi bi-person-circle"></i> Welcome, ${user}`;
+  }
 
-    function showModal(order) {
-      const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
-      document.getElementById('modal-content').innerHTML = `
-        <div class="mb-3">
-          <h6 class="text-muted">Ordered Items:</h6>
-          <ol class="ps-3" style="line-height: 1.8;">
-            ${itemList}
-          </ol>
-        </div>
-        <div class="border-top pt-2">
-          <p class="mb-1"><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
-          <p class="mb-0"><strong>Delivery Time:</strong> ${new Date(order.delivery_time).toLocaleString()}</p>
-        </div>
-      `;
-      new bootstrap.Modal(document.getElementById('orderModal')).show();
-    }
+  function logout() {
+    localStorage.removeItem("validadmin");
+    localStorage.removeItem("adminuser");
+    localStorage.removeItem("lastLogin");
+    location.reload();
+  }
 
-    document.getElementById('date-filter').addEventListener('input', applyFilters);
-    document.getElementById('product-filter').addEventListener('input', applyFilters);
+  // AUTO LOGOUT TIMER
+  let timer;
+  function resetTimer() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      alert("Session expired due to inactivity. Logging out...");
+      logout();
+    }, 30 * 60 * 1000); // 30 mins
 
-    function applyFilters() {
-      const date = convertDateFormat(document.getElementById('date-filter').value.trim());
-      const term = document.getElementById('product-filter').value.toLowerCase();
-
-      const filtered = allOrders.filter(order => {
-        const orderDate = new Date(order.order_time).toISOString().split('T')[0];
-        const matchDate = !date || orderDate === date;
-        const matchProduct = !term || order.items.toLowerCase().includes(term);
-        return matchDate && matchProduct;
-      });
-
-      renderTable(filtered);
-    }
-  </script>
+    // Reset timer on activity
+    window.onmousemove = resetTimer;
+    window.onkeydown = resetTimer;
+    window.onscroll = resetTimer;
+    window.onclick = resetTimer;
+  }
+</script>
 </body>
 </html>
