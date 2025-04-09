@@ -194,7 +194,7 @@
                 window.onbeforeunload = function (event) {
                     event.preventDefault();
                     event.returnValue = ''; // Required for some browsers
-                    return 'Are you sure you want to refresh? Any unsaved changes will be lost.';
+                    return 'Refreshing will reset your shopping cart. Are You Sure.';
                 };
             } else {
                 // Disable refresh prevention for other pages
