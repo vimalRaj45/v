@@ -18,13 +18,11 @@
             bottom: 0;
             z-index: 1;
         }
-
         #main-content iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
-
         /* Sticky Navbar */
         .custom-navbar {
             background-color: #fff;
@@ -33,7 +31,6 @@
             top: 0;
             z-index: 1020; /* Lower than offcanvas */
         }
-
         /* Fixed Bottom Footer */
         footer.fixed-bottom-footer {
             position: fixed;
@@ -48,7 +45,6 @@
             align-items: center;
             padding: 10px 0;
         }
-
         /* Logo Animation */
         .logo-container {
             position: relative;
@@ -57,7 +53,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .logo-container img {
             width: 250px;
             height: auto;
@@ -67,7 +62,6 @@
             opacity: 0;
             transition: top 0.8s ease, opacity 0.8s ease;
         }
-
         /* Ensure offcanvas has the highest z-index */
         .offcanvas {
             z-index: 1050 !important;
@@ -81,25 +75,23 @@
             <i class="bi bi-person-check-fill fs-3" style="font-weight: bold; font-size: 1.5rem;"></i>
         </a>
         <div class="logo-container text-center">
-<!-- First Image -->
-<img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" 
-id="logo-img1"
-style="width: 250px; height: 42px; object-fit: contain; 
-       position: absolute; top: -100px; opacity: 0; 
-       transition: top 0.8s ease, opacity 0.8s ease; margin-top: 5px;">
-
-<!-- Second Image (Same Position) -->
-<img src="https://i.ibb.co/GfDVQfBh/easan-ta.jpg" alt="Easan Supermarket Logo 2" 
-id="logo-img2"
-style="width: 250px; height: 54px; object-fit: contain; 
-       position: absolute; top: -100px; opacity: 0; 
-       transition: top 0.8s ease, opacity 0.8s ease;">
+            <!-- First Image -->
+            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" 
+                 id="logo-img1"
+                 style="width: 250px; height: 42px; object-fit: contain; 
+                        position: absolute; top: -100px; opacity: 0; 
+                        transition: top 0.8s ease, opacity 0.8s ease; margin-top: 5px;">
+            <!-- Second Image (Same Position) -->
+            <img src="https://i.ibb.co/GfDVQfBh/easan-ta.jpg" alt="Easan Supermarket Logo 2" 
+                 id="logo-img2"
+                 style="width: 250px; height: 54px; object-fit: contain; 
+                        position: absolute; top: -100px; opacity: 0; 
+                        transition: top 0.8s ease, opacity 0.8s ease;">
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <i class="bi bi-list fs-3 fe-3"></i>
         </button>
     </nav>
-
     <!-- Offcanvas -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
         <div class="offcanvas-header">
@@ -124,19 +116,19 @@ style="width: 250px; height: 54px; object-fit: contain;
                     <a href="https://script.google.com/macros/s/AKfycby0iZ1SYLMRBB29W_jf6mVyZ1fZ5GlNseJJQKpXA8BMlcAZC6WHK-7lggQhkqZtlL5t/exec" class="nav-link">Admin Orders</a>
                 </li>
                 <li class="nav-item" id="logout-btn">
-                    <button onclick="localStorage.clear(); alert('Logged out successfully!'); window.location.reload();" style="float:right; margin:10px; padding:8px 16px; background-color:crimson; color:white; border:none; border-radius:5px;" class="nav-link">
+                    <button onclick="handleLogout()" 
+                            style="float:right; margin:10px; padding:8px 16px; background-color:crimson; color:white; border:none; border-radius:5px;" 
+                            class="nav-link">
                         <i class="bi bi-box-arrow-right"></i> Logout
                     </button>
                 </li>
             </ul>
         </div>
     </div>
-
     <!-- Main Content Area -->
     <div id="main-content">
         <iframe id="content-frame" src="https://vimalraj45.github.io/v/easan_home"></iframe>
     </div>
-
     <!-- Fixed Bottom Footer -->
     <footer class="fixed-bottom-footer">
         <a href="#" class="nav-link text-center" onclick="loadPage('home')">
@@ -152,97 +144,154 @@ style="width: 250px; height: 54px; object-fit: contain;
             <i class="bi bi-question-circle-fill"></i><br>Help
         </a>
     </footer>
-
-   <script>
-    // Function to dynamically load content into the iframe
-    function loadPage(page) {
-        const iframe = document.getElementById('content-frame');
-        switch (page) {
-            case 'home':
-                iframe.src = 'https://vimalraj45.github.io/v/easan_home';
-                break;
-            case 'shop':
-                iframe.src = 'https://vimalraj45.github.io/v/easan_shop';
-                break;
-            case 'contact':
-                iframe.src = 'https://vimalraj45.github.io/v/easan_contact';
-                break;
-            case 'orders':
-                iframe.src = 'https://vimalraj45.github.io/v/easan_csts';
-                break;
-            case 'account':
-                iframe.src = 'https://vimalraj45.github.io/v/easan_profile';
-                break;
-            case 'help':
-                iframe.src = 'https://vimalraj45.github.io/v/easan_help';
-                break;
-            default:
-                iframe.src = 'https://vimalraj45.github.io/v/easan_home'; // Default to home
+    <script>
+        // Function to dynamically load content into the iframe
+        function loadPage(page) {
+            const iframe = document.getElementById('content-frame');
+            switch (page) {
+                case 'home':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_home';
+                    break;
+                case 'shop':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_shop';
+                    break;
+                case 'contact':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_contact';
+                    break;
+                case 'orders':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_csts';
+                    break;
+                case 'account':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_profile';
+                    break;
+                case 'help':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_help';
+                    break;
+                default:
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_home'; // Default to home
+            }
+            // Save the current page to localStorage
+            localStorage.setItem('currentPage', page);
+            // Enable or disable refresh prevention
+            toggleRefreshPrevention(page);
+            // Toggle logout button visibility
+            toggleLogoutButton();
         }
-        // Save the current page to localStorage
-        localStorage.setItem('currentPage', page);
-    }
 
-    // Load Home Page by Default or restore the last visited page
-    window.onload = () => {
-        const savedPage = localStorage.getItem('currentPage') || 'home'; // Get the saved page or default to 'home'
-        loadPage(savedPage); // Load the saved page
-        animateImages();
-        setupOffcanvasAutoHide();
-    };
+        // Load Home Page by Default or restore the last visited page
+        window.onload = () => {
+            const savedPage = localStorage.getItem('currentPage') || 'home'; // Get the saved page or default to 'home'
+            loadPage(savedPage); // Load the saved page
+            animateImages();
+            setupOffcanvasAutoHide();
+            checkOrderPlacementState();
+        };
 
-    // Logo Animation
-    function animateImages() {
-        let img1 = document.getElementById("logo-img1");
-        let img2 = document.getElementById("logo-img2");
+        // Toggle Refresh Prevention
+        function toggleRefreshPrevention(page) {
+            if (page === 'shop') {
+                // Enable refresh prevention for the "Shop" page
+                window.onbeforeunload = function (event) {
+                    event.preventDefault();
+                    event.returnValue = ''; // Required for some browsers
+                    return 'Are you sure you want to refresh? Any unsaved changes will be lost.';
+                };
+            } else {
+                // Disable refresh prevention for other pages
+                window.onbeforeunload = null;
+            }
+        }
 
-        function moveImage(img, delay) {
-            setTimeout(() => {
-                img.style.opacity = "1";
-                img.style.top = "0px"; // Slide down
+        // Handle Logout
+        function handleLogout() {
+            localStorage.clear(); // Clear all data in localStorage
+            alert('Logged out successfully!'); // Notify the user
+            window.location.reload(); // Refresh the page
+        }
+
+        // Logo Animation
+        function animateImages() {
+            let img1 = document.getElementById("logo-img1");
+            let img2 = document.getElementById("logo-img2");
+
+            function moveImage(img, delay) {
                 setTimeout(() => {
-                    img.style.top = "-100px";
-                    img.style.opacity = "0"; // Slide up
-                }, 3000); // Stay for 3 seconds
-            }, delay);
+                    img.style.opacity = "1";
+                    img.style.top = "0px"; // Slide down
+                    setTimeout(() => {
+                        img.style.top = "-100px";
+                        img.style.opacity = "0"; // Slide up
+                    }, 3000); // Stay for 3 seconds
+                }, delay);
+            }
+
+            function startAnimation() {
+                moveImage(img1, 0); // First image animates first
+                moveImage(img2, 3000); // Second image animates after 3 seconds
+                setTimeout(startAnimation, 6000); // Repeat cycle every 6 seconds
+            }
+
+            startAnimation();
         }
 
-        function startAnimation() {
-            moveImage(img1, 0); // First image animates first
-            moveImage(img2, 3000); // Second image animates after 3 seconds
-            setTimeout(startAnimation, 6000); // Repeat cycle every 6 seconds
-        }
+        // Automatically hide offcanvas when a link is clicked
+        function setupOffcanvasAutoHide() {
+            const offcanvas = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
 
-        startAnimation();
-    }
-
-    // Automatically hide offcanvas when a link is clicked
-    function setupOffcanvasAutoHide() {
-        const offcanvas = document.getElementById('offcanvasNavbar');
-        const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
-
-        // Select all links inside the offcanvas
-        const links = offcanvas.querySelectorAll('.nav-link');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
-                if (bsOffcanvas) {
-                    bsOffcanvas.hide(); // Hide the offcanvas
-                }
+            // Select all links inside the offcanvas
+            const links = offcanvas.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+                    if (bsOffcanvas) {
+                        bsOffcanvas.hide(); // Hide the offcanvas
+                    }
+                });
             });
-        });
-    }
-    // Toggle Logout Button Visibility
-    function toggleLogoutButton() {
-        const logoutButton = document.getElementById('logout-btn');
-        if (localStorage.getItem('customer_id')) {
-            logoutButton.style.display = 'block'; // Show the logout button
-        } else {
-            logoutButton.style.display = 'none'; // Hide the logout button
         }
-    }
-       toggleLogoutButton();
-</script>
+
+        // Toggle Logout Button Visibility
+        function toggleLogoutButton() {
+            const logoutButton = document.getElementById('logout-btn');
+            if (localStorage.getItem('customer_id')) {
+                logoutButton.style.display = 'block'; // Show the logout button
+            } else {
+                logoutButton.style.display = 'none'; // Hide the logout button
+            }
+        }
+          // Function to disable interactive elements
+          function disableInteractiveElements() {
+            document.querySelectorAll('button, a').forEach(element => {
+                element.classList.add('disabled');
+            });
+        }
+
+        // Function to re-enable interactive elements
+        function enableInteractiveElements() {
+            document.querySelectorAll('button, a').forEach(element => {
+                element.classList.remove('disabled');
+            });
+        }
+
+        // Listen for changes in sessionStorage
+        window.addEventListener('storage', () => {
+            checkOrderPlacementState();
+        });
+
+         // Function to check the order placement state
+         function checkOrderPlacementState() {
+            const placingOrder = sessionStorage.getItem('placing_order');
+
+            if (placingOrder === 'true') {
+                // Disable all interactive elements
+                disableInteractiveElements();
+            } else {
+                // Re-enable all interactive elements
+                enableInteractiveElements();
+            }
+        }
+    </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
