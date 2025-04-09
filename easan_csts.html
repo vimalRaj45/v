@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Customer Order Summary</title>
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-     <link href="https://fonts.googleapis.com/css2?family=Inter&family=Manrope&family=Plus+Jakarta+Sans&family=Outfit&family=Space+Grotesk&family=Playfair+Display&family=DM+Serif+Display&family=Sora&family=Syne&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
 
   <style>
-    /* Custom Styles */
     body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
+      font-family: 'Outfit', sans-serif;
       background-color: #f9fafb;
     }
     h1 {
@@ -28,113 +24,55 @@
       justify-content: center;
       margin-bottom: 20px;
     }
-    .filters input, .filters select {
+    .filters input {
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 5px;
       width: 200px;
     }
     .table-container {
-      max-height: 400px; /* Fixed height for scrollable table */
-      overflow-y: auto; /* Enable vertical scrolling */
+      max-height: 400px;
+      overflow-y: auto;
       border: 1px solid #ddd;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 12px 15px;
-      text-align: left;
-      border-bottom: 1px solid #e0e0e0;
-      white-space: nowrap; /* Prevent text wrapping */
-    }
     th {
       background-color: #f2f2f2;
-      font-weight: 700;
-      color: #333;
       position: sticky;
-      top: 0; /* Make headers sticky */
+      top: 0;
       z-index: 1;
     }
     tr:hover {
-      background-color: #f9f9f9;
-    }
-    .status {
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      text-transform: capitalize;
-      font-weight: bold;
-    }
-    .status-delivered {
-      background-color: #d4edda;
-      color: #155724;
-    }
-    .status-processing {
-      background-color: #fff3cd;
-      color: #856404;
-    }
-    .status-cancelled {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
-    .empty-state {
-      text-align: center;
-      margin: 50px 0;
-      color: #777;
-    }
-    .empty-state i {
-      font-size: 4rem;
-      margin-bottom: 10px;
-      color: #ccc;
-    }
-    .loading-spinner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100px;
-      font-size: 1.2rem;
-      color: #555;
-    }
-    @media (max-width: 768px) {
-      .filters {
-        flex-direction: column;
-        align-items: center;
-      }
+      background-color: #f0f8ff;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Customer Order Summary</h1>
 
-    <!-- Filters -->
-    <div class="filters">
+  <div class="container mt-4">
+    <h1 data-aos="fade-down">Customer Order Summary</h1>
+
+    <div class="filters" data-aos="fade-up">
       <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)">
       <input type="text" id="product-filter" placeholder="Filter by Product">
     </div>
 
-    <!-- Loading Spinner -->
-    <div id="loading-spinner" class="loading-spinner">
+    <div id="loading-spinner" class="text-center my-4">
       <i class="fas fa-spinner fa-spin"></i> Loading...
     </div>
 
-    <!-- Order Summary -->
-    <div id="order-summary" style="display: none;">
+    <div id="order-summary" style="display: none;" data-aos="fade-up">
       <div class="table-container">
-        <table>
+        <table class="table table-hover">
           <thead>
             <tr>
               <th>Order ID</th>
               <th>Items</th>
-              <th>Quantity</th>
               <th>Total</th>
               <th>Status</th>
               <th>Order Time</th>
-              <th>Delivery Time</th>
             </tr>
           </thead>
           <tbody id="order-table-body"></tbody>
@@ -143,114 +81,110 @@
     </div>
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Function to convert DD/MM/YYYY to YYYY-MM-DD
+    AOS.init();
+
     function convertDateFormat(dateStr) {
       const parts = dateStr.split('/');
       if (parts.length === 3) {
         const [day, month, year] = parts;
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
       }
-      return null; // Invalid format
+      return null;
     }
 
-    // Retrieve customer_id from localStorage
     const customerId = localStorage.getItem('customer_id');
     if (!customerId) {
       window.location.replace("https://vimalraj45.github.io/v/easan_login");
     }
 
-    // Fetch orders for the customer_id
     let allOrders = [];
+
     fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
-      .then(response => response.json())
-      .then(orders => {
-        // Hide loading spinner
+      .then(res => res.json())
+      .then(data => {
         document.getElementById('loading-spinner').style.display = 'none';
 
-        if (orders.length === 0) {
-          document.getElementById('order-summary').innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-box-open"></i>
-              <p>No orders found for this Customer ID.</p>
-            </div>
-          `;
+        if (!data || data.length === 0) {
+          document.getElementById('order-summary').innerHTML = `<p class="text-center text-muted">No orders found.</p>`;
           return;
         }
 
-        // Sort orders by order_time (most recent first)
-        allOrders = orders.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
-
-        // Display the table
+        allOrders = data.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
         renderTable(allOrders);
-
-        // Show the table container
         document.getElementById('order-summary').style.display = 'block';
       })
-      .catch(error => {
-        // Hide loading spinner
+      .catch(err => {
         document.getElementById('loading-spinner').style.display = 'none';
-
-        // Display error message
-        document.getElementById('order-summary').innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p>Error: ${error.message}</p>
-          </div>
-        `;
+        document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
       });
 
-    // Render the table
-    function renderTable(filteredOrders) {
-      const tbody = document.getElementById('order-table-body');
-      tbody.innerHTML = '';
+      function renderTable(orders) {
+  const tbody = document.getElementById('order-table-body');
+  tbody.innerHTML = '';
 
-      if (filteredOrders.length === 0) {
-        document.getElementById('order-summary').innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-search"></i>
-            <p>No matching orders found.</p>
-          </div>
-        `;
-        return;
-      }
+  orders.forEach((order, index) => {
+    const row = document.createElement('tr');
+    row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
+    row.setAttribute('data-aos-delay', index * 50); // Optional: slight delay between rows
 
-      filteredOrders.forEach(order => {
-        const row = document.createElement('tr');
-        const statusClass = `status-${order.status.toLowerCase().replace(/\s+/g, '-')}`;
+    row.innerHTML = `
+      <td>${order.order_id}</td>
+      <td><a href="#" onclick='showModal(${JSON.stringify(order)})'>View Items</a></td>
+      <td>₹${order.total.toFixed(2)}</td>
+      <td>${order.status}</td>
+      <td>${new Date(order.order_time).toLocaleString()}</td>
+    `;
 
-        row.innerHTML = `
-          <td>${order.order_id}</td>
-          <td>${order.items}</td>
-          <td>${order.quantity}</td>
-          <td>$${order.total.toFixed(2)}</td>
-          <td><span class="status ${statusClass}">${order.status}</span></td>
-          <td>${new Date(order.order_time).toLocaleString()}</td>
-          <td>${order.delivery_time ? new Date(order.delivery_time).toLocaleString() : 'N/A'}</td>
-        `;
-        tbody.appendChild(row);
-      });
+    tbody.appendChild(row);
+  });
+
+  AOS.refresh(); // Re-initialize AOS for new elements
+}
+
+
+    function showModal(order) {
+      const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
+      document.getElementById('modal-content').innerHTML = `
+        <ul class="mb-3" style="list-style: none; padding-left: 0;">
+          ${itemList}
+        </ul>
+        <p><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
+      `;
+      new bootstrap.Modal(document.getElementById('orderModal')).show();
     }
 
-    // Filter orders based on date and product
     document.getElementById('date-filter').addEventListener('input', applyFilters);
     document.getElementById('product-filter').addEventListener('input', applyFilters);
 
     function applyFilters() {
-      const selectedDate = document.getElementById('date-filter').value.trim();
-      const searchTerm = document.getElementById('product-filter').value.toLowerCase();
+      const date = convertDateFormat(document.getElementById('date-filter').value.trim());
+      const term = document.getElementById('product-filter').value.toLowerCase();
 
-      // Convert selectedDate to YYYY-MM-DD format
-      const formattedDate = selectedDate ? convertDateFormat(selectedDate) : null;
-
-      const filteredOrders = allOrders.filter(order => {
+      const filtered = allOrders.filter(order => {
         const orderDate = new Date(order.order_time).toISOString().split('T')[0];
-        const matchesDate = !formattedDate || orderDate === formattedDate;
-        const matchesProduct = !searchTerm || order.items.toLowerCase().includes(searchTerm);
-        return matchesDate && matchesProduct;
+        const matchDate = !date || orderDate === date;
+        const matchProduct = !term || order.items.toLowerCase().includes(term);
+        return matchDate && matchProduct;
       });
 
-      renderTable(filteredOrders);
+      renderTable(filtered);
     }
   </script>
 </body>
