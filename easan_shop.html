@@ -1174,21 +1174,21 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     customer_no: customerNo
   };
 
-  
-
+  document.getElementById('loadertruck').style.display = 'flex';
+  sessionStorage.setItem('placing_order', 'true');
   try {
     const res = await fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(orderData)
     });
-    document.getElementById('loadertruck').style.display = 'flex';
-    sessionStorage.setItem('placing_order', 'true');
+    
+    
     const msg = await res.text();
+    
+    if (!res.ok) throw new Error(msg);
     document.getElementById('loadertruck').style.display = 'none';
     sessionStorage.removeItem('placing_order');
-    if (!res.ok) throw new Error(msg);
-
     showToast(msg, 'success');
     cart = [];
     updateCart();
