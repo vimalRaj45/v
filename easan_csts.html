@@ -47,6 +47,10 @@
       background-color: #f0f8ff;
       cursor: pointer;
     }
+    .modal-body {
+      max-height: 300px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body>
@@ -73,7 +77,7 @@
               <th>Total</th>
               <th>Status</th>
               <th>Order Time</th>
-              <th>Delivary Time</th>
+              <th>Delivery Time</th>
             </tr>
           </thead>
           <tbody id="order-table-body"></tbody>
@@ -120,7 +124,6 @@
     fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
       .then(res => res.json()) 
       .then(data => {
-        console.log(data);
         document.getElementById('loading-spinner').style.display = 'none';
 
         if (!data || data.length === 0) {
@@ -136,57 +139,55 @@
         document.getElementById('loading-spinner').style.display = 'none';
         document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
       });
-      function renderTable(orders) {
-  const tbody = document.getElementById('order-table-body');
-  tbody.innerHTML = '';
 
-  orders.forEach((order, index) => {
-    const row = document.createElement('tr');
-    row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
-    row.setAttribute('data-aos-delay', index * 50);
+    function renderTable(orders) {
+      const tbody = document.getElementById('order-table-body');
+      tbody.innerHTML = '';
 
-    row.innerHTML = `
-      <td>${order.order_id}</td>
-      <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
-      <td>₹${order.total.toFixed(2)}</td>
-      <td>${order.status}</td>
-      <td>${new Date(order.order_time).toLocaleString()}</td>
-      <td>${new Date(order.delivery_time).toLocaleString()}</td>
-    `;
+      orders.forEach((order, index) => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
+        row.setAttribute('data-aos-delay', index * 50);
 
-    tbody.appendChild(row);
-  });
+        row.innerHTML = `
+          <td>${order.order_id}</td>
+          <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
+          <td>₹${order.total.toFixed(2)}</td>
+          <td>${order.status}</td>
+          <td>${new Date(order.order_time).toLocaleString()}</td>
+          <td>${new Date(order.delivery_time).toLocaleString()}</td>
+        `;
 
-  // Attach event listeners after rows are added
-  document.querySelectorAll('.view-link').forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      const index = parseInt(this.dataset.index);
-      showModal(orders[index]);
-    });
-  });
+        tbody.appendChild(row);
+      });
 
-  AOS.refresh(); // Refresh animations
-}
+      document.querySelectorAll('.view-link').forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const index = parseInt(this.dataset.index);
+          showModal(orders[index]);
+        });
+      });
 
+      AOS.refresh();
+    }
 
-function showModal(order) {
-  const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
-  document.getElementById('modal-content').innerHTML = `
-    <div class="mb-3">
-      <h6 class="text-muted">Ordered Items:</h6>
-      <ol class="ps-3" style="line-height: 1.8;">
-        ${itemList}
-      </ol>
-    </div>
-    <div class="border-top pt-2">
-      <p class="mb-1"><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
-      <p class="mb-0"><strong>Delivery Time:</strong> ${new Date(order.delivery_time).toLocaleString()}</p>
-    </div>
-  `;
-  new bootstrap.Modal(document.getElementById('orderModal')).show();
-}
-
+    function showModal(order) {
+      const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
+      document.getElementById('modal-content').innerHTML = `
+        <div class="mb-3">
+          <h6 class="text-muted">Ordered Items:</h6>
+          <ol class="ps-3" style="line-height: 1.8;">
+            ${itemList}
+          </ol>
+        </div>
+        <div class="border-top pt-2">
+          <p class="mb-1"><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
+          <p class="mb-0"><strong>Delivery Time:</strong> ${new Date(order.delivery_time).toLocaleString()}</p>
+        </div>
+      `;
+      new bootstrap.Modal(document.getElementById('orderModal')).show();
+    }
 
     document.getElementById('date-filter').addEventListener('input', applyFilters);
     document.getElementById('product-filter').addEventListener('input', applyFilters);
