@@ -231,7 +231,7 @@
 
 
   function sendCredentials() {
-  if (!confirm("Send login credentials to your email?")) return;
+  if (!confirm("Send login credentials to admin email?")) return;
 
   loader.style.display = "block";
 
@@ -239,7 +239,7 @@
     .then(res => res.json())
     .then(data => {
       loader.style.display = "none";
-      alert("Credentials sent to your email.");
+      alert("Credentials sent to admin email.");
     })
     .catch(() => {
       loader.style.display = "none";
