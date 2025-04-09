@@ -111,7 +111,7 @@
 
     const customerId = localStorage.getItem('customer_id');
     if (!customerId) {
-      window.location.replace("https://vimalraj45.github.io/v/easan_login");
+      //window.location.replace("https://vimalraj45.github.io/v/easan_login");
     }
 
     let allOrders = [];
@@ -134,7 +134,6 @@
         document.getElementById('loading-spinner').style.display = 'none';
         document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
       });
-
       function renderTable(orders) {
   const tbody = document.getElementById('order-table-body');
   tbody.innerHTML = '';
@@ -142,11 +141,11 @@
   orders.forEach((order, index) => {
     const row = document.createElement('tr');
     row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
-    row.setAttribute('data-aos-delay', index * 50); // Optional: slight delay between rows
+    row.setAttribute('data-aos-delay', index * 50);
 
     row.innerHTML = `
       <td>${order.order_id}</td>
-      <td><a href="#" onclick='showModal(${JSON.stringify(order)})'>View Items</a></td>
+      <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
       <td>₹${order.total.toFixed(2)}</td>
       <td>${order.status}</td>
       <td>${new Date(order.order_time).toLocaleString()}</td>
@@ -155,7 +154,16 @@
     tbody.appendChild(row);
   });
 
-  AOS.refresh(); // Re-initialize AOS for new elements
+  // Attach event listeners after rows are added
+  document.querySelectorAll('.view-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const index = parseInt(this.dataset.index);
+      showModal(orders[index]);
+    });
+  });
+
+  AOS.refresh(); // Refresh animations
 }
 
 
