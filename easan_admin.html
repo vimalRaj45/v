@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,6 +137,7 @@
   <input type="text" id="username" placeholder="Username" data-aos="fade-right">
   <input type="password" id="password" placeholder="Password" data-aos="fade-left">
   <button onclick="login()" data-aos="zoom-in">Login</button>
+  <p><a href="#" onclick="sendCredentials()" style="color:#1e3a8a; font-weight:500;">Forgot username or password?</a></p>
   <div class="loader" id="loader"></div>
   <p class="note" data-aos="fade-up">Only authorized admin can access the dashboard.</p>
 </div>
@@ -226,6 +228,25 @@
         alert("Error connecting to server.");
       });
   }
+
+
+  function sendCredentials() {
+  if (!confirm("Send login credentials to your email?")) return;
+
+  loader.style.display = "block";
+
+  fetch("https://script.google.com/macros/s/AKfycbw1qtzYr8PH5sc7m_E23QKX8H0pZzIyU9VK4eiPARmD9COjKsbcLiFB5grKoVDoKhNO/exec?action=sendcredentials")
+    .then(res => res.json())
+    .then(data => {
+      loader.style.display = "none";
+      alert("Credentials sent to your email.");
+    })
+    .catch(() => {
+      loader.style.display = "none";
+      alert("Failed to send email.");
+    });
+}
+
 
   function showPanel() {
     loginBox.style.display = "none";
