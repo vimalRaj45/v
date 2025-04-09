@@ -537,6 +537,7 @@
 <body>
   <!-- From Uiverse.io by vinodjangid07 --> 
 <div class="loader" id="loadertruck" style="display: none;">
+  <small class="text-center p-2" style="color: rgb(82, 77, 77); /* Text color */">Please wait while we process your order. This may take 1 to 4 minutes. Do not click the back button.</small>
   <div class="text-loader"><span class="text text-secondary p-2 text-small bold" style="font-size: 16px;">Placing your order, this may take a minute.</span> </div>
   <div class="truckWrapper">
     <div class="truckBody">
@@ -1155,27 +1156,18 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
 
     document.getElementById('place-order').addEventListener('click', async () => {
   const deliveryTime = document.getElementById('delivery-time').value;
-
-  // Validate delivery time and cart contents
   if (!deliveryTime) return showToast("Please select an expected delivery time.", 'danger');
   if (!cart.length) return showToast("Your cart is empty. Please add some products.", 'danger');
 
-  // Generate a single order ID for the entire cart
   const orderId = 'ORD' + Math.floor(Math.random() * 100000);
+  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart.map(item => ({ id: item.id, quantity: item.quantity }));
 
-  // Pre-process cart data once
-  let totalQty = 0, totalPrice = 0;
-  const itemsArray = cart.map(item => {
-    totalQty += item.quantity;
-    totalPrice += item.price * item.quantity;
-    return { id: item.id, quantity: item.quantity };
-  });
-
-  // Prepare the payload with all items in a single request
   const orderData = {
     order_id: orderId,
     customer_id: customerId,
-    items: JSON.stringify(itemsArray),
+    items: JSON.stringify(items),
     quantity: totalQty,
     total: totalPrice,
     status: 'Pending',
@@ -1184,42 +1176,27 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     customer_no: customerNo
   };
 
-  // Show loader animation
   document.getElementById('loadertruck').style.display = 'flex';
-
-  // Show toast message inside the loader
-  showToast(
-    "Please wait while we process your order. This may take 1 to 4 minutes. Do not click the back button.",
-    'success'
-  );
-
+  showToast("YBe patiant.", 'success');
   sessionStorage.setItem('placing_order', 'true');
-
   try {
-    // Send the order data to the server in a single request
     const res = await fetch('https://script.google.com/macros/s/AKfycbyNnoilnDkqa0Cx03gZP5bAtMLXFvDOuv3jrHUi_7E8vqE-L5H82Mw8sQT7BgxEOiXx4g/exec?action=createOrder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(orderData)
     });
-
+    
+    
     const msg = await res.text();
-
+    
     if (!res.ok) throw new Error(msg);
-
-    // Hide loader animation
     document.getElementById('loadertruck').style.display = 'none';
     sessionStorage.removeItem('placing_order');
-
-    // Show success message
     showToast(msg, 'success');
-
-    // Clear cart and update UI
     cart = [];
     updateCart();
     toggleCart();
   } catch (err) {
-    // Handle errors
     document.getElementById('loadertruck').style.display = 'none';
     console.error('Order Error:', err);
     showToast('Error placing order. Please try again later.', 'danger');
@@ -1231,31 +1208,25 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
       document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
     }
 
-    // Show toast notification inside the loader
-function showToast(message, type = 'success') {
-  const toast = document.createElement('div');
-  toast.className = `toast-notification ${type}`;
-  toast.innerHTML = `
-    <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle'}"></i>
-    <span>${message}</span>
-  `;
-
-  // Append the toast to the loader container
-  const loaderContainer = document.getElementById('loadertruck');
-  if (loaderContainer) {
-    // Remove any existing toasts inside the loader
-    const existingToasts = loaderContainer.querySelectorAll('.toast-notification');
-    existingToasts.forEach(toast => toast.remove());
-
-    // Append the new toast to the loader container
-    loaderContainer.appendChild(toast);
-
-    // Automatically remove the toast after 3 seconds
-    setTimeout(() => {
-      toast.remove();
-    }, 3000);
-  }
-}
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast-notification ${type}`;
+      toast.innerHTML = `
+        <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle'}"></i>
+        <span>${message}</span>
+      `;
+      
+      // Remove any existing toasts
+      const existingToasts = document.querySelectorAll('.toast-notification');
+      existingToasts.forEach(toast => toast.remove());
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
   </script>
 </body>
 </html>
