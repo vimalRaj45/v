@@ -73,6 +73,7 @@
               <th>Total</th>
               <th>Status</th>
               <th>Order Time</th>
+              <th>Delivary Time</th>
             </tr>
           </thead>
           <tbody id="order-table-body"></tbody>
@@ -111,14 +112,15 @@
 
     const customerId = localStorage.getItem('customer_id');
     if (!customerId) {
-      //window.location.replace("https://vimalraj45.github.io/v/easan_login");
+      window.location.replace("https://vimalraj45.github.io/v/easan_login");
     }
 
     let allOrders = [];
 
     fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
-      .then(res => res.json())
+      .then(res => res.json()) 
       .then(data => {
+        console.log(data);
         document.getElementById('loading-spinner').style.display = 'none';
 
         if (!data || data.length === 0) {
@@ -149,6 +151,7 @@
       <td>₹${order.total.toFixed(2)}</td>
       <td>${order.status}</td>
       <td>${new Date(order.order_time).toLocaleString()}</td>
+      <td>${new Date(order.delivery_time).toLocaleString()}</td>
     `;
 
     tbody.appendChild(row);
@@ -167,16 +170,23 @@
 }
 
 
-    function showModal(order) {
-      const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
-      document.getElementById('modal-content').innerHTML = `
-        <ul class="mb-3" style="list-style: none; padding-left: 0;">
-          ${itemList}
-        </ul>
-        <p><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
-      `;
-      new bootstrap.Modal(document.getElementById('orderModal')).show();
-    }
+function showModal(order) {
+  const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
+  document.getElementById('modal-content').innerHTML = `
+    <div class="mb-3">
+      <h6 class="text-muted">Ordered Items:</h6>
+      <ol class="ps-3" style="line-height: 1.8;">
+        ${itemList}
+      </ol>
+    </div>
+    <div class="border-top pt-2">
+      <p class="mb-1"><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
+      <p class="mb-0"><strong>Delivery Time:</strong> ${new Date(order.delivery_time).toLocaleString()}</p>
+    </div>
+  `;
+  new bootstrap.Modal(document.getElementById('orderModal')).show();
+}
+
 
     document.getElementById('date-filter').addEventListener('input', applyFilters);
     document.getElementById('product-filter').addEventListener('input', applyFilters);
