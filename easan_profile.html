@@ -120,13 +120,12 @@
 
         if (result.id) {
           userDetailsDiv.innerHTML = `
-            <div class="alert alert-success mt-3">
+            <div class="alert alert-light mt-3">
               <strong>User Details:</strong><br>
               ID: ${result.id}<br>
               Name: ${result.name}<br>
               Email: ${result.email}<br>
               Contact: ${result.contact}<br>
-              Registered: ${result.timestamp || "N/A"}
             </div>`;
         } else {
           userDetailsDiv.innerHTML = `<div class="alert alert-danger mt-3">No user details found.</div>`;
