@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Legal Text Simplifier</title>
+  <title>Text Simplifier – Gemini 2.0 Flash</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f0f4f8;
+    }
+    .container {
+      max-width: 800px;
+      margin-top: 50px;
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container mt-5">
-    <div class="card p-4 shadow-sm">
-      <h3 class="text-primary mb-3">📜 Legal Text Simplifier</h3>
-      <textarea id="inputText" class="form-control mb-3" rows="6" placeholder="Enter legal text..."></textarea>
-      <button class="btn btn-primary" onclick="simplifyText()">Simplify</button>
-      <h5 class="mt-4">📝 Simplified Output:</h5>
-      <div id="output" class="p-3 bg-white border rounded"></div>
-    </div>
+<body>
+  <div class="container card shadow p-4">
+    <h3 class="mb-3 text-primary">⚡ Text Simplifier (Gemini 2.0 Flash)</h3>
+    <textarea id="inputText" class="form-control mb-3" rows="6" placeholder="Enter complex or legal text..."></textarea>
+    <button class="btn btn-success" onclick="simplifyText()">Simplify</button>
+    <h5 class="mt-4">🔍 Simplified Output:</h5>
+    <div id="output" class="bg-light p-3 rounded border" style="min-height: 100px;"></div>
   </div>
 
   <script>
+    const API_KEY = "AIzaSyAU8Plhzh1ZPGuMdN96YcMXNpHSBlG1_xM"; // 🔐 Replace this with your actual Gemini API key
+
     async function simplifyText() {
-      const input = document.getElementById("inputText").value;
+      const inputText = document.getElementById("inputText").value;
       const outputDiv = document.getElementById("output");
       outputDiv.innerText = "⏳ Simplifying...";
 
       try {
-        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer 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"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            model: "openai/gpt-3.5-turbo",
-            messages: [
-              { role: "system", content: "You simplify legal English into plain, simple English." },
-              { role: "user", content: input }
-            ]
+            contents: [{
+              parts: [{ text: "இந்த உரையை மிகவும் எளிய தமிழ் வார்த்தைகளில் மட்டும் மாற்று. விளக்கம், எடுத்துக்காட்டு, English வார்த்தைகள் எதுவும் வேண்டாம். நேரடி பதில் மட்டும் கொடு:\n" + inputText
+            }]
+            }]
           })
         });
 
         const data = await res.json();
-        outputDiv.innerText = data.choices[0].message.content;
+        if (data.candidates && data.candidates[0]) {
+          outputDiv.innerText = data.candidates[0].content.parts[0].text;
+        } else {
+          outputDiv.innerText = "⚠️ No response from Gemini.";
+          console.log(data);
+        }
       } catch (err) {
-        outputDiv.innerText = "❌ Failed to simplify. Please check your API key or internet.";
+        outputDiv.innerText = "❌ Error: " + err.message;
         console.error(err);
       }
     }
