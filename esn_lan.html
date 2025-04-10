@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home - Language Selector</title>
+  <script>
+    const userLang = localStorage.getItem("lang");
+    const currentURL = window.location.href;
+
+    if (userLang === "ta" && !currentURL.includes("translate.google.com")) {
+      const encodedURL = encodeURIComponent(currentURL);
+      const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}`;
+      window.location.href = redirectURL;
+    }
+  </script>
+</head>
+<body>
+  <h2>🏠 Welcome to the Home Page</h2>
+
+  <p>Select your language:</p>
+  <button onclick="setLang('en')">English</button>
+  <button onclick="setLang('ta')">தமிழ் (Tamil)</button>
+
+  <p><a href="https://translate.google.com/translate?hl=ta&sl=en&u=https://vimalraj45.github.io/v/esn_lan.html" target="_blank">
+    View this page in Tamil via Google Translate
+  </a></p>
+
+  <p><a href="https://vimalraj45.github.io/v/esn_next.html">Go to Event Page</a></p>
+
+  <script>
+    function setLang(lang) {
+      localStorage.setItem("lang", lang);
+      location.reload();
+    }
+  </script>
+</body>
+</html>
