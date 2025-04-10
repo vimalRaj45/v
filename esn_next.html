@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Event Page</title>
+  <script>
+    const userLang = localStorage.getItem("lang");
+    const currentURL = window.location.href;
+
+    if (userLang === "ta" && !currentURL.includes("translate.google.com")) {
+      const encodedURL = encodeURIComponent(currentURL);
+      const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}`;
+      window.location.href = redirectURL;
+    }
+  </script>
+</head>
+<body>
+  <h2>🎉 Welcome to the Event Page</h2>
+
+  <p><a href="https://vimalraj45.github.io/v/esn_lan.html">Back to Home</a></p>
+
+  <p><a href="https://translate.google.com/translate?hl=ta&sl=en&u=https://vimalraj45.github.io/v/esn_next.html" target="_blank">
+    View this page in Tamil via Google Translate
+  </a></p>
+</body>
+</html>
