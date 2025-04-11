@@ -304,11 +304,13 @@
         const userData = JSON.parse(localStorage.getItem("google_user")) || {};
         const userLang = localStorage.getItem("lang");
         const currentURL = window.location.href;
-        if (userLang === "ta" && !currentURL.includes("translate.google.com")) {
-            const encodedURL = encodeURIComponent(currentURL);
-            const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}`;
-            window.location.href = redirectURL;
-        }
+
+    // Only redirect if not already translated
+    if (userLang === "ta" && !currentURL.includes("translate.googleusercontent.com") && !currentURL.includes("translate.google.com")) {
+        const encodedURL = encodeURIComponent(currentURL);
+        const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}&client=webapp`;
+        window.location.href = redirectURL;
+    }
         // Populate the profile dropdown with user name and email
         document.getElementById("user-name").innerText = userData.name || "N/A";
         document.getElementById("user-email").innerText = userData.email || "N/A";
