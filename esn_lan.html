@@ -1,37 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Home - Language Selector</title>
-  <script>
-    const userLang = localStorage.getItem("lang");
-    const currentURL = window.location.href;
-
-    if (userLang === "ta" && !currentURL.includes("translate.google.com")) {
-      const encodedURL = encodeURIComponent(currentURL);
-      const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}`;
-      window.location.href = redirectURL;
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easan Grocery SPA</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Manrope&family=Plus+Jakarta+Sans&family=Outfit&family=Space+Grotesk&family=Playfair+Display&family=DM+Serif+Display&family=Sora&family=Syne&display=swap" rel="stylesheet">
+    <style>
+        #main-content {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+        #main-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .custom-navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+        footer.fixed-bottom-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f6f7f7;
+            border-top: 1px solid #ddd;
+            z-index: 1020;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .logo-container {
+            position: relative;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 250px;
+            height: auto;
+            object-fit: contain;
+            position: absolute;
+            top: -100px;
+            opacity: 0;
+            transition: top 0.8s ease, opacity 0.8s ease;
+        }
+        .offcanvas {
+            z-index: 1050 !important;
+        }
+    </style>
 </head>
-<body>
-  <h2>🏠 Welcome to the Home Page</h2>
+<body style="font-family: 'Outfit', sans-serif;">
+    <!-- Navigation Bar -->
+    <nav class="d-flex align-items-center justify-content-between ps-2 pe-2 pt-1 pb-1 custom-navbar sticky-top bg-white border bordr-dark" style="border-color: #161212;">
+        <a class="nav-link" href="#" onclick="loadPage('orders')">
+            <i class="bi bi-person-check-fill fs-3" style="font-weight: bold; font-size: 1.5rem;"></i>
+        </a>
+        <div class="logo-container text-center">
+            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" id="logo-img1" style="width: 250px; height: 42px; object-fit: contain;">
+            <img src="https://i.ibb.co/GfDVQfBh/easan-ta.jpg" alt="Easan Supermarket Logo 2" id="logo-img2" style="width: 250px; height: 54px; object-fit: contain;">
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-3 fe-3"></i>
+        </button>
+    </nav>
 
-  <p>Select your language:</p>
-  <button onclick="setLang('en')">English</button>
-  <button onclick="setLang('ta')">தமிழ் (Tamil)</button>
+    <!-- Offcanvas Sidebar -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title mt-4" id="offcanvasNavbarLabel">EASAN SUPERMARKET</h5>
+            <button type="button" class="btn-close mt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item"><a class="nav-link active" href="#" onclick="loadPage('home')">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('shop')">Shop Now</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('contact')">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="loadPage('orders')">My Orders</a></li>
+                <li class="nav-item"><a href="https://vimalraj45.github.io/v/easan_admin" class="nav-link">Admin Login</a></li>
+                <li class="nav-item"><button onclick="setLang('ta')">தமிழ் (Tamil)</button></li>
+                <li class="nav-item" id="logout-btn">
+                    <button onclick="handleLogout()" style="float:right; margin:10px; padding:8px 16px; background-color:crimson; color:white; border:none; border-radius:5px;" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 
-  <p><a href="https://translate.google.com/translate?hl=ta&sl=en&u=https://vimalraj45.github.io/v/esn_lan.html" target="_blank">
-    View this page in Tamil via Google Translate
-  </a></p>
+    <!-- Main Content -->
+    <div id="main-content">
+        <iframe id="content-frame" src="https://vimalraj45.github.io/v/easan_home"></iframe>
+    </div>
 
-  <p><a href="https://vimalraj45.github.io/v/esn_next.html">Go to Event Page</a></p>
+    <!-- Fixed Bottom Footer -->
+    <footer class="fixed-bottom-footer">
+        <a href="#" class="nav-link text-center" onclick="loadPage('home')"><i class="bi bi-house-door-fill"></i><br>Home</a>
+        <a href="#" class="nav-link text-center" onclick="loadPage('shop')"><i class="bi bi-bag-check-fill"></i><br>Shop Now</a>
+        <a href="#" class="nav-link text-center" onclick="loadPage('account')"><i class="bi bi-person-circle"></i><br>Account</a>
+        <a href="#" class="nav-link text-center" onclick="loadPage('help')"><i class="bi bi-question-circle-fill"></i><br>Help</a>
+    </footer>
 
-  <script>
-    function setLang(lang) {
-      localStorage.setItem("lang", lang);
-      location.reload();
-    }
-  </script>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript Logic -->
+    <script>
+        function setLang(lang) {
+            localStorage.setItem("lang", lang);
+            location.reload();
+        }
+
+        const userLang = localStorage.getItem("lang");
+        const currentURL = window.location.href;
+        if (userLang === "ta" && !currentURL.includes("translate.google.com")) {
+            const encodedURL = encodeURIComponent(currentURL);
+            const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}`;
+            window.location.href = redirectURL;
+        }
+
+        function loadPage(page) {
+            const iframe = document.getElementById('content-frame');
+            switch (page) {
+                case 'home':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_home'; break;
+                case 'shop':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_shop'; break;
+                case 'contact':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_contact'; break;
+                case 'orders':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_csts'; break;
+                case 'account':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_profile'; break;
+                case 'help':
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_help'; break;
+                default:
+                    iframe.src = 'https://vimalraj45.github.io/v/easan_home';
+            }
+            localStorage.setItem('currentPage', page);
+            toggleRefreshPrevention(page);
+            toggleLogoutButton();
+        }
+
+        function toggleRefreshPrevention(page) {
+            if (page === 'shop') {
+                window.onbeforeunload = function (event) {
+                    event.preventDefault();
+                    event.returnValue = '';
+                    return 'Refreshing will reset your shopping cart. Are You Sure.';
+                };
+            } else {
+                window.onbeforeunload = null;
+            }
+        }
+
+        function handleLogout() {
+            localStorage.clear();
+            alert('Logged out successfully!');
+            window.location.reload();
+        }
+
+        function toggleLogoutButton() {
+            const btn = document.getElementById("logout-btn");
+            btn.style.display = localStorage.getItem("currentPage") === "account" ? "block" : "none";
+        }
+
+        function animateImages() {
+            const img1 = document.getElementById("logo-img1");
+            const img2 = document.getElementById("logo-img2");
+
+            function moveImage(img, delay) {
+                setTimeout(() => {
+                    img.style.opacity = "1";
+                    img.style.top = "0px";
+                }, delay);
+            }
+
+            moveImage(img1, 300);
+            moveImage(img2, 700);
+        }
+
+        function setupOffcanvasAutoHide() {
+            const links = document.querySelectorAll('.offcanvas .nav-link');
+            const offcanvas = document.getElementById('offcanvasNavbar');
+            const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvas);
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    bsOffcanvas.hide();
+                });
+            });
+        }
+
+        function checkOrderPlacementState() {
+            const orderPlaced = localStorage.getItem("orderPlaced");
+            if (orderPlaced) {
+                alert("Your order was placed successfully!");
+                localStorage.removeItem("orderPlaced");
+            }
+        }
+
+        window.onload = () => {
+            const savedPage = localStorage.getItem('currentPage') || 'home';
+            loadPage(savedPage);
+            animateImages();
+            setupOffcanvasAutoHide();
+            checkOrderPlacementState();
+        };
+    </script>
 </body>
 </html>
