@@ -262,7 +262,7 @@
 
         function editProduct(id, name, price, stock, img_url, our_price) {
             document.getElementById("id").value = id;
-            document.getElementById("name").value = name.trim().replace(/\s+/g, "_");
+            document.getElementById("name").value = name;
             document.getElementById("price").value = price;
             document.getElementById("stock").value = stock;
             document.getElementById("img_url").value = img_url;
@@ -294,6 +294,14 @@
         function showLoading(show) {
             document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
         }
+        document.addEventListener("DOMContentLoaded", () => {
+  const nameInput = document.getElementById("name");
+
+  nameInput.addEventListener("input", function () {
+    this.value = this.value.trimStart().replace(/\s+/g, "_");
+  });
+});
+
     </script>
 </body>
 </html>
