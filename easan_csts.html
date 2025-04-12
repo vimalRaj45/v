@@ -65,6 +65,14 @@
       background-color: #ccc;
       cursor: not-allowed;
     }
+
+    /* Fix for Modal Backdrop */
+    .modal-backdrop {
+      z-index: 1040 !important; /* Ensure backdrop is below the modal */
+    }
+    .modal {
+      z-index: 1050 !important; /* Ensure modal is above the backdrop */
+    }
   </style>
 </head>
 <body>
@@ -135,7 +143,7 @@
     }
 
     let allOrders = [];
-    let batchSize = 3; // Number of orders to load per batch
+    let batchSize = 10; // Number of orders to load per batch
     let offset = 0;     // Current position in the dataset
 
     function fetchOrders() {
@@ -216,7 +224,8 @@
           <p class="mb-0"><strong>Delivery Time:</strong> ${new Date(order.delivery_time).toLocaleString()}</p>
         </div>
       `;
-      new bootstrap.Modal(document.getElementById('orderModal')).show();
+      const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+      modal.show();
     }
 
     document.getElementById('date-filter').addEventListener('input', applyFilters);
