@@ -262,7 +262,7 @@
 
         function editProduct(id, name, price, stock, img_url, our_price) {
             document.getElementById("id").value = id;
-            document.getElementById("name").value = name;
+            document.getElementById("name").value = name.trim().replace(/\s+/g, "_");
             document.getElementById("price").value = price;
             document.getElementById("stock").value = stock;
             document.getElementById("img_url").value = img_url;
