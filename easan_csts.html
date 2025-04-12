@@ -164,6 +164,10 @@
 
           // Append new orders to the existing list
           allOrders = [...allOrders, ...data];
+
+          // Sort orders by order_time in descending order (newest first)
+          allOrders.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
+
           renderTable(allOrders);
           document.getElementById('order-summary').style.display = 'block';
 
@@ -181,15 +185,16 @@
 
     function renderTable(orders) {
       const tbody = document.getElementById('order-table-body');
+      tbody.innerHTML = ''; // Clear the table before rendering
 
-      orders.slice(-batchSize).forEach((order, index) => { // Render only the latest batch
+      orders.forEach((order, index) => {
         const row = document.createElement('tr');
         row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
         row.setAttribute('data-aos-delay', index * 50);
 
         row.innerHTML = `
           <td>${order.order_id}</td>
-          <td><a href="#" class="view-link" data-index="${allOrders.indexOf(order)}">View Items</a></td>
+          <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
           <td>₹${order.total.toFixed(2)}</td>
           <td>${order.status}</td>
           <td>${new Date(order.order_time).toLocaleString()}</td>
@@ -203,7 +208,7 @@
         link.addEventListener('click', function (e) {
           e.preventDefault();
           const index = parseInt(this.dataset.index);
-          showModal(allOrders[index]);
+          showModal(orders[index]);
         });
       });
 
@@ -241,6 +246,9 @@
         const matchProduct = !term || order.items.toLowerCase().includes(term);
         return matchDate && matchProduct;
       });
+
+      // Sort filtered results by order_time in descending order (newest first)
+      filtered.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
 
       renderTable(filtered);
     }
