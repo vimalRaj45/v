@@ -866,7 +866,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         filteredProducts = allProducts.filter(product => 
           product.name.toLowerCase().includes(searchTerm) ||
           (product.id && product.id.toString().toLowerCase().includes(searchTerm)) ||
-          (product.price && product.price.toString().includes(searchTerm))
+          (product.our_price && product.price.toString().includes(searchTerm))
         );
       }
       currentPage = 1;
@@ -934,7 +934,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
                   : `<span class="badge bg-danger">Out of Stock</span>`}
               </div>
               <button class="add-to-cart" 
-                onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, ${product.stock})"
+                onclick="addToCart('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.our_price}, ${product.stock})"
                 ${product.stock <= 0 ? 'disabled' : ''}>
                 <i class="bi bi-cart-plus"></i> ADD TO CART
               </button>
@@ -946,7 +946,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     }
 
     // Toggle favorite status
-    function toggleFavorite(productId, productName, price, imageUrl, button) {
+    function toggleFavorite(productId, productName, our_price, imageUrl, button) {
       const favoriteIndex = favorites.findIndex(fav => fav.id === productId);
       
       if (favoriteIndex === -1) {
@@ -954,7 +954,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         favorites.push({
           id: productId,
           name: productName,
-          price: price,
+          price: our_price,
           image: imageUrl
         });
         showToast(`${productName} added to favorites!`, 'success');
@@ -1070,7 +1070,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
     }
 
     // Add to cart
-    function addToCart(productId, productName, price, stock) {
+    function addToCart(productId, productName, our_price, stock) {
       const existingItem = cart.find(item => item.id === productId);
       
       if (existingItem) {
@@ -1083,7 +1083,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         cart.push({ 
           id: productId, 
           name: productName, 
-          price: price, 
+          price: our_price, 
           quantity: 1,
           stock: stock 
         });
@@ -1126,7 +1126,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
           </div>
           ${item.quantity >= item.stock ? 
             '<div class="stock-warning">Maximum available quantity added</div>' : ''}
-          <div class="text-muted small">₹${item.price} per item</div>
+          <div class="text-muted small">₹${item.our_price} per item</div>
         `;
         cartItemsDiv.appendChild(cartItem);
       });
