@@ -162,11 +162,11 @@
             return;
           }
 
-          // Append new orders to the existing list
-          allOrders = [...allOrders, ...data];
+          // Reverse the newly fetched batch so that the last item appears first
+          const reversedBatch = [...data].reverse();
 
-          // Sort orders by order_time in descending order (newest first)
-          allOrders.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
+          // Prepend the reversed batch to the existing list
+          allOrders = [...reversedBatch, ...allOrders];
 
           renderTable(allOrders);
           document.getElementById('order-summary').style.display = 'block';
@@ -247,10 +247,10 @@
         return matchDate && matchProduct;
       });
 
-      // Sort filtered results by order_time in descending order (newest first)
-      filtered.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
+      // Reverse the filtered results so that the last item appears first
+      const reversedFiltered = [...filtered].reverse();
 
-      renderTable(filtered);
+      renderTable(reversedFiltered);
     }
 
     // Initial fetch
