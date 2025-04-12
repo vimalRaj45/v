@@ -269,7 +269,7 @@
     timer = setTimeout(() => {
       alert("Session expired due to inactivity. Logging out...");
       logout();
-    }, 30 * 60 * 1000); // 30 mins
+    }, 5 * 60 * 1000); // 30 mins
 
     // Reset timer on activity
     window.onmousemove = resetTimer;
