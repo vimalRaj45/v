@@ -225,7 +225,7 @@
           <td><span class="view-link" data-index="${allOrders.indexOf(order)}">View Items</span></td>
           <td>₹${order.total.toFixed(2)}</td>
           <td>${order.status}</td>
-          <td>${formatDateTime(order.order_time)}</td>
+          <td>${order.order_time}</td>
           <td>${formatDateTime(order.delivery_time)}</td>
         `;
         tbody.appendChild(row);
