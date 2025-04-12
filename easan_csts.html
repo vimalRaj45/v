@@ -110,11 +110,6 @@
   <div class="container my-5">
     <h1 data-aos="fade-down">Customer Order Summary</h1>
 
-    <div class="filters mb-3" data-aos="fade-up">
-      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)">
-      <input type="text" id="product-filter" placeholder="Filter by Product">
-    </div>
-
     <div id="loading-spinner" class="text-center my-4">
       <i class="fas fa-spinner fa-spin fa-2x"></i>
     </div>
@@ -203,7 +198,7 @@
           }
 
           allOrders = [...allOrders, ...data];
-          renderTable(data, false); // Append new rows
+          renderTable(data); // only render new data
           document.getElementById('order-summary').style.display = 'block';
           offset += batchSize;
           document.getElementById('load-more-btn').disabled = data.length < batchSize;
@@ -214,12 +209,8 @@
         });
     }
 
-    function renderTable(orders, replace = true) {
+    function renderTable(orders) {
       const tbody = document.getElementById('order-table-body');
-
-      if (replace) {
-        tbody.innerHTML = '';
-      }
 
       orders.forEach((order, index) => {
         const row = document.createElement('tr');
@@ -229,7 +220,7 @@
           <td><span class="view-link" data-index="${allOrders.indexOf(order)}">View Items</span></td>
           <td>₹${order.total.toFixed(2)}</td>
           <td>${order.status}</td>
-          <td>${formatDateTime(order.order_time)}</td>
+          <td>${order.order_time}</td>
           <td>${formatDateTime(order.delivery_time)}</td>
         `;
         tbody.appendChild(row);
@@ -260,11 +251,8 @@
     }
 
     function applyFilters() {
-      const dateInput = document.getElementById('date-filter').value.trim();
+      const date = convertDateFormat(document.getElementById('date-filter').value.trim());
       const term = document.getElementById('product-filter').value.toLowerCase();
-
-      // Convert input date to YYYY-MM-DD format
-      const date = dateInput ? convertDateFormat(dateInput) : null;
 
       const filtered = allOrders.filter(order => {
         const orderDate = new Date(order.order_time).toISOString().split('T')[0];
@@ -273,9 +261,8 @@
         return matchDate && matchProduct;
       });
 
-      // Clear the table and re-render filtered rows
       document.getElementById('order-table-body').innerHTML = '';
-      renderTable(filtered, true);
+      renderTable(filtered);
     }
 
     document.getElementById('date-filter').addEventListener('input', applyFilters);
