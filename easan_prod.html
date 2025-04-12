@@ -76,7 +76,7 @@
         // Collect form data
         const formData = new FormData(form);
         const id = formData.get("id");
-        const name = formData.get("name");
+         const name = formData.get("name").replace(/\s+/g, "_");
         const price = parseFloat(formData.get("price"));
         const stock = parseInt(formData.get("stock"));
         const imageFile = formData.get("image");
