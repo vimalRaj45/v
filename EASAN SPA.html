@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,7 +114,7 @@
                     <a class="nav-link" href="#" onclick="loadPage('orders')">My Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a href="https://vimalraj45.github.io/v/easan_admin" class="nav-link">Admin Login</a>
+                    <a href="#" class="nav-link" onclick="loadPage('Admin')" >Admin Login</a>
                 </li>
                 <li class="nav-item" id="logout-btn">
                     <button onclick="handleLogout()" 
@@ -167,6 +168,8 @@
                 case 'help':
                     iframe.src = 'https://vimalraj45.github.io/v/easan_help';
                     break;
+                case 'Admin':
+                    iframe.src='https://vimalraj45.github.io/v/easan_admin'; 
                 default:
                     iframe.src = 'https://vimalraj45.github.io/v/easan_home'; // Default to home
             }
