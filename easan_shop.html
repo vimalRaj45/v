@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -913,7 +914,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         const formattedProductName = product.name.replace(/_/g, ' ');
         productCard.innerHTML = `
           <div class="product-card">
-            <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.img_url || 'https://via.placeholder.com/150'}', this)">
+            <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.our_price}, '${product.img_url || 'https://via.placeholder.com/150'}', this)">
               <i class="bi ${isFavorite ? 'bi-heart-fill' : 'bi-heart'}"></i>
             </button>
             <div class="product-img-container">
