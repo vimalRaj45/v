@@ -302,60 +302,6 @@
 <body style="font-family: 'Outfit', sans-serif;">
  
 
-  
-<script>
-    // Retrieve user details from localStorage and display them in the dropdown
-    window.onload = function() {
-        const userData = JSON.parse(localStorage.getItem("google_user")) || {};
-        const userLang = localStorage.getItem("lang");
-        const currentURL = window.location.href;
-
-    // Only redirect if not already translated
-    if (userLang === "ta" && !currentURL.includes("translate.googleusercontent.com") && !currentURL.includes("translate.google.com")) {
-        const encodedURL = encodeURIComponent(currentURL);
-        const redirectURL = `https://translate.google.com/translate?hl=ta&sl=en&u=${encodedURL}&client=webapp`;
-        window.location.href = redirectURL;
-    }
-        // Populate the profile dropdown with user name and email
-        document.getElementById("user-name").innerText = userData.name || "N/A";
-        document.getElementById("user-email").innerText = userData.email || "N/A";
-
-        // Set the profile image (if available)
-        const profileImg = userData.picture || "default-profile.jpg"; // Default if no picture is found
-        document.getElementById("profile-img").src = profileImg;
-    };
-    function animateImages() {
-    let img1 = document.getElementById("logo-img1");
-    let img2 = document.getElementById("logo-img2");
-
-    function moveImage(img, delay) {
-      setTimeout(() => {
-        img.style.opacity = "1";  
-        img.style.top = "0px";    // Slide down
-
-        setTimeout(() => {
-          img.style.top = "-100px";  
-          img.style.opacity = "0";  // Slide up
-        }, 3000); // Stay for 2 seconds
-      }, delay);
-    }
-
-    function startAnimation() {
-      moveImage(img1, 0);       // First image animates first
-      moveImage(img2, 3000);    // Second image animates after 3 seconds
-
-      setTimeout(startAnimation, 6000); // Repeat cycle every 6 seconds
-    }
-
-    startAnimation();
-  }
-
-  window.onload = animateImages;
-</script>
-
-
-    
-
 
 
     <!-- Product Section -->
@@ -399,50 +345,68 @@
             </button>
           </div>
     </section>
+   
+
+       <!-- Shop Categories Section -->
+<section class="container p-1" data-aos="fade-right">
+  <h2 style="text-align: start; margin-bottom: 10px;font-family: 'Outfit', sans-serif;" class="ms-1 text-small h5">Category</h2>
+   <div class="vsgrps-scroll-container" id="carousel">
+<div class="vsgrps-track" id="track">
+  <div class="vsgrps-card"><img src="https://i.ibb.co/LwxFVrf/blob.jpg"><div class="vsgrps-subtitle">Electronics</div></div>
+  <div class="vsgrps-card"><img src="https://i.ibb.co/C53DmNgC/blob.jpg"><div class="vsgrps-subtitle">Fashion</div></div>
+  <div class="vsgrps-card"><img src="https://i.ibb.co/Ng1nghdG/blob.jpg"><div class="vsgrps-subtitle">Home</div></div>
+  <div class="vsgrps-card"><img src="https://i.ibb.co/twMHxVv2/blob.jpg"><div class="vsgrps-subtitle">Books</div></div>
+  <div class="vsgrps-card"><img src="https://i.ibb.co/YBcZkrfw/blob.jpg"><div class="vsgrps-subtitle">Sports</div></div>
+  <div class="vsgrps-card"><img src="https://i.ibb.co/23y9cx0S/blob.jpg"><div class="vsgrps-subtitle">Toys</div></div>
+</div>
+   </div>
+</section>
+
+
 
     <section class="container my-5" data-aos="fade-up">
       <div class="text-center mb-4">
         <h2 class="fw-bold">Why Choose Easan Supermarket?</h2>
         <p class="text-muted">Redefining your shopping experience with smart logistics, premium quality, and customer-first service.</p>
       </div>
-      <div class="row text-center g-4">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 text-center g-4">
         <!-- Super Fast Packing -->
-        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="col" data-aos="zoom-in" data-aos-delay="100">
           <i class="bi bi-lightning-charge fs-1 text-warning mb-3"></i>
           <h5 class="fw-semibold">Super Fast Packing</h5>
           <p>Experience express-speed order processing with optimized workflows that ensure accuracy and hygiene.</p>
         </div>
     
         <!-- Freshness Guarantee -->
-        <div class="col-md-4" data-aos="zoom-in-up" data-aos-delay="200">
+        <div class="col" data-aos="zoom-in-up" data-aos-delay="200">
           <i class="bi bi-emoji-smile fs-1 text-success mb-3"></i>
           <h5 class="fw-semibold">Freshness Guarantee</h5>
           <p>All products are sourced daily and inspected for freshness — because your health is our priority.</p>
         </div>
     
         <!-- Smart Payment Options -->
-        <div class="col-md-4" data-aos="zoom-in-down" data-aos-delay="300">
+        <div class="col" data-aos="zoom-in-down" data-aos-delay="300">
           <i class="bi bi-credit-card fs-1 text-info mb-3"></i>
           <h5 class="fw-semibold">Smart Payment</h5>
           <p>Pay effortlessly via UPI, Cash on Delivery, or digital wallets – all secured with the latest encryption.</p>
         </div>
     
         <!-- Inventory Accuracy -->
-        <div class="col-md-4" data-aos="flip-left" data-aos-delay="400">
+        <div class="col" data-aos="flip-left" data-aos-delay="400">
           <i class="bi bi-check2-square fs-1 text-primary mb-3"></i>
           <h5 class="fw-semibold">Live Inventory Tracking</h5>
           <p>Stay updated in real-time — our systems ensure stock levels are accurate and always updated.</p>
         </div>
     
         <!-- Eco-Friendly Packaging -->
-        <div class="col-md-4" data-aos="flip-up" data-aos-delay="500">
+        <div class="col" data-aos="flip-up" data-aos-delay="500">
           <i class="bi bi-recycle fs-1 text-success mb-3"></i>
           <h5 class="fw-semibold">Eco-Friendly Packaging</h5>
           <p>We use biodegradable and recyclable materials, ensuring a greener future with every purchase.</p>
         </div>
     
         <!-- Customer Support -->
-        <div class="col-md-4" data-aos="flip-right" data-aos-delay="600">
+        <div class="col" data-aos="flip-right" data-aos-delay="600">
           <i class="bi bi-headset fs-1 text-danger mb-3"></i>
           <h5 class="fw-semibold">24/7 Customer Support</h5>
           <p>Have a question or issue? Our friendly team is available around the clock to assist you instantly.</p>
@@ -454,54 +418,9 @@
     </section>
     
 
-   <!-- Shop Categories Section -->
-<section class="container p-1" href="https://vimalraj45.github.io/v/easan_shop">
-    <h2 style="text-align: start; margin-bottom: 10px;font-family: 'Outfit', sans-serif;" class="ms-1 text-small h5">Category</h2>
-     <div class="vsgrps-scroll-container" id="carousel">
-  <div class="vsgrps-track" id="track">
-    <div class="vsgrps-card"><img src="https://i.ibb.co/LwxFVrf/blob.jpg"><div class="vsgrps-subtitle">Electronics</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/C53DmNgC/blob.jpg"><div class="vsgrps-subtitle">Fashion</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/Ng1nghdG/blob.jpg"><div class="vsgrps-subtitle">Home</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/twMHxVv2/blob.jpg"><div class="vsgrps-subtitle">Books</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/YBcZkrfw/blob.jpg"><div class="vsgrps-subtitle">Sports</div></div>
-    <div class="vsgrps-card"><img src="https://i.ibb.co/23y9cx0S/blob.jpg"><div class="vsgrps-subtitle">Toys</div></div>
-  </div>
-     </div>
-  </section>
 
-  <section class="container my-5" data-aos="fade-up">
-    <h2 class="text-center fw-bold mb-4">What Our Customers Say</h2>
-  
-    <div class="row justify-content-center">
-      <div class="col-md-3 mb-4" data-aos="fade-up">
-        <div class="testimonial-card p-4">
-          <p class="fs-5 fst-italic">"Always fresh, fast delivery, and reliable service. Easan is our go-to grocery partner!"</p>
-          <footer class="blockquote-footer mt-3">Priya, Salem</footer>
-        </div>
-      </div>
-  
-      <div class="col-md-3 mb-4" data-aos="fade-right">
-        <div class="testimonial-card p-4">
-          <p class="fs-5 fst-italic">"Affordable prices and timely service. I switched to Easan and never looked back."</p>
-          <footer class="blockquote-footer mt-3">Rahul, Namakkal</footer>
-        </div>
-      </div>
-  
-      <div class="col-md-3 mb-4" data-aos="zoom-out">
-        <div class="testimonial-card p-4">
-          <p class="fs-5 fst-italic">"Customer service is top-notch. I had an issue once, and they resolved it instantly."</p>
-          <footer class="blockquote-footer mt-3">Lakshmi, Erode</footer>
-        </div>
-      </div>
-  
-      <div class="col-md-3 mb-4" data-aos="fade-left">
-        <div class="testimonial-card p-4">
-          <p class="fs-5 fst-italic">"Love the fresh produce and easy ordering system. The UI is clean and fast!"</p>
-          <footer class="blockquote-footer mt-3">Suresh, Coimbatore</footer>
-        </div>
-      </div>
-    </div>
-  </section>
+
+
   
   <script>
     // Initialize AOS
@@ -724,20 +643,6 @@ font-weight: bold;
     </a>
   </footer>
   
-<script>
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,ta',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false
-        }, 'google_translate_element');
-    }
-
-
-
-
-</script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 
