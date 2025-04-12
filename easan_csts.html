@@ -22,14 +22,12 @@
       font-family: 'Outfit', sans-serif;
       background-color: #f8f9fa;
     }
-
     h1 {
       text-align: center;
       margin-bottom: 30px;
       font-weight: 600;
       color: #333;
     }
-
     .filters {
       display: flex;
       flex-direction: column;
@@ -37,13 +35,11 @@
       max-width: 500px;
       margin: 0 auto 20px auto;
     }
-
     @media (min-width: 576px) {
       .filters {
         flex-direction: row;
       }
     }
-
     .filters input {
       flex: 1;
       padding: 10px 12px;
@@ -51,30 +47,25 @@
       border: 1px solid #ced4da;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
-
     .table-container {
       overflow-x: auto;
       border-radius: 10px;
       background: white;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
-
     table {
       width: 100%;
       margin-bottom: 0;
     }
-
     th {
       position: sticky;
       top: 0;
       background: #f1f3f5;
       z-index: 1;
     }
-
     tr:hover {
       background-color: #f8f9fc;
     }
-
     .load-more-btn {
       margin: 20px auto;
       display: block;
@@ -85,20 +76,16 @@
       border-radius: 6px;
       font-weight: 500;
     }
-
     .modal-content {
       border-radius: 10px;
     }
-
     .modal-header {
       background-color: #f1f3f5;
       border-bottom: 1px solid #dee2e6;
     }
-
     .modal-body ol {
       padding-left: 20px;
     }
-
     .view-link {
       color: #0d6efd;
       text-decoration: underline;
@@ -177,6 +164,11 @@
       return null;
     }
 
+    function formatDateOnly(dateStr) {
+      const d = new Date(dateStr);
+      return d.toISOString().split('T')[0];
+    }
+
     function formatDateTime(dateStr) {
       const date = new Date(dateStr);
       const day = String(date.getDate()).padStart(2, '0');
@@ -203,7 +195,7 @@
           }
 
           allOrders = [...allOrders, ...data];
-          renderTable(data); // only render new data
+          applyFilters(); // Apply filters to updated list
           document.getElementById('order-summary').style.display = 'block';
           offset += batchSize;
           document.getElementById('load-more-btn').disabled = data.length < batchSize;
@@ -216,6 +208,7 @@
 
     function renderTable(orders) {
       const tbody = document.getElementById('order-table-body');
+      tbody.innerHTML = '';
 
       orders.forEach((order, index) => {
         const row = document.createElement('tr');
@@ -256,17 +249,17 @@
     }
 
     function applyFilters() {
-      const date = convertDateFormat(document.getElementById('date-filter').value.trim());
-      const term = document.getElementById('product-filter').value.toLowerCase();
+      const dateInput = document.getElementById('date-filter').value.trim();
+      const dateFormatted = convertDateFormat(dateInput);
+      const productTerm = document.getElementById('product-filter').value.toLowerCase();
 
       const filtered = allOrders.filter(order => {
-        const orderDate = new Date(order.order_time).toISOString().split('T')[0];
-        const matchDate = !date || orderDate === date;
-        const matchProduct = !term || order.items.toLowerCase().includes(term);
+        const orderDate = formatDateOnly(order.order_time);
+        const matchDate = !dateFormatted || orderDate === dateFormatted;
+        const matchProduct = !productTerm || order.items.toLowerCase().includes(productTerm);
         return matchDate && matchProduct;
       });
 
-      document.getElementById('order-table-body').innerHTML = '';
       renderTable(filtered);
     }
 
