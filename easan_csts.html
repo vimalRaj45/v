@@ -162,12 +162,8 @@
             return;
           }
 
-          // Reverse the newly fetched batch so that the last item appears first
-          const reversedBatch = [...data].reverse();
-
-          // Prepend the reversed batch to the existing list
-          allOrders = [...reversedBatch, ...allOrders];
-
+          // Append new orders to the existing list
+          allOrders = [...allOrders, ...data];
           renderTable(allOrders);
           document.getElementById('order-summary').style.display = 'block';
 
@@ -185,16 +181,15 @@
 
     function renderTable(orders) {
       const tbody = document.getElementById('order-table-body');
-      tbody.innerHTML = ''; // Clear the table before rendering
 
-      orders.forEach((order, index) => {
+      orders.slice(-batchSize).forEach((order, index) => { // Render only the latest batch
         const row = document.createElement('tr');
         row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
         row.setAttribute('data-aos-delay', index * 50);
 
         row.innerHTML = `
           <td>${order.order_id}</td>
-          <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
+          <td><a href="#" class="view-link" data-index="${allOrders.indexOf(order)}">View Items</a></td>
           <td>₹${order.total.toFixed(2)}</td>
           <td>${order.status}</td>
           <td>${new Date(order.order_time).toLocaleString()}</td>
@@ -208,7 +203,7 @@
         link.addEventListener('click', function (e) {
           e.preventDefault();
           const index = parseInt(this.dataset.index);
-          showModal(orders[index]);
+          showModal(allOrders[index]);
         });
       });
 
@@ -247,10 +242,7 @@
         return matchDate && matchProduct;
       });
 
-      // Reverse the filtered results so that the last item appears first
-      const reversedFiltered = [...filtered].reverse();
-
-      renderTable(reversedFiltered);
+      renderTable(filtered);
     }
 
     // Initial fetch
