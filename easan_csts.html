@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,6 +110,11 @@
 <body>
   <div class="container my-5">
     <h1 data-aos="fade-down">Customer Order Summary</h1>
+
+    <div class="filters mb-3" data-aos="fade-up">
+      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)">
+      <input type="text" id="product-filter" placeholder="Filter by Product">
+    </div>
 
     <div id="loading-spinner" class="text-center my-4">
       <i class="fas fa-spinner fa-spin fa-2x"></i>
