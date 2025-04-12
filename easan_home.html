@@ -597,6 +597,16 @@ font-weight: bold;
             autoDisplay: false
         }, 'google_translate_element');
     }
+
+
+    const categoryCards = document.querySelectorAll('.vsgrps-card');
+categoryCards.forEach(card => {
+  card.addEventListener('click', function() {
+    const category = this.querySelector('.vsgrps-subtitle').textContent.toLowerCase();
+    window.location.href = `https://vimalraj45.github.io/v/easan_shop`;
+  });
+});
+
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
