@@ -76,7 +76,7 @@
         // Collect form data
         const formData = new FormData(form);
         const id = formData.get("id");
-        const name = formData.get("name").trim().replace(/\s+/g, "_");
+        const name = formData.get("name");
         const price = parseFloat(formData.get("price"));
         const stock = parseInt(formData.get("stock"));
         const imageFile = formData.get("image");
@@ -185,6 +185,14 @@
         img.onerror = (error) => reject(error);
       });
     }
+    document.addEventListener("DOMContentLoaded", () => {
+  const nameInput = document.getElementById("productName");
+
+  nameInput.addEventListener("input", function () {
+    this.value = this.value.trimStart().replace(/\s+/g, "_");
+  });
+});
+
   </script>
 </body>
 </html>
