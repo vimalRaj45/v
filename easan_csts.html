@@ -51,6 +51,20 @@
       max-height: 300px;
       overflow-y: auto;
     }
+    .load-more-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .load-more-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -83,6 +97,7 @@
           <tbody id="order-table-body"></tbody>
         </table>
       </div>
+      <button id="load-more-btn" class="load-more-btn">Load More</button>
     </div>
   </div>
 
@@ -120,38 +135,53 @@
     }
 
     let allOrders = [];
+    let batchSize = 3; // Number of orders to load per batch
+    let offset = 0;     // Current position in the dataset
 
-    fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}`)
-      .then(res => res.json()) 
-      .then(data => {
-        document.getElementById('loading-spinner').style.display = 'none';
+    function fetchOrders() {
+      document.getElementById('loading-spinner').style.display = 'block';
 
-        if (!data || data.length === 0) {
-          document.getElementById('order-summary').innerHTML = `<p class="text-center text-muted">No orders found.</p>`;
-          return;
-        }
+      fetch(
+        `https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}&limit=${batchSize}&offset=${offset}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById('loading-spinner').style.display = 'none';
 
-        allOrders = data.sort((a, b) => new Date(b.order_time) - new Date(a.order_time));
-        renderTable(allOrders);
-        document.getElementById('order-summary').style.display = 'block';
-      })
-      .catch(err => {
-        document.getElementById('loading-spinner').style.display = 'none';
-        document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
-      });
+          if (!data || data.length === 0) {
+            document.getElementById('order-summary').innerHTML = `<p class="text-center text-muted">No more orders found.</p>`;
+            document.getElementById('load-more-btn').disabled = true; // Disable "Load More" button
+            return;
+          }
+
+          // Append new orders to the existing list
+          allOrders = [...allOrders, ...data];
+          renderTable(allOrders);
+          document.getElementById('order-summary').style.display = 'block';
+
+          // Increment the offset for the next batch
+          offset += batchSize;
+
+          // Enable or disable "Load More" button based on data availability
+          document.getElementById('load-more-btn').disabled = data.length < batchSize;
+        })
+        .catch((err) => {
+          document.getElementById('loading-spinner').style.display = 'none';
+          document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
+        });
+    }
 
     function renderTable(orders) {
       const tbody = document.getElementById('order-table-body');
-      tbody.innerHTML = '';
 
-      orders.forEach((order, index) => {
+      orders.slice(-batchSize).forEach((order, index) => { // Render only the latest batch
         const row = document.createElement('tr');
         row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
         row.setAttribute('data-aos-delay', index * 50);
 
         row.innerHTML = `
           <td>${order.order_id}</td>
-          <td><a href="#" class="view-link" data-index="${index}">View Items</a></td>
+          <td><a href="#" class="view-link" data-index="${allOrders.indexOf(order)}">View Items</a></td>
           <td>₹${order.total.toFixed(2)}</td>
           <td>${order.status}</td>
           <td>${new Date(order.order_time).toLocaleString()}</td>
@@ -165,7 +195,7 @@
         link.addEventListener('click', function (e) {
           e.preventDefault();
           const index = parseInt(this.dataset.index);
-          showModal(orders[index]);
+          showModal(allOrders[index]);
         });
       });
 
@@ -205,6 +235,12 @@
 
       renderTable(filtered);
     }
+
+    // Initial fetch
+    fetchOrders();
+
+    // Load more button click event
+    document.getElementById('load-more-btn').addEventListener('click', fetchOrders);
   </script>
 </body>
 </html>
