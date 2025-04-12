@@ -908,7 +908,8 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
         const discountPercent = Math.round(((product.our_price - product.price) / -product.price) * 100);
-        
+        // Replace underscores with spaces in the product name
+        const formattedProductName = product.name.replace(/_/g, ' ');
         productCard.innerHTML = `
           <div class="product-card">
             <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="toggleFavorite('${product.id}', '${product.name.replace(/'/g, "\\'")}', ${product.price}, '${product.img_url || 'https://via.placeholder.com/150'}', this)">
@@ -918,7 +919,7 @@ h78.747C231.693,100.736,232.77,106.162,232.77,111.694z"
               <img src="${product.img_url || 'https://via.placeholder.com/150'}" class="product-img" alt="${product.name}">
             </div>
             <div class="product-body">
-              <h5 class="product-title">${product.name}</h5>
+              <h5 class="product-title">${formattedProductName}</h5>
               <div class="product-rating">
                 ${(Math.random() * 1 + 4).toFixed(1)} <i class="bi bi-star-fill"></i>
               </div>
