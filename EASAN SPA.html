@@ -316,6 +316,9 @@
     if (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase())) {
       e.preventDefault();
     }
+    document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
   });
 
   // Block opening DevTools via resize trick (detects if dev tools are open)
