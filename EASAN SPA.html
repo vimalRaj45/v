@@ -295,6 +295,31 @@
                 enableInteractiveElements();
             }
         }
+
+
+        // Adding event listener to input field for filtering
+document.getElementById('searchInput').addEventListener('keyup', filterProperties);
+ document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Disable right-click
+});
+
+document.addEventListener("keydown", function (event) {
+    // Disable F12
+    if (event.key === "F12") {
+        event.preventDefault();
+    }
+
+    // Disable Ctrl + U
+    if (event.ctrlKey && event.key === "u") {
+        alert("pls Contact me! : 8807099288")
+        event.preventDefault();
+    }
+
+    // Disable Ctrl + Shift + I
+    if (event.ctrlKey && event.shiftKey && event.key === "I") {
+        event.preventDefault();
+    }
+});
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <!-- Bootstrap JS -->
