@@ -2,140 +2,325 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🎵 Music Library</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify-Like Music Player</title>
+
+  <!-- AOS CSS -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
   <style>
+    /* General Styles */
     body {
-      background: #f5f7fa;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
-    .music-card {
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-      position: relative;
+
+    /* Sidebar (Hidden on Mobile) */
+    .sidebar {
+      width: 250px;
+      background-color: #181818;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+      display: none; /* Hidden by default */
     }
-    .music-card:hover {
-      transform: scale(1.02);
+
+    @media (min-width: 768px) {
+      .sidebar {
+        display: block; /* Show sidebar on larger screens */
+      }
     }
-    .heart-icon {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.4rem;
+
+    .sidebar h2 {
+      margin: 0 0 20px;
+      font-size: 24px;
+      color: #b3b3b3;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .sidebar li:hover {
+      color: #1db954;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 0; /* Full width on mobile */
+      padding: 20px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    @media (min-width: 768px) {
+      .main-content {
+        margin-left: 250px; /* Space for sidebar */
+      }
+    }
+
+    .song-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .song-item {
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
-    .heart-icon.favorited {
-      color: red;
+
+    .song-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
-    h2 {
-      font-weight: 700;
+
+    .song-item img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .song-item h4 {
+      margin: 10px 0 5px;
+      font-size: 16px;
+      color: #ffffff;
+    }
+
+    .song-item p {
+      margin: 0;
+      font-size: 14px;
+      color: #b3b3b3;
+    }
+
+    /* Footer (Audio Player + Canvas Visualizer) */
+    .footer {
+      background-color: #181818;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .footer canvas {
+      width: 100px;
+      height: 50px;
+      background-color: #1e1e1e;
+      border-radius: 10px;
+    }
+
+    /* Buttons */
+    button {
+      background-color: #1db954;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1ed760;
+    }
+
+    /* Error Message */
+    .error-message {
+      color: #e74c3c;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <h2 class="text-center mb-4" data-aos="fade-down">🎶 Music Library</h2>
-    <div id="musicContainer" class="row g-4"></div>
 
-    <hr class="my-5">
-    
-    <h2 class="text-center mb-4" data-aos="fade-up">❤️ Your Favorites</h2>
-    <div id="favoritesContainer" class="row g-4"></div>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Spotify</h2>
+    <ul>
+      <li onclick="alert('Home clicked')">Home</li>
+      <li onclick="alert('Search clicked')">Search</li>
+      <li onclick="alert('Library clicked')">Your Library</li>
+    </ul>
   </div>
 
-  <!-- AOS -->
+  <!-- Main Content -->
+  <div class="main-content" data-aos="fade-up">
+    <h1>Music Player with Favorites</h1>
+    <p>Click on a song to play, and add it to your favorites!</p>
+
+    <div id="song-list" class="song-list">
+      <!-- Songs will be loaded here -->
+    </div>
+
+    <div class="error-message" id="error-message" style="display: none;">
+      Failed to load songs. Please try again later.
+    </div>
+  </div>
+
+  <!-- Footer (Audio Player + Canvas Visualizer) -->
+  <div class="footer">
+    <audio id="audio-player" controls>
+      <source id="audio-source" src="" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+    <canvas id="visualizer"></canvas>
+    <button onclick="toggleFavorite(currentSong.title)">Add to Favorites</button>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
-
-  <!-- Main Script -->
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbygd2GDNPzLAyo6gSVm8G1hiPS-OtXYDm98-8obJkVH5v9IjgNDdIXMJYLlPBw5xXk0hg/exec'; // Replace with your script
-    const FAV_KEY = 'favoriteSongs';
-    const musicContainer = document.getElementById('musicContainer');
-    const favoritesContainer = document.getElementById('favoritesContainer');
+    // Initialize AOS
+    AOS.init();
 
-    const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY)) || [];
-    const saveFavorites = (favs) => localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    const songList = document.getElementById('song-list');
+    const audioPlayer = document.getElementById('audio-player');
+    const audioSource = document.getElementById('audio-source');
+    const errorMessage = document.getElementById('error-message');
+    const visualizerCanvas = document.getElementById('visualizer');
+    const visualizerCtx = visualizerCanvas.getContext('2d');
 
-    const toggleFavorite = (song) => {
-      let favs = getFavorites();
-      const exists = favs.some(f => f.url === song.url);
-      if (exists) {
-        favs = favs.filter(f => f.url !== song.url);
-      } else {
-        favs.push(song);
+    let songs = [];
+    let currentSongIndex = 0;
+
+    // Array to hold favorite songs
+    let favorites = [];
+
+    // Function to fetch songs from the endpoint
+    async function fetchSongs() {
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbz0knCpipov7eJeXHaOao6Al_ci8GBzggFjcsTKdfWhbbFCgysh2qmpu3eq8g3kACUmkg/exec');
+        const data = await response.json();
+        
+        if (data && Array.isArray(data)) {
+          songs = data;
+          renderSongList(songs);
+        } else {
+          throw new Error('Invalid data format');
+        }
+      } catch (error) {
+        console.error('Error fetching songs:', error);
+        errorMessage.style.display = 'block';
       }
-      saveFavorites(favs);
-      renderSongs(); // re-render both
-    };
+    }
 
-    const isFavorited = (song) => {
-      return getFavorites().some(f => f.url === song.url);
-    };
+    // Function to render song list
+    function renderSongList(songs) {
+      songList.innerHTML = '';  // Clear the existing list
+      songs.forEach((song, index) => {
+        const songItem = document.createElement('div');
+        songItem.classList.add('song-item');
+        songItem.onclick = () => playSong(index);
 
-    const renderSongCard = (song, isFavSection = false) => {
-      const col = document.createElement('div');
-      col.className = 'col-md-6 col-lg-4';
-      col.setAttribute('data-aos', 'fade-up');
+        songItem.innerHTML = `
+          <img src="${song.image_url}" alt="${song.title}">
+          <h4>${song.title}</h4>
+          <p>${song.artist}</p>
+          <button onclick="toggleFavorite('${song.title}'); event.stopPropagation();">
+            Add to Favorites
+          </button>
+        `;
 
-      const fav = isFavorited(song);
-      const heartClass = fav ? 'bi-heart-fill favorited' : 'bi-heart';
-
-      col.innerHTML = `
-        <div class="card music-card p-3">
-          <i class="bi ${heartClass} heart-icon" title="Toggle Favorite"></i>
-          <h5>${song.title}</h5>
-          <p class="text-muted">🎤 ${song.artist}</p>
-          <audio class="w-100" controls>
-            <source src="${song.url}" type="audio/mp3">
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      `;
-
-      const heart = col.querySelector('.heart-icon');
-      heart.addEventListener('click', () => toggleFavorite(song));
-
-      return col;
-    };
-
-    const renderSongs = () => {
-      fetch(API_URL)
-        .then(res => res.json())
-        .then(data => {
-          musicContainer.innerHTML = '';
-          data.forEach((song, i) => {
-            const card = renderSongCard(song);
-            card.setAttribute('data-aos-delay', i * 100);
-            musicContainer.appendChild(card);
-          });
-
-          renderFavorites(); // update favorites section
-        })
-        .catch(err => {
-          musicContainer.innerHTML = `<p class="text-danger">Failed to load songs. Check API URL.</p>`;
-          console.error(err);
-        });
-    };
-
-    const renderFavorites = () => {
-      const favs = getFavorites();
-      favoritesContainer.innerHTML = '';
-      if (favs.length === 0) {
-        favoritesContainer.innerHTML = `<p class="text-muted text-center">No favorites added yet.</p>`;
-        return;
-      }
-      favs.forEach((song, i) => {
-        const favCard = renderSongCard(song, true);
-        favCard.setAttribute('data-aos-delay', i * 100);
-        favoritesContainer.appendChild(favCard);
+        songList.appendChild(songItem);
       });
-    };
+    }
 
-    renderSongs();
+    // Function to play song
+    function playSong(index) {
+      currentSongIndex = index;
+      const song = songs[currentSongIndex];
+      audioSource.src = song.url;
+      audioPlayer.load();  // Reload the audio player to play the new song
+      audioPlayer.play();
+      console.log(`Playing: ${song.title}`);
+    }
+
+    // Function to toggle favorite
+    function toggleFavorite(title) {
+      const button = event.target;
+      if (favorites.includes(title)) {
+        favorites = favorites.filter(song => song !== title);
+        button.textContent = 'Add to Favorites';
+      } else {
+        favorites.push(title);
+        button.textContent = 'Remove from Favorites';
+      }
+      console.log(`Favorites: ${favorites}`);
+    }
+
+    // Auto-play next song
+    audioPlayer.addEventListener('ended', () => {
+      currentSongIndex = (currentSongIndex + 1) % songs.length; // Loop back to start
+      playSong(currentSongIndex);
+    });
+
+    // Canvas Visualizer
+    function visualizeAudio() {
+      const analyser = new (window.AudioContext || window.webkitAudioContext)();
+      const source = analyser.createMediaElementSource(audioPlayer);
+      const dataArray = new Uint8Array(128);
+
+      source.connect(analyser);
+      analyser.connect(analyser.destination);
+
+      function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+
+        visualizerCtx.fillStyle = '#1e1e1e';
+        visualizerCtx.fillRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+
+        const barWidth = (visualizerCanvas.width / dataArray.length) * 2.5;
+        let barHeight;
+        let x = 0;
+
+        for (let i = 0; i < dataArray.length; i++) {
+          barHeight = dataArray[i] / 2;
+
+          visualizerCtx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
+          visualizerCtx.fillRect(x, visualizerCanvas.height - barHeight, barWidth, barHeight);
+
+          x += barWidth + 1;
+        }
+      }
+
+      draw();
+    }
+
+    // Load the song list on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchSongs();
+      visualizeAudio();
+    });
   </script>
 </body>
 </html>
