@@ -194,7 +194,8 @@ body {
       "https://vimalraj45.github.io/v/easan_home",
       "https://vimalraj45.github.io/v/easan_shop",
       "https://vimalraj45.github.io/v/easan_csts",
-      "https://vimalraj45.github.io/v/easan_help"
+      "https://vimalraj45.github.io/v/easan_help",
+      "https://vimalraj45.github.io/v/EASAN%20SPA.html"
     ];
 
     // Predefined responses for basic questions
@@ -255,7 +256,7 @@ body {
       const shopKeywords = ["shop", "products", "items", "what do you sell"];
       const isShopRelated = shopKeywords.some(keyword => question.toLowerCase().includes(keyword));
       if (isShopRelated) {
-        const response = `🛒 You can view our products here: <a href="https://vimalraj45.github.io/v/easan_shop" target="_blank">Visit Our Shop</a>`;
+        const response = `🛒 You can view our products here: <a href="https://vimalraj45.github.io/v/EASAN%20SPA.html" target="_blank">Visit Our Shop</a>`;
         addMessage(response, "bot");
         return;
       }
@@ -265,7 +266,7 @@ body {
       const isContactRelated = contactKeywords.some(keyword => question.toLowerCase().includes(keyword));
       if (isContactRelated) {
         try {
-          const response = await fetch("https://vimalraj45.github.io/v/easan_help");
+          const response = await fetch("https://vimalraj45.github.io/v/EASAN%20SPA.html");
           if (!response.ok) throw new Error("Failed to load contact details.");
           const htmlText = await response.text();
           const parser = new DOMParser();
@@ -317,7 +318,7 @@ body {
         const data = await apiResponse.json();
         const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-        addMessage(reply ? `👋 EASAN says:\n\n${reply}` : "⚠️ No response from EASAN.", "bot");
+        addMessage(reply ? `👋 EASAN ChatBot says:\n\n${reply}` : "⚠️ No response from EASAN.", "bot");
       } catch (error) {
         addMessage(`❌ Error: ${error.message}`, "bot");
         console.error(error);
