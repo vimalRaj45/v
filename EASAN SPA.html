@@ -242,6 +242,14 @@
             }
             // Save the current page to localStorage
             localStorage.setItem('currentPage', page);
+
+            // Show/hide chatbot icon
+    if (page === 'chatbot') {
+        chatIcon.style.display = 'none';
+    } else {
+        chatIcon.style.display = 'flex';
+    }
+            
             // Enable or disable refresh prevention
             toggleRefreshPrevention(page);
             // Toggle logout button visibility
