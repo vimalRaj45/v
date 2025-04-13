@@ -295,51 +295,6 @@
                 enableInteractiveElements();
             }
         }
-          // Disable Right Click
-  document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-  });
- document.addEventListener('mousedown', function (e) {
-    e.preventDefault(); // Disable both left & right click
-  });
-
-  // Block Dev Tools Shortcuts
-  document.addEventListener('keydown', function (e) {
-    // Block F12
-    if (e.key === 'F12') {
-      e.preventDefault();
-    }
-
-    // Block Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + Shift + C
-    if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) {
-      e.preventDefault();
-    }
-
-   
-
-  document.addEventListener('mouseup', function (e) {
-    e.preventDefault(); // Optional: extra protection
-  });
-
-    // Block Ctrl + U and Ctrl + S
-    if (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase())) {
-      e.preventDefault();
-    }
-    document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-  });
-  });
-
-  // Block opening DevTools via resize trick (detects if dev tools are open)
-  setInterval(() => {
-    const threshold = 160;
-    if (
-      window.outerWidth - window.innerWidth > threshold ||
-      window.outerHeight - window.innerHeight > threshold
-    ) {
-      document.body.innerHTML = "<h1 style='text-align:center;margin-top:20%'>DevTools is disabled</h1>";
-    }
-  }, 1000);
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <!-- Bootstrap JS -->
