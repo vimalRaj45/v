@@ -69,13 +69,20 @@
 </head>
 <body>
 
-  <div class="container p-1">
-    <h1 data-aos="fade-down">Your Orders</h1>
-    <small data-aos="slide-right" class="m-1 text-end">Third Item is Last Order</small>
-    <div class="filters" data-aos="fade-up">
-      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)" style="display: none;">
-      <input type="text" id="product-filter" placeholder="Filter by Product" style="display: none;">
+ <div class="container p-3">
+  <h1 data-aos="fade-down" class="mb-2">Your Orders</h1>
+  <small data-aos="slide-right" class="d-block text-muted text-end mb-3">Third item is your latest order</small>
+
+  <div class="filters row g-2" data-aos="fade-up">
+    <div class="col-md-6">
+      <input type="text" id="date-filter" class="form-control" placeholder="Filter by Date (DD/MM/YYYY)" style="display: none;">
     </div>
+    <div class="col-md-6">
+      <input type="text" id="product-filter" class="form-control" placeholder="Filter by Product" style="display: none;">
+    </div>
+  </div>
+</div>
+
 
     <div id="loading-spinner" class="text-center my-4">
       <i class="fas fa-spinner fa-spin"></i> Loading...
