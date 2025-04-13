@@ -4,125 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Customer Order Summary</title>
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- FontAwesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-  <!-- AOS Animation -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: #f8f9fa;
+      background-color: #f9fafb;
     }
-
     h1 {
       text-align: center;
-      margin-bottom: 30px;
-      font-weight: 600;
-      color: #333;
+      margin: 20px 0;
     }
-
     .filters {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-width: 500px;
-      margin: 0 auto 20px auto;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 20px;
     }
-
-    @media (min-width: 576px) {
-      .filters {
-        flex-direction: row;
-      }
-    }
-
     .filters input {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #ced4da;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
     }
-
     .table-container {
-      overflow-x: auto;
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-
-    table {
-      width: 100%;
-      margin-bottom: 0;
-    }
-
     th {
+      background-color: #f2f2f2;
       position: sticky;
       top: 0;
-      background: #f1f3f5;
       z-index: 1;
     }
-
     tr:hover {
-      background-color: #f8f9fc;
+      background-color: #f0f8ff;
+      cursor: pointer;
     }
-
+    .modal-body {
+      max-height: 300px;
+      overflow-y: auto;
+    }
     .load-more-btn {
-      margin: 20px auto;
       display: block;
+      margin: 20px auto;
       padding: 10px 20px;
-      background-color: #0d6efd;
+      background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-
-    .modal-content {
-      border-radius: 10px;
-    }
-
-    .modal-header {
-      background-color: #f1f3f5;
-      border-bottom: 1px solid #dee2e6;
-    }
-
-    .modal-body ol {
-      padding-left: 20px;
-    }
-
-    .view-link {
-      color: #0d6efd;
-      text-decoration: underline;
+      border-radius: 5px;
       cursor: pointer;
+    }
+    .load-more-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <div class="container my-5">
-    <h1 data-aos="fade-down">Customer Order Summary</h1>
 
-    <div class="filters mb-3" data-aos="fade-up">
-      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)">
-      <input type="text" id="product-filter" placeholder="Filter by Product">
+  <div class="container mt-4 p-2">
+    <h1 data-aos="fade-down">Your Orders</h1>
+
+    <div class="filters" data-aos="fade-up">
+      <input type="text" id="date-filter" placeholder="Filter by Date (DD/MM/YYYY)" style="display: none;">
+      <input type="text" id="product-filter" placeholder="Filter by Product" style="display: none;">
     </div>
 
     <div id="loading-spinner" class="text-center my-4">
-      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <i class="fas fa-spinner fa-spin"></i> Loading...
     </div>
 
     <div id="order-summary" style="display: none;" data-aos="fade-up">
-      <div class="table-container table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
+      <div class="table-container">
+        <table class="table table-hover">
+          <thead>
             <tr>
               <th>Order ID</th>
               <th>Items</th>
@@ -141,7 +103,7 @@
 
   <!-- Modal -->
   <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
       <div class="modal-content p-3">
         <div class="modal-header">
           <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
@@ -155,18 +117,8 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
   <script>
     AOS.init();
-
-    const customerId = localStorage.getItem('customer_id');
-    if (!customerId) {
-      window.location.replace("https://vimalraj45.github.io/v/easan_login");
-    }
-
-    let allOrders = [];
-    let batchSize = 3;
-    let offset = 0;
 
     function convertDateFormat(dateStr) {
       const parts = dateStr.split('/');
@@ -177,38 +129,43 @@
       return null;
     }
 
-    function formatDateTime(dateStr) {
-      const date = new Date(dateStr);
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      let hours = date.getHours();
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-      return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+    const customerId = localStorage.getItem('customer_id');
+    if (!customerId) {
+      window.location.replace("https://vimalraj45.github.io/v/easan_login");
     }
+
+    let allOrders = [];
+    let batchSize = 3; // Number of orders to load per batch
+    let offset = 0;     // Current position in the dataset
 
     function fetchOrders() {
       document.getElementById('loading-spinner').style.display = 'block';
 
-      fetch(`https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}&limit=${batchSize}&offset=${offset}`)
-        .then(res => res.json())
-        .then(data => {
+      fetch(
+        `https://script.google.com/macros/s/AKfycbw-OMfPU8s7w9R6rH7ENDF44npaigpvc-m5R2nl8PHlK43gVo2uYVOxDF5qYxiSSUfDzw/exec?action=getOrdersByCustomerId&customer_id=${customerId}&limit=${batchSize}&offset=${offset}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
           document.getElementById('loading-spinner').style.display = 'none';
 
           if (!data || data.length === 0) {
-            document.getElementById('load-more-btn').disabled = true;
+            document.getElementById('order-summary').innerHTML = `<p class="text-center text-muted">No more orders found.</p>`;
+            document.getElementById('load-more-btn').disabled = true; // Disable "Load More" button
             return;
           }
 
+          // Append new orders to the existing list
           allOrders = [...allOrders, ...data];
-          renderTable(data); // only render new data
+          renderTable(allOrders);
           document.getElementById('order-summary').style.display = 'block';
+
+          // Increment the offset for the next batch
           offset += batchSize;
+
+          // Enable or disable "Load More" button based on data availability
           document.getElementById('load-more-btn').disabled = data.length < batchSize;
         })
-        .catch(err => {
+        .catch((err) => {
           document.getElementById('loading-spinner').style.display = 'none';
           document.getElementById('order-summary').innerHTML = `<p class="text-danger text-center">Error: ${err.message}</p>`;
         });
@@ -217,22 +174,26 @@
     function renderTable(orders) {
       const tbody = document.getElementById('order-table-body');
 
-      orders.forEach((order, index) => {
+      orders.slice(-batchSize).forEach((order, index) => { // Render only the latest batch
         const row = document.createElement('tr');
         row.setAttribute('data-aos', index % 2 === 0 ? 'fade-left' : 'fade-right');
+        row.setAttribute('data-aos-delay', index * 50);
+
         row.innerHTML = `
           <td>${order.order_id}</td>
-          <td><span class="view-link" data-index="${allOrders.indexOf(order)}">View Items</span></td>
+          <td><a href="#" class="view-link" data-index="${allOrders.indexOf(order)}">View Items</a></td>
           <td>₹${order.total.toFixed(2)}</td>
           <td>${order.status}</td>
-          <td>${formatDateTime(order.order_time)}</td>
-          <td>${formatDateTime(order.delivery_time)}</td>
+          <td>${order.order_time}</td>
+          <td>${new Date(order.delivery_time).toLocaleString()}</td>
         `;
+
         tbody.appendChild(row);
       });
 
       document.querySelectorAll('.view-link').forEach(link => {
-        link.addEventListener('click', function () {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
           const index = parseInt(this.dataset.index);
           showModal(allOrders[index]);
         });
@@ -244,16 +205,22 @@
     function showModal(order) {
       const itemList = order.items.split(',').map(item => `<li>${item.trim()}</li>`).join('');
       document.getElementById('modal-content').innerHTML = `
-        <h6 class="text-muted mb-2">Ordered Items:</h6>
-        <ol>${itemList}</ol>
-        <div class="border-top mt-3 pt-2">
+        <div class="mb-3">
+          <h6 class="text-muted">Ordered Items:</h6>
+          <ol class="ps-3" style="line-height: 1.8;">
+            ${itemList}
+          </ol>
+        </div>
+        <div class="border-top pt-2">
           <p class="mb-1"><strong>Total:</strong> ₹${order.total.toFixed(2)}</p>
           <p class="mb-0"><strong>Delivery Time:</strong> ${new Date(order.delivery_time).toLocaleString()}</p>
         </div>
       `;
-      const modal = new bootstrap.Modal(document.getElementById('orderModal'));
-      modal.show();
+      new bootstrap.Modal(document.getElementById('orderModal')).show();
     }
+
+    document.getElementById('date-filter').addEventListener('input', applyFilters);
+    document.getElementById('product-filter').addEventListener('input', applyFilters);
 
     function applyFilters() {
       const date = convertDateFormat(document.getElementById('date-filter').value.trim());
@@ -266,15 +233,14 @@
         return matchDate && matchProduct;
       });
 
-      document.getElementById('order-table-body').innerHTML = '';
       renderTable(filtered);
     }
 
-    document.getElementById('date-filter').addEventListener('input', applyFilters);
-    document.getElementById('product-filter').addEventListener('input', applyFilters);
-    document.getElementById('load-more-btn').addEventListener('click', fetchOrders);
-
+    // Initial fetch
     fetchOrders();
+
+    // Load more button click event
+    document.getElementById('load-more-btn').addEventListener('click', fetchOrders);
   </script>
 </body>
 </html>
