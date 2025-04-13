@@ -325,7 +325,7 @@ body {
           const htmlText = await response.text();
           const parser = new DOMParser();
           const doc = parser.parseFromString(htmlText, "text/html");
-          const contactInfo = doc.body.innerText.trim().replace(/\s+/g, " ").slice(3300, 3400); // Extract first 500 chars
+          const contactInfo = doc.body.innerText.trim().replace(/\s+/g, " ").slice(3300, 3500); // Extract first 500 chars
           const reply = `📞 Here are our contact details:\n\n${contactInfo}`;
           addMessage(reply, "bot");
         } catch (error) {
