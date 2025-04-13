@@ -308,8 +308,8 @@ body {
 
        // Check if the question is order-related
       const time = ["working days"];
-      const isOrderRelated = orderKeywords.some(keyword => question.toLowerCase().includes(keyword));
-      if (isOrderRelated) {
+      const time = time.some(keyword => question.toLowerCase().includes(keyword));
+      if (time) {
         const response = `Our Shop Open in all days 9am - 10pm`;
         addMessage(response, "bot");
         return;
