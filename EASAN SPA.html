@@ -299,6 +299,9 @@
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
   });
+ document.addEventListener('mousedown', function (e) {
+    e.preventDefault(); // Disable both left & right click
+  });
 
   // Block Dev Tools Shortcuts
   document.addEventListener('keydown', function (e) {
@@ -311,6 +314,12 @@
     if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) {
       e.preventDefault();
     }
+
+   
+
+  document.addEventListener('mouseup', function (e) {
+    e.preventDefault(); // Optional: extra protection
+  });
 
     // Block Ctrl + U and Ctrl + S
     if (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase())) {
