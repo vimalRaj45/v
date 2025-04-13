@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   <script>
+    // Disable right-click context menu
+    document.addEventListener("contextmenu", function (event) {
+      event.preventDefault();
+    });
+
+    // Block dev tools access
+    document.addEventListener("keydown", function (event) {
+      // Disable F12
+      if (event.key === "F12") {
+        event.preventDefault();
+      }
+
+      // Disable Ctrl + U
+      if (event.ctrlKey && event.key.toLowerCase() === "u") {
+        alert("Please contact me! : 8807099288");
+        event.preventDefault();
+      }
+
+      // Disable Ctrl + Shift + I
+      if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === "i") {
+        event.preventDefault();
+      }
+
+      // Disable Ctrl + Right Click
+      if (event.ctrlKey && event.button === 2) {
+        event.preventDefault();
+      }
+    });
+
+    // Disable Ctrl + Right Click via mouse event
+    document.addEventListener("mousedown", function (event) {
+      if (event.ctrlKey && event.button === 2) {
+        event.preventDefault();
+      }
+    });
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
