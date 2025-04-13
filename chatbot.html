@@ -249,8 +249,7 @@ body {
       "https://vimalraj45.github.io/v/easan_home",
       "https://vimalraj45.github.io/v/easan_shop",
       "https://vimalraj45.github.io/v/easan_csts",
-      "https://vimalraj45.github.io/v/easan_help",
-      "https://vimalraj45.github.io/v/EASAN%20SPA.html"
+      "https://vimalraj45.github.io/v/easan_help"
     ];
 
     // Predefined responses for basic questions
@@ -321,7 +320,7 @@ body {
       const isContactRelated = contactKeywords.some(keyword => question.toLowerCase().includes(keyword));
       if (isContactRelated) {
         try {
-          const response = await fetch("https://vimalraj45.github.io/v/EASAN%20SPA.html");
+          const response = await fetch("https://vimalraj45.github.io/v/easan_help");
           if (!response.ok) throw new Error("Failed to load contact details.");
           const htmlText = await response.text();
           const parser = new DOMParser();
