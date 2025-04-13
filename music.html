@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎵 Music Library</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .music-card {
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+      position: relative;
+    }
+    .music-card:hover {
+      transform: scale(1.02);
+    }
+    .heart-icon {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .heart-icon.favorited {
+      color: red;
+    }
+    h2 {
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <h2 class="text-center mb-4" data-aos="fade-down">🎶 Music Library</h2>
+    <div id="musicContainer" class="row g-4"></div>
+
+    <hr class="my-5">
+    
+    <h2 class="text-center mb-4" data-aos="fade-up">❤️ Your Favorites</h2>
+    <div id="favoritesContainer" class="row g-4"></div>
+  </div>
+
+  <!-- AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+
+  <!-- Main Script -->
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbygd2GDNPzLAyo6gSVm8G1hiPS-OtXYDm98-8obJkVH5v9IjgNDdIXMJYLlPBw5xXk0hg/exec'; // Replace with your script
+    const FAV_KEY = 'favoriteSongs';
+    const musicContainer = document.getElementById('musicContainer');
+    const favoritesContainer = document.getElementById('favoritesContainer');
+
+    const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+    const saveFavorites = (favs) => localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+
+    const toggleFavorite = (song) => {
+      let favs = getFavorites();
+      const exists = favs.some(f => f.url === song.url);
+      if (exists) {
+        favs = favs.filter(f => f.url !== song.url);
+      } else {
+        favs.push(song);
+      }
+      saveFavorites(favs);
+      renderSongs(); // re-render both
+    };
+
+    const isFavorited = (song) => {
+      return getFavorites().some(f => f.url === song.url);
+    };
+
+    const renderSongCard = (song, isFavSection = false) => {
+      const col = document.createElement('div');
+      col.className = 'col-md-6 col-lg-4';
+      col.setAttribute('data-aos', 'fade-up');
+
+      const fav = isFavorited(song);
+      const heartClass = fav ? 'bi-heart-fill favorited' : 'bi-heart';
+
+      col.innerHTML = `
+        <div class="card music-card p-3">
+          <i class="bi ${heartClass} heart-icon" title="Toggle Favorite"></i>
+          <h5>${song.title}</h5>
+          <p class="text-muted">🎤 ${song.artist}</p>
+          <audio class="w-100" controls>
+            <source src="${song.url}" type="audio/mp3">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      `;
+
+      const heart = col.querySelector('.heart-icon');
+      heart.addEventListener('click', () => toggleFavorite(song));
+
+      return col;
+    };
+
+    const renderSongs = () => {
+      fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+          musicContainer.innerHTML = '';
+          data.forEach((song, i) => {
+            const card = renderSongCard(song);
+            card.setAttribute('data-aos-delay', i * 100);
+            musicContainer.appendChild(card);
+          });
+
+          renderFavorites(); // update favorites section
+        })
+        .catch(err => {
+          musicContainer.innerHTML = `<p class="text-danger">Failed to load songs. Check API URL.</p>`;
+          console.error(err);
+        });
+    };
+
+    const renderFavorites = () => {
+      const favs = getFavorites();
+      favoritesContainer.innerHTML = '';
+      if (favs.length === 0) {
+        favoritesContainer.innerHTML = `<p class="text-muted text-center">No favorites added yet.</p>`;
+        return;
+      }
+      favs.forEach((song, i) => {
+        const favCard = renderSongCard(song, true);
+        favCard.setAttribute('data-aos-delay', i * 100);
+        favoritesContainer.appendChild(favCard);
+      });
+    };
+
+    renderSongs();
+  </script>
+</body>
+</html>
