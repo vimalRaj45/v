@@ -1,191 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EASAN Supermarket Chatbot</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Outfit', sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-    .chat-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
-      max-width: 900px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .chat-message {
-      margin-bottom: 15px;
-      padding: 12px 18px;
-      border-radius: 16px;
-      max-width: 75%;
-      word-wrap: break-word;
-      line-height: 1.5;
-      font-size: 16px;
-    }
-    .user-message {
-      background: #0d6efd;
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-right-radius: 0;
-    }
-    .bot-message {
-      background: #e4e6eb;
-      color: #111;
-      align-self: flex-start;
-      border-bottom-left-radius: 0;
-    }
-    .input-container {
-      display: flex;
-      padding: 10px;
-      background: #fff;
-      border-top: 1px solid #dee2e6;
-      position: sticky;
-      bottom: 0;
-      z-index: 10;
-      max-width: 900px;
-      margin: auto;
-      width: 100%;
-    }
-    .input-container input {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #ced4da;
-      border-radius: 12px;
-      font-size: 16px;
-    }
-    .input-container button {
-      margin-left: 10px;
-      padding: 10px 15px;
-      border: none;
-      background: #0d6efd;
-      color: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    .input-container button:hover {
-      background: #0a58ca;
-    }
-    .voice-btn {
-      background-color: #28a745;
-      border: none;
-      color: white;
-      padding: 10px 12px;
-      margin-left: 10px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    .voice-btn:hover {
-      background-color: #218838;
-    }
+/* Global Styling */
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Chat Container */
+.chat-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat Message */
+/* Chat Container */
+.chat-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;  /* Reduced padding */
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chat Message */
+.chat-message {
+  margin-bottom: 10px;  /* Reduced margin between messages */
+  padding: 8px 12px;    /* Reduced padding */
+  border-radius: 20px;
+  max-width: 80%;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+  background-color: #007bff;
+  color: white;
+  align-self: flex-end;
+  justify-content: flex-end;
+}
+
+.bot-message {
+  background-color: #e9ecef;
+  color: #333;
+  align-self: flex-start;
+  justify-content: flex-start;
+}
+
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.bot-message .avatar {
+  background: url('https://via.placeholder.com/40/FFD700?text=🤖') no-repeat center/cover;
+}
+
+.user-message .avatar {
+  background: url('https://via.placeholder.com/40/0d6efd?text=👤') no-repeat center/cover;
+}
+
+/* Input Section */
+.input-container {
+  display: flex;
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 30px;
+  font-size: 16px;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-container input:focus {
+  border-color: #007bff;
+}
+
+.input-container button {
+  margin-left: 10px;
+  padding: 12px 18px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.input-container button:hover {
+  background-color: #0056b3;
+}
+
+
+
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chat-container {
+    padding: 15px;
+  }
+
+  .input-container input {
+    font-size: 14px;
+  }
+
+  .input-container button {
+    padding: 10px 16px;
+  }
+}
+
+    
   </style>
 </head>
 <body>
   <div class="container-fluid d-flex flex-column h-100">
-    <div class="chat-container" id="chatContainer">
+    <!-- Chat Container -->
+    <div class="chat-container" id="chatContainer" data-aos="fade-up" data-aos-duration="1000">
+      <!-- Initial Bot Message -->
       <div class="chat-message bot-message">
-        👋 வணக்கம்! நான் EASAN சூப்பர்மார்க்கெட் ரொபோ. உங்களுக்கு எப்படி உதவ வேண்டும்?
+        <div class="avatar"></div>
+        <div>
+          👋 வணக்கம்! நான் EASAN சூப்பர்மார்க்கெட் ரொபோ 🐱<br>
+          😊 உங்களுக்கு எப்படி உதவ வேண்டும்?<br>
+          <small>👉 உதாரணமாக: "என் ஆர்டர் எப்படி போகிறது?" அல்லது "நீங்கள் என்ன விற்கிறீர்கள்?"</small>
+        </div>
       </div>
     </div>
 
-    <div class="input-container">
-      <input type="text" id="questionInput" placeholder="Ask something about EASAN..." />
-      <button onclick="askEASAN()">Send</button>
-      <button class="voice-btn" onclick="startVoiceInput()">🎤</button>
+    <!-- Input Container -->
+    <div class="input-container" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+      <input type="text" id="questionInput" class="form-control" placeholder="Type your question here..." aria-label="Chat Input">
+      <button class="btn btn-primary" onclick="askEASAN()">Send</button>
     </div>
   </div>
 
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    const API_KEY = "YOUR_GEMINI_API_KEY"; // Replace with your Gemini API key
+    // Initialize AOS
+    AOS.init({
+      once: true, // Animations will only trigger once
+      duration: 1000, // Animation duration
+    });
+
+    const API_KEY = "AIzaSyAU8Plhzh1ZPGuMdN96YcMXNpHSBlG1_xM"; // 🔐 Replace with your Gemini API key
     const targetURLs = [
       "https://vimalraj45.github.io/v/easan_home",
       "https://vimalraj45.github.io/v/easan_shop",
-      "https://vimalraj45.github.io/v/easan_csts"
+      "https://vimalraj45.github.io/v/easan_csts",
+      "https://vimalraj45.github.io/v/easan_help"
     ];
 
+    // Predefined responses for basic questions
     const predefinedResponses = {
-      "hi": "Hello! How can I assist you today?",
-      "hello": "Hi there! What do you need help with?",
-      "how are you": "I'm just a program, but I'm here and ready to help!",
-      "thank you": "You're welcome! 😊 If you have any more questions, feel free to ask.",
-      "bye": "Goodbye! Have a great day!",
-      "வணக்கம்": "வணக்கம்! உங்களுக்கு எப்படி உதவ வேண்டும்?",
+      "hi": "Hello there! 😊 How can I assist you today?",
+      "hello": "Hi! So glad you're here. What do you need help with?",
+      "how are you": "I'm just a program, but I'm here and ready to make your day better!",
+      "thank you": "You're very welcome! 😊 If you have any more questions, feel free to ask.",
+      "bye": "Goodbye! Have an amazing day ahead!",
+      "what products do you sell": "We offer a wide range of products including fresh fruits, vegetables, groceries, beverages, and household items. Check out our <a href='https://vimalraj45.github.io/v/easan_shop' target='_blank'>product page</a> for more details.",
+      "வணக்கம்": "வணக்கம்! 😊 உங்களுக்கு எப்படி உதவ வேண்டும்?",
       "நன்றி": "நன்றி! 😊 மேலும் கேள்விகள் இருந்தால் கேட்கவும்.",
       "பிரியாவிடை": "பிரியாவிடை! நல்ல நாள் கொண்டாடுங்கள்!",
-      "நீங்கள் என்ன விற்கிறீர்கள்": "நாங்கள் புதிய காய்கறிகள், பழங்கள், கிராகரி பொருட்கள், பானங்கள் மற்றும் வீட்டு உபகரணங்கள் விற்கிறோம்."
+      "நீங்கள் என்ன விற்கிறீர்கள்": "நாங்கள் புதிய காய்கறிகள், பழங்கள், கிராகரி பொருட்கள், பானங்கள் மற்றும் வீட்டு உபகரணங்கள் விற்கிறோம். மேலும் அறிய <a href='https://vimalraj45.github.io/v/easan_shop' target='_blank'>இங்கே கிளிக் செய்யவும்</a>."
     };
 
     function addMessage(message, sender) {
-      const container = document.getElementById("chatContainer");
-      const div = document.createElement("div");
-      div.className = `chat-message ${sender === "user" ? "user-message" : "bot-message"}`;
-      div.innerHTML = message;
-      container.appendChild(div);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function speakResponse(text) {
-      if ('speechSynthesis' in window) {
-        const utter = new SpeechSynthesisUtterance(text);
-        speechSynthesis.speak(utter);
-      }
+      const chatContainer = document.getElementById("chatContainer");
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `chat-message ${sender === "user" ? "user-message" : "bot-message"}`;
+      messageDiv.innerHTML = `
+        <div class="avatar"></div>
+        <div>${message}</div>
+      `;
+      chatContainer.appendChild(messageDiv);
+      chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to bottom
     }
 
     async function askEASAN() {
-      const input = document.getElementById("questionInput");
-      const question = input.value.trim();
-      if (!question) return;
+      const inputField = document.getElementById("questionInput");
+      const question = inputField.value.trim();
+
+      if (!question) {
+        return;
+      }
+
+      // Add user message to chat
       addMessage(question, "user");
-      input.value = "";
+      inputField.value = ""; // Clear input field
 
-      const predefined = predefinedResponses[question.toLowerCase()];
-      if (predefined) {
-        addMessage(predefined, "bot");
-        speakResponse(predefined);
+      // Check if there's a predefined response
+      const predefinedAnswer = predefinedResponses[question.toLowerCase()];
+      if (predefinedAnswer) {
+        addMessage(predefinedAnswer, "bot");
         return;
       }
 
-      const orderKeywords = ["order", "track", "status", "my order", "என் ஆர்டர்"];
-      if (orderKeywords.some(k => question.toLowerCase().includes(k))) {
-        const link = "https://vimalraj45.github.io/v/easan_csts";
-        const response = `📦 உங்கள் ஆர்டர் விவரங்களை இங்கு பார்க்கலாம்: <a href="${link}" target="_blank">${link}</a>`;
+      // Check if the question is order-related
+      const orderKeywords = ["my order", "order status", "track order", "where is my order"];
+      const isOrderRelated = orderKeywords.some(keyword => question.toLowerCase().includes(keyword));
+      if (isOrderRelated) {
+        const response = `📦 Your order details can be found here: <a href="https://vimalraj45.github.io/v/easan_csts" target="_blank">Track Your Order</a>`;
         addMessage(response, "bot");
-        speakResponse("Your order details are available online.");
         return;
       }
 
+      // Check if the question is about the shop
+      const shopKeywords = ["shop", "products", "items", "what do you sell"];
+      const isShopRelated = shopKeywords.some(keyword => question.toLowerCase().includes(keyword));
+      if (isShopRelated) {
+        const response = `🛒 You can view our products here: <a href="https://vimalraj45.github.io/v/easan_shop" target="_blank">Visit Our Shop</a>`;
+        addMessage(response, "bot");
+        return;
+      }
+
+      // Check if the question is about contact details
+      const contactKeywords = ["contact", "help", "support", "phone", "email"];
+      const isContactRelated = contactKeywords.some(keyword => question.toLowerCase().includes(keyword));
+      if (isContactRelated) {
+        try {
+          const response = await fetch("https://vimalraj45.github.io/v/easan_help");
+          if (!response.ok) throw new Error("Failed to load contact details.");
+          const htmlText = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, "text/html");
+          const contactInfo = doc.body.innerText.trim().replace(/\s+/g, " ").slice(0, 500); // Extract first 500 chars
+          const reply = `📞 Here are our contact details:\n\n${contactInfo}`;
+          addMessage(reply, "bot");
+        } catch (error) {
+          addMessage(`❌ Error: ${error.message}`, "bot");
+          console.error(error);
+        }
+        return;
+      }
+
+      // Fetch content from the target pages
       addMessage("⏳ Processing your question...", "bot");
 
       try {
-        const texts = await Promise.all(targetURLs.map(async url => {
-          const res = await fetch(url);
-          const html = await res.text();
-          const doc = new DOMParser().parseFromString(html, "text/html");
-          return doc.body.innerText.slice(0, 15000).replace(/\s+/g, " ");
-        }));
+        const allTextPromises = targetURLs.map(async (url) => {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Failed to load ${url}`);
+          const htmlText = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, "text/html");
+          return doc.body.innerText.trim().replace(/\s+/g, " ").slice(0, 15000); // Limit to 15k chars per page
+        });
 
-        const combinedText = texts.join("\n\n---\n\n");
+        const allTexts = await Promise.all(allTextPromises);
+        const combinedText = allTexts.join("\n\n---\n\n"); // Combine texts with a separator
+
+        // Prepare messages for Gemini API
         const messages = [
-          { role: "user", parts: [{ text: `Only answer using EASAN website content:\n\n${combinedText}` }] },
-          { role: "user", parts: [{ text: question }] }
+          { role: "user", parts: [{ text: `Here is the content of the webpages:\n\n${combinedText}` }] },
+          { role: "user", parts: [{ text: `Based on the above content, answer the following question concisely and accurately without including any code or technical details. Focus only on the information relevant to the user's query.\n\nQuestion: ${question}` }] }
         ];
 
-        const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-pro:generateContent?key=${API_KEY}`,
+        // Call Gemini API
+        const apiResponse = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -193,42 +312,23 @@
           }
         );
 
-        const data = await geminiRes.json();
+        if (!apiResponse.ok) throw new Error("Gemini API request failed.");
+
+        const data = await apiResponse.json();
         const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-        addMessage(reply || "⚠️ No response from EASAN.", "bot");
-        speakResponse(reply || "No response from EASAN.");
-      } catch (err) {
-        addMessage(`❌ Error: ${err.message}`, "bot");
+        addMessage(reply ? `👋 EASAN says:\n\n${reply}` : "⚠️ No response from EASAN.", "bot");
+      } catch (error) {
+        addMessage(`❌ Error: ${error.message}`, "bot");
+        console.error(error);
       }
     }
 
-    function startVoiceInput() {
-      if (!("webkitSpeechRecognition" in window)) {
-        alert("Your browser doesn't support voice recognition.");
-        return;
-      }
-
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'ta-IN'; // Tamil or change to 'en-US'
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById("questionInput").value = transcript;
-        askEASAN();
-      };
-
-      recognition.onerror = function(event) {
-        alert("🎤 Voice input error: " + event.error);
-      };
-
-      recognition.start();
-    }
-
+    // Trigger askEASAN on pressing Enter
     document.getElementById("questionInput").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") askEASAN();
+      if (e.key === "Enter") {
+        askEASAN();
+      }
     });
   </script>
 </body>
