@@ -154,11 +154,52 @@ body {
     padding: 10px 16px;
   }
 }
+    /* Easan Chatbot Header */
+.easan-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000000; /* Custom color for Easan */
+  color: rgb(255, 255, 255);
+  padding: 12px 24px;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+}
 
+.easan-chat-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.profile-pic {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
     
   </style>
 </head>
 <body>
+    <div class="easan-chat-header">
+    <h3>Easan Chatbot</h3>
+    <div class="user-info">
+      <img src="https://i.ibb.co/qF7hzdJm/blob.jpg" alt="Profile" class="profile-pic">
+    </div>
+  </div>
   <div class="container-fluid d-flex flex-column h-100">
     <!-- Chat Container -->
     <div class="chat-container" id="chatContainer" data-aos="fade-up" data-aos-duration="1000">
