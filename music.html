@@ -21,24 +21,41 @@
       height: 100vh;
     }
 
-    /* Sidebar (Hidden on Mobile) */
+    /* Hamburger Menu */
+    .hamburger-menu {
+      display: none;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+    }
+
+    @media (max-width: 767px) {
+      .hamburger-menu {
+        display: block;
+      }
+    }
+
+    /* Sidebar */
     .sidebar {
       width: 250px;
       background-color: #181818;
       padding: 20px;
       position: fixed;
       top: 0;
-      left: 0;
+      left: -250px; /* Hidden by default */
       bottom: 0;
       overflow-y: auto;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-      display: none; /* Hidden by default */
+      transition: left 0.3s ease;
+      z-index: 999;
     }
 
-    @media (min-width: 768px) {
-      .sidebar {
-        display: block; /* Show sidebar on larger screens */
-      }
+    .sidebar.active {
+      left: 0; /* Show sidebar */
     }
 
     .sidebar h2 {
@@ -79,14 +96,14 @@
 
     .song-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Smaller cards for mobile */
+      gap: 15px;
     }
 
     .song-item {
       background-color: #1e1e1e;
       border-radius: 10px;
-      padding: 15px;
+      padding: 10px;
       text-align: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
@@ -99,27 +116,27 @@
 
     .song-item img {
       width: 100%;
-      height: 100px;
+      height: 100px; /* Smaller images for mobile */
       object-fit: cover;
       border-radius: 10px;
     }
 
     .song-item h4 {
       margin: 10px 0 5px;
-      font-size: 16px;
+      font-size: 14px; /* Smaller font size */
       color: #ffffff;
     }
 
     .song-item p {
       margin: 0;
-      font-size: 14px;
+      font-size: 12px; /* Smaller font size */
       color: #b3b3b3;
     }
 
-    /* Footer (Audio Player + Canvas Visualizer) */
+    /* Footer (Audio Player) */
     .footer {
       background-color: #181818;
-      padding: 15px;
+      padding: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -130,11 +147,8 @@
       right: 0;
     }
 
-    .footer canvas {
-      width: 100px;
-      height: 50px;
-      background-color: #1e1e1e;
-      border-radius: 10px;
+    .footer audio {
+      width: 100%;
     }
 
     /* Buttons */
@@ -146,6 +160,7 @@
       border-radius: 20px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      font-size: 14px; /* Smaller buttons for mobile */
     }
 
     button:hover {
@@ -163,8 +178,11 @@
 </head>
 <body>
 
+  <!-- Hamburger Menu -->
+  <div class="hamburger-menu" onclick="toggleSidebar()">&#9776;</div>
+
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <h2>Spotify</h2>
     <ul>
       <li onclick="alert('Home clicked')">Home</li>
@@ -187,14 +205,12 @@
     </div>
   </div>
 
-  <!-- Footer (Audio Player + Canvas Visualizer) -->
+  <!-- Footer (Audio Player) -->
   <div class="footer">
     <audio id="audio-player" controls>
       <source id="audio-source" src="" type="audio/mp3">
       Your browser does not support the audio element.
     </audio>
-    <canvas id="visualizer"></canvas>
-    <button onclick="toggleFavorite(currentSong.title)">Add to Favorites</button>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -206,11 +222,6 @@
     const audioPlayer = document.getElementById('audio-player');
     const audioSource = document.getElementById('audio-source');
     const errorMessage = document.getElementById('error-message');
-    const visualizerCanvas = document.getElementById('visualizer');
-    const visualizerCtx = visualizerCanvas.getContext('2d');
-
-    let songs = [];
-    let currentSongIndex = 0;
 
     // Array to hold favorite songs
     let favorites = [];
@@ -222,8 +233,7 @@
         const data = await response.json();
         
         if (data && Array.isArray(data)) {
-          songs = data;
-          renderSongList(songs);
+          renderSongList(data);
         } else {
           throw new Error('Invalid data format');
         }
@@ -236,10 +246,10 @@
     // Function to render song list
     function renderSongList(songs) {
       songList.innerHTML = '';  // Clear the existing list
-      songs.forEach((song, index) => {
+      songs.forEach(song => {
         const songItem = document.createElement('div');
         songItem.classList.add('song-item');
-        songItem.onclick = () => playSong(index);
+        songItem.onclick = () => playSong(song.url, song.title);
 
         songItem.innerHTML = `
           <img src="${song.image_url}" alt="${song.title}">
@@ -255,13 +265,11 @@
     }
 
     // Function to play song
-    function playSong(index) {
-      currentSongIndex = index;
-      const song = songs[currentSongIndex];
-      audioSource.src = song.url;
+    function playSong(url, title) {
+      audioSource.src = url;
       audioPlayer.load();  // Reload the audio player to play the new song
       audioPlayer.play();
-      console.log(`Playing: ${song.title}`);
+      console.log(`Playing: ${title}`);
     }
 
     // Function to toggle favorite
@@ -277,49 +285,15 @@
       console.log(`Favorites: ${favorites}`);
     }
 
-    // Auto-play next song
-    audioPlayer.addEventListener('ended', () => {
-      currentSongIndex = (currentSongIndex + 1) % songs.length; // Loop back to start
-      playSong(currentSongIndex);
-    });
-
-    // Canvas Visualizer
-    function visualizeAudio() {
-      const analyser = new (window.AudioContext || window.webkitAudioContext)();
-      const source = analyser.createMediaElementSource(audioPlayer);
-      const dataArray = new Uint8Array(128);
-
-      source.connect(analyser);
-      analyser.connect(analyser.destination);
-
-      function draw() {
-        requestAnimationFrame(draw);
-        analyser.getByteFrequencyData(dataArray);
-
-        visualizerCtx.fillStyle = '#1e1e1e';
-        visualizerCtx.fillRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
-
-        const barWidth = (visualizerCanvas.width / dataArray.length) * 2.5;
-        let barHeight;
-        let x = 0;
-
-        for (let i = 0; i < dataArray.length; i++) {
-          barHeight = dataArray[i] / 2;
-
-          visualizerCtx.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
-          visualizerCtx.fillRect(x, visualizerCanvas.height - barHeight, barWidth, barHeight);
-
-          x += barWidth + 1;
-        }
-      }
-
-      draw();
+    // Toggle Sidebar Visibility
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
     }
 
     // Load the song list on page load
     document.addEventListener('DOMContentLoaded', () => {
       fetchSongs();
-      visualizeAudio();
     });
   </script>
 </body>
