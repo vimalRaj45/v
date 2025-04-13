@@ -306,6 +306,15 @@ body {
         return;
       }
 
+       // Check if the question is order-related
+      const time = ["working days"];
+      const isOrderRelated = orderKeywords.some(keyword => question.toLowerCase().includes(keyword));
+      if (isOrderRelated) {
+        const response = `Our Shop Open in all days 9am - 10pm`;
+        addMessage(response, "bot");
+        return;
+      }
+
       // Check if the question is about the shop
       const shopKeywords = ["shop", "products", "items", "what do you sell"];
       const isShopRelated = shopKeywords.some(keyword => question.toLowerCase().includes(keyword));
