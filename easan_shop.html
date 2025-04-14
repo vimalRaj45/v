@@ -441,7 +441,7 @@
     }
 
 
-    .loader {
+     .loader {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -453,6 +453,14 @@
   top: 0;
   left: 0;
   z-index: 9999;
+  animation: loader 10s linear 1;
+}
+
+/* Keyframes for the slide-right animation */
+@keyframes loader {
+  0% {
+    transform: translateX(-100%); /* Start off-screen to the left */
+  }
 }
 
 
