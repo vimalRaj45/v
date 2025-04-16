@@ -203,21 +203,33 @@
         <iframe id="content-frame" src="https://vimalraj45.github.io/v/easan_home"></iframe>
     </div>
     <!-- Fixed Bottom Footer -->
-    <footer class="fixed-bottom-footer">
-        <a href="#" class="nav-link text-center" onclick="loadPage('home')">
-            <i class="bi bi-house-door-fill"></i><br>Home
-        </a>
-        <a href="#" class="nav-link text-center" onclick="loadPage('shop')">
-            <i class="bi bi-bag-check-fill"></i><br>Shop Now
-        </a>
-        <a href="#" class="nav-link text-center" onclick="loadPage('account')">
-            <i class="bi bi-person-circle"></i><br>Account
-        </a>
-        <a href="#" class="nav-link text-center" onclick="loadPage('help')">
-            <i class="bi bi-question-circle-fill"></i><br>Help
-        </a>
-    </footer>
+    <!-- Footer -->
+  <footer class="fixed-bottom-footer">
+    <a href="#" class="nav-link text-center footer-link active" onclick="loadPage('home')" data-page="home">
+      <i class="bi bi-house-door-fill"></i><br>Home
+    </a>
+    <a href="#" class="nav-link text-center footer-link" onclick="loadPage('shop')" data-page="shop">
+      <i class="bi bi-bag-check-fill"></i><br>Shop Now
+    </a>
+    <a href="#" class="nav-link text-center footer-link" onclick="loadPage('account')" data-page="account">
+      <i class="bi bi-person-circle"></i><br>Account
+    </a>
+    <a href="#" class="nav-link text-center footer-link" onclick="loadPage('help')" data-page="help">
+      <i class="bi bi-question-circle-fill"></i><br>Help
+    </a>
+  </footer>
     <script>
+        // Highlight the active footer link
+    function highlightFooterLink(page) {
+      document.querySelectorAll('.footer-link').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      const targetLink = document.querySelector(`.footer-link[data-page="${page}"]`);
+      if (targetLink) {
+        targetLink.classList.add('active');
+      }
+    }
         // Function to dynamically load content into the iframe
         function loadPage(page) {
             const iframe = document.getElementById('content-frame');
@@ -249,8 +261,24 @@
                 default:
                     iframe.src = 'https://vimalraj45.github.io/v/easan_home'; // Default to home
             }
+            highlightFooterLink(page);
             // Save the current page to localStorage
             localStorage.setItem('currentPage', page);
+
+
+            // Set all footer links to low opacity
+    document.querySelectorAll('.footer-link').forEach(link => {
+        link.style.opacity = "0.5";
+    });
+
+    // Highlight the clicked one (by matching inner iframe src)
+    const target = [...document.querySelectorAll('.footer-link')].find(link => {
+        return link.getAttribute("onclick").includes(page);
+    });
+
+    if (target) {
+        target.style.opacity = "1";
+    }
 
             // Show/hide chatbot icon
     if (page === 'chatbot' || page === 'shop') {
