@@ -1,7 +1,103 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easan Grocery SPA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- AOS CSS (inside <head>) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Manrope&family=Plus+Jakarta+Sans&family=Outfit&family=Space+Grotesk&family=Playfair+Display&family=DM+Serif+Display&family=Sora&family=Syne&display=swap" rel="stylesheet">
+    <style>
+        /* Full-screen iframe */
+        #main-content {
+            position: fixed;
+            top: 60px; /* Height of the navbar */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+        #main-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Sticky Navbar */
+        .custom-navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1020; /* Lower than offcanvas */
+        }
+        /* Fixed Bottom Footer */
+        footer.fixed-bottom-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f6f7f7;
+            border-top: 1px solid #ddd;
+            z-index: 1020; /* Lower than offcanvas */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0;
+        }
+        /* Logo Animation */
+        .logo-container {
+            position: relative;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 250px;
+            height: auto;
+            object-fit: contain;
+            position: absolute;
+            top: -100px;
+            opacity: 0;
+            transition: top 0.8s ease, opacity 0.8s ease;
+        }
+        /* Ensure offcanvas has the highest z-index */
+        .offcanvas {
+            z-index: 1050 !important;
+        }
+
+        .chat-icon-button {
+  position: fixed;
+  bottom: 90px;
+  right: 16px;
+  background-color: #000000;
+  color: white;
+  padding: 6px 8px; /* Rectangular shape */
+  border-radius: 6px; /* Just a little curve, or set to 0 for sharp edges */
+  font-size: 15px;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chat-icon-button:hover {
+  background-color: #ffffff;
+  color: black;
+}
+
+
+    </style>
+      <script>
     // Disable right-click context menu
     document.addEventListener("contextmenu", function (event) {
       event.preventDefault();
@@ -38,114 +134,289 @@
       }
     });
   </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
-<body>
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">Login</h1>
+<body style="font-family: 'Outfit', sans-serif;">
+    <!-- AOS JS (before </body>) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 
-    <!-- Google Sign-In -->
-    <div class="text-center mb-3">
-      <div id="g_id_onload"
-          data-client_id="219533956445-5ngdi5t36u33fugnognh1ti2aim7e2sa.apps.googleusercontent.com"
-          data-context="signin"
-          data-ux_mode="popup"
-          data-callback="handleCredentialResponse"
-          data-auto_select="false">
-      </div>
-      <div class="g_id_signin" data-type="standard"></div>
-    </div>
-
-    <h4 class="text-center">Or</h4>
-
-    <form id="loginForm" class="row g-3">
-      <div class="col-12">
-        <div class="form-floating">
-          <input type="text" class="form-control" id="loginCredential" name="loginCredential" placeholder="Email" required>
-          <label for="loginCredential">Email</label>
+    <!-- Navigation Bar -->
+    <nav class="d-flex align-items-center justify-content-between ps-2 pe-2 pt-1 pb-1 custom-navbar sticky-top bg-white border bordr-dark" style="border-color: #161212;">
+        <a class="nav-link" href="#" onclick="loadPage('orders')">
+            <i class="bi bi-person-check-fill fs-3" style="font-weight: bold; font-size: 1.5rem;"></i>
+        </a>
+        <div class="logo-container text-center">
+            <!-- First Image -->
+            <img src="https://i.ibb.co/TMZ6rJRD/1743744365518.jpg" alt="Easan Supermarket Logo 1" 
+                 id="logo-img1"
+                 style="width: 250px; height: 42px; object-fit: contain; 
+                        position: absolute; top: -100px; opacity: 0; 
+                        transition: top 0.8s ease, opacity 0.8s ease; margin-top: 5px;">
+            <!-- Second Image (Same Position) -->
+            <img src="https://i.ibb.co/GfDVQfBh/easan-ta.jpg" alt="Easan Supermarket Logo 2" 
+                 id="logo-img2"
+                 style="width: 250px; height: 54px; object-fit: contain; 
+                        position: absolute; top: -100px; opacity: 0; 
+                        transition: top 0.8s ease, opacity 0.8s ease;">
         </div>
-      </div>
-      <div class="col-12 text-center">
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-      </div>
-    </form>
-
-    <!-- Register Now Button -->
-    <div class="text-center mt-3">
-      <a href="https://vimalraj45.github.io/v/easan_reg" class="btn btn-primary w-100" style="background-color: #1877F2; border: none;">
-        <i class="bi bi-person-plus"></i> Register Now
-      </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-3 fe-3"></i>
+        </button>
+    </nav>
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="width: 350px;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title mt-4" id="offcanvasNavbarLabel">EASAN SUPERMARKET</h5>
+            <button type="button" class="btn-close mt-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" onclick="loadPage('home')">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('shop')">Shop Now</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('contact')">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('orders')">My Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="loadPage('Admin')" >Admin Login</a>
+                </li>
+                <li class="nav-item" id="logout-btn">
+                    <button onclick="handleLogout()" 
+                            style="float:right; margin:10px; padding:8px 16px; background-color:crimson; color:white; border:none; border-radius:5px;" 
+                            class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
-
-    <div id="userDataContainer" class="mt-4 d-none">
-      <h3>User Details</h3>
-      <p><strong>ID:</strong> <span id="userId"></span></p>
-      <p><strong>Name:</strong> <span id="userName"></span></p>
-      <p><strong>Email:</strong> <span id="userEmail"></span></p>
-      <p><strong>Contact:</strong> <span id="userContact"></span></p>
-      <p><strong>Address:</strong> <span id="userAddress"></span></p>
+    <!-- Main Content Area -->
+    <div id="main-content">
+        <iframe id="content-frame" src="https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_home.html"></iframe>
     </div>
-  </div>
-
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function handleCredentialResponse(response) {
-      const idToken = response.credential;
-      const user = JSON.parse(atob(idToken.split('.')[1])); // Decode JWT
-
-      const googleUser = {
-        name: user.name,
-        email: user.email,
-        picture: user.picture
-      };
-      localStorage.setItem("user_data", JSON.stringify(googleUser));
-      fetchUserDetails(user.email);
-    }
-    
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("loginForm");
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const email = document.getElementById("loginCredential").value;
-        fetchUserDetails(email);
+    <!-- Fixed Bottom Footer -->
+    <!-- Footer -->
+  <footer class="fixed-bottom-footer">
+    <a href="#" class="nav-link text-center footer-link active" onclick="loadPage('home')" data-page="home">
+      <i class="bi bi-house-door-fill"></i><br>Home
+    </a>
+    <a href="#" class="nav-link text-center footer-link" onclick="loadPage('shop')" data-page="shop">
+      <i class="bi bi-bag-check-fill"></i><br>Shop Now
+    </a>
+    <a href="#" class="nav-link text-center footer-link" onclick="loadPage('account')" data-page="account">
+      <i class="bi bi-person-circle"></i><br>Account
+    </a>
+    <a href="#" class="nav-link text-center footer-link" onclick="loadPage('help')" data-page="help">
+      <i class="bi bi-question-circle-fill"></i><br>Help
+    </a>
+  </footer>
+    <script>
+        // Highlight the active footer link
+    function highlightFooterLink(page) {
+      document.querySelectorAll('.footer-link').forEach(link => {
+        link.classList.remove('active');
       });
-    });
 
-    async function fetchUserDetails(email) {
-      try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyoZMyojrRlPOrElnyejwJjaUPqHl-KfSDIkcmHP8uypbo211lAqh0Jt2LRK45rNdUw/exec?action=login", {
-          method: "POST",
-          body: new URLSearchParams({ loginCredential: email }),
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          document.getElementById("userId").textContent = userData.id;
-          document.getElementById("userName").textContent = userData.name;
-          document.getElementById("userEmail").textContent = userData.email;
-          document.getElementById("userContact").textContent = userData.contact;
-          document.getElementById("userAddress").textContent = userData.address;
-          document.getElementById("userDataContainer").classList.remove("d-none");
-          localStorage.setItem('customer_id', userData.id);
-          localStorage.setItem('customer_name', userData.name);
-          localStorage.setItem('customer_no', userData.contact);
-          localStorage.setItem('customer_mail', userData.email);
-          window.location.replace("https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_shop.html");
-        } else {
-          alert("User not found!");
-        }
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-        alert("User not found! reg");
+      const targetLink = document.querySelector(`.footer-link[data-page="${page}"]`);
+      if (targetLink) {
+        targetLink.classList.add('active');
       }
     }
-  </script>
+        // Function to dynamically load content into the iframe
+        function loadPage(page) {
+            const iframe = document.getElementById('content-frame');
+            switch (page) {
+                case 'home':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_home.html';
+                    break;
+                case 'shop':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_shop.html';
+                    break;
+                case 'contact':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_help.html';
+                    break;
+                case 'orders':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_csts.html';
+                    break;
+                case 'account':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_profile.html';
+                    break;
+                case 'chatbot':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/chatbot';
+                    break;    
+                case 'help':
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_help.html';
+                    break;
+                case 'Admin':
+                    iframe.src='https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_admin.html'; 
+                    break;
+                default:
+                    iframe.src = 'https://6800f8757f14fc000801ff66--bucolic-travesseiro-ae9907.netlify.app/easan_home.html'; // Default to home
+            }
+            highlightFooterLink(page);
+            // Save the current page to localStorage
+            localStorage.setItem('currentPage', page);
+
+
+            // Set all footer links to low opacity
+    document.querySelectorAll('.footer-link').forEach(link => {
+        link.style.opacity = "0.5";
+    });
+
+    // Highlight the clicked one (by matching inner iframe src)
+    const target = [...document.querySelectorAll('.footer-link')].find(link => {
+        return link.getAttribute("onclick").includes(page);
+    });
+
+    if (target) {
+        target.style.opacity = "1";
+    }
+
+            // Show/hide chatbot icon
+    if (page === 'chatbot' || page === 'shop') {
+        chatIcon.style.display = 'none';
+    } else {
+        chatIcon.style.display = 'flex';
+    }
+            
+            // Enable or disable refresh prevention
+            toggleRefreshPrevention(page);
+            // Toggle logout button visibility
+            toggleLogoutButton();
+        }
+
+        // Load Home Page by Default or restore the last visited page
+        window.onload = () => {
+            const savedPage = localStorage.getItem('currentPage') || 'home'; // Get the saved page or default to 'home'
+            loadPage(savedPage); // Load the saved page
+            animateImages();
+            setupOffcanvasAutoHide();
+            checkOrderPlacementState();
+        };
+
+        // Toggle Refresh Prevention
+        function toggleRefreshPrevention(page) {
+            if (page === 'shop') {
+                // Enable refresh prevention for the "Shop" page
+                window.onbeforeunload = function (event) {
+                    event.preventDefault();
+                    event.returnValue = ''; // Required for some browsers
+                    return 'Refreshing will reset your shopping cart. Are You Sure.';
+                };
+            } else {
+                // Disable refresh prevention for other pages
+                window.onbeforeunload = null;
+            }
+        }
+
+        // Handle Logout
+        function handleLogout() {
+            localStorage.clear(); // Clear all data in localStorage
+            alert('Logged out successfully!'); // Notify the user
+            window.location.reload(); // Refresh the page
+        }
+
+        // Logo Animation
+        function animateImages() {
+            let img1 = document.getElementById("logo-img1");
+            let img2 = document.getElementById("logo-img2");
+
+            function moveImage(img, delay) {
+                setTimeout(() => {
+                    img.style.opacity = "1";
+                    img.style.top = "0px"; // Slide down
+                    setTimeout(() => {
+                        img.style.top = "-100px";
+                        img.style.opacity = "0"; // Slide up
+                    }, 3000); // Stay for 3 seconds
+                }, delay);
+            }
+
+            function startAnimation() {
+                moveImage(img1, 0); // First image animates first
+                moveImage(img2, 3000); // Second image animates after 3 seconds
+                setTimeout(startAnimation, 6000); // Repeat cycle every 6 seconds
+            }
+
+            startAnimation();
+        }
+
+        // Automatically hide offcanvas when a link is clicked
+        function setupOffcanvasAutoHide() {
+            const offcanvas = document.getElementById('offcanvasNavbar');
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas);
+
+            // Select all links inside the offcanvas
+            const links = offcanvas.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+                    if (bsOffcanvas) {
+                        bsOffcanvas.hide(); // Hide the offcanvas
+                    }
+                });
+            });
+        }
+
+        // Toggle Logout Button Visibility
+        function toggleLogoutButton() {
+            const logoutButton = document.getElementById('logout-btn');
+            if (localStorage.getItem('customer_id')) {
+                logoutButton.style.display = 'block'; // Show the logout button
+            } else {
+                logoutButton.style.display = 'none'; // Hide the logout button
+            }
+        }
+          // Function to disable interactive elements
+          function disableInteractiveElements() {
+            document.querySelectorAll('button, a').forEach(element => {
+                element.classList.add('disabled');
+            });
+        }
+
+        // Function to re-enable interactive elements
+        function enableInteractiveElements() {
+            document.querySelectorAll('button, a').forEach(element => {
+                element.classList.remove('disabled');
+            });
+        }
+
+        // Listen for changes in sessionStorage
+        window.addEventListener('storage', () => {
+            checkOrderPlacementState();
+        });
+
+         // Function to check the order placement state
+         function checkOrderPlacementState() {
+            const placingOrder = sessionStorage.getItem('placing_order');
+
+            if (placingOrder === 'true') {
+                // Disable all interactive elements
+                disableInteractiveElements();
+            } else {
+                // Re-enable all interactive elements
+                enableInteractiveElements();
+            }
+        }
+
+
+
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <a href="#chat-container" class="chat-icon-button" onclick="loadPage('chatbot')" id="chatIcon" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+      <i class="bi bi-chat-dots-fill"></i> <small>Chat With US</small>
+    </a>
+    
+
 </body>
 </html>
