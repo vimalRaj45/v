@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Manager</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 8px; text-align: left; }
+    input, select { padding: 5px; margin: 5px 0; width: 100%; }
+    button { padding: 10px 15px; margin-top: 10px; cursor: pointer; }
+    .form-container { max-width: 500px; }
+  </style>
+</head>
+<body>
+
+  <h1>Attendance Manager</h1>
+
+  <div class="form-container">
+    <h2>Add Attendance Request</h2>
+    <form id="attendanceForm">
+      <input type="text" name="Register Number" placeholder="Register Number" required>
+      <input type="text" name="Name" placeholder="Name" required>
+      <input type="text" name="Department" placeholder="Department" required>
+      <select name="Session">
+        <option value="FN">FN</option>
+        <option value="AN">AN</option>
+      </select>
+      <input type="number" name="Year" placeholder="Year" required>
+      <input type="date" name="From Date" required>
+      <input type="date" name="To Date" required>
+      <input type="number" name="Attendance Percentage" placeholder="Attendance %" required step="0.1">
+      <input type="number" name="Days Requested" placeholder="Days Requested" required>
+      <select name="Status">
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+      <input type="text" name="Reason" placeholder="Reason">
+      <input type="number" name="Approval Days" placeholder="Approval Days">
+      <input type="email" name="CC Mail" placeholder="CC Mail">
+      <input type="email" name="HOD Mail" placeholder="HOD Mail">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <h2>Attendance Records</h2>
+  <button onclick="fetchRecords()">Refresh Records</button>
+  <table id="attendanceTable">
+    <thead>
+      <tr id="tableHeader"></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyzB1H93yXAleT71yM2eLvPS3TxKO72ImiecWzByJTZd41Ro9eJDYb7FIcAOFN_6DNp/exec"; // replace with your Apps Script URL
+
+    // Fetch all attendance records
+    async function fetchRecords() {
+      try {
+        const res = await fetch(WEB_APP_URL);
+        const data = await res.json();
+        if(data.status !== "success") throw new Error(data.message || "Error fetching data");
+
+        const records = data.data;
+        const tableHeader = document.getElementById("tableHeader");
+        const tableBody = document.getElementById("tableBody");
+
+        tableHeader.innerHTML = "";
+        tableBody.innerHTML = "";
+
+        if(records.length === 0) return;
+
+        // Headers
+        Object.keys(records[0]).forEach(header => {
+          const th = document.createElement("th");
+          th.textContent = header;
+          tableHeader.appendChild(th);
+        });
+
+        // Rows
+        records.forEach(row => {
+          const tr = document.createElement("tr");
+          Object.values(row).forEach(val => {
+            const td = document.createElement("td");
+            td.textContent = val;
+            tr.appendChild(td);
+          });
+          tableBody.appendChild(tr);
+        });
+
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    }
+
+    // Add new attendance record
+    document.getElementById("attendanceForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      const formData = new FormData(this);
+      const obj = {};
+      formData.forEach((value,key) => obj[key] = value);
+
+      // Optional: convert date inputs to dd-mm-yyyy format
+      obj["From Date"] = new Date(obj["From Date"]).toLocaleDateString('en-GB');
+      obj["To Date"] = new Date(obj["To Date"]).toLocaleDateString('en-GB');
+
+      try {
+        const res = await fetch(WEB_APP_URL, {
+          method: "POST",
+          body: JSON.stringify(obj)
+        });
+        const data = await res.json();
+        if(data.status !== "success") throw new Error(data.message || "Error adding record");
+        alert("Record added successfully!");
+        this.reset();
+        fetchRecords();
+      } catch(err) {
+        alert("Error: " + err.message);
+      }
+    });
+
+    // Initial fetch
+    fetchRecords();
+  </script>
+
+</body>
+</html>
