@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1125,8 +1127,7 @@
         <div class="row">
           <div class="col-md-4">
             <div class="team-member">
-              <img src="https://dummyimage.com/150x150/F7F2E7/2E2E2E&text=Photo
-" alt="Alex Johnson" class="team-photo">
+              <img src="https://via.placeholder.com/150/F7F2E7/2E2E2E?text=Photo" alt="Alex Johnson" class="team-photo">
               <h3 class="team-name">Alex Johnson</h3>
               <p class="team-role">CEO & Founder</p>
               <p>Former education technology director with 10+ years experience in digital credentialing.</p>
@@ -1134,8 +1135,7 @@
           </div>
           <div class="col-md-4">
             <div class="team-member">
-              <img src="https://dummyimage.com/150x150/F7F2E7/2E2E2E&text=Photo
-" alt="Maria Garcia" class="team-photo">
+              <img src="https://via.placeholder.com/150/F7F2E7/2E2E2E?text=Photo" alt="Maria Garcia" class="team-photo">
               <h3 class="team-name">Maria Garcia</h3>
               <p class="team-role">Head of Product</p>
               <p>Product design expert focused on creating intuitive user experiences for complex workflows.</p>
@@ -1143,8 +1143,7 @@
           </div>
           <div class="col-md-4">
             <div class="team-member">
-              <img src="https://dummyimage.com/150x150/F7F2E7/2E2E2E&text=Photo
-" alt="David Kim" class="team-photo">
+              <img src="https://via.placeholder.com/150/F7F2E7/2E2E2E?text=Photo" alt="David Kim" class="team-photo">
               <h3 class="team-name">David Kim</h3>
               <p class="team-role">Lead Developer</p>
               <p>Full-stack developer specializing in PDF generation and automation technologies.</p>
@@ -1626,8 +1625,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
+/* ============================
+   Certificate Generator Client
+   Works with: https://saas-8nu8.onrender.com
+   All original function names preserved
+   ============================ */
 
-   
+const BACKEND = "https://saas-8nu8.onrender.com";
+
     // Section Navigation
     function showSection(sectionId) {
       // Hide all sections
@@ -1660,8 +1665,6 @@
 
 
 
-    
-
     // Certificate Generator JavaScript
     let participants = [];
     let fields = [];
@@ -1673,14 +1676,15 @@
     const sizeValue = document.getElementById('sizeValue');
     const boldToggle = document.getElementById('boldToggle');
     const fieldControls = document.getElementById('fieldControls');
-    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    const loadingModalEl = document.getElementById('loadingModal');
+    const loadingModal = loadingModalEl ? new bootstrap.Modal(loadingModalEl) : { show: ()=>{}, hide: ()=>{} };
     const loadingText = document.getElementById('loadingText');
     const noColumnsEl = document.getElementById('noColumns');
     const templateContainer = document.getElementById('templateContainer');
     const selectedFieldName = document.getElementById('selectedFieldName');
 
     function showLoading(text = "Processing...") {
-      loadingText.textContent = text;
+      if (loadingText) loadingText.textContent = text;
       loadingModal.show();
     }
 
@@ -1694,11 +1698,11 @@
       const formData = new FormData();
       formData.append("csv", file);
       try {
-        const res = await fetch("https://saas-8nu8.onrender.com/upload-csv", { method: "POST", body: formData });
+        const res = await fetch(`${BACKEND}/upload-csv`, { method: "POST", body: formData });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
-        participants = data.participants;
-        updateColumnsUI(data.columns);
+        participants = data.participants || [];
+        updateColumnsUI(data.columns || []);
         checkReady();
       } catch (err) {
         alert("CSV upload failed: " + err.message);
@@ -1707,54 +1711,9 @@
       }
     });
 
-    const evtSource = new EventSource("https://saas-8nu8.onrender.com/progress");
-
-evtSource.onmessage = function (event) {
-  const data = JSON.parse(event.data);
-  console.log("Progress Update:", data);
-
-  if (data.stage === "connected") {
-    document.getElementById("status").innerHTML = "Connected to progress stream...";
-  }
-
- if (data.percent !== undefined) {
-  const progressBar = document.getElementById("progressBar");
-  if (progressBar) {
-    progressBar.style.width = data.percent + "%";
-    progressBar.innerText = data.percent + "%";
-  }
-
-  const countEl = document.getElementById("count");
-  if (countEl) {
-    countEl.innerHTML = `${data.current}/${data.total}`;
-  }
-}
-
-
-  if (data.name) {
-    document.getElementById("currentName").innerHTML = data.name;
-  }
-
-  if (data.estTimeLeft) {
-    document.getElementById("eta").innerHTML = data.estTimeLeft;
-  }
-
-  if (data.stage === "finalizing") {
-    document.getElementById("status").innerHTML = "Finalizing ZIP...";
-  }
-
-  if (data.stage === "completed") {
-    document.getElementById("status").innerHTML = "Completed!";
-    localStorage.removeItem("GEN_KEY");
-    evtSource.close();
-  }
-
-  if (data.stage === "error") {
-    document.getElementById("status").innerHTML = "Error occurred!";
-    evtSource.close();
-  }
-};
-
+/* ---------- Removed the unconditional EventSource created at top —
+   Progress streams are created per-generation (with key) so we don't
+   open invalid connections without a key. ---------- */
 
     document.getElementById("templateFile").addEventListener("change", async (e) => {
       const file = e.target.files[0];
@@ -1763,13 +1722,16 @@ evtSource.onmessage = function (event) {
       const formData = new FormData();
       formData.append("template", file);
       try {
-        const res = await fetch("https://saas-8nu8.onrender.com/upload-template", { method: "POST", body: formData });
+        const res = await fetch(`${BACKEND}/upload-template`, { method: "POST", body: formData });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
         templateUrl = data.templateUrl;
-        document.getElementById("template").style.backgroundImage = `url(${templateUrl})`;
-        templateContainer.classList.add("has-background");
-        document.getElementById("template").innerHTML = "";
+        const templateEl = document.getElementById("template");
+        if (templateEl) {
+          templateEl.style.backgroundImage = `url(${templateUrl})`;
+          templateContainer && templateContainer.classList.add("has-background");
+          templateEl.innerHTML = "";
+        }
         checkReady();
       } catch (err) {
         alert("Template upload failed: " + err.message);
@@ -1780,14 +1742,15 @@ evtSource.onmessage = function (event) {
 
     function updateColumnsUI(columns) {
       const div = document.getElementById("columns");
-      noColumnsEl.style.display = columns.length ? "none" : "block";
+      if (noColumnsEl) noColumnsEl.style.display = columns && columns.length ? "none" : "block";
+      if (!div) return;
       div.innerHTML = "";
-      if (columns.length === 0) return;
+      if (!columns || columns.length === 0) return;
 
       columns.forEach(col => {
         const btn = document.createElement("button");
         btn.innerHTML = `<i class="bi bi-plus-circle me-1"></i> ${col}`;
-        btn.className = "btn btn-sm btn-outline-secondary rounded-1";
+        btn.className = "btn btn-sm btn-outline-secondary rounded-1 m-1";
         btn.title = `Add field: ${col}`;
         btn.onclick = () => addField(col);
         div.appendChild(btn);
@@ -1812,6 +1775,9 @@ evtSource.onmessage = function (event) {
       field.style.fontSize = "16px";
       field.style.color = "#0A0A0A";
       field.style.fontWeight = "normal";
+      field.style.position = "absolute";
+      field.style.cursor = "move";
+      field.style.userSelect = "none";
 
       field.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -1820,7 +1786,7 @@ evtSource.onmessage = function (event) {
         field.classList.add("selected");
         updateFieldControls();
         updateDebug();
-        selectedFieldName.textContent = name;
+        selectedFieldName && (selectedFieldName.textContent = name);
       });
 
       field.draggable = true;
@@ -1832,6 +1798,7 @@ evtSource.onmessage = function (event) {
         field.style.opacity = "1";
       });
 
+      // touch dragging for mobile
       let touchStartX, touchStartY, elementStartX, elementStartY;
       field.addEventListener("touchstart", (e) => {
         const touch = e.touches[0];
@@ -1846,7 +1813,7 @@ evtSource.onmessage = function (event) {
           field.classList.add("selected");
           updateFieldControls();
           updateDebug();
-          selectedFieldName.textContent = name;
+          selectedFieldName && (selectedFieldName.textContent = name);
         }
         e.preventDefault();
       });
@@ -1871,7 +1838,9 @@ evtSource.onmessage = function (event) {
         field.style.transition = "";
       });
 
-      document.getElementById("template").appendChild(field);
+      const templateEl = document.getElementById("template");
+      templateEl && templateEl.appendChild(field);
+
       fields.push({
         field: name,
         x: 50,
@@ -1891,7 +1860,7 @@ evtSource.onmessage = function (event) {
           selectedField = null;
           hideFieldControls();
           updateDebug();
-          selectedFieldName.textContent = "None";
+          selectedFieldName && (selectedFieldName.textContent = "None");
         }
       }
     });
@@ -1908,55 +1877,62 @@ evtSource.onmessage = function (event) {
       if (fieldEl) {
         fieldEl.style.left = x + 'px';
         fieldEl.style.top = y + 'px';
-        fieldEl.querySelector('.coords').textContent = `(${Math.round(x)}, ${Math.round(y)})`;
+        const coords = fieldEl.querySelector('.coords');
+        if (coords) coords.textContent = `(${Math.round(x)}, ${Math.round(y)})`;
         const f = fields.find(f => f.field === fieldName);
         if (f) { f.x = x; f.y = y; }
         if (fieldEl === selectedField) updateDebug();
       }
     });
 
-    colorInput.addEventListener('input', () => {
-      if (!selectedField) return;
-      const color = colorInput.value;
-      selectedField.style.color = color;
-      const f = fields.find(f => f.element === selectedField);
-      if (f) f.color = color;
-    });
+    if (colorInput) {
+      colorInput.addEventListener('input', () => {
+        if (!selectedField) return;
+        const color = colorInput.value;
+        selectedField.style.color = color;
+        const f = fields.find(f => f.element === selectedField);
+        if (f) f.color = color;
+      });
+    }
 
-    sizeSlider.addEventListener('input', () => {
-      if (!selectedField) return;
-      const size = sizeSlider.value;
-      sizeValue.textContent = size + 'px';
-      selectedField.style.fontSize = size + 'px';
-      const f = fields.find(f => f.element === selectedField);
-      if (f) f.size = parseInt(size);
-    });
+    if (sizeSlider) {
+      sizeSlider.addEventListener('input', () => {
+        if (!selectedField) return;
+        const size = sizeSlider.value;
+        sizeValue && (sizeValue.textContent = size + 'px');
+        selectedField.style.fontSize = size + 'px';
+        const f = fields.find(f => f.element === selectedField);
+        if (f) f.size = parseInt(size);
+      });
+    }
 
-    boldToggle.addEventListener('change', () => {
-      if (!selectedField) return;
-      const isBold = boldToggle.checked;
-      selectedField.style.fontWeight = isBold ? 'bold' : 'normal';
-      const f = fields.find(f => f.element === selectedField);
-      if (f) f.bold = isBold;
-    });
+    if (boldToggle) {
+      boldToggle.addEventListener('change', () => {
+        if (!selectedField) return;
+        const isBold = boldToggle.checked;
+        selectedField.style.fontWeight = isBold ? 'bold' : 'normal';
+        const f = fields.find(f => f.element === selectedField);
+        if (f) f.bold = isBold;
+      });
+    }
 
     function updateFieldControls() {
       if (!selectedField) {
         hideFieldControls();
         return;
       }
-      fieldControls.style.display = 'block';
+      fieldControls && (fieldControls.style.display = 'block');
       const f = fields.find(f => f.element === selectedField);
       if (f) {
-        colorInput.value = f.color;
-        sizeSlider.value = f.size;
-        sizeValue.textContent = f.size + 'px';
-        boldToggle.checked = f.bold;
+        colorInput && (colorInput.value = f.color || "#000000");
+        sizeSlider && (sizeSlider.value = f.size || 16);
+        sizeValue && (sizeValue.textContent = (f.size || 16) + 'px');
+        boldToggle && (boldToggle.checked = !!f.bold);
       }
     }
 
     function hideFieldControls() {
-      fieldControls.style.display = 'none';
+      if (fieldControls) fieldControls.style.display = 'none';
     }
 
     document.addEventListener("keydown", (e) => {
@@ -1980,7 +1956,8 @@ evtSource.onmessage = function (event) {
 
       selectedField.style.left = x + 'px';
       selectedField.style.top = y + 'px';
-      selectedField.querySelector('.coords').textContent = `(${x}, ${y})`;
+      const coords = selectedField.querySelector('.coords');
+      if (coords) coords.textContent = `(${x}, ${y})`;
       const f = fields.find(f => f.element === selectedField);
       if (f) { f.x = x; f.y = y; }
       updateDebug();
@@ -1989,18 +1966,22 @@ evtSource.onmessage = function (event) {
 
     function createDirectionPad() {
       const pad = document.getElementById('directionPad');
+      if (!pad) return;
       pad.querySelector('.up').onclick = () => simulateKey('ArrowUp');
       pad.querySelector('.down').onclick = () => simulateKey('ArrowDown');
       pad.querySelector('.left').onclick = () => simulateKey('ArrowLeft');
       pad.querySelector('.right').onclick = () => simulateKey('ArrowRight');
       pad.querySelector('.del').onclick = deleteSelectedField;
       
-      // Mobile controls
-      document.querySelector('.mobile-controls .up').onclick = () => simulateKey('ArrowUp');
-      document.querySelector('.mobile-controls .down').onclick = () => simulateKey('ArrowDown');
-      document.querySelector('.mobile-controls .left').onclick = () => simulateKey('ArrowLeft');
-      document.querySelector('.mobile-controls .right').onclick = () => simulateKey('ArrowRight');
-      document.querySelector('.mobile-controls .del').onclick = deleteSelectedField;
+      // Mobile controls (if present)
+      const mobileControls = document.querySelector('.mobile-controls');
+      if (mobileControls) {
+        mobileControls.querySelector('.up').onclick = () => simulateKey('ArrowUp');
+        mobileControls.querySelector('.down').onclick = () => simulateKey('ArrowDown');
+        mobileControls.querySelector('.left').onclick = () => simulateKey('ArrowLeft');
+        mobileControls.querySelector('.right').onclick = () => simulateKey('ArrowRight');
+        mobileControls.querySelector('.del').onclick = deleteSelectedField;
+      }
     }
 
     function simulateKey(key) {
@@ -2017,19 +1998,24 @@ evtSource.onmessage = function (event) {
       selectedField = null;
       hideFieldControls();
       checkReady();
-      document.getElementById("debugInfo").innerHTML = `
-        <div class="d-flex align-items-center">
-          <i class="bi bi-check-circle me-2" style="color: var(--dark-teal);"></i>
-          <span>Field "${fieldName}" deleted</span>
-        </div>
-      `;
-      selectedFieldName.textContent = "None";
+      const debugEl = document.getElementById("debugInfo");
+      if (debugEl) {
+        debugEl.innerHTML = `
+          <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle me-2" style="color: var(--dark-teal);"></i>
+            <span>Field "${fieldName}" deleted</span>
+          </div>
+        `;
+      }
+      selectedFieldName && (selectedFieldName.textContent = "None");
       setTimeout(() => updateDebug(), 1000);
     }
 
     function updateDebug() {
+      const debugEl = document.getElementById("debugInfo");
+      if (!debugEl) return;
       if (!selectedField) {
-        document.getElementById("debugInfo").innerHTML = `
+        debugEl.innerHTML = `
           <div class="d-flex align-items-center">
             <i class="bi bi-info-circle me-2" style="color: var(--royal-navy);"></i>
             <span>No field selected. Click on a field to select and style it.</span>
@@ -2039,11 +2025,11 @@ evtSource.onmessage = function (event) {
       }
       const f = fields.find(f => f.element === selectedField);
       if (f) {
-        document.getElementById("debugInfo").innerHTML = 
+        debugEl.innerHTML = 
           `<div class="d-flex align-items-center">
             <i class="bi bi-pencil me-2" style="color: var(--gold);"></i>
             <span>
-              Selected: <strong>${f.field}</strong> | Position: (${f.x}, ${f.y}) | Size: ${f.size}px | 
+              Selected: <strong>${f.field}</strong> | Position: (${Math.round(f.x)}, ${Math.round(f.y)}) | Size: ${f.size}px | 
               Color: <span style="color:${f.color}; font-weight:bold;">●</span> | Bold: ${f.bold ? 'Yes' : 'No'}
             </span>
           </div>`;
@@ -2052,8 +2038,10 @@ evtSource.onmessage = function (event) {
 
     function checkReady() {
       const isReady = participants.length > 0 && templateUrl && fields.length > 0;
-      document.getElementById("previewBtn").disabled = !isReady;
-      document.getElementById("generateBtn").disabled = !isReady;
+      const previewBtn = document.getElementById("previewBtn");
+      const genBtn = document.getElementById("generateBtn");
+      if (previewBtn) previewBtn.disabled = !isReady;
+      if (genBtn) genBtn.disabled = !isReady;
     }
 
     document.getElementById("previewBtn").addEventListener("click", async () => {
@@ -2066,19 +2054,22 @@ evtSource.onmessage = function (event) {
           templateUrl,
           fields: fields.map(f => ({ 
             field: f.field, 
-            x: f.x, 
-            y: f.y,
+            x: Math.round(f.x || 0), 
+            y: Math.round(f.y || 0),
             size: f.size,
             color: f.color,
             bold: f.bold
           }))
         };
-        const res = await fetch("https://saas-8nu8.onrender.com/preview-pdf", {
+        const res = await fetch(`${BACKEND}/preview-pdf`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error("Preview failed");
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error(txt || "Preview failed");
+        }
         const blob = await res.blob();
         const url = window.URL.createObjectURL(blob);
         window.open(url, '_blank');
@@ -2145,21 +2136,22 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
   }
 
   try {
+    showLoading("Starting generation...");
     // Send generate request (returns JSON with key)
     const payload = {
       participants,
       templateUrl,
       fields: fields.map(f => ({
         field: f.field,
-        x: f.x,
-        y: f.y,
+        x: Math.round(f.x || 0),
+        y: Math.round(f.y || 0),
         size: f.size,
         color: f.color,
         bold: f.bold
       }))
     };
 
-    const res = await fetch("https://saas-8nu8.onrender.com/generate", {
+    const res = await fetch(`${BACKEND}/generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -2172,28 +2164,50 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
 
     const result = await res.json();
     const genKey = result.key;
+    if (!genKey) throw new Error("No generation key received from server");
     localStorage.setItem("GEN_KEY", genKey);
     addToLog(`Generation key received: ${genKey}`);
 
     // Setup SSE for live progress
-    const eventSourceUrl = `/progress?key=${genKey}&_=${Date.now()}`;
+    const eventSourceUrl = `${BACKEND}/progress?key=${encodeURIComponent(genKey)}&_=${Date.now()}`;
     window.currentEventSource = new EventSource(eventSourceUrl);
 
     window.currentEventSource.onmessage = function(event) {
-      const data = JSON.parse(event.data);
+      // Some messages may be comments or empty — guard against this
+      if (!event.data) return;
+      let data;
+      try {
+        data = JSON.parse(event.data);
+      } catch (e) {
+        addToLog("Malformed event data: " + event.data);
+        return;
+      }
 
       // Update modal UI
-      if (data.stage) document.getElementById("swal-status").textContent = data.stage;
-      if (data.name) document.getElementById("swal-current-name").textContent = data.name;
+      if (data.stage) {
+        const st = document.getElementById("swal-status");
+        if (st) st.textContent = data.stage;
+      }
+      if (data.name) {
+        const cn = document.getElementById("swal-current-name");
+        if (cn) cn.textContent = data.name;
+      }
       if (data.percent !== undefined) {
-        document.getElementById("swal-progress-text").textContent = data.percent + "%";
-        document.getElementById("swal-bar").style.width = data.percent + "%";
+        const pctText = document.getElementById("swal-progress-text");
+        const bar = document.getElementById("swal-bar");
+        if (pctText) pctText.textContent = data.percent + "%";
+        if (bar) bar.style.width = (data.percent) + "%";
       }
       if (data.current !== undefined && data.total !== undefined) {
-        document.getElementById("swal-count").textContent = `${data.current}/${data.total}`;
+        const cnt = document.getElementById("swal-count");
+        if (cnt) cnt.textContent = `${data.current}/${data.total}`;
       }
-      if (data.eta) document.getElementById("swal-eta").textContent = data.eta;
+      if (data.eta) {
+        const etaEl = document.getElementById("swal-eta");
+        if (etaEl) etaEl.textContent = data.eta;
+      }
       if (data.log) addToLog(data.log);
+      if (data.ramUsedMB) addToLog(`RAM: ${data.ramUsedMB} MB`);
 
       // Handle download URL when completed
       if (data.stage === "completed") {
@@ -2209,7 +2223,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
           
           // Trigger download automatically
           setTimeout(() => {
-            const downloadUrl = data.downloadUrl;
+            const downloadUrl = data.downloadUrl.startsWith("http") ? data.downloadUrl : `${BACKEND}${data.downloadUrl}`;
             const a = document.createElement("a");
             a.href = downloadUrl;
             a.download = `certificates_${genKey}.zip`;
@@ -2217,17 +2231,21 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
             a.click();
             document.body.removeChild(a);
             
-           Swal.fire({
-  icon: "success",
-  title: "Completed!",
-  html: `
-    We are preparing your certificate ZIP file.<br>
-    Thank you for choosing us! 🤝
-  `,
-  confirmButtonColor: "#28a745"
-});
+            Swal.fire({
+              icon: "success",
+              title: "Completed!",
+              html: `
+                We are preparing your certificate ZIP file.<br>
+                Thank you for choosing us! 🤝
+              `,
+              confirmButtonColor: "#28a745"
+            });
 
+            // cleanup GEN_KEY after successful download
+            localStorage.removeItem("GEN_KEY");
           }, 1000);
+        } else {
+          addToLog("No downloadUrl provided by backend. You can use manualDownload()");
         }
       }
 
@@ -2272,7 +2290,11 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
   // Try recovery: check if backend finished the ZIP
   try {
     const key = localStorage.getItem("GEN_KEY");
-    const statusRes = await fetch(`https://saas-8nu8.onrender.com/status?key=${key}`);
+    if (!key) {
+      addToLog("No GEN_KEY in localStorage, aborting recovery.");
+      return;
+    }
+    const statusRes = await fetch(`${BACKEND}/status?key=${encodeURIComponent(key)}`);
     if (statusRes.ok) {
       const status = await statusRes.json();
 
@@ -2280,8 +2302,9 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
       if (status.completed && status.downloadUrl) {
         addToLog("🟢 Backend confirms ZIP is ready! Auto-downloading…");
 
+        const downloadUrl = status.downloadUrl.startsWith("http") ? status.downloadUrl : `${BACKEND}${status.downloadUrl}`;
         const a = document.createElement("a");
-        a.href = status.downloadUrl;
+        a.href = downloadUrl;
         a.download = `certificates_${key}.zip`;
         document.body.appendChild(a);
         a.click();
@@ -2296,7 +2319,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
           `,
           confirmButtonColor: "#28a745"
         });
-
+        localStorage.removeItem("GEN_KEY");
         return;
       }
     }
@@ -2305,32 +2328,34 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     addToLog("⏳ ZIP still processing… will auto-download when ready.");
 
     const recoveryInterval = setInterval(async () => {
-      const r = await fetch(`/status?key=${key}`);
-      if (!r.ok) return;
+      try {
+        const r = await fetch(`${BACKEND}/status?key=${encodeURIComponent(localStorage.getItem("GEN_KEY"))}`);
+        if (!r.ok) return;
+        const s = await r.json();
+        if (s.completed && s.downloadUrl) {
+          clearInterval(recoveryInterval);
+          addToLog("🟢 ZIP is now ready! Downloading…");
+          const downloadUrl = s.downloadUrl.startsWith("http") ? s.downloadUrl : `${BACKEND}${s.downloadUrl}`;
+          const a = document.createElement("a");
+          a.href = downloadUrl;
+          a.download = `certificates_${localStorage.getItem("GEN_KEY")}.zip`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
 
-      const s = await r.json();
-
-      if (s.completed && s.downloadUrl) {
-        clearInterval(recoveryInterval);
-
-        addToLog("🟢 ZIP is now ready! Downloading…");
-
-        const a = document.createElement("a");
-        a.href = s.downloadUrl;
-        a.download = `certificates_${key}.zip`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        Swal.fire({
-          icon: "success",
-          title: "Completed!",
-          html: `
-            Your certificate ZIP file is ready.<br>
-            Thank you for choosing us! 🤝
-          `,
-          confirmButtonColor: "#28a745"
-        });
+          Swal.fire({
+            icon: "success",
+            title: "Completed!",
+            html: `
+              Your certificate ZIP file is ready.<br>
+              Thank you for choosing us! 🤝
+            `,
+            confirmButtonColor: "#28a745"
+          });
+          localStorage.removeItem("GEN_KEY");
+        }
+      } catch (e) {
+        addToLog("❌ Recovery check error: " + e.message);
       }
     }, 3000); // check every 3 seconds
 
@@ -2349,14 +2374,21 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
         }
       }, 500);
       
-// Timeout after 4 hours
-setTimeout(() => {
-  clearInterval(checkInterval);
-  if (!window.generationCompleted) {
-    reject(new Error("Generation timeout after 4 hours"));
-  }
-}, 14400000); // 14,400,000 ms = 4 hours
+      // Timeout after 4 hours
+      const timeout = setTimeout(() => {
+        clearInterval(checkInterval);
+        if (!window.generationCompleted) {
+          reject(new Error("Generation timeout after 4 hours"));
+        } else {
+          resolve();
+        }
+      }, 14400000); // 14,400,000 ms = 4 hours
 
+      // clear timeout if resolved earlier
+      const originalResolve = resolve;
+      resolve = (...args) => { clearTimeout(timeout); originalResolve(...args); };
+      const originalReject = reject;
+      reject = (...args) => { clearTimeout(timeout); originalReject(...args); };
     });
 
   } catch (err) {
@@ -2376,8 +2408,11 @@ setTimeout(() => {
         ? "The generation is taking longer than expected. Please try again with fewer certificates." 
         : ""
     });
+  } finally {
+    hideLoading();
   }
 });
+
 
 // Stop button handler
 async function stopNow() {
@@ -2392,7 +2427,7 @@ async function stopNow() {
       return;
     }
 
-    const res = await fetch("https://saas-8nu8.onrender.com/stop-generate", {
+    const res = await fetch(`${BACKEND}/stop-generate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ key })
@@ -2424,6 +2459,9 @@ async function stopNow() {
         text: "Generation process has been stopped.",
         confirmButtonColor: "#dc3545"
       });
+
+      // remove saved key
+      localStorage.removeItem("GEN_KEY");
     } else {
       throw new Error(data.error || "Failed to stop generation");
     }
@@ -2432,7 +2470,7 @@ async function stopNow() {
     Swal.fire({
       icon: "error",
       title: "Error",
-      text: "Failed to stop generation: " + error.message
+      text: "Failed to stop generation: " + (error.message || error)
     });
   }
 }
@@ -2441,7 +2479,7 @@ async function stopNow() {
 function manualDownload() {
   const key = localStorage.getItem("GEN_KEY");
   if (key) {
-    const downloadUrl = `https://saas-8nu8.onrender.com/download?key=${key}`;
+    const downloadUrl = `${BACKEND}/download?key=${encodeURIComponent(key)}`;
     window.open(downloadUrl, '_blank');
   } else {
     Swal.fire({
@@ -2456,8 +2494,11 @@ function manualDownload() {
     window.addEventListener("load", () => {
       createDirectionPad();
       updateDebug();
+      // ensure preview/generate buttons reflect current state
+      checkReady();
     });
-  </script>
+</script>
+
  <!-- Professional Offer Badge -->
 <div id="offerBadge" style="
   position: fixed;
