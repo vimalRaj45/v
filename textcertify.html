@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CertifyPro - Professional Certificate Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Rich Color Scheme */
+    :root {
+      --gold: #D4AF37;
+      --rich-black: #0A0A0A;
+      --royal-navy: #0D1B2A;
+      --champagne-white: #F7F2E7;
+      --charcoal-grey: #2E2E2E;
+      --dark-teal: #093A3E;
+    }
+
+    body {
+      background-color: var(--champagne-white);
+      color: var(--rich-black);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.7;
+    }
+
+    /* Navigation */
+    .navbar {
+      background-color: var(--royal-navy);
+      padding: 1rem 0;
+      box-shadow: 0 2px 15px rgba(10, 10, 10, 0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--gold) !important;
+    }
+
+    .nav-link {
+      color: var(--champagne-white) !important;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--gold) !important;
+    }
+
+    .btn-primary {
+      background-color: var(--royal-navy);
+      border-color: var(--royal-navy);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 8px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--dark-teal);
+      border-color: var(--dark-teal);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(9, 58, 62, 0.2);
+    }
+
+    .btn-outline-light {
+      border-color: var(--gold);
+      color: var(--gold);
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 8px;
+    }
+
+    .btn-outline-light:hover {
+      background-color: var(--gold);
+      color: var(--royal-navy);
+      transform: translateY(-2px);
+    }
+
+    /* Section Styles */
+    .section {
+      display: none;
+      padding: 4rem 0;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* Home Section */
+    .hero-section {
+      background: linear-gradient(135deg, var(--royal-navy) 0%, var(--dark-teal) 100%);
+      color: var(--champagne-white);
+      padding: 6rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4af37' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--gold), var(--dark-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--royal-navy);
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--charcoal-grey);
+      margin-bottom: 3rem;
+      max-width: 700px;
+    }
+
+    .feature-card {
+      background-color: var(--champagne-white);
+      border-radius: 12px;
+      padding: 2rem;
+      height: 100%;
+      box-shadow: 0 5px 20px rgba(10, 10, 10, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(10, 10, 10, 0.12);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--royal-navy);
+    }
+
+    .feature-description {
+      color: var(--charcoal-grey);
+    }
+
+    .how-it-works-step {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--gold), var(--dark-teal));
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--royal-navy);
+    }
+
+    .testimonial-card {
+      background-color: var(--champagne-white);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 5px 20px rgba(10, 10, 10, 0.08);
+      border-left: 4px solid var(--gold);
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      color: var(--charcoal-grey);
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--royal-navy);
+    }
+
+    .testimonial-role {
+      color: var(--charcoal-grey);
+      font-size: 0.9rem;
+    }
+
+    .pricing-card {
+      background-color: var(--champagne-white);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 5px 20px rgba(10, 10, 10, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--gold);
+      transform: scale(1.05);
+    }
+
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: 20px;
+      right: -30px;
+      background: var(--gold);
+      color: var(--royal-navy);
+      padding: 5px 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transform: rotate(45deg);
+    }
+
+    .pricing-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--royal-navy);
+    }
+
+    .pricing-price {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-period {
+      font-size: 1rem;
+      color: var(--charcoal-grey);
+    }
+
+    .pricing-feature {
+      margin-bottom: 0.75rem;
+      color: var(--charcoal-grey);
+    }
+
+    .pricing-feature i {
+      color: var(--gold);
+      margin-right: 0.5rem;
+    }
+
+    .faq-item {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 1.5rem;
+    }
+
+    .faq-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--royal-navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-answer {
+      color: var(--charcoal-grey);
+    }
+
+    /* About Section */
+    .about-hero {
+      background: linear-gradient(135deg, var(--royal-navy) 0%, var(--dark-teal) 100%);
+      color: var(--champagne-white);
+      padding: 4rem 0;
+    }
+
+    .team-member {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .team-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1rem;
+      border: 3px solid var(--gold);
+    }
+
+    .team-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--royal-navy);
+    }
+
+    .team-role {
+      color: var(--charcoal-grey);
+      margin-bottom: 1rem;
+    }
+
+    .stats-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-label {
+      font-size: 1rem;
+      color: var(--charcoal-grey);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .values-card {
+      background-color: var(--champagne-white);
+      border-radius: 12px;
+      padding: 2rem;
+      height: 100%;
+      box-shadow: 0 5px 20px rgba(10, 10, 10, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      text-align: center;
+    }
+
+    .values-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(10, 10, 10, 0.12);
+    }
+
+    .values-icon {
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .values-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--royal-navy);
+    }
+
+    /* Certificate Generator Section */
+    .field {
+      position: absolute;
+      padding: 8px 12px;
+      border: 2px solid var(--gold);
+      background: rgba(247, 242, 231, 0.95);
+      cursor: move;
+      font-size: 16px;
+      color: var(--rich-black);
+      border-radius: 8px;
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(10, 10, 10, 0.1);
+      pointer-events: auto;
+      z-index: 10;
+      font-weight: normal;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      min-width: 120px;
+      text-align: center;
+    }
+
+    .field.selected {
+      border-color: var(--dark-teal);
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--royal-navy);
+      box-shadow: 0 4px 12px rgba(9, 58, 62, 0.25);
+      transform: scale(1.03);
+      z-index: 20;
+    }
+
+    .field .coords {
+      font-size: 10px;
+      color: var(--charcoal-grey);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    #directionPad {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 10px;
+      width: 150px;
+      z-index: 1000;
+      background: var(--champagne-white);
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(10, 10, 10, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .mobile-controls {
+      display: none;
+    }
+
+    .template-container {
+      min-height: 400px;
+      border: 2px dashed var(--charcoal-grey);
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: var(--champagne-white);
+      transition: all 0.3s ease;
+    }
+
+    .template-container.has-background {
+      border: 1px solid var(--charcoal-grey);
+      box-shadow: 0 4px 20px rgba(10, 10, 10, 0.08);
+    }
+
+    .step-card .card-header {
+      background: linear-gradient(135deg, var(--royal-navy), var(--dark-teal));
+      color: white;
+      border: none;
+    }
+
+    .step-card:nth-child(2) .card-header {
+      background: linear-gradient(135deg, var(--dark-teal), var(--royal-navy));
+    }
+
+    .step-card:nth-child(3) .card-header {
+      background: linear-gradient(135deg, var(--charcoal-grey), var(--royal-navy));
+    }
+
+    .step-card:nth-child(4) .card-header {
+      background: linear-gradient(135deg, var(--gold), var(--charcoal-grey));
+      color: var(--rich-black);
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(10, 10, 10, 0.08);
+      transition: all 0.3s ease;
+      background-color: var(--champagne-white);
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 30px rgba(10, 10, 10, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background-color: var(--dark-teal);
+      border-color: var(--dark-teal);
+    }
+
+    .btn-success:hover {
+      background-color: #072a2d;
+      border-color: #072a2d;
+    }
+
+    .btn-outline-secondary {
+      border-color: var(--charcoal-grey);
+      color: var(--charcoal-grey);
+    }
+
+    .btn-outline-secondary:hover {
+      background-color: var(--charcoal-grey);
+      border-color: var(--charcoal-grey);
+      color: var(--champagne-white);
+    }
+
+    .form-control, .form-select {
+      border-radius: 8px;
+      border: 1px solid var(--charcoal-grey);
+      background-color: var(--champagne-white);
+      color: var(--rich-black);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.15);
+    }
+
+    .debug-info {
+      background-color: var(--champagne-white);
+      border-left: 4px solid var(--gold);
+    }
+
+    .loading-modal .modal-content {
+      background-color: var(--champagne-white);
+      border: 1px solid var(--gold);
+    }
+
+    .loading-modal .spinner-border {
+      color: var(--gold);
+    }
+
+    .loading-modal .text-primary {
+      color: var(--royal-navy) !important;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--royal-navy);
+      color: var(--champagne-white);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--gold);
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--champagne-white);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      color: rgba(247, 242, 231, 0.7);
+    }
+
+    @media (max-width: 768px) {
+      #directionPad {
+        display: none;
+      }
+      
+      .mobile-controls {
+        display: block;
+        background-color: var(--champagne-white);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+      }
+      
+      .template-container {
+        min-height: 300px;
+      }
+      
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .template-container {
+        min-height: 250px;
+      }
+    }
+
+    /* Ensure smooth progress bar animations */
+#swal-bar {
+  transition: width 0.3s ease !important;
+}
+
+/* Prevent modal content from being hidden */
+.swal2-popup {
+  overflow: visible !important;
+}
+
+/* Ensure log container scrolls properly */
+#swal-log {
+  overflow-y: auto !important;
+  max-height: 120px !important;
+}
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#" onclick="showSection('home')">CertifyPro</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" onclick="showSection('home')">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showSection('about')">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showSection('generator')">Generator</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showSection('pricing')">Pricing</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          <a href="#" class="btn btn-outline-light me-2" onclick="showSection('login')">Login</a>
+          <a href="#" class="btn btn-primary" onclick="showSection('signup')">Sign Up Free</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading Modal -->
+  <div class="modal fade loading-modal" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0">
+        <div class="modal-body text-center py-5">
+          <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5 class="text-primary" id="loadingText">Processing...</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Home Section -->
+  <section id="home" class="section active">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <h1 class="hero-title">Create Professional Certificates in Minutes</h1>
+            <p class="hero-subtitle">Transform your CSV data into beautifully designed certificates with our intuitive, drag-and-drop certificate generator. Perfect for courses, events, and employee recognition.</p>
+            <div class="d-flex flex-wrap gap-3">
+              <a href="#" class="btn btn-primary" onclick="showSection('generator')">Start Creating Now</a>
+              <a href="#features" class="btn btn-outline-light">Learn More</a>
+            </div>
+          </div>
+          <div class="col-lg-6 text-center">
+            <div class="mt-2 mt-lg-0">
+              <div class=" rounded-3 p-2 shadow-lg d-inline-block" style="background-color: transparent;">
+                <img src=" https://i.ibb.co/DP1jd80X/DALL-E-2025-11-28-22-37-41-A-professional-circular-seal-of-approval-style-logo-featuring-a-detailed.webp" alt="Certificate Preview" class="img-fluid rounded-2" style="max-width: 75%; height: auto;" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="section-title">Why Choose CertifyPro?</h2>
+            <p class="section-subtitle">Our certificate generator combines powerful features with an intuitive interface to streamline your certificate creation process.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-upload"></i>
+              </div>
+              <h3 class="feature-title">Bulk Generation</h3>
+              <p class="feature-description">Upload a CSV file with participant data and generate hundreds of certificates in minutes, not hours.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-palette"></i>
+              </div>
+              <h3 class="feature-title">Pixel-Perfect Design</h3>
+              <p class="feature-description">Drag and drop text fields with precision controls. Customize fonts, colors, and positioning with ease.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-file-pdf"></i>
+              </div>
+              <h3 class="feature-title">High-Quality PDFs</h3>
+              <p class="feature-description">Export certificates as print-ready PDF files with crisp text and high-resolution graphics.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-images"></i>
+              </div>
+              <h3 class="feature-title">Custom Templates</h3>
+              <p class="feature-description">Upload your own certificate templates or choose from our professionally designed collection.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h3 class="feature-title">Secure & Private</h3>
+              <p class="feature-description">Your data is protected with enterprise-grade security. We never store your certificates or participant information.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-clock"></i>
+              </div>
+              <h3 class="feature-title">Save Time</h3>
+              <p class="feature-description">Reduce certificate creation time by up to 90% compared to manual design tools like Photoshop or Canva.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="section-title">How CertifyPro Works</h2>
+            <p class="section-subtitle">Create beautiful certificates in just four simple steps.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-3">
+            <div class="how-it-works-step">
+              <div class="step-number">1</div>
+              <h3 class="step-title">Upload Data</h3>
+              <p>Upload your CSV file with participant information like names, courses, and dates.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="how-it-works-step">
+              <div class="step-number">2</div>
+              <h3 class="step-title">Add Template</h3>
+              <p>Upload your certificate design or choose from our professional templates.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="how-it-works-step">
+              <div class="step-number">3</div>
+              <h3 class="step-title">Position Fields</h3>
+              <p>Drag and drop text fields to perfect positions with pixel-level precision.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="how-it-works-step">
+              <div class="step-number">4</div>
+              <h3 class="step-title">Generate & Download</h3>
+              <p>Preview a sample, then generate all certificates and download as a ZIP file.</p>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-5">
+          <a href="#" class="btn btn-primary btn-lg" onclick="showSection('generator')">Try It Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="section-title">Trusted by Professionals</h2>
+            <p class="section-subtitle">See what our customers are saying about CertifyPro.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"CertifyPro saved our team dozens of hours each month. We used to manually create certificates in Illustrator, but now we can generate hundreds in minutes."</p>
+              <p class="testimonial-author">Sarah Johnson</p>
+              <p class="testimonial-role">Training Manager, TechCorp</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"The precision controls are fantastic. Being able to position text fields exactly where we need them has elevated the quality of our certificates significantly."</p>
+              <p class="testimonial-author">Michael Chen</p>
+              <p class="testimonial-role">Academic Director, University of Business</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"As a small nonprofit, we needed a cost-effective solution for our annual volunteer recognition. CertifyPro was perfect - professional results without the high cost."</p>
+              <p class="testimonial-author">Elena Rodriguez</p>
+              <p class="testimonial-role">Program Director, Community First</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 bg-dark text-white">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-8">
+            <h2 class="mb-4">Ready to Transform Your Certificate Process?</h2>
+            <p class="mb-4">Join thousands of professionals who save time and create beautiful certificates with CertifyPro.</p>
+            <a href="#" class="btn btn-primary btn-lg me-3" onclick="showSection('signup')">Start Free Trial</a>
+            <a href="#" class="btn btn-outline-light btn-lg" onclick="showSection('generator')">Try Demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <!-- About Hero -->
+    <div class="about-hero">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1 class="section-title text-white">About CertifyPro</h1>
+            <p class="section-subtitle text-white-50">We're on a mission to simplify certificate creation for organizations worldwide.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <!-- Our Story -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      
+      <div class="col-lg-6">
+        <h2 class="section-title">Our Story</h2>
+
+        <p>CertifyPro began as a simple idea inside <strong>VSGRPS</strong> — a team that constantly built automated tools for colleges, events, and organizations. After working closely with educators, trainers, and institutions, the team noticed one major repeated problem: creating certificates was slow, repetitive, and required too much manual design work.</p>
+
+        <p>Instead of relying on Photoshop, Illustrator, or complex design software every time, <strong>VSGRPS</strong> developed an early version of an automated certificate generator for clients. The response was overwhelming — people needed something fast, simple, accurate, and professional.</p>
+
+        <p>This sparked the birth of CertifyPro: a modern, scalable, cloud-based certificate automation platform. Today, we help colleges, educators, event organizers, corporate trainers, and freelancers generate certificates in seconds — with precision, branding, and powerful bulk processing.</p>
+
+        <p>From a small internal tool to a full SaaS platform, CertifyPro continues to grow and evolve. Our mission is simple: save time, eliminate repetitive design work, and empower creators to focus on what truly matters — impactful learning and memorable events.</p>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+             alt="Our Team" 
+             class="img-fluid rounded-3">
+      </div>
+
+    </div>
+  </div>
+  <!-- Future Roadmap -->
+<section class="py-5" style="background: #f8fafc;">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" style="color:#0D1B2A;">What's Coming Next</h2>
+      <p class="lead">A powerful future ahead for CertifyPro — built by <strong>VSGRPS</strong>.</p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Card 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 shadow-sm bg-white rounded-4 h-100" data-aos="fade-up">
+          <h4 class="fw-bold mb-3"> Certificate Studio 2.0</h4>
+          <ul class="list-unstyled">
+            <li>✔ Full Drag & Drop Designer</li>
+            <li>✔ AI Text Autofill</li>
+            <li>✔ Auto-Detect CSV Fields</li>
+            <li>✔ Real-time Template Preview</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 shadow-sm bg-white rounded-4 h-100" data-aos="fade-up" data-aos-delay="100">
+          <h4 class="fw-bold mb-3"> Ultra-Fast Engine</h4>
+          <ul class="list-unstyled">
+            <li>✔ Generate 10,000+ Certificates</li>
+            <li>✔ Cloud Rendering Pipeline</li>
+            <li>✔ Parallel Queue Processing</li>
+            <li>✔ Auto ZIP + Cloud Download</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 shadow-sm bg-white rounded-4 h-100" data-aos="fade-up" data-aos-delay="200">
+          <h4 class="fw-bold mb-3"> Verification & Security</h4>
+          <ul class="list-unstyled">
+            <li>✔ Blockchain Verification</li>
+            <li>✔ Public Verification Portal</li>
+            <li>✔ Multi-Level Access Control</li>
+            <li>✔ Complete Audit Logs</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 shadow-sm bg-white rounded-4 h-100" data-aos="fade-up" data-aos-delay="300">
+          <h4 class="fw-bold mb-3"> Integrations</h4>
+          <ul class="list-unstyled">
+            <li>✔ Developer API</li>
+            <li>✔ LMS Integration</li>
+            <li>✔ Zapier + Webhooks</li>
+            <li>✔ Google Sheets Sync</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 shadow-sm bg-white rounded-4 h-100" data-aos="fade-up" data-aos-delay="400">
+          <h4 class="fw-bold mb-3">Billing & Teams</h4>
+          <ul class="list-unstyled">
+            <li>✔ Usage Credits</li>
+            <li>✔ Team Collaboration</li>
+            <li>✔ Admin Roles / Permissions</li>
+            <li>✔ Payment Integrations (Razorpay/Stripe)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 shadow-sm bg-white rounded-4 h-100" data-aos="fade-up" data-aos-delay="500">
+          <h4 class="fw-bold mb-3">AI Automation</h4>
+          <ul class="list-unstyled">
+            <li>✔ AI Certificate Designer</li>
+            <li>✔ AI Error Fixing (Names/Formatting)</li>
+            <li>✔ Smart Recommendations</li>
+            <li>✔ Auto Theme Generation</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</section>
+
+
+    <!-- Our Mission -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="section-title">Our Mission & Vision</h2>
+            <p class="section-subtitle">What drives us forward every day</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-bullseye"></i>
+              </div>
+              <h3 class="values-title">Our Mission</h3>
+              <p>To empower organizations of all sizes to create professional, beautiful certificates efficiently, saving time and resources while maintaining the highest quality standards.</p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-eye"></i>
+              </div>
+              <h3 class="values-title">Our Vision</h3>
+              <p>To become the global standard for certificate generation, recognized for our precision, ease of use, and commitment to customer success in recognition and credentialing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="section-title">Our Values</h2>
+            <p class="section-subtitle">The principles that guide everything we do</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-heart"></i>
+              </div>
+              <h3 class="values-title">Customer First</h3>
+              <p>We listen to our customers and build solutions that solve their real problems. Your success is our success.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-gem"></i>
+              </div>
+              <h3 class="values-title">Quality Matters</h3>
+              <p>We believe in pixel-perfect precision and professional results. Every certificate should be something you're proud to present.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-lightning"></i>
+              </div>
+              <h3 class="values-title">Efficiency</h3>
+              <p>We're obsessed with saving you time. Our tools are designed to make complex tasks simple and fast.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h3 class="values-title">Security & Privacy</h3>
+              <p>We protect your data with enterprise-grade security and respect your privacy above all else.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-arrow-repeat"></i>
+              </div>
+              <h3 class="values-title">Continuous Improvement</h3>
+              <p>We're always learning, iterating, and improving our product based on user feedback and emerging needs.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="values-card">
+              <div class="values-icon">
+                <i class="bi bi-people"></i>
+              </div>
+              <h3 class="values-title">Collaboration</h3>
+              <p>We work together across teams and with our customers to build the best possible solutions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5 bg-light">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stats-number">10K+</div>
+            <div class="stats-label">Certificates Generated</div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stats-number">500+</div>
+            <div class="stats-label">Happy Customers</div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stats-number">98%</div>
+            <div class="stats-label">Time Saved</div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stats-number">24/7</div>
+            <div class="stats-label">Customer Support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-lg-8">
+            <h2 class="section-title">Meet Our Team</h2>
+            <p class="section-subtitle">The passionate people behind CertifyPro</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="team-member">
+              <img src="https://dummyimage.com/150x150/F7F2E7/2E2E2E&text=Photo
+" alt="Alex Johnson" class="team-photo">
+              <h3 class="team-name">Alex Johnson</h3>
+              <p class="team-role">CEO & Founder</p>
+              <p>Former education technology director with 10+ years experience in digital credentialing.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="team-member">
+              <img src="https://dummyimage.com/150x150/F7F2E7/2E2E2E&text=Photo
+" alt="Maria Garcia" class="team-photo">
+              <h3 class="team-name">Maria Garcia</h3>
+              <p class="team-role">Head of Product</p>
+              <p>Product design expert focused on creating intuitive user experiences for complex workflows.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="team-member">
+              <img src="https://dummyimage.com/150x150/F7F2E7/2E2E2E&text=Photo
+" alt="David Kim" class="team-photo">
+              <h3 class="team-name">David Kim</h3>
+              <p class="team-role">Lead Developer</p>
+              <p>Full-stack developer specializing in PDF generation and automation technologies.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 bg-dark text-white">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-8">
+            <h2 class="mb-4">Join Thousands of Satisfied Customers</h2>
+            <p class="mb-4">Start creating professional certificates in minutes, not hours.</p>
+            <a href="#" class="btn btn-primary btn-lg me-3" onclick="showSection('signup')">Start Free Trial</a>
+            <a href="#" class="btn btn-outline-light btn-lg" onclick="showSection('contact')">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- Certificate Generator Section -->
+  <section id="generator" class="section">
+    <div class="container-fluid py-4">
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-10 col-xl-8 text-center">
+          <h1 class="fw-bold display-4 mb-2 gradient-text">Certificate Generator</h1>
+          <p class="fs-5" style="color: var(--charcoal-grey);">Create beautiful certificates with pixel-perfect precision</p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Left Column - Steps 1-3 -->
+        <div class="col-12 col-lg-4">
+          <div class="row g-4">
+            <!-- Step 1 -->
+            <div class="col-12">
+              <div class="card step-card h-100">
+                <div class="card-header py-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="d-flex align-items-center">
+                      <span class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;">1</span>
+                      Upload Data
+                    </span>
+                    <i class="bi bi-filetype-csv"></i>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="csvFile" class="form-label fw-medium">Select CSV File</label>
+                    <input type="file" id="csvFile" accept=".csv" class="form-control rounded-2 py-2 px-3">
+                  </div>
+                  <div class="small" style="color: var(--charcoal-grey);">
+                    <i class="bi bi-info-circle me-1"></i>
+                    CSV must contain headers (e.g., Name, Course, Date, Score)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="col-12">
+              <div class="card step-card h-100">
+                <div class="card-header py-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="d-flex align-items-center">
+                      <span class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;">2</span>
+                      Upload Template
+                    </span>
+                    <i class="bi bi-image"></i>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="templateFile" class="form-label fw-medium">Select Template Image</label>
+                    <input type="file" id="templateFile" accept="image/*" class="form-control rounded-2 py-2 px-3">
+                  </div>
+                  <div class="small" style="color: var(--charcoal-grey);">
+                    <i class="bi bi-info-circle me-1"></i>
+                    JPG, PNG, or other image formats supported
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="col-12">
+              <div class="card step-card h-100">
+                <div class="card-header py-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="d-flex align-items-center">
+                      <span class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;">3</span>
+                      Add Text Fields
+                    </span>
+                    <i class="bi bi-text-paragraph"></i>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="columns" class="d-flex flex-wrap gap-2 mb-3"></div>
+                  <div id="noColumns" class="text-center py-4" style="color: var(--charcoal-grey);">
+                    <i class="bi bi-table display-4 opacity-50 mb-2"></i>
+                    <p class="mb-0">Upload a CSV file to see available columns</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Step 4 and Controls -->
+        <div class="col-12 col-lg-8">
+          <div class="row g-4">
+            <!-- Step 4 -->
+            <div class="col-12">
+              <div class="card step-card h-100">
+                <div class="card-header py-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="d-flex align-items-center">
+                      <span class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 28px; height: 28px;">4</span>
+                      Position & Style Fields
+                    </span>
+                    <i class="bi bi-palette"></i>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="template-container" id="templateContainer">
+                    <div id="template" class="w-100 h-100 position-relative" style="background-size: contain; background-repeat: no-repeat; background-position: center; min-height: 400px;">
+                      <div class="d-flex flex-column align-items-center justify-content-center h-100" style="color: var(--charcoal-grey);">
+                        <i class="bi bi-card-image display-1 opacity-50 mb-3"></i>
+                        <p class="fs-5">Upload a template to get started</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Mobile Controls -->
+                  <div class="mobile-controls rounded-3 p-3 mt-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <h6 class="mb-0 fw-medium">Field Controls</h6>
+                      <span class="badge" style="background-color: var(--royal-navy);" id="selectedFieldName">None</span>
+                    </div>
+                    <div class="row g-2">
+                      <div class="col-4 d-grid">
+                        <button class="btn up" style="background-color: var(--dark-teal); color: white;" title="Move Up"><i class="bi bi-arrow-up"></i></button>
+                      </div>
+                      <div class="col-4 d-grid">
+                        <button class="btn del" style="background-color: #8B0000; color: white;" title="Delete Field"><i class="bi bi-trash"></i></button>
+                      </div>
+                      <div class="col-4 d-grid">
+                        <button class="btn down" style="background-color: var(--dark-teal); color: white;" title="Move Down"><i class="bi bi-arrow-down"></i></button>
+                      </div>
+                      <div class="col-4 d-grid">
+                        <button class="btn left" style="background-color: var(--royal-navy); color: white;" title="Move Left"><i class="bi bi-arrow-left"></i></button>
+                      </div>
+                      <div class="col-4"></div>
+                      <div class="col-4 d-grid">
+                        <button class="btn right" style="background-color: var(--royal-navy); color: white;" title="Move Right"><i class="bi bi-arrow-right"></i></button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="fieldControls" class="rounded-3 p-4 mt-4" style="display:none; background-color: var(--champagne-white); border: 1px solid rgba(212, 175, 55, 0.2);">
+                    <h5 class="mb-3 fw-medium" style="color: var(--royal-navy);"><i class="bi bi-palette2 me-2"></i> Field Styling</h5>
+                    <div class="row g-4 align-items-center">
+                      <div class="col-md-4">
+                        <label class="form-label fw-medium">Text Color</label>
+                        <input type="color" id="colorPicker" value="#0A0A0A" class="form-control form-control-color w-100 p-1 rounded-2">
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label fw-medium">Font Size</label>
+                        <div class="d-flex align-items-center">
+                          <input type="range" id="sizeSlider" min="8" max="72" value="16" class="form-range flex-grow-1">
+                          <span id="sizeValue" class="ms-3 fw-bold">16px</span>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label fw-medium">Font Weight</label>
+                        <div class="d-flex align-items-center mt-2">
+                          <div class="form-check form-switch me-3">
+                            <input class="form-check-input" type="checkbox" id="boldToggle">
+                            <label class="form-check-label" for="boldToggle">Bold</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-12">
+              <div class="d-flex gap-3 flex-wrap">
+                <button id="previewBtn" class="btn btn-primary py-2 px-4 rounded-2 flex-fill" disabled>
+                  <i class="bi bi-eye me-2"></i> Preview Sample PDF
+                </button>
+                <button id="generateBtn" class="btn btn-success py-2 px-4 rounded-2 flex-fill" disabled>
+                  <i class="bi bi-file-earmark-zip me-2"></i> Generate All & Download ZIP
+                </button>
+                <div class="card p-4 mt-3">
+              </div>
+            </div>
+
+            <!-- Debug Info -->
+            <div class="col-12">
+              <div class="rounded-3 p-3 debug-info" id="debugInfo">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-info-circle me-2" style="color: var(--royal-navy);"></i>
+                  <span>No field selected. Click on a field to select and style it.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direction Pad (Desktop) -->
+    <div id="directionPad">
+      <div></div>
+      <button class="btn up rounded-2" style="background-color: var(--dark-teal); color: white;" title="Move Up (↑)"><i class="bi bi-arrow-up"></i></button>
+      <div></div>
+      <button class="btn left rounded-2" style="background-color: var(--royal-navy); color: white;" title="Move Left (←)"><i class="bi bi-arrow-left"></i></button>
+      <button class="btn del rounded-2" style="background-color: #8B0000; color: white;" title="Delete Field (Del)"><i class="bi bi-trash"></i></button>
+      <button class="btn right rounded-2" style="background-color: var(--royal-navy); color: white;" title="Move Right (→)"><i class="bi bi-arrow-right"></i></button>
+      <div></div>
+      <button class="btn down rounded-2" style="background-color: var(--dark-teal); color: white;" title="Move Down (↓)"><i class="bi bi-arrow-down"></i></button>
+      <div></div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="section">
+    <div class="container py-5">
+      <div class="row justify-content-center text-center mb-5">
+        <div class="col-lg-8">
+          <h2 class="section-title">Simple, Transparent Pricing</h2>
+          <p class="section-subtitle">Choose the plan that works for you. No hidden fees, no long-term contracts.</p>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="pricing-card">
+            <h3 class="pricing-title">Starter</h3>
+            <div class="pricing-price">$19<span class="pricing-period">/month</span></div>
+            <ul class="list-unstyled">
+              <li class="pricing-feature"><i class="bi bi-check"></i> Up to 100 certificates/month</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Basic templates</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Standard support</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> PDF export</li>
+            </ul>
+            <a href="#" class="btn btn-outline-primary w-100" onclick="showSection('signup')">Get Started</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="pricing-card featured">
+            <h3 class="pricing-title">Professional</h3>
+            <div class="pricing-price">$49<span class="pricing-period">/month</span></div>
+            <ul class="list-unstyled">
+              <li class="pricing-feature"><i class="bi bi-check"></i> Up to 1000 certificates/month</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Premium templates</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Priority support</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Custom branding</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Batch processing</li>
+            </ul>
+            <a href="#" class="btn btn-primary w-100" onclick="showSection('signup')">Try Free for 14 Days</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="pricing-card">
+            <h3 class="pricing-title">Enterprise</h3>
+            <div class="pricing-price">$99<span class="pricing-period">/month</span></div>
+            <ul class="list-unstyled">
+              <li class="pricing-feature"><i class="bi bi-check"></i> Unlimited certificates</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> All premium features</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> Dedicated account manager</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> API access</li>
+              <li class="pricing-feature"><i class="bi bi-check"></i> White-label options</li>
+            </ul>
+            <a href="#" class="btn btn-outline-primary w-100" onclick="showSection('contact')">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Section -->
+  <section id="login" class="section">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h2 class="text-center mb-4" style="color: var(--royal-navy);">Login to Your Account</h2>
+            <form>
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email">
+              </div>
+              <div class="mb-3">
+                <label for="loginPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+              <div class="text-center">
+                <a href="#" class="text-decoration-none">Forgot your password?</a>
+              </div>
+            </form>
+            <div class="text-center mt-4">
+              <p>Don't have an account? <a href="#" onclick="showSection('signup')" class="text-decoration-none">Sign up here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signup Section -->
+  <section id="signup" class="section">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h2 class="text-center mb-4" style="color: var(--royal-navy);">Create Your Account</h2>
+            <form>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input type="text" class="form-control" id="firstName" placeholder="Enter your first name">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input type="text" class="form-control" id="lastName" placeholder="Enter your last name">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="signupEmail" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email">
+              </div>
+              <div class="mb-3">
+                <label for="signupPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="signupPassword" placeholder="Create a password">
+              </div>
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password">
+              </div>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="agreeTerms">
+                <label class="form-check-label" for="agreeTerms">I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and <a href="#" class="text-decoration-none">Privacy Policy</a></label>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Create Account</button>
+            </form>
+            <div class="text-center mt-4">
+              <p>Already have an account? <a href="#" onclick="showSection('login')" class="text-decoration-none">Login here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="section-title text-center">Contact Us</h2>
+          <p class="section-subtitle text-center">Have questions? We'd love to hear from you.</p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card p-4 h-100">
+                <h4 class="mb-4" style="color: var(--royal-navy);">Get In Touch</h4>
+                <form>
+                  <div class="mb-3">
+                    <label for="contactName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="contactName" placeholder="Your name">
+                  </div>
+                  <div class="mb-3">
+                    <label for="contactEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="contactEmail" placeholder="Your email">
+                  </div>
+                  <div class="mb-3">
+                    <label for="contactSubject" class="form-label">Subject</label>
+                    <input type="text" class="form-control" id="contactSubject" placeholder="Subject of your message">
+                  </div>
+                  <div class="mb-3">
+                    <label for="contactMessage" class="form-label">Message</label>
+                    <textarea class="form-control" id="contactMessage" rows="5" placeholder="Your message"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card p-4 h-100">
+                <h4 class="mb-4" style="color: var(--royal-navy);">Contact Information</h4>
+                <div class="mb-4">
+                  <h5><i class="bi bi-envelope me-2" style="color: var(--gold);"></i> Email</h5>
+                  <p>support@certifypro.com</p>
+                </div>
+                <div class="mb-4">
+                  <h5><i class="bi bi-telephone me-2" style="color: var(--gold);"></i> Phone</h5>
+                  <p>+1 (555) 123-4567</p>
+                </div>
+                <div class="mb-4">
+                  <h5><i class="bi bi-clock me-2" style="color: var(--gold);"></i> Support Hours</h5>
+                  <p>Monday - Friday: 9am - 6pm EST</p>
+                  <p>Weekend: Emergency support only</p>
+                </div>
+                <div>
+                  <h5><i class="bi bi-geo-alt me-2" style="color: var(--gold);"></i> Office</h5>
+                  <p>123 Business Avenue<br>Suite 100<br>New York, NY 10001</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 mb-4 mb-lg-0">
+          <h3 class="footer-title">CertifyPro</h3>
+          <p>The professional certificate generator that saves you time while delivering beautiful, precise results.</p>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+          <h4 class="footer-title">Product</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="showSection('home')">Features</a></li>
+            <li><a href="#" onclick="showSection('pricing')">Pricing</a></li>
+            <li><a href="#">Templates</a></li>
+            <li><a href="#">Updates</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="showSection('about')">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-4">
+          <h4 class="footer-title">Support</h4>
+          <ul class="footer-links">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">System Status</a></li>
+            <li><a href="#" onclick="showSection('contact')">Contact Support</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2">
+          <h4 class="footer-title">Connect</h4>
+          <ul class="footer-links">
+            <li><a href="#"><i class="bi bi-twitter me-2"></i>Twitter</a></li>
+            <li><a href="#"><i class="bi bi-linkedin me-2"></i>LinkedIn</a></li>
+            <li><a href="#"><i class="bi bi-facebook me-2"></i>Facebook</a></li>
+            <li><a href="#"><i class="bi bi-instagram me-2"></i>Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2023 CertifyPro. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+   
+    // Section Navigation
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show selected section
+      document.getElementById(sectionId).classList.add('active');
+      
+      // Update active nav link
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Set appropriate nav link as active
+      if (sectionId === 'home') {
+        document.querySelector('.nav-link[onclick="showSection(\'home\')"]').classList.add('active');
+      } else if (sectionId === 'about') {
+        document.querySelector('.nav-link[onclick="showSection(\'about\')"]').classList.add('active');
+      } else if (sectionId === 'generator') {
+        document.querySelector('.nav-link[onclick="showSection(\'generator\')"]').classList.add('active');
+      } else if (sectionId === 'pricing') {
+        document.querySelector('.nav-link[onclick="showSection(\'pricing\')"]').classList.add('active');
+      }
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+
+
+
+    
+
+    // Certificate Generator JavaScript
+    let participants = [];
+    let fields = [];
+    let templateUrl = "";
+    let selectedField = null;
+
+    const colorInput = document.getElementById('colorPicker');
+    const sizeSlider = document.getElementById('sizeSlider');
+    const sizeValue = document.getElementById('sizeValue');
+    const boldToggle = document.getElementById('boldToggle');
+    const fieldControls = document.getElementById('fieldControls');
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    const loadingText = document.getElementById('loadingText');
+    const noColumnsEl = document.getElementById('noColumns');
+    const templateContainer = document.getElementById('templateContainer');
+    const selectedFieldName = document.getElementById('selectedFieldName');
+
+    function showLoading(text = "Processing...") {
+      loadingText.textContent = text;
+      loadingModal.show();
+    }
+
+    function hideLoading() {
+      loadingModal.hide();
+    }
+
+    document.getElementById("csvFile").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("csv", file);
+      try {
+        const res = await fetch("https://saas-8nu8.onrender.com/upload-csv", { method: "POST", body: formData });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        participants = data.participants;
+        updateColumnsUI(data.columns);
+        checkReady();
+      } catch (err) {
+        alert("CSV upload failed: " + err.message);
+      } finally {
+        hideLoading();
+      }
+    });
+
+    const evtSource = new EventSource("https://saas-8nu8.onrender.com/progress");
+
+evtSource.onmessage = function (event) {
+  const data = JSON.parse(event.data);
+  console.log("Progress Update:", data);
+
+  if (data.stage === "connected") {
+    document.getElementById("status").innerHTML = "Connected to progress stream...";
+  }
+
+ if (data.percent !== undefined) {
+  const progressBar = document.getElementById("progressBar");
+  if (progressBar) {
+    progressBar.style.width = data.percent + "%";
+    progressBar.innerText = data.percent + "%";
+  }
+
+  const countEl = document.getElementById("count");
+  if (countEl) {
+    countEl.innerHTML = `${data.current}/${data.total}`;
+  }
+}
+
+
+  if (data.name) {
+    document.getElementById("currentName").innerHTML = data.name;
+  }
+
+  if (data.estTimeLeft) {
+    document.getElementById("eta").innerHTML = data.estTimeLeft;
+  }
+
+  if (data.stage === "finalizing") {
+    document.getElementById("status").innerHTML = "Finalizing ZIP...";
+  }
+
+  if (data.stage === "completed") {
+    document.getElementById("status").innerHTML = "Completed!";
+    localStorage.removeItem("GEN_KEY");
+    evtSource.close();
+  }
+
+  if (data.stage === "error") {
+    document.getElementById("status").innerHTML = "Error occurred!";
+    evtSource.close();
+  }
+};
+
+
+    document.getElementById("templateFile").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      showLoading("Uploading template...");
+      const formData = new FormData();
+      formData.append("template", file);
+      try {
+        const res = await fetch("https://saas-8nu8.onrender.com/upload-template", { method: "POST", body: formData });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        templateUrl = data.templateUrl;
+        document.getElementById("template").style.backgroundImage = `url(${templateUrl})`;
+        templateContainer.classList.add("has-background");
+        document.getElementById("template").innerHTML = "";
+        checkReady();
+      } catch (err) {
+        alert("Template upload failed: " + err.message);
+      } finally {
+        hideLoading();
+      }
+    });
+
+    function updateColumnsUI(columns) {
+      const div = document.getElementById("columns");
+      noColumnsEl.style.display = columns.length ? "none" : "block";
+      div.innerHTML = "";
+      if (columns.length === 0) return;
+
+      columns.forEach(col => {
+        const btn = document.createElement("button");
+        btn.innerHTML = `<i class="bi bi-plus-circle me-1"></i> ${col}`;
+        btn.className = "btn btn-sm btn-outline-secondary rounded-1";
+        btn.title = `Add field: ${col}`;
+        btn.onclick = () => addField(col);
+        div.appendChild(btn);
+      });
+    }
+
+    function addField(name) {
+      const existing = document.querySelector(`.field[data-field-name="${name}"]`);
+      if (existing) {
+        alert(`Field "${name}" already exists on the template!`);
+        existing.scrollIntoView({ behavior: 'smooth' });
+        existing.click();
+        return;
+      }
+
+      const field = document.createElement("div");
+      field.className = "field";
+      field.innerHTML = `${name}<div class="coords">(50, 50)</div>`;
+      field.style.left = "50px";
+      field.style.top = "50px";
+      field.dataset.fieldName = name;
+      field.style.fontSize = "16px";
+      field.style.color = "#0A0A0A";
+      field.style.fontWeight = "normal";
+
+      field.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (selectedField) selectedField.classList.remove("selected");
+        selectedField = field;
+        field.classList.add("selected");
+        updateFieldControls();
+        updateDebug();
+        selectedFieldName.textContent = name;
+      });
+
+      field.draggable = true;
+      field.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", name);
+        field.style.opacity = "0.7";
+      });
+      field.addEventListener("dragend", () => {
+        field.style.opacity = "1";
+      });
+
+      let touchStartX, touchStartY, elementStartX, elementStartY;
+      field.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        elementStartX = parseInt(field.style.left) || 0;
+        elementStartY = parseInt(field.style.top) || 0;
+        field.style.transition = "none";
+        if (!selectedField || selectedField !== field) {
+          if (selectedField) selectedField.classList.remove("selected");
+          selectedField = field;
+          field.classList.add("selected");
+          updateFieldControls();
+          updateDebug();
+          selectedFieldName.textContent = name;
+        }
+        e.preventDefault();
+      });
+
+      field.addEventListener("touchmove", (e) => {
+        if (!selectedField || selectedField !== field) return;
+        const touch = e.touches[0];
+        let x = elementStartX + (touch.clientX - touchStartX);
+        let y = elementStartY + (touch.clientY - touchStartY);
+        const templateRect = document.getElementById("template").getBoundingClientRect();
+        x = Math.max(0, Math.min(templateRect.width - 120, x));
+        y = Math.max(0, Math.min(templateRect.height - 50, y));
+        field.style.left = x + 'px';
+        field.style.top = y + 'px';
+        field.querySelector('.coords').textContent = `(${Math.round(x)}, ${Math.round(y)})`;
+        const f = fields.find(f => f.field === name);
+        if (f) { f.x = x; f.y = y; }
+        e.preventDefault();
+      });
+
+      field.addEventListener("touchend", () => {
+        field.style.transition = "";
+      });
+
+      document.getElementById("template").appendChild(field);
+      fields.push({
+        field: name,
+        x: 50,
+        y: 50,
+        size: 16,
+        color: "#0A0A0A",
+        bold: false,
+        element: field
+      });
+      checkReady();
+    }
+
+    document.getElementById("template").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("template")) {
+        if (selectedField) {
+          selectedField.classList.remove("selected");
+          selectedField = null;
+          hideFieldControls();
+          updateDebug();
+          selectedFieldName.textContent = "None";
+        }
+      }
+    });
+
+    document.getElementById("template").addEventListener("dragover", (e) => e.preventDefault());
+    document.getElementById("template").addEventListener("drop", (e) => {
+      e.preventDefault();
+      const fieldName = e.dataTransfer.getData("text/plain");
+      const rect = document.getElementById("template").getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width - 120, e.clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height - 50, e.clientY - rect.top));
+
+      const fieldEl = document.querySelector(`.field[data-field-name="${fieldName}"]`);
+      if (fieldEl) {
+        fieldEl.style.left = x + 'px';
+        fieldEl.style.top = y + 'px';
+        fieldEl.querySelector('.coords').textContent = `(${Math.round(x)}, ${Math.round(y)})`;
+        const f = fields.find(f => f.field === fieldName);
+        if (f) { f.x = x; f.y = y; }
+        if (fieldEl === selectedField) updateDebug();
+      }
+    });
+
+    colorInput.addEventListener('input', () => {
+      if (!selectedField) return;
+      const color = colorInput.value;
+      selectedField.style.color = color;
+      const f = fields.find(f => f.element === selectedField);
+      if (f) f.color = color;
+    });
+
+    sizeSlider.addEventListener('input', () => {
+      if (!selectedField) return;
+      const size = sizeSlider.value;
+      sizeValue.textContent = size + 'px';
+      selectedField.style.fontSize = size + 'px';
+      const f = fields.find(f => f.element === selectedField);
+      if (f) f.size = parseInt(size);
+    });
+
+    boldToggle.addEventListener('change', () => {
+      if (!selectedField) return;
+      const isBold = boldToggle.checked;
+      selectedField.style.fontWeight = isBold ? 'bold' : 'normal';
+      const f = fields.find(f => f.element === selectedField);
+      if (f) f.bold = isBold;
+    });
+
+    function updateFieldControls() {
+      if (!selectedField) {
+        hideFieldControls();
+        return;
+      }
+      fieldControls.style.display = 'block';
+      const f = fields.find(f => f.element === selectedField);
+      if (f) {
+        colorInput.value = f.color;
+        sizeSlider.value = f.size;
+        sizeValue.textContent = f.size + 'px';
+        boldToggle.checked = f.bold;
+      }
+    }
+
+    function hideFieldControls() {
+      fieldControls.style.display = 'none';
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (!selectedField) return;
+      const step = e.shiftKey ? 10 : 1;
+      let x = parseInt(selectedField.style.left) || 0;
+      let y = parseInt(selectedField.style.top) || 0;
+      const templateRect = document.getElementById("template").getBoundingClientRect();
+
+      switch(e.key) {
+        case "ArrowLeft":  x = Math.max(0, x - step); break;
+        case "ArrowRight": x = Math.min(templateRect.width - 120, x + step); break;
+        case "ArrowUp":    y = Math.max(0, y - step); break;
+        case "ArrowDown":  y = Math.min(templateRect.height - 50, y + step); break;
+        case "Delete":
+        case "Backspace":
+          deleteSelectedField();
+          return;
+        default: return;
+      }
+
+      selectedField.style.left = x + 'px';
+      selectedField.style.top = y + 'px';
+      selectedField.querySelector('.coords').textContent = `(${x}, ${y})`;
+      const f = fields.find(f => f.element === selectedField);
+      if (f) { f.x = x; f.y = y; }
+      updateDebug();
+      e.preventDefault();
+    });
+
+    function createDirectionPad() {
+      const pad = document.getElementById('directionPad');
+      pad.querySelector('.up').onclick = () => simulateKey('ArrowUp');
+      pad.querySelector('.down').onclick = () => simulateKey('ArrowDown');
+      pad.querySelector('.left').onclick = () => simulateKey('ArrowLeft');
+      pad.querySelector('.right').onclick = () => simulateKey('ArrowRight');
+      pad.querySelector('.del').onclick = deleteSelectedField;
+      
+      // Mobile controls
+      document.querySelector('.mobile-controls .up').onclick = () => simulateKey('ArrowUp');
+      document.querySelector('.mobile-controls .down').onclick = () => simulateKey('ArrowDown');
+      document.querySelector('.mobile-controls .left').onclick = () => simulateKey('ArrowLeft');
+      document.querySelector('.mobile-controls .right').onclick = () => simulateKey('ArrowRight');
+      document.querySelector('.mobile-controls .del').onclick = deleteSelectedField;
+    }
+
+    function simulateKey(key) {
+      if (!selectedField) return;
+      const event = new KeyboardEvent("keydown", { key });
+      document.dispatchEvent(event);
+    }
+
+    function deleteSelectedField() {
+      if (!selectedField) return;
+      const fieldName = selectedField.dataset.fieldName;
+      selectedField.remove();
+      fields = fields.filter(f => f.field !== fieldName);
+      selectedField = null;
+      hideFieldControls();
+      checkReady();
+      document.getElementById("debugInfo").innerHTML = `
+        <div class="d-flex align-items-center">
+          <i class="bi bi-check-circle me-2" style="color: var(--dark-teal);"></i>
+          <span>Field "${fieldName}" deleted</span>
+        </div>
+      `;
+      selectedFieldName.textContent = "None";
+      setTimeout(() => updateDebug(), 1000);
+    }
+
+    function updateDebug() {
+      if (!selectedField) {
+        document.getElementById("debugInfo").innerHTML = `
+          <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle me-2" style="color: var(--royal-navy);"></i>
+            <span>No field selected. Click on a field to select and style it.</span>
+          </div>
+        `;
+        return;
+      }
+      const f = fields.find(f => f.element === selectedField);
+      if (f) {
+        document.getElementById("debugInfo").innerHTML = 
+          `<div class="d-flex align-items-center">
+            <i class="bi bi-pencil me-2" style="color: var(--gold);"></i>
+            <span>
+              Selected: <strong>${f.field}</strong> | Position: (${f.x}, ${f.y}) | Size: ${f.size}px | 
+              Color: <span style="color:${f.color}; font-weight:bold;">●</span> | Bold: ${f.bold ? 'Yes' : 'No'}
+            </span>
+          </div>`;
+      }
+    }
+
+    function checkReady() {
+      const isReady = participants.length > 0 && templateUrl && fields.length > 0;
+      document.getElementById("previewBtn").disabled = !isReady;
+      document.getElementById("generateBtn").disabled = !isReady;
+    }
+
+    document.getElementById("previewBtn").addEventListener("click", async () => {
+      showLoading("Generating preview PDF...");
+      try {
+        if (!participants.length) return;
+        const sample = participants[0];
+        const payload = {
+          participant: sample,
+          templateUrl,
+          fields: fields.map(f => ({ 
+            field: f.field, 
+            x: f.x, 
+            y: f.y,
+            size: f.size,
+            color: f.color,
+            bold: f.bold
+          }))
+        };
+        const res = await fetch("https://saas-8nu8.onrender.com/preview-pdf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("Preview failed");
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      } catch (err) {
+        alert("Preview error: " + err.message);
+      } finally {
+        hideLoading();
+      }
+    });
+
+  // Replace your existing generate button event listener with this:
+
+document.getElementById("generateBtn").addEventListener("click", async () => {
+  // Close any existing EventSource connection
+  if (window.currentEventSource) {
+    window.currentEventSource.close();
+    window.currentEventSource = null;
+  }
+
+  // Reset generation completed flag
+  window.generationCompleted = false;
+
+  // Modal HTML for live progress
+  const progressHtml = `
+    <div style="text-align:left;font-size:15px;">
+      <b>Status:</b> <span id="swal-status">Starting…</span><br>
+      <b>Current Name:</b> <span id="swal-current-name">-</span><br>
+      <b>Progress:</b> <span id="swal-progress-text">0%</span><br>
+      <b>Processed:</b> <span id="swal-count">0/0</span><br>
+      <b>ETA:</b> <span id="swal-eta">Pls Wait you may be in queue</span>
+      <div style="width:100%;height:14px;background:#eee;border-radius:6px;margin-top:12px;">
+        <div id="swal-bar"
+             style="width:0%;height:100%;background:#28a745;border-radius:6px;transition:0.25s ease;"></div>
+      </div>
+      <br>
+      <div id="swal-log"
+           style="height:120px;overflow-y:auto;background:#fafafa;padding:8px;border-radius:6px;
+           border:1px solid #ddd;font-size:13px;">
+        <b>Live Backend Logs:</b><br>
+        <span id="swal-log-text" style="color:#444;">Connecting to server…</span>
+      </div>
+    </div>
+  `;
+
+  // Show modal
+  Swal.fire({
+    title: "Generating Certificates…",
+    html: progressHtml,
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    width: '600px'
+  });
+
+  // Helper for logging
+  let logBuffer = [];
+  function addToLog(message) {
+    const timestamp = new Date().toLocaleTimeString();
+    logBuffer.push(`[${timestamp}] ${message}`);
+    if (logBuffer.length > 30) logBuffer = logBuffer.slice(-30);
+    const logBox = document.getElementById("swal-log-text");
+    if (logBox) logBox.innerHTML = logBuffer.join("<br>");
+    const logContainer = document.getElementById("swal-log");
+    if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
+  }
+
+  try {
+    // Send generate request (returns JSON with key)
+    const payload = {
+      participants,
+      templateUrl,
+      fields: fields.map(f => ({
+        field: f.field,
+        x: f.x,
+        y: f.y,
+        size: f.size,
+        color: f.color,
+        bold: f.bold
+      }))
+    };
+
+    const res = await fetch("https://saas-8nu8.onrender.com/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Generation request failed: ${errText}`);
+    }
+
+    const result = await res.json();
+    const genKey = result.key;
+    localStorage.setItem("GEN_KEY", genKey);
+    addToLog(`Generation key received: ${genKey}`);
+
+    // Setup SSE for live progress
+    const eventSourceUrl = `/progress?key=${genKey}&_=${Date.now()}`;
+    window.currentEventSource = new EventSource(eventSourceUrl);
+
+    window.currentEventSource.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+
+      // Update modal UI
+      if (data.stage) document.getElementById("swal-status").textContent = data.stage;
+      if (data.name) document.getElementById("swal-current-name").textContent = data.name;
+      if (data.percent !== undefined) {
+        document.getElementById("swal-progress-text").textContent = data.percent + "%";
+        document.getElementById("swal-bar").style.width = data.percent + "%";
+      }
+      if (data.current !== undefined && data.total !== undefined) {
+        document.getElementById("swal-count").textContent = `${data.current}/${data.total}`;
+      }
+      if (data.eta) document.getElementById("swal-eta").textContent = data.eta;
+      if (data.log) addToLog(data.log);
+
+      // Handle download URL when completed
+      if (data.stage === "completed") {
+        window.generationCompleted = true;
+        if (window.currentEventSource) {
+          window.currentEventSource.close();
+          window.currentEventSource = null;
+        }
+        
+        // Use the download URL provided by backend
+        if (data.downloadUrl) {
+          addToLog(`✅ Generation completed! Starting download...`);
+          
+          // Trigger download automatically
+          setTimeout(() => {
+            const downloadUrl = data.downloadUrl;
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = `certificates_${genKey}.zip`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+           Swal.fire({
+  icon: "success",
+  title: "Completed!",
+  html: `
+    We are preparing your certificate ZIP file.<br>
+    Thank you for choosing us! 🤝
+  `,
+  confirmButtonColor: "#28a745"
+});
+
+          }, 1000);
+        }
+      }
+
+      // Handle error stage
+      if (data.stage === "error") {
+        addToLog("❌ Error occurred on server");
+        if (window.currentEventSource) {
+          window.currentEventSource.close();
+          window.currentEventSource = null;
+        }
+        Swal.fire({
+          icon: "error",
+          title: "Generation Error",
+          text: "Failed to generate certificates. Please try again."
+        });
+      }
+
+      // Handle cancelled stage
+      if (data.stage === "cancelled") {
+        addToLog("⏹️ Generation cancelled by user");
+        if (window.currentEventSource) {
+          window.currentEventSource.close();
+          window.currentEventSource = null;
+        }
+        Swal.fire({
+          icon: "info",
+          title: "Cancelled",
+          text: "Certificate generation was cancelled.",
+          confirmButtonColor: "#6c757d"
+        });
+      }
+    };
+
+   window.currentEventSource.onerror = async function(err) {
+  addToLog("⚠️ SSE connection lost, attempting recovery…");
+
+  if (window.currentEventSource) {
+    window.currentEventSource.close();
+    window.currentEventSource = null;
+  }
+
+  // Try recovery: check if backend finished the ZIP
+  try {
+    const key = localStorage.getItem("GEN_KEY");
+    const statusRes = await fetch(`https://saas-8nu8.onrender.com/status?key=${key}`);
+    if (statusRes.ok) {
+      const status = await statusRes.json();
+
+      // If backend says completed → download
+      if (status.completed && status.downloadUrl) {
+        addToLog("🟢 Backend confirms ZIP is ready! Auto-downloading…");
+
+        const a = document.createElement("a");
+        a.href = status.downloadUrl;
+        a.download = `certificates_${key}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        Swal.fire({
+          icon: "success",
+          title: "Completed!",
+          html: `
+            Your certificate ZIP file is ready.<br>
+            Thank you for choosing us! 🤝
+          `,
+          confirmButtonColor: "#28a745"
+        });
+
+        return;
+      }
+    }
+
+    // If backend did not finish yet → keep checking until done
+    addToLog("⏳ ZIP still processing… will auto-download when ready.");
+
+    const recoveryInterval = setInterval(async () => {
+      const r = await fetch(`/status?key=${key}`);
+      if (!r.ok) return;
+
+      const s = await r.json();
+
+      if (s.completed && s.downloadUrl) {
+        clearInterval(recoveryInterval);
+
+        addToLog("🟢 ZIP is now ready! Downloading…");
+
+        const a = document.createElement("a");
+        a.href = s.downloadUrl;
+        a.download = `certificates_${key}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        Swal.fire({
+          icon: "success",
+          title: "Completed!",
+          html: `
+            Your certificate ZIP file is ready.<br>
+            Thank you for choosing us! 🤝
+          `,
+          confirmButtonColor: "#28a745"
+        });
+      }
+    }, 3000); // check every 3 seconds
+
+  } catch (e) {
+    addToLog("❌ Error during recovery: " + e.message);
+  }
+};
+
+
+    // Fallback: Wait for completion with timeout
+    await new Promise((resolve, reject) => {
+      const checkInterval = setInterval(() => {
+        if (window.generationCompleted) {
+          clearInterval(checkInterval);
+          resolve();
+        }
+      }, 500);
+      
+// Timeout after 4 hours
+setTimeout(() => {
+  clearInterval(checkInterval);
+  if (!window.generationCompleted) {
+    reject(new Error("Generation timeout after 4 hours"));
+  }
+}, 14400000); // 14,400,000 ms = 4 hours
+
+    });
+
+  } catch (err) {
+    console.error("❌ Generation error:", err);
+    
+    // Close SSE connection if still open
+    if (window.currentEventSource) {
+      window.currentEventSource.close();
+      window.currentEventSource = null;
+    }
+    
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: err.message,
+      footer: err.message.includes("timeout") 
+        ? "The generation is taking longer than expected. Please try again with fewer certificates." 
+        : ""
+    });
+  }
+});
+
+// Stop button handler
+async function stopNow() {
+  try {
+    const key = localStorage.getItem("GEN_KEY");
+    if (!key) {
+      Swal.fire({
+        icon: "warning",
+        title: "No Active Generation",
+        text: "No generation process is currently running."
+      });
+      return;
+    }
+
+    const res = await fetch("https://saas-8nu8.onrender.com/stop-generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key })
+    });
+    
+    const data = await res.json();
+    
+    if (data.success) {
+      // Update UI to show stopped status
+      const statusEl = document.getElementById("swal-status");
+      const logEl = document.getElementById("swal-log-text");
+      
+      if (statusEl) statusEl.textContent = "Stopping...";
+      if (logEl) {
+        logEl.innerHTML += "<br>[System] Stopping generation...";
+        const logContainer = document.getElementById("swal-log");
+        if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
+      }
+      
+      // Close SSE connection
+      if (window.currentEventSource) {
+        window.currentEventSource.close();
+        window.currentEventSource = null;
+      }
+      
+      Swal.fire({
+        icon: "info",
+        title: "Stopped!",
+        text: "Generation process has been stopped.",
+        confirmButtonColor: "#dc3545"
+      });
+    } else {
+      throw new Error(data.error || "Failed to stop generation");
+    }
+  } catch (error) {
+    console.error("Error stopping generation:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Failed to stop generation: " + error.message
+    });
+  }
+}
+
+// Manual download function as fallback
+function manualDownload() {
+  const key = localStorage.getItem("GEN_KEY");
+  if (key) {
+    const downloadUrl = `https://saas-8nu8.onrender.com/download?key=${key}`;
+    window.open(downloadUrl, '_blank');
+  } else {
+    Swal.fire({
+      icon: "warning",
+      title: "No Download Available",
+      text: "No generation key found. Please generate certificates first."
+    });
+  }
+}
+
+    // Initialize the app
+    window.addEventListener("load", () => {
+      createDirectionPad();
+      updateDebug();
+    });
+  </script>
+ <!-- Professional Offer Badge -->
+<div id="offerBadge" style="
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 9999;
+  font-family: 'Outfit', sans-serif;
+  background: transparent;
+  display: inline-block;
+">
+
+  <!-- Close Badge Button -->
+  <button id="closeBadge" style="
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #D4AF37;
+      color: #0D1B2A;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+  ">×</button>
+
+  <!-- Offer Button -->
+  <button id="offerBtn" style="
+    background: linear-gradient(135deg, #D4AF37 0%, #F7D873 100%);
+    color: #0D1B2A;
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+  ">
+    <span style="display: inline-block; animation: gentlePulse 2s infinite ease-in-out;">✨</span>
+    Limited Time Offer
+    <span style="display: inline-block; animation: gentlePulse 2s infinite ease-in-out; animation-delay: 0.5s;">✨</span>
+  </button>
+
+  <!-- Offer Tooltip -->
+  <div id="offerTooltip" style="
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background: #0D1B2A;
+    color: #D4AF37;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    white-space: nowrap;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  ">
+    <span>Click to 
+    exclusive MVP benefits</span>
+    <button id="closeTooltip" style="
+        background: none;
+        border: none;
+        color: #D4AF37;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 2px 5px;
+    ">×</button>
+  </div>
+
+</div>
+
+<!-- Premium Offer Modal -->
+<div id="offerModal" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+">
+
+  <div style="
+    background: linear-gradient(135deg, #0D1B2A 0%, #093A3E 100%);
+    color: #F7F2E7;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 480px;
+    width: 90%;
+    border: 2px solid #D4AF37;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  ">
+
+    <!-- Close Button -->
+    <button id="closeModal" style="
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: #D4AF37;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    ">×</button>
+
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div style="
+        background: #D4AF37;
+        color: #0D1B2A;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 14px;
+        display: inline-block;
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+      ">MVP LAUNCH SPECIAL</div>
+      <h3 style="
+        color: #F7F2E7;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #D4AF37, #F7D873);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      ">Exclusive Early Access</h3>
+    </div>
+
+    <!-- Benefits -->
+    <div style="margin-bottom: 30px;">
+      <div style="
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 12px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        border-left: 4px solid #D4AF37;
+      ">
+        <span style="font-size: 24px; margin-right: 15px;">🎁</span>
+        <div>
+          <div style="font-weight: 700; color: #D4AF37;">Full Premium Access</div>
+          <div style="font-size: 14px; opacity: 0.9;">All features unlocked during MVP phase</div>
+        </div>
+      </div>
+      <div style="
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 12px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        border-left: 4px solid #D4AF37;
+      ">
+        <span style="font-size: 24px; margin-right: 15px;">💝</span>
+        <div>
+          <div style="font-weight: 700; color: #D4AF37;">Completely Free</div>
+          <div style="font-size: 14px; opacity: 0.9;">No credit card required</div>
+        </div>
+      </div>
+      <div style="
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        background: rgba(212, 175, 55, 0.1);
+        border-radius: 10px;
+        border-left: 4px solid #D4AF37;
+      ">
+        <span style="font-size: 24px; margin-right: 15px;">⭐</span>
+        <div>
+          <div style="font-weight: 700; color: #D4AF37;">Priority Support</div>
+          <div style="font-size: 14px; opacity: 0.9;">Direct access to our development team</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <button onclick="showSection('generator')" style="
+      background: linear-gradient(135deg, #D4AF37 0%, #F7D873 100%);
+      color: #0D1B2A;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    ">Start Creating Certificates Now</button>
+
+    <!-- Footer Note -->
+    <div style="
+      text-align: center;
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.7;
+    ">This special offer is available for a limited time only</div>
+
+  </div>
+</div>
+
+<!-- Styles and Animations -->
+<style>
+@keyframes gentlePulse {
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:0.8;transform:scale(1.1);}
+}
+#offerBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.6);}
+#offerBtn:active { transform: translateY(0);}
+#closeModal:hover { background: rgba(212,175,55,0.2); transform: rotate(90deg);}
+#offerModal button:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.6);}
+#closeBadge:hover { background: #F7D873; transform: scale(1.1);}
+#closeTooltip:hover { color: #F7D873; transform: scale(1.2);}
+</style>
+
+<!-- Script -->
+<script>
+const offerBadge = document.getElementById("offerBadge");
+const offerBtn = document.getElementById("offerBtn");
+const offerTooltip = document.getElementById("offerTooltip");
+const closeTooltip = document.getElementById("closeTooltip");
+const closeBadge = document.getElementById("closeBadge");
+const offerModal = document.getElementById("offerModal");
+const closeModal = document.getElementById("closeModal");
+const modalContent = offerModal.querySelector('div > div');
+
+let tooltipTimeout;
+
+// Tooltip hover behavior
+offerBtn.addEventListener('mouseenter', () => {
+  clearTimeout(tooltipTimeout);
+  offerTooltip.style.opacity = '1';
+  offerTooltip.style.transform = 'translateY(0)';
+});
+offerBtn.addEventListener('mouseleave', () => {
+  tooltipTimeout = setTimeout(() => {
+    offerTooltip.style.opacity = '0';
+    offerTooltip.style.transform = 'translateY(-10px)';
+  }, 300);
+});
+
+// Tooltip close button
+closeTooltip.addEventListener('click', () => {
+  offerTooltip.style.opacity = '0';
+  offerTooltip.style.transform = 'translateY(-10px)';
+  clearTimeout(tooltipTimeout);
+});
+
+// Badge close button
+closeBadge.addEventListener('click', () => {
+  offerBadge.style.display = 'none';
+});
+
+// Show modal on button click
+offerBtn.addEventListener('click', () => {
+  offerModal.style.display = 'flex';
+  setTimeout(() => {
+    offerModal.style.opacity = '1';
+    modalContent.style.transform = 'scale(1)';
+  }, 10);
+});
+
+// Close modal
+closeModal.addEventListener('click', () => {
+  offerModal.style.opacity = '0';
+  modalContent.style.transform = 'scale(0.9)';
+  setTimeout(() => { offerModal.style.display = 'none'; }, 300);
+});
+
+// Close modal when clicking outside
+offerModal.addEventListener('click', (e) => {
+  if(e.target === offerModal){
+    offerModal.style.opacity = '0';
+    modalContent.style.transform = 'scale(0.9)';
+    setTimeout(()=>{ offerModal.style.display='none'; },300);
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape' && offerModal.style.display==='flex'){
+    offerModal.style.opacity='0';
+    modalContent.style.transform='scale(0.9)';
+    setTimeout(()=>{ offerModal.style.display='none'; },300);
+  }
+});
+</script>
+</body>
+</html>
+
