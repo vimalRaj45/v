@@ -88,8 +88,6 @@
     border-bottom: 2px solid var(--secondary);
 }
 
-
-
 .language-selector {
     display: flex;
     justify-content: flex-end;
@@ -127,31 +125,11 @@
     font-size: 1.1rem;
 }
 
-
-/* Hide Google Translate's default dropdown */
-.goog-te-banner-frame, .goog-te-menu-value, .goog-te-menu-frame {
-    display: none !important;
-}
-
-#google_translate_element {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-/* This will show Google Translate's select box but make it invisible */
-.goog-te-combo {
-    color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-}
 /* Adjust body padding */
 body {
     color: var(--dark);
     padding-top: 120px; /* Changed from 76px to 120px */
+    overflow-x: hidden;
 }
 
 /* Navbar position */
@@ -589,11 +567,11 @@ body {
 </head>
 <body>
 
-<!-- Language Bar -->
+    <!-- Language Bar -->
 <div class="language-bar">
     <div class="container">
         <div class="language-selector">
-            <button class="language-btn active" onclick="translateToEnglish()" style="
+            <button class="language-btn active" onclick="switchLanguage('en')" style="
                 background: #d4af37;
                 border-color: #d4af37;
                 color: #0a2463;
@@ -602,7 +580,7 @@ body {
                 <span class="language-flag">🇺🇸</span>
                 <span>English</span>
             </button>
-            <button class="language-btn" onclick="translateToTamil()" style="
+            <button class="language-btn" onclick="switchLanguage('ta')" style="
                 background: transparent;
                 border-color: rgba(255, 255, 255, 0.3);
                 color: white;
@@ -610,7 +588,7 @@ body {
                 <span class="language-flag">🇮🇳</span>
                 <span>தமிழ்</span>
             </button>
-            <div id="google_translate_element"></div>
+            <div id="google_translate_element" style="display: inline-block;"></div>
         </div>
     </div>
 </div>
@@ -1424,7 +1402,8 @@ body {
             });
         }
          
-        function switchLanguage(lang) {
+         
+         function switchLanguage(lang) {
     // Update button styles
     const buttons = document.querySelectorAll('[onclick^="switchLanguage"]');
     buttons.forEach(btn => {
@@ -1441,15 +1420,15 @@ body {
         }
     });
     
-    // Trigger Google Translate
-    if(lang === 'ta') {
-        translateToTamil();
+    // Show/hide content based on language
+    if (lang === 'en') {
+        document.querySelectorAll('.tamil-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.english-content').forEach(el => el.style.display = 'block');
     } else {
-        translateToEnglish();
+        document.querySelectorAll('.english-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.tamil-content').forEach(el => el.style.display = 'block');
     }
 }
-    
-   
         // Form submission with SweetAlert
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
