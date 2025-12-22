@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I-CAM Solution Services | CCTV & Security Experts</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- Google Fonts - Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary: #0a2463; /* Deep navy blue */
+            --secondary: #d4af37; /* Gold */
+            --accent: #c41e3a; /* Crimson red */
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        * {
+            font-family: 'Outfit', sans-serif;
+        }
+        
+
+        
+        .bg-primary {
+            background-color: var(--primary) !important;
+        }
+        
+        .text-primary {
+            color: var(--primary) !important;
+        }
+        
+        .text-secondary {
+            color: var(--secondary) !important;
+        }
+        
+        .text-accent {
+            color: var(--accent) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background-color: #081d52;
+            border-color: #081d52;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .btn-accent:hover {
+            background-color: #b01a34;
+            border-color: #b01a34;
+            color: white;
+        }
+        
+        
+        
+        
+        /* Language Bar */
+.language-bar {
+    background-color: var(--primary);
+    color: white;
+    padding: 8px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1031; /* Above navbar */
+    border-bottom: 2px solid var(--secondary);
+}
+
+
+
+.language-selector {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.language-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.language-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--secondary);
+}
+
+.language-btn.active {
+    background: var(--secondary);
+    color: var(--primary);
+    border-color: var(--secondary);
+    font-weight: 600;
+}
+
+.language-flag {
+    font-size: 1.1rem;
+}
+
+
+/* Hide Google Translate's default dropdown */
+.goog-te-banner-frame, .goog-te-menu-value, .goog-te-menu-frame {
+    display: none !important;
+}
+
+#google_translate_element {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* This will show Google Translate's select box but make it invisible */
+.goog-te-combo {
+    color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+}
+/* Adjust body padding */
+body {
+    color: var(--dark);
+    padding-top: 120px; /* Changed from 76px to 120px */
+}
+
+/* Navbar position */
+.navbar {
+    top: 40px; /* Height of language bar */
+}
+        
+        /* Navbar Styling */
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            font-size: 1.05rem;
+        }
+        
+        .navbar-nav .nav-link:hover, 
+        .navbar-nav .nav-link.active {
+            color: var(--secondary) !important;
+        }
+        
+        /* Top Carousel */
+        .top-carousel {
+            margin-top: -76px;
+            padding-top: 76px;
+        }
+        
+        .carousel-item {
+            height: 100vh;
+            min-height: 600px;
+            max-height: 800px;
+        }
+        
+        .carousel-item img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .carousel-caption {
+            background: rgba(10, 36, 99, 0.85);
+            border-radius: 15px;
+            padding: 40px;
+            bottom: 100px;
+            left: 10%;
+            right: 10%;
+            text-align: left;
+        }
+        
+        .carousel-caption h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .carousel-caption p {
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+        
+        .carousel-indicators button {
+            width: 12px !important;
+            height: 12px !important;
+            border-radius: 50% !important;
+            margin: 0 8px !important;
+        }
+        
+        /* Services Section */
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .section-title .underline {
+            width: 100px;
+            height: 5px;
+            background-color: var(--secondary);
+            margin-top: 10px;
+        }
+        
+        .service-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-icon {
+            background-color: var(--primary);
+            color: white;
+            font-size: 2.8rem;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .service-card h4 {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .service-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .service-list li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 30px;
+            font-weight: 400;
+        }
+        
+        .service-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Locations Section */
+        .location-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .location-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Contact Section */
+        .contact-info-box {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            height: 100%;
+        }
+        
+        .contact-icon {
+            background-color: var(--primary);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        footer a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 400;
+        }
+        
+        footer a:hover {
+            color: var(--secondary);
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .carousel-caption {
+                padding: 30px;
+                bottom: 80px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 2.5rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .carousel-item {
+                height: 80vh;
+                min-height: 500px;
+            }
+            
+            .carousel-caption {
+                padding: 20px;
+                bottom: 50px;
+                left: 5%;
+                right: 5%;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 2rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .carousel-item {
+                height: 70vh;
+                min-height: 450px;
+            }
+            
+            .carousel-caption {
+                padding: 20px;
+                bottom: 30px;
+            }
+            
+            .carousel-caption h2 {
+                font-size: 1.8rem;
+            }
+            
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+            
+            .btn-lg {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* About Section */
+        .about-img {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Testimonials */
+        .testimonial-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            height: 100%;
+        }
+        
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 3px solid var(--secondary);
+        }
+        
+        .testimonial-card h5 {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Why Choose Us */
+        .feature-box {
+            text-align: center;
+            padding: 25px 20px;
+            background-color: white;
+            border-radius: 15px;
+            height: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-box h5 {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            background: linear-gradient(rgba(10, 36, 99, 0.9), rgba(10, 36, 99, 0.95)), url('https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 100px 0;
+        }
+        
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Custom spacing */
+        .section-padding {
+            padding: 100px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 70px 0;
+            }
+            
+            .cta-section {
+                padding: 70px 0;
+            }
+            
+            .cta-section h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .section-padding {
+                padding: 60px 0;
+            }
+            
+            .cta-section {
+                padding: 60px 0;
+            }
+            
+            .cta-section h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Owner Section */
+        .owner-section {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .owner-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 768px) {
+    body {
+        padding-top: 110px; /* Adjust for mobile */
+    }
+    
+    .language-bar {
+        padding: 6px 0;
+    }
+    
+    .language-selector {
+        justify-content: center;
+    }
+    
+    .language-btn {
+        padding: 4px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .navbar {
+        top: 34px; /* Adjust for mobile */
+    }
+}
+    </style>
+      
+</head>
+<body>
+
+<!-- Language Bar -->
+<div class="language-bar">
+    <div class="container">
+        <div class="language-selector">
+            <button class="language-btn active" onclick="translateToEnglish()" style="
+                background: #d4af37;
+                border-color: #d4af37;
+                color: #0a2463;
+                font-weight: 600;
+            ">
+                <span class="language-flag">🇺🇸</span>
+                <span>English</span>
+            </button>
+            <button class="language-btn" onclick="translateToTamil()" style="
+                background: transparent;
+                border-color: rgba(255, 255, 255, 0.3);
+                color: white;
+            ">
+                <span class="language-flag">🇮🇳</span>
+                <span>தமிழ்</span>
+            </button>
+            <div id="google_translate_element"></div>
+        </div>
+    </div>
+</div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-camera-video me-2"></i>I-<span class="text-secondary">CAM</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#locations">Locations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a class="btn btn-accent" href="tel:9894510065">
+                            <i class="bi bi-telephone me-2"></i>Call Now
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Top Carousel -->
+    <section id="home" class="top-carousel">
+        <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="3"></button>
+            </div>
+            
+            <!-- Carousel Items -->
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" class="d-block w-100" alt="CCTV Installation">
+                    <div class="carousel-caption">
+                        <h2>Your Safety Is Our <span class="text-secondary">Priority</span></h2>
+                        <p>Professional CCTV installation, maintenance, and security solutions for homes and businesses across Viluppuram, Salem, and Rasipuram.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button onclick="showFreeQuoteAlert()" class="btn btn-accent btn-lg">
+                                <i class="bi bi-chat-dots me-2"></i>Get Free Quote
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-eye me-2"></i>Our Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" class="d-block w-100" alt="Security Monitoring">
+                    <div class="carousel-caption">
+                        <h2>24/7 Remote <span class="text-secondary">Monitoring</span></h2>
+                        <p>Access your security feeds from anywhere using our mobile app and cloud services. Stay connected and secure at all times.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button onclick="showServiceAlert('Mobile App Setup')" class="btn btn-accent btn-lg">
+                                <i class="bi bi-phone me-2"></i>Mobile App Setup
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-info-circle me-2"></i>Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" class="d-block w-100" alt="Network Solutions">
+                    <div class="carousel-caption">
+                        <h2>Network & <span class="text-secondary">Campus WiFi</span></h2>
+                        <p>Complete networking solutions for offices, schools, and colleges including LAN setup and campus WiFi installation.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button onclick="showServiceAlert('Network Setup')" class="btn btn-accent btn-lg">
+                                <i class="bi bi-wifi me-2"></i>Network Setup
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-megaphone me-2"></i>Intercom Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" class="d-block w-100" alt="Maintenance Services">
+                    <div class="carousel-caption">
+                        <h2>Maintenance & <span class="text-secondary">Support</span></h2>
+                        <p>Regular maintenance and 24/7 support to keep your security systems running perfectly. We're here when you need us.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button onclick="showEmergencyAlert()" class="btn btn-accent btn-lg">
+                                <i class="bi bi-telephone me-2"></i>Emergency Call
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-tools me-2"></i>Maintenance Plans
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding bg-light">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Our Services</h2>
+                <p class="lead">Comprehensive security and networking solutions tailored to your needs</p>
+                <div class="underline mx-auto"></div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Service 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card service-card">
+                        <div class="card-body p-4">
+                            <div class="service-icon">
+                                <i class="bi bi-camera-video"></i>
+                            </div>
+                            <h4 class="text-center">CCTV Sales & Installation</h4>
+                            <p class="text-center">Professional installation of high-quality CCTV systems for residential and commercial properties.</p>
+                            <ul class="service-list mt-3">
+                                <li>Indoor & Outdoor Cameras</li>
+                                <li>Full HD & Night Vision</li>
+                                <li>Wide-Angle & PTZ Cameras</li>
+                                <li>Hidden Camera Solutions</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <button onclick="showServiceAlert('CCTV Sales & Installation')" class="btn btn-primary">Get Quote</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card service-card">
+                        <div class="card-body p-4">
+                            <div class="service-icon">
+                                <i class="bi bi-tools"></i>
+                            </div>
+                            <h4 class="text-center">CCTV Maintenance & Repair</h4>
+                            <p class="text-center">Regular maintenance and prompt repair services to ensure your security system operates flawlessly.</p>
+                            <ul class="service-list mt-3">
+                                <li>System Diagnostics</li>
+                                <li>Camera Calibration</li>
+                                <li>Hardware Replacement</li>
+                                <li>Preventive Maintenance</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <button onclick="showServiceAlert('CCTV Maintenance & Repair')" class="btn btn-primary">Schedule Service</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card service-card">
+                        <div class="card-body p-4">
+                            <div class="service-icon">
+                                <i class="bi bi-wifi"></i>
+                            </div>
+                            <h4 class="text-center">Office & Campus Network</h4>
+                            <p class="text-center">Complete LAN networking solutions for offices, schools, and colleges with campus-wide WiFi coverage.</p>
+                            <ul class="service-list mt-3">
+                                <li>Office LAN Network Setup</li>
+                                <li>School/College Campus WiFi</li>
+                                <li>Structured Cabling</li>
+                                <li>Network Security Setup</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <button onclick="showServiceAlert('Office & Campus Network')" class="btn btn-primary">Network Setup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card service-card">
+                        <div class="card-body p-4">
+                            <div class="service-icon">
+                                <i class="bi bi-megaphone"></i>
+                            </div>
+                            <h4 class="text-center">Intercom Systems</h4>
+                            <p class="text-center">Advanced intercom and public address systems for offices, schools, and residential complexes.</p>
+                            <ul class="service-list mt-3">
+                                <li>Video Door Phones</li>
+                                <li>Campus Intercom Systems</li>
+                                <li>Public Address Systems</li>
+                                <li>Emergency Alert Systems</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <button onclick="showServiceAlert('Intercom Systems')" class="btn btn-primary">Install Intercom</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card service-card">
+                        <div class="card-body p-4">
+                            <div class="service-icon">
+                                <i class="bi bi-phone"></i>
+                            </div>
+                            <h4 class="text-center">Remote Viewing & Monitoring</h4>
+                            <p class="text-center">Access your CCTV footage from anywhere using your smartphone, tablet, or computer.</p>
+                            <ul class="service-list mt-3">
+                                <li>Mobile App Integration</li>
+                                <li>24/7 Remote Access</li>
+                                <li>Cloud Storage Options</li>
+                                <li>Real-Time Alerts</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <button onclick="showServiceAlert('Remote Viewing & Monitoring')" class="btn btn-primary">Setup Remote Access</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service 6 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card service-card">
+                        <div class="card-body p-4">
+                            <div class="service-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h4 class="text-center">Security Consulting</h4>
+                            <p class="text-center">Professional security assessment and consulting services to design optimal security solutions.</p>
+                            <ul class="service-list mt-3">
+                                <li>Security Risk Assessment</li>
+                                <li>System Design & Planning</li>
+                                <li>Vendor Selection Assistance</li>
+                                <li>Compliance Consultation</li>
+                            </ul>
+                            <div class="text-center mt-4">
+                                <button onclick="showServiceAlert('Security Consulting')" class="btn btn-primary">Consult Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section with Owner Info -->
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="section-title">
+                        <h2>About I-CAM Solution Services</h2>
+                        <div class="underline"></div>
+                    </div>
+                    <p class="lead">We are a trusted security and networking solutions provider serving Viluppuram, Salem, and Rasipuram districts.</p>
+                    <p>With years of experience in the security industry, our team of certified technicians provides comprehensive CCTV, networking, and security solutions for residential, commercial, and institutional clients.</p>
+                    <p>Our mission is to deliver peace of mind through advanced security technology, professional installation, and exceptional customer service.</p>
+                    
+                    <div class="owner-section mt-5">
+                        <div class="text-center">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" class="owner-img" alt="Soundharraj">
+                            <h4 class="text-primary">Soundharraj</h4>
+                            <p class="text-muted">Founder & CEO</p>
+                            <p>With over 10 years of experience in security systems and networking, Soundharraj leads our team with expertise and dedication to customer satisfaction.</p>
+                            <button onclick="showOwnerAlert()" class="btn btn-accent mt-2">
+                                <i class="bi bi-person-badge me-2"></i>Contact Owner
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="about-img">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="img-fluid rounded" alt="Security Installation">
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="bi bi-award"></i>
+                                </div>
+                                <h5>Certified Experts</h5>
+                                <p>Licensed and trained professionals</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+                                <h5>Quality Assurance</h5>
+                                <p>Premium products with warranty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="section-padding bg-light">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Our Service Areas</h2>
+                <p class="lead">Serving across multiple districts with quality security solutions</p>
+                <div class="underline mx-auto"></div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Location 1 -->
+                <div class="col-md-4">
+                    <div class="location-card p-4 text-center">
+                        <div class="location-icon mx-auto">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h4 class="text-primary">Rasipuram</h4>
+                        <p>Our headquarters and primary service area. We provide complete security and networking solutions for residential and commercial properties in Rasipuram and surrounding areas.</p>
+                        <div class="mt-3">
+                            <h6>Services Available:</h6>
+                            <p class="small">CCTV Installation, Network Setup, Intercom Systems, Maintenance</p>
+                        </div>
+                        <button onclick="showLocationAlert('Rasipuram')" class="btn btn-primary mt-3">
+                            <i class="bi bi-telephone me-2"></i>Contact Rasipuram
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Location 2 -->
+                <div class="col-md-4">
+                    <div class="location-card p-4 text-center">
+                        <div class="location-icon mx-auto">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h4 class="text-primary">Salem</h4>
+                        <p>Expanding our quality services to Salem district. Specializing in office network setups, school campus security, and commercial CCTV installations.</p>
+                        <div class="mt-3">
+                            <h6>Services Available:</h6>
+                            <p class="small">Office LAN Networks, School Security, Commercial CCTV, WiFi Setup</p>
+                        </div>
+                        <button onclick="showLocationAlert('Salem')" class="btn btn-primary mt-3">
+                            <i class="bi bi-telephone me-2"></i>Contact Salem
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Location 3 -->
+                <div class="col-md-4">
+                    <div class="location-card p-4 text-center">
+                        <div class="location-icon mx-auto">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h4 class="text-primary">Viluppuram</h4>
+                        <p>Bringing advanced security solutions to Viluppuram district. Focus on agricultural, industrial, and residential security systems with remote monitoring capabilities.</p>
+                        <div class="mt-3">
+                            <h6>Services Available:</h6>
+                            <p class="small">Industrial CCTV, Farm Security, Residential Systems, Remote Monitoring</p>
+                        </div>
+                        <button onclick="showLocationAlert('Viluppuram')" class="btn btn-primary mt-3">
+                            <i class="bi bi-telephone me-2"></i>Contact Viluppuram
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section-padding">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>What Our Clients Say</h2>
+                <p class="lead">Trusted by homeowners, businesses, and institutions across our service areas</p>
+                <div class="underline mx-auto"></div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Testimonial 1 -->
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="text-center">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="testimonial-img" alt="Client">
+                            <h5>Rajesh Kumar</h5>
+                            <p class="text-muted small">Business Owner, Salem</p>
+                            <div class="text-warning mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                        <p class="text-center">"I-CAM installed CCTV cameras and office network in my Salem business. Their service was professional, and everything works perfectly. Highly recommended!"</p>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="text-center">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="testimonial-img" alt="Client">
+                            <h5>Priya Sharma</h5>
+                            <p class="text-muted small">School Principal, Rasipuram</p>
+                            <div class="text-warning mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                        </div>
+                        <p class="text-center">"Excellent service! The team installed campus CCTV, intercom system, and WiFi across our school. Soundharraj personally supervised the project. Highly satisfied!"</p>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="text-center">
+                            <img src="https://randomuser.me/api/portraits/men/65.jpg" class="testimonial-img" alt="Client">
+                            <h5>Arun Patel</h5>
+                            <p class="text-muted small">Factory Owner, Viluppuram</p>
+                            <div class="text-warning mb-3">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                        <p class="text-center">"We had I-CAM setup security system in our Viluppuram factory. They were professional, punctual, and the installation was done neatly. Their after-sales support is excellent."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h2>Ready to Secure Your Property?</h2>
+                    <p class="lead mb-4">Contact us today for a free security consultation and quote. Protect what matters most with I-CAM Solution Services.</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <button onclick="showEmergencyAlert()" class="btn btn-accent btn-lg">
+                            <i class="bi bi-telephone me-2"></i>Emergency: 98945 10065
+                        </button>
+                        <button onclick="showFreeQuoteAlert()" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-envelope me-2"></i>Get Free Quote
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div class="section-title text-center">
+                <h2>Contact Us</h2>
+                <p class="lead">Get in touch for a free security consultation across all locations</p>
+                <div class="underline mx-auto"></div>
+            </div>
+            
+            <div class="row g-5">
+                <!-- Contact Info -->
+                <div class="col-lg-5">
+                    <div class="contact-info-box">
+                        <h3 class="text-primary mb-4">Get In Touch</h3>
+                        
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="contact-icon me-4">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <div>
+                                <h5>Call Us (24/7)</h5>
+                                <p class="mb-0">+91 98945 10065</p>
+                                <p class="mb-0">+91 98945 10065</p>
+                                <small class="text-muted">For all locations: Rasipuram, Salem, Viluppuram</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="contact-icon me-4">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+                            <div>
+                                <h5>Email Us</h5>
+                                <p class="mb-0">soundharraj9894@gmail.com</p>
+                                <small class="text-muted">Owner: Soundharraj</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="contact-icon me-4">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div>
+                                <h5>Service Areas</h5>
+                                <p class="mb-0">Rasipuram (Headquarters)</p>
+                                <p class="mb-0">Salem District</p>
+                                <p class="mb-0">Viluppuram District</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="contact-icon me-4">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div>
+                                <h5>Business Hours</h5>
+                                <p class="mb-0">Monday - Sunday: 8:00 AM - 8:00 PM</p>
+                                <p class="mb-0">Emergency Services: 24/7 Available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="text-primary mb-4">Send Us a Message</h3>
+                            <form id="contactForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Full Name *</label>
+                                        <input type="text" class="form-control form-control-lg" id="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Phone Number *</label>
+                                        <input type="tel" class="form-control form-control-lg" id="phone" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="location" class="form-label">Service Location *</label>
+                                    <select class="form-select form-select-lg" id="location" required>
+                                        <option value="">Select your location</option>
+                                        <option value="rasipuram">Rasipuram</option>
+                                        <option value="salem">Salem</option>
+                                        <option value="viluppuram">Viluppuram</option>
+                                        <option value="other">Other Area</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="service" class="form-label">Service Required *</label>
+                                    <select class="form-select form-select-lg" id="service" required>
+                                        <option value="">Select a service</option>
+                                        <option value="cctv">CCTV Installation</option>
+                                        <option value="maintenance">CCTV Maintenance</option>
+                                        <option value="office-network">Office LAN Network</option>
+                                        <option value="campus-wifi">School/College Campus WiFi</option>
+                                        <option value="intercom">Intercom Systems</option>
+                                        <option value="remote">Remote Viewing Setup</option>
+                                        <option value="consulting">Security Consulting</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="message" class="form-label">Message *</label>
+                                    <textarea class="form-control form-control-lg" id="message" rows="5" required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-accent btn-lg w-100 py-3">
+                                    <i class="bi bi-send me-2"></i>Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="footer-logo mb-3">
+                        <i class="bi bi-camera-video me-2"></i>I-<span class="text-secondary">CAM</span>
+                    </div>
+                    <p>Providing premium security and networking solutions across Rasipuram, Salem, and Viluppuram districts. Your safety is our priority.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="#" class="text-white fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-whatsapp"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-secondary mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#home">Home</a></li>
+                        <li class="mb-2"><a href="#about">About</a></li>
+                        <li class="mb-2"><a href="#services">Services</a></li>
+                        <li class="mb-2"><a href="#locations">Locations</a></li>
+                        <li class="mb-2"><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-secondary mb-4">Our Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#services">CCTV Sales & Installation</a></li>
+                        <li class="mb-2"><a href="#services">Office LAN Networks</a></li>
+                        <li class="mb-2"><a href="#services">Campus WiFi Setup</a></li>
+                        <li class="mb-2"><a href="#services">Intercom Systems</a></li>
+                        <li class="mb-2"><a href="#services">Remote Monitoring</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3">
+                    <h5 class="text-secondary mb-4">Contact Info</h5>
+                    <p><i class="bi bi-telephone me-2"></i> +91 98945 10065</p>
+                    <p><i class="bi bi-envelope me-2"></i> soundharraj9894@gmail.com</p>
+                    <p><i class="bi bi-person me-2"></i> Owner: Soundharraj</p>
+                    <p><i class="bi bi-geo-alt me-2"></i> Service Areas: Rasipuram, Salem, Viluppuram</p>
+                </div>
+            </div>
+            
+            <hr class="mt-5 mb-4" style="border-color: rgba(255,255,255,0.1);">
+            
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 I-CAM Solution Services. All Rights Reserved.</p>
+                <p class="small mt-2">Serving Rasipuram, Salem, and Viluppuram districts with quality security solutions</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // SweetAlert Functions
+        function showFreeQuoteAlert() {
+            Swal.fire({
+                title: 'Get Free Quote',
+                html: `
+                    <p>Contact <strong>Soundharraj</strong> for a free security consultation and quote:</p>
+                    <div class="text-start mt-3">
+                        <p><i class="bi bi-telephone text-primary"></i> <strong>Phone:</strong> 98945 10065</p>
+                        <p><i class="bi bi-envelope text-primary"></i> <strong>Email:</strong> soundharraj9894@gmail.com</p>
+                        <p><i class="bi bi-geo-alt text-primary"></i> <strong>Service Areas:</strong> Rasipuram, Salem, Viluppuram</p>
+                    </div>
+                    <p class="mt-3">We'll contact you within 24 hours with a customized quote.</p>
+                `,
+                icon: 'info',
+                confirmButtonText: 'OK, Got It!',
+                confirmButtonColor: '#0a2463',
+                showCancelButton: true,
+                cancelButtonText: 'Call Now',
+                preConfirm: () => {
+                    // In a real app, you would submit form data here
+                    return true;
+                }
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = 'tel:9894510065';
+                }
+            });
+        }
+        
+        function showServiceAlert(serviceName) {
+            Swal.fire({
+                title: `${serviceName}`,
+                html: `
+                    <p>Interested in <strong>${serviceName}</strong>?</p>
+                    <p>Our expert team led by <strong>Soundharraj</strong> will provide you with the best solution.</p>
+                    <div class="text-start mt-3">
+                        <p><i class="bi bi-check-circle text-success"></i> Free Site Survey</p>
+                        <p><i class="bi bi-check-circle text-success"></i> Customized Solution</p>
+                        <p><i class="bi bi-check-circle text-success"></i> Professional Installation</p>
+                        <p><i class="bi bi-check-circle text-success"></i> After-Sales Support</p>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Request Quote',
+                cancelButtonText: 'Learn More',
+                confirmButtonColor: '#0a2463',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    showFreeQuoteAlert();
+                }
+            });
+        }
+        
+        function showEmergencyAlert() {
+            Swal.fire({
+                title: '24/7 Emergency Support',
+                html: `
+                    <p>For emergency security system issues, contact us immediately:</p>
+                    <div class="text-center my-4">
+                        <h3><i class="bi bi-telephone text-danger"></i> 98945 10065</h3>
+                        <p class="mt-2">Owner: <strong>Soundharraj</strong></p>
+                    </div>
+                    <p>We provide emergency services across all locations: Rasipuram, Salem, and Viluppuram.</p>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Call Now',
+                cancelButtonText: 'Close',
+                confirmButtonColor: '#c41e3a',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'tel:9894510065';
+                }
+            });
+        }
+        
+        function showLocationAlert(locationName) {
+            Swal.fire({
+                title: `${locationName} Office`,
+                html: `
+                    <p>Contact our ${locationName} office for localized service:</p>
+                    <div class="text-start mt-3">
+                        <p><i class="bi bi-telephone text-primary"></i> <strong>Phone:</strong> 98945 10065</p>
+                        <p><i class="bi bi-envelope text-primary"></i> <strong>Email:</strong> soundharraj9894@gmail.com</p>
+                        <p><i class="bi bi-person text-primary"></i> <strong>Contact Person:</strong> Soundharraj</p>
+                        <p><i class="bi bi-clock text-primary"></i> <strong>Service Hours:</strong> 8 AM - 8 PM (24/7 Emergency)</p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Contact Now',
+                confirmButtonColor: '#0a2463',
+                showCancelButton: true,
+                cancelButtonText: 'View Services'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'tel:9894510065';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = '#services';
+                }
+            });
+        }
+        
+        function showOwnerAlert() {
+            Swal.fire({
+                title: 'Soundharraj - Founder & CEO',
+                html: `
+                    <div class="text-center">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="rounded-circle mb-3" width="100" height="100" alt="Soundharraj">
+                        <p>With over 10 years of experience in security systems and networking solutions.</p>
+                        <div class="text-start mt-3">
+                            <p><i class="bi bi-telephone text-primary"></i> <strong>Direct Line:</strong> 98945 10065</p>
+                            <p><i class="bi bi-envelope text-primary"></i> <strong>Email:</strong> soundharraj9894@gmail.com</p>
+                            <p><i class="bi bi-geo-alt text-primary"></i> <strong>Service Areas:</strong> Rasipuram, Salem, Viluppuram</p>
+                            <p><i class="bi bi-award text-primary"></i> <strong>Specialization:</strong> CCTV, Network Setup, Campus Security</p>
+                        </div>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Contact Soundharraj',
+                confirmButtonColor: '#0a2463',
+                showCancelButton: true,
+                cancelButtonText: 'Close'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'tel:9894510065';
+                }
+            });
+        }
+         
+        function switchLanguage(lang) {
+    // Update button styles
+    const buttons = document.querySelectorAll('[onclick^="switchLanguage"]');
+    buttons.forEach(btn => {
+        if (btn.onclick.toString().includes(`'${lang}'`)) {
+            btn.style.background = '#d4af37';
+            btn.style.borderColor = '#d4af37';
+            btn.style.color = '#0a2463';
+            btn.style.fontWeight = '600';
+        } else {
+            btn.style.background = 'transparent';
+            btn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            btn.style.color = 'white';
+            btn.style.fontWeight = '400';
+        }
+    });
+    
+    // Trigger Google Translate
+    if(lang === 'ta') {
+        translateToTamil();
+    } else {
+        translateToEnglish();
+    }
+}
+    
+   
+        // Form submission with SweetAlert
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const location = document.getElementById('location').value;
+            const service = document.getElementById('service').value;
+            
+            // Show success message with SweetAlert
+            Swal.fire({
+                title: 'Thank You!',
+                html: `
+                    <p>Thank you <strong>${name}</strong> for your inquiry!</p>
+                    <div class="text-start mt-3">
+                        <p><i class="bi bi-check-circle text-success"></i> <strong>Service:</strong> ${service}</p>
+                        <p><i class="bi bi-check-circle text-success"></i> <strong>Location:</strong> ${location}</p>
+                        <p><i class="bi bi-check-circle text-success"></i> <strong>Contact:</strong> ${phone}</p>
+                    </div>
+                    <p class="mt-3"><strong>Soundharraj</strong> will contact you within 24 hours to discuss your requirements.</p>
+                `,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#0a2463'
+            });
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    // Update active nav link
+                    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Scroll to target
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile navbar if open
+                    const navbarCollapse = document.getElementById('navbarNav');
+                    if(navbarCollapse.classList.contains('show')) {
+                        new bootstrap.Collapse(navbarCollapse).toggle();
+                    }
+                }
+            });
+        });
+        
+        // Initialize carousel
+        const myCarousel = document.getElementById('mainCarousel');
+        const carousel = new bootstrap.Carousel(myCarousel, {
+            interval: 5000,
+            wrap: true,
+            pause: 'hover'
+        });
+        
+        // Update active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if(scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Set first nav link as active on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.navbar-nav .nav-link').classList.add('active');
+        });
+    </script>
+    <!-- Add this RIGHT BEFORE the closing </body> tag -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'en,ta',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Alternative: Simple Language Toggle -->
+<script>
+    // Simple language toggle for testing
+    function translateToTamil() {
+        // Trigger Google Translate
+        if(typeof google !== 'undefined' && google.translate) {
+            var selectField = document.querySelector("#google_translate_element select");
+            if(selectField) {
+                selectField.value = 'ta';
+                selectField.dispatchEvent(new Event('change'));
+            }
+        }
+    }
+    
+    function translateToEnglish() {
+        // Trigger Google Translate
+        if(typeof google !== 'undefined' && google.translate) {
+            var selectField = document.querySelector("#google_translate_element select");
+            if(selectField) {
+                selectField.value = 'en';
+                selectField.dispatchEvent(new Event('change'));
+            }
+        }
+    }
+</script>
+</body>
+</html>
