@@ -223,97 +223,109 @@
     </nav>
 
     <!-- Top Carousel -->
-    <section id="home" class="mt-n5 pt-5">
-        <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active rounded-circle" style="width:12px; height:12px;"></button>
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" class="rounded-circle" style="width:12px; height:12px;"></button>
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" class="rounded-circle" style="width:12px; height:12px;"></button>
-                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="3" class="rounded-circle" style="width:12px; height:12px;"></button>
-            </div>
-            
-            <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active vh-100 min-vh-600 max-vh-800">
+<section id="home" class="mt-n5 pt-5">
+    <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active rounded-circle" style="width:12px; height:12px;"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" class="rounded-circle" style="width:12px; height:12px;"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" class="rounded-circle" style="width:12px; height:12px;"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="3" class="rounded-circle" style="width:12px; height:12px;"></button>
+        </div>
+        
+        <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="position-relative" style="height: 70vh; min-height: 500px;">
                     <img src="https://cdn.shopify.com/s/files/1/0504/7094/4954/articles/4_520x500_727ebbe5-e6a9-41ef-9929-cdeb2c8323b2.png?v=1734676906" 
                          class="d-block w-100 h-100 object-fit-cover" alt="CCTV Installation">
-                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-4 p-4 p-md-5 start-10 end-10 bottom-0 bottom-md-5 text-start">
-                        <h2 class="display-4 fw-bold mb-3">Your Safety Is Our <span class="text-secondary">Priority</span></h2>
-                        <p class="fs-5 mb-4">Professional CCTV installation, maintenance, and security solutions for homes and businesses across Viluppuram, Salem, Namakkal and Rasipuram.</p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <button onclick="showFreeQuoteAlert()" class="btn btn-accent btn-lg">
-                                <i class="bi bi-chat-dots me-2"></i>Get Free Quote
+                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-3 rounded-md-4 p-3 p-sm-4 p-md-5 w-90 w-sm-85 w-md-75 mx-auto start-0 end-0 bottom-0 bottom-sm-4 bottom-md-5 text-start">
+                        <h2 class="h1 fw-bold mb-2 mb-md-3 fs-1 fs-sm-2 fs-md-3 fs-lg-4">Your Safety Is Our <span class="text-secondary">Priority</span></h2>
+                        <p class="mb-3 mb-md-4 fs-6 fs-sm-5 d-none d-sm-block">Professional CCTV installation, maintenance, and security solutions for homes and businesses across Viluppuram, Salem, Namakkal and Rasipuram.</p>
+                        <p class="mb-3 mb-md-4 fs-6 d-sm-none">Professional CCTV installation across Viluppuram, Salem, Namakkal and Rasipuram.</p>
+                        <div class="d-flex flex-wrap gap-2 gap-sm-3">
+                            <button onclick="showFreeQuoteAlert()" class="btn btn-accent btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-chat-dots me-1 me-sm-2"></i>Get Free Quote
                             </button>
-                            <a href="#services" class="btn btn-outline-light btn-lg">
-                                <i class="bi bi-eye me-2"></i>Our Services
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 2 -->
-                <div class="carousel-item vh-100 min-vh-600 max-vh-800">
-                    <img src="https://a1securityprotection.co.uk/wp-content/uploads/2023/04/Remote-Monitoring-widget-V2-compressed.jpg" 
-                         class="d-block w-100 h-100 object-fit-cover" alt="Security Monitoring">
-                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-4 p-4 p-md-5 start-10 end-10 bottom-0 bottom-md-5 text-start">
-                        <h2 class="display-4 fw-bold mb-3">24/7 Remote <span class="text-secondary">Monitoring</span></h2>
-                        <p class="fs-5 mb-4">Access your security feeds from anywhere using our mobile app and cloud services. Stay connected and secure at all times.</p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <button onclick="showServiceAlert('Mobile App Setup')" class="btn btn-accent btn-lg">
-                                <i class="bi bi-phone me-2"></i>Mobile App Setup
-                            </button>
-                            <a href="#services" class="btn btn-outline-light btn-lg">
-                                <i class="bi bi-info-circle me-2"></i>Learn More
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 3 -->
-                <div class="carousel-item vh-100 min-vh-600 max-vh-800">
-                    <img src="https://mainline.com/wp-content/uploads/2022/07/Networking.jpg" 
-                         class="d-block w-100 h-100 object-fit-cover" alt="Network Solutions">
-                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-4 p-4 p-md-5 start-10 end-10 bottom-0 bottom-md-5 text-start">
-                        <h2 class="display-4 fw-bold mb-3">Network & <span class="text-secondary">Campus WiFi</span></h2>
-                        <p class="fs-5 mb-4">Complete networking solutions for offices, schools, and colleges including LAN setup and campus WiFi installation.</p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <button onclick="showServiceAlert('Network Setup')" class="btn btn-accent btn-lg">
-                                <i class="bi bi-wifi me-2"></i>Network Setup
-                            </button>
-                            <a href="#services" class="btn btn-outline-light btn-lg">
-                                <i class="bi bi-megaphone me-2"></i>Intercom Services
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 4 -->
-                <div class="carousel-item vh-100 min-vh-600 max-vh-800">
-                    <img src="https://www.actuatesecurity.com.au/wp-content/uploads/2025/01/Security-System-Maintenance.webp" 
-                         class="d-block w-100 h-100 object-fit-cover" alt="Maintenance Services">
-                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-4 p-4 p-md-5 start-10 end-10 bottom-0 bottom-md-5 text-start">
-                        <h2 class="display-4 fw-bold mb-3">Maintenance & <span class="text-secondary">Support</span></h2>
-                        <p class="fs-5 mb-4">Regular maintenance and 24/7 support to keep your security systems running perfectly. We're here when you need us.</p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <button onclick="showEmergencyAlert()" class="btn btn-accent btn-lg">
-                                <i class="bi bi-telephone me-2"></i>Emergency Call
-                            </button>
-                            <a href="#services" class="btn btn-outline-light btn-lg">
-                                <i class="bi bi-tools me-2"></i>Maintenance Plans
+                            <a href="#services" class="btn btn-outline-light btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-eye me-1 me-sm-2"></i>Our Services
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="position-relative" style="height: 70vh; min-height: 500px;">
+                    <img src="https://a1securityprotection.co.uk/wp-content/uploads/2023/04/Remote-Monitoring-widget-V2-compressed.jpg" 
+                         class="d-block w-100 h-100 object-fit-cover" alt="Security Monitoring">
+                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-3 rounded-md-4 p-3 p-sm-4 p-md-5 w-90 w-sm-85 w-md-75 mx-auto start-0 end-0 bottom-0 bottom-sm-4 bottom-md-5 text-start">
+                        <h2 class="h1 fw-bold mb-2 mb-md-3 fs-1 fs-sm-2 fs-md-3 fs-lg-4">24/7 Remote <span class="text-secondary">Monitoring</span></h2>
+                        <p class="mb-3 mb-md-4 fs-6 fs-sm-5 d-none d-sm-block">Access your security feeds from anywhere using our mobile app and cloud services. Stay connected and secure at all times.</p>
+                        <p class="mb-3 mb-md-4 fs-6 d-sm-none">Access security feeds from anywhere with mobile app & cloud services.</p>
+                        <div class="d-flex flex-wrap gap-2 gap-sm-3">
+                            <button onclick="showServiceAlert('Mobile App Setup')" class="btn btn-accent btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-phone me-1 me-sm-2"></i>Mobile App
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-info-circle me-1 me-sm-2"></i>Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="position-relative" style="height: 70vh; min-height: 500px;">
+                    <img src="https://mainline.com/wp-content/uploads/2022/07/Networking.jpg" 
+                         class="d-block w-100 h-100 object-fit-cover" alt="Network Solutions">
+                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-3 rounded-md-4 p-3 p-sm-4 p-md-5 w-90 w-sm-85 w-md-75 mx-auto start-0 end-0 bottom-0 bottom-sm-4 bottom-md-5 text-start">
+                        <h2 class="h1 fw-bold mb-2 mb-md-3 fs-1 fs-sm-2 fs-md-3 fs-lg-4">Network & <span class="text-secondary">Campus WiFi</span></h2>
+                        <p class="mb-3 mb-md-4 fs-6 fs-sm-5 d-none d-sm-block">Complete networking solutions for offices, schools, and colleges including LAN setup and campus WiFi installation.</p>
+                        <p class="mb-3 mb-md-4 fs-6 d-sm-none">Complete networking solutions for offices, schools, and colleges.</p>
+                        <div class="d-flex flex-wrap gap-2 gap-sm-3">
+                            <button onclick="showServiceAlert('Network Setup')" class="btn btn-accent btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-wifi me-1 me-sm-2"></i>Network Setup
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-megaphone me-1 me-sm-2"></i>Intercom
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 4 -->
+            <div class="carousel-item">
+                <div class="position-relative" style="height: 70vh; min-height: 500px;">
+                    <img src="https://www.actuatesecurity.com.au/wp-content/uploads/2025/01/Security-System-Maintenance.webp" 
+                         class="d-block w-100 h-100 object-fit-cover" alt="Maintenance Services">
+                    <div class="carousel-caption bg-primary bg-opacity-85 rounded-3 rounded-md-4 p-3 p-sm-4 p-md-5 w-90 w-sm-85 w-md-75 mx-auto start-0 end-0 bottom-0 bottom-sm-4 bottom-md-5 text-start">
+                        <h2 class="h1 fw-bold mb-2 mb-md-3 fs-1 fs-sm-2 fs-md-3 fs-lg-4">Maintenance & <span class="text-secondary">Support</span></h2>
+                        <p class="mb-3 mb-md-4 fs-6 fs-sm-5 d-none d-sm-block">Regular maintenance and 24/7 support to keep your security systems running perfectly. We're here when you need us.</p>
+                        <p class="mb-3 mb-md-4 fs-6 d-sm-none">Regular maintenance and 24/7 support for security systems.</p>
+                        <div class="d-flex flex-wrap gap-2 gap-sm-3">
+                            <button onclick="showEmergencyAlert()" class="btn btn-accent btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-telephone me-1 me-sm-2"></i>Emergency
+                            </button>
+                            <a href="#services" class="btn btn-outline-light btn-sm btn-md-lg px-3 px-sm-4">
+                                <i class="bi bi-tools me-1 me-sm-2"></i>Maintenance
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+        
+        <button class="carousel-control-prev d-none d-sm-flex" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next d-none d-sm-flex" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</section>
 
     <!-- Services Section -->
     <section id="services" class="py-5 py-md-7 py-lg-10 bg-light">
