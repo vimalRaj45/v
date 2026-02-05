@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="user-scalable=no">
+
+<title>ICAM Solutions - Document Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- SweetAlert2 for alerts and loading animations -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        display: grid;
+        grid-template-columns: 400px 1fr;
+        gap: 30px;
+        margin-top: 20px;
+    }
+    
+    /* Form Panel Styles */
+    .form-panel {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        height: fit-content;
+    }
+    
+    .document-selector {
+        background: linear-gradient(135deg, #0b3c5d 0%, #1d6fa5 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .doc-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .doc-btn {
+        flex: 1;
+        padding: 15px;
+        border: 2px solid white;
+        background: transparent;
+        color: white;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s;
+    }
+    
+    .doc-btn.active {
+        background: white;
+        color: #0b3c5d;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .doc-btn:hover:not(.active) {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-1px);
+    }
+    
+    .form-section {
+        margin-bottom: 25px;
+    }
+    
+    .form-section h3 {
+        color: #0b3c5d;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+        position: relative;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #0b3c5d;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.1);
+    }
+    
+    .form-group .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 38px;
+        color: #666;
+        font-size: 16px;
+    }
+    
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    
+    .items-table th {
+        background: #f8f9fa;
+        padding: 12px;
+        text-align: left;
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .items-table td {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .items-table input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+    }
+    
+    .items-table input:focus {
+        border-color: #0b3c5d;
+        outline: none;
+    }
+    
+    .add-item-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 10px;
+        transition: all 0.3s;
+    }
+    
+    .add-item-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+    
+    .remove-item-btn {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    
+    .remove-item-btn:hover {
+        background: #c82333;
+        transform: scale(1.05);
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #0b3c5d 0%, #1d6fa5 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(11, 60, 93, 0.2);
+    }
+    
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #094569 0%, #165d8c 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(11, 60, 93, 0.3);
+    }
+    
+    /* Preview Panel Styles */
+    .preview-panel {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        min-height: 800px;
+        position: relative;
+    }
+    
+    .preview-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #0b3c5d;
+    }
+    
+    .preview-header h1 {
+        color: #0b3c5d;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .document-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        border: 2px dashed #ddd;
+        min-height: 700px;
+        transition: all 0.3s;
+    }
+    
+    .document-container:hover {
+        border-color: #0b3c5d;
+    }
+    
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #0b3c5d;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .header img {
+        height: 70px;
+        background: linear-gradient(135deg, #286a96 0%, #1d6fa5 100%);
+        border-radius: 12px;
+        padding: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .company-details {
+        text-align: right;
+    }
+    
+    .company-details h2 {
+        margin: 0;
+        color: #0b3c5d;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    
+    .document-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 8px;
+        border-left: 4px solid #0b3c5d;
+    }
+    
+    .info-section {
+        flex: 1;
+        padding: 0 15px;
+    }
+    
+    .info-section h3 {
+        color: #0b3c5d;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    table th {
+        background: linear-gradient(135deg, #0b3c5d 0%, #1d6fa5 100%);
+        color: white;
+        padding: 14px;
+        text-align: center;
+        font-weight: 600;
+    }
+    
+    table th i {
+        margin-right: 8px;
+    }
+    
+    table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        transition: background-color 0.2s;
+    }
+    
+    table tr:hover td {
+        background-color: #f8f9fa;
+    }
+    
+    .right {
+        text-align: right;
+    }
+    
+    .totals-section {
+        margin-top: 30px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+    }
+    
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .grand-total {
+        font-size: 18px;
+        font-weight: bold;
+        color: #0b3c5d;
+        border-top: 2px solid #ddd;
+        padding-top: 15px;
+        margin-top: 10px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    
+    .action-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 200px;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #0b3c5d 0%, #1d6fa5 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(11, 60, 93, 0.2);
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #094569 0%, #165d8c 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(11, 60, 93, 0.3);
+    }
+    
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, #218838 0%, #1da088 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stat-item {
+        text-align: center;
+        flex: 1;
+    }
+    
+    .stat-number {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .stat-label {
+        font-size: 12px;
+        opacity: 0.9;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+        .container {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-panel {
+            order: 2;
+        }
+        
+        .preview-panel {
+            order: 1;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .action-btn {
+            min-width: 100%;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .document-info {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .header {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .company-details {
+            text-align: center;
+        }
+        
+        .company-details h2 {
+            justify-content: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div style="text-align: center; margin-bottom: 20px;">
+    <h1 style="color: white; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 15px;">
+        <i class="bi bi-file-earmark-text-fill" style="font-size: 1.2em;"></i> 
+        ICAM Solutions Document Generator
+    </h1>
+    <p style="color: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <i class="bi bi-lightning-charge-fill"></i>
+        Create professional Invoices or Quotations in minutes
+    </p>
+</div>
+
+<div class="container">
+    <!-- Form Panel -->
+    <div class="form-panel">
+        <div class="document-selector">
+            <h3><i class="bi bi-filetype-doc"></i> Select Document Type</h3>
+            <div class="doc-buttons">
+                <button class="doc-btn active" onclick="selectDocumentType('quotation')">
+                    <i class="bi bi-file-earmark-text"></i> Quotation
+                </button>
+                <button class="doc-btn" onclick="selectDocumentType('invoice')">
+                    <i class="bi bi-receipt"></i> Invoice
+                </button>
+            </div>
+        </div>
+        
+        <!-- Customer Details Form -->
+        <div class="form-section">
+            <h3><i class="bi bi-person-badge-fill"></i> Customer Details</h3>
+            <div class="form-group">
+                <label><i class="bi bi-person-fill"></i> Customer Name *</label>
+                <span class="input-icon"><i class="bi bi-person"></i></span>
+                <input type="text" id="customerName" placeholder="Enter customer name">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-geo-alt-fill"></i> Address</label>
+                <span class="input-icon"><i class="bi bi-geo-alt"></i></span>
+                <textarea id="customerAddress" rows="3" placeholder="Enter customer address"></textarea>
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-telephone-fill"></i> Phone Number</label>
+                <span class="input-icon"><i class="bi bi-telephone"></i></span>
+                <input type="tel" id="customerPhone" placeholder="+91 98765 43210">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-envelope-fill"></i> Email</label>
+                <span class="input-icon"><i class="bi bi-envelope"></i></span>
+                <input type="email" id="customerEmail" placeholder="customer@email.com">
+            </div>
+        </div>
+        
+        <!-- Document Details Form -->
+        <div class="form-section">
+            <h3><i class="bi bi-file-text-fill"></i> Document Details</h3>
+            <div class="form-group">
+                <label><i class="bi bi-hash"></i> Document Number</label>
+                <span class="input-icon"><i class="bi bi-123"></i></span>
+                <input type="text" id="docNumber" placeholder="Auto-generated">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-calendar-fill"></i> Date</label>
+                <span class="input-icon"><i class="bi bi-calendar"></i></span>
+                <input type="date" id="docDate" value="">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-calendar-check-fill"></i> Valid Until (for quotations)</label>
+                <span class="input-icon"><i class="bi bi-calendar-check"></i></span>
+                <input type="date" id="validUntil">
+            </div>
+        </div>
+        
+        <!-- Items Form -->
+        <div class="form-section">
+            <h3><i class="bi bi-cart-fill"></i> Items & Services</h3>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-card-text"></i> Description</th>
+                        <th><i class="bi bi-box"></i> Qty</th>
+                        <th><i class="bi bi-currency-rupee"></i> Rate (₹)</th>
+                        <th><i class="bi bi-trash"></i> Action</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsForm">
+                    <tr>
+                        <td><input type="text" class="item-desc" placeholder="Item description"></td>
+                        <td><input type="number" class="item-qty" value="1" min="1"></td>
+                        <td><input type="number" class="item-rate" placeholder="0" min="0"></td>
+                        <td><button type="button" class="remove-item-btn" onclick="removeItem(this)">
+                            <i class="bi bi-trash"></i> Remove
+                        </button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="add-item-btn" onclick="addNewItem()">
+                <i class="bi bi-plus-circle-fill"></i> Add New Item
+            </button>
+        </div>
+        
+        <!-- Additional Charges -->
+        <div class="form-section">
+            <h3><i class="bi bi-cash-stack"></i> Additional Charges</h3>
+            <div class="form-group">
+                <label><i class="bi bi-percent"></i> GST Percentage (%)</label>
+                <span class="input-icon"><i class="bi bi-percent"></i></span>
+                <input type="number" id="gstPercent" value="18" min="0" max="100">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-tag-fill"></i> Discount Amount (₹)</label>
+                <span class="input-icon"><i class="bi bi-tag"></i></span>
+                <input type="number" id="discountAmount" value="0" min="0">
+            </div>
+            <div class="form-group">
+                <label><i class="bi bi-truck"></i> Shipping/Installation Charges (₹)</label>
+                <span class="input-icon"><i class="bi bi-truck"></i></span>
+                <input type="number" id="shippingCharges" value="0" min="0">
+            </div>
+        </div>
+        
+        <button type="button" class="submit-btn" onclick="generateDocument()">
+            <i class="bi bi-magic"></i> Generate Document Preview
+        </button>
+        
+        <!-- Statistics Card -->
+        <div class="stats-card">
+            <div class="stat-item">
+                <div class="stat-number" id="totalItems">1</div>
+                <div class="stat-label"><i class="bi bi-box"></i> Items</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalAmount">₹0</div>
+                <div class="stat-label"><i class="bi bi-cash"></i> Subtotal</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="docTypeLabel">Quotation</div>
+                <div class="stat-label"><i class="bi bi-file-text"></i> Type</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Preview Panel -->
+    <div class="preview-panel">
+        <div class="preview-header">
+            <h1><i class="bi bi-eye-fill"></i> Document Preview</h1>
+            <p style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="bi bi-info-circle-fill"></i>
+                Fill the form to generate your document preview
+            </p>
+        </div>
+        
+        <div id="documentPreview" class="document-container">
+            <div style="text-align: center; padding: 100px 20px; color: #666;">
+                <i class="bi bi-file-earmark-text" style="font-size: 60px; margin-bottom: 20px; color: #ddd;"></i>
+                <h3 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="bi bi-hourglass-split"></i>
+                    Document Preview
+                </h3>
+                <p style="margin-top: 10px;">Fill the form and click "Generate Document Preview" to see your document here</p>
+                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; display: inline-block;">
+                    <i class="bi bi-lightbulb-fill" style="color: #ffc107; font-size: 24px;"></i>
+                    <p style="margin-top: 10px; font-size: 14px;">Tip: Add items and customer details first</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="actionButtons" class="action-buttons hidden">
+            <button class="action-btn btn-primary" onclick="downloadPDF()">
+                <i class="bi bi-file-pdf-fill"></i> Download PDF
+            </button>
+            <button class="action-btn btn-secondary" onclick="printDocument()">
+                <i class="bi bi-printer-fill"></i> Print Document
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize date fields
+    document.getElementById('docDate').valueAsDate = new Date();
+    
+    // Set valid until date (30 days from now)
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 30);
+    document.getElementById('validUntil').valueAsDate = futureDate;
+    
+    // Generate initial document number
+    generateDocNumber('quotation');
+    
+    // Real-time calculation updates
+    setupRealTimeCalculations();
+    
+    // Document type selection
+    let currentDocType = 'quotation';
+    
+    function selectDocumentType(type) {
+        currentDocType = type;
+        document.querySelectorAll('.doc-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+        
+        // Update statistics
+        document.getElementById('docTypeLabel').textContent = type === 'invoice' ? 'Invoice' : 'Quotation';
+        
+        // Generate new document number
+        generateDocNumber(type);
+        
+        // Update valid until field visibility
+        const validUntilGroup = document.getElementById('validUntil').closest('.form-group');
+        if (type === 'invoice') {
+            validUntilGroup.style.display = 'none';
+        } else {
+            validUntilGroup.style.display = 'block';
+        }
+        
+        // Show notification
+        Swal.fire({
+            icon: 'success',
+            title: `Switched to ${type === 'invoice' ? 'Invoice' : 'Quotation'}`,
+            text: `Document type changed successfully`,
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+    
+    function generateDocNumber(type) {
+        const prefix = type === 'invoice' ? 'INV' : 'QUO';
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const random = Math.floor(1000 + Math.random() * 9000);
+        const docNumber = `ICAM-${prefix}-${year}${month}-${random}`;
+        document.getElementById('docNumber').value = docNumber;
+        return docNumber;
+    }
+    
+    // Items management
+    let itemCount = 1;
+    
+    function addNewItem() {
+        itemCount++;
+        const itemsForm = document.getElementById('itemsForm');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" class="item-desc" placeholder="Item description"></td>
+            <td><input type="number" class="item-qty" value="1" min="1"></td>
+            <td><input type="number" class="item-rate" placeholder="0" min="0"></td>
+            <td><button type="button" class="remove-item-btn" onclick="removeItem(this)">
+                <i class="bi bi-trash"></i> Remove
+            </button></td>
+        `;
+        itemsForm.appendChild(newRow);
+        updateStatistics();
+        
+        // Add animation
+        newRow.style.opacity = '0';
+        newRow.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            newRow.style.transition = 'all 0.3s ease';
+            newRow.style.opacity = '1';
+            newRow.style.transform = 'translateY(0)';
+        }, 10);
+    }
+    
+    function removeItem(button) {
+        if (document.querySelectorAll('#itemsForm tr').length > 1) {
+            const row = button.closest('tr');
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(-100%)';
+            setTimeout(() => {
+                row.remove();
+                updateStatistics();
+            }, 300);
+            
+            Swal.fire({
+                icon: 'info',
+                title: 'Item Removed',
+                text: 'Item has been removed from the list',
+                timer: 1000,
+                showConfirmButton: false
+            });
+        }
+    }
+    
+    // Calculate totals
+    function calculateTotals() {
+        let subtotal = 0;
+        let itemCount = 0;
+        const rows = document.querySelectorAll('#itemsForm tr');
+        
+        rows.forEach(row => {
+            const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+            const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+            if (rate > 0) itemCount++;
+            subtotal += qty * rate;
+        });
+        
+        const gstPercent = parseFloat(document.getElementById('gstPercent').value) || 0;
+        const discount = parseFloat(document.getElementById('discountAmount').value) || 0;
+        const shipping = parseFloat(document.getElementById('shippingCharges').value) || 0;
+        
+        const gstAmount = (subtotal * gstPercent) / 100;
+        const grandTotal = subtotal + gstAmount - discount + shipping;
+        
+        return {
+            itemCount,
+            subtotal,
+            gstAmount,
+            discount,
+            shipping,
+            grandTotal
+        };
+    }
+    
+    // Real-time calculations
+    function setupRealTimeCalculations() {
+        const inputs = document.querySelectorAll('#itemsForm input, #gstPercent, #discountAmount, #shippingCharges');
+        inputs.forEach(input => {
+            input.addEventListener('input', updateStatistics);
+        });
+    }
+    
+    function updateStatistics() {
+        const totals = calculateTotals();
+        document.getElementById('totalItems').textContent = totals.itemCount;
+        document.getElementById('totalAmount').textContent = `₹${totals.subtotal.toLocaleString('en-IN')}`;
+    }
+    
+    // Generate document preview with loading animation
+function generateDocument() {
+    // Get form values
+    const customerName = document.getElementById('customerName').value;
+
+    // Validate required fields
+    if (!customerName) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Missing Information',
+            text: 'Please enter customer name',
+            confirmButtonColor: '#0b3c5d',
+            confirmButtonText: '<i class="bi bi-check-circle"></i> OK'
+        });
+        return;
+    }
+
+    // Show loading animation
+    Swal.fire({
+        title: '<i class="bi bi-hourglass-split"></i> Generating Document',
+        html: 'Please wait while we create your document...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    // Simulate processing time
+    setTimeout(() => {
+        createDocumentPreview();
+
+        // ✅ SAVE TO GOOGLE SHEET (ADD HERE)
+        saveToSheet();
+
+        Swal.close();
+
+        // Show success message
+        Swal.fire({
+            icon: 'success',
+            title: 'Document Generated!',
+            text: 'Your document has been created successfully',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }, 800);
+}
+
+    function createDocumentPreview() {
+        const docType = currentDocType;
+        const docNumber = document.getElementById('docNumber').value;
+        const docDate = document.getElementById('docDate').value;
+        const validUntil = document.getElementById('validUntil').value;
+        const customerName = document.getElementById('customerName').value;
+        const customerAddress = document.getElementById('customerAddress').value;
+        const customerPhone = document.getElementById('customerPhone').value;
+        const customerEmail = document.getElementById('customerEmail').value;
+        
+        // Calculate totals
+        const totals = calculateTotals();
+        
+        // Build items table HTML
+        let itemsHTML = '';
+        const rows = document.querySelectorAll('#itemsForm tr');
+        rows.forEach((row, index) => {
+            const desc = row.querySelector('.item-desc').value || 'Item';
+            const qty = parseFloat(row.querySelector('.item-qty').value) || 1;
+            const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+            const amount = qty * rate;
+            
+            if (desc && rate > 0) {
+                itemsHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${desc}</td>
+                        <td class="right">${qty}</td>
+                        <td class="right">₹${rate.toLocaleString('en-IN')}</td>
+                        <td class="right">₹${amount.toLocaleString('en-IN')}</td>
+                    </tr>
+                `;
+            }
+        });
+        
+        // Format dates
+        const formatDate = (dateStr) => {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        };
+        
+        // Generate document HTML
+        const docHTML = `
+            <div class="header">
+                 <!-- Replace the current logo image with this -->
+<img src="https://i.ibb.co/Xf4tpfNY/file-0000000059f871fa90f3acdcedaca209.png" 
+     alt="ICAM Solutions Logo"
+     style="height: 120px; background: white;">
+                <div class="company-details">
+                    <h2><i class="bi bi-building"></i> ICAM SOLUTIONS</h2>
+                    <div><i class="bi bi-headset"></i> +91 98945 10065</div>
+                    <div><i class="bi bi-globe"></i> icamsolutions.netlify.app</div>
+                    <div><i class="bi bi-geo-alt"></i> Chennai, Tamil Nadu</div>
+                </div>
+            </div>
+            
+            <div class="document-info">
+                <div class="info-section">
+                    <h3><i class="bi bi-person-badge"></i> ${docType === 'invoice' ? 'Bill To:' : 'Quotation To:'}</h3>
+                    <div>
+                        <strong>${customerName}</strong><br>
+                        ${customerAddress || ''}<br>
+                        ${customerPhone ? `<i class="bi bi-telephone"></i> ${customerPhone}<br>` : ''}
+                        ${customerEmail ? `<i class="bi bi-envelope"></i> ${customerEmail}` : ''}
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h3><i class="bi bi-building"></i> Company Details</h3>
+                    <div>
+                        <strong>ICAM SOLUTIONS</strong><br>
+                        <i class="bi bi-card-checklist"></i> GSTIN: 33AAAAA0000A1Z5<br>
+                        <i class="bi bi-card-checklist"></i> PAN: AAAAA0000A<br>
+                        <i class="bi bi-bank"></i> SBI, Chennai Main<br>
+                        <i class="bi bi-credit-card"></i> A/C: 123456789012
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h3><i class="bi bi-file-earmark-text"></i> Document Info</h3>
+                    <div>
+                        <strong><i class="bi bi-hash"></i> ${docType === 'invoice' ? 'Invoice' : 'Quotation'} No:</strong> ${docNumber}<br>
+                        <strong><i class="bi bi-calendar"></i> Date:</strong> ${formatDate(docDate)}<br>
+                        ${validUntil ? `<strong><i class="bi bi-calendar-check"></i> Valid Until:</strong> ${formatDate(validUntil)}` : ''}
+                    </div>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-hash"></i> S.No</th>
+                        <th><i class="bi bi-card-text"></i> Description</th>
+                        <th><i class="bi bi-box"></i> Qty</th>
+                        <th><i class="bi bi-currency-rupee"></i> Rate (₹)</th>
+                        <th><i class="bi bi-calculator"></i> Amount (₹)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${itemsHTML}
+                </tbody>
+            </table>
+            
+            <div class="totals-section">
+                <div class="total-row">
+                    <span><i class="bi bi-receipt"></i> Sub Total:</span>
+                    <span>₹${totals.subtotal.toLocaleString('en-IN')}</span>
+                </div>
+                ${totals.gstAmount > 0 ? `
+                <div class="total-row">
+                    <span><i class="bi bi-percent"></i> GST (${document.getElementById('gstPercent').value}%):</span>
+                    <span>₹${totals.gstAmount.toLocaleString('en-IN')}</span>
+                </div>
+                ` : ''}
+                ${totals.discount > 0 ? `
+                <div class="total-row">
+                    <span><i class="bi bi-tag"></i> Discount:</span>
+                    <span>₹-${totals.discount.toLocaleString('en-IN')}</span>
+                </div>
+                ` : ''}
+                ${totals.shipping > 0 ? `
+                <div class="total-row">
+                    <span><i class="bi bi-truck"></i> Shipping/Installation:</span>
+                    <span>₹${totals.shipping.toLocaleString('en-IN')}</span>
+                </div>
+                ` : ''}
+                <div class="total-row grand-total">
+                    <span><i class="bi bi-cash-stack"></i> Grand Total:</span>
+                    <span>₹${totals.grandTotal.toLocaleString('en-IN')}</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 8px; border-left: 4px solid #0b3c5d;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="text-align: left;">
+                        <strong><i class="bi bi-shield-check"></i> Authorized Signatory</strong><br>
+                        ICAM Solutions
+                    </div>
+                    <div style="text-align: right;">
+                        <strong><i class="bi bi-person-check"></i> Customer Acceptance</strong><br>
+                        _________________
+                    </div>
+                </div>
+                <hr style="margin: 20px 0;">
+                <div style="text-align: center; font-size: 13px; color: #555; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="bi bi-info-circle-fill"></i> 
+                    ${docType === 'invoice' 
+                        ? 'Payment due within 15 days. Late payment interest @18% p.a.'
+                        : 'This quotation is valid for 30 days from the date mentioned above.'}
+                </div>
+            </div>
+        `;
+        
+        // Update preview
+        const previewElement = document.getElementById('documentPreview');
+        previewElement.style.opacity = '0';
+        previewElement.innerHTML = docHTML;
+        
+        setTimeout(() => {
+            previewElement.style.transition = 'opacity 0.5s ease';
+            previewElement.style.opacity = '1';
+        }, 10);
+        
+        document.getElementById('actionButtons').classList.remove('hidden');
+        
+        // Scroll to preview
+        document.querySelector('.preview-panel').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Download PDF with loading animation
+    async function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        
+        const element = document.getElementById('documentPreview');
+        
+        // Show loading animation
+        Swal.fire({
+            title: '<i class="bi bi-file-earmark-pdf-fill"></i> Creating PDF',
+            html: 'Please wait while we generate your PDF document...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        try {
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            });
+            
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = 190;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            
+            doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+            
+            const docType = currentDocType === 'invoice' ? 'Invoice' : 'Quotation';
+            const docNumber = document.getElementById('docNumber').value;
+            const fileName = `${docType}_${docNumber}.pdf`;
+            
+            doc.save(fileName);
+            
+            // Show success message
+            Swal.fire({
+                icon: 'success',
+                title: 'PDF Downloaded!',
+                text: 'Your PDF has been downloaded successfully',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to generate PDF. Please try again.',
+                confirmButtonColor: '#0b3c5d'
+            });
+        }
+    }
+    
+    // Print document with confirmation
+    function printDocument() {
+        Swal.fire({
+            title: '<i class="bi bi-printer-fill"></i> Print Document',
+            text: 'Are you ready to print this document?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#0b3c5d',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="bi bi-printer"></i> Print',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const originalContent = document.body.innerHTML;
+                const printContent = document.getElementById('documentPreview').innerHTML;
+                
+                document.body.innerHTML = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Print Document</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 20px; }
+                            @media print {
+                                @page { margin: 0; }
+                                body { margin: 1.6cm; }
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContent}
+                    </body>
+                    </html>
+                `;
+                
+                window.print();
+                document.body.innerHTML = originalContent;
+                window.location.reload();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Printing Started!',
+                    text: 'Document sent to printer',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
+        });
+    }
+    async function saveToSheet() {
+    const totals = calculateTotals();
+
+    const items = [];
+    document.querySelectorAll('#itemsForm tr').forEach(row => {
+        const desc = row.querySelector('.item-desc').value;
+        const qty = row.querySelector('.item-qty').value;
+        const rate = row.querySelector('.item-rate').value;
+        if (desc && rate > 0) {
+            items.push(`${desc} x ${qty} @ ₹${rate}`);
+        }
+    });
+
+    const payload = {
+        docType: currentDocType,
+        docNumber: document.getElementById('docNumber').value,
+        docDate: document.getElementById('docDate').value,
+        customerName: document.getElementById('customerName').value,
+        customerPhone: document.getElementById('customerPhone').value,
+        customerEmail: document.getElementById('customerEmail').value,
+        subtotal: totals.subtotal,
+        gst: totals.gstAmount,
+        discount: totals.discount,
+        shipping: totals.shipping,
+        grandTotal: totals.grandTotal,
+        items: items.join(", ")
+    };
+
+    // SEND TO GOOGLE APPS SCRIPT
+    fetch("https://script.google.com/macros/s/AKfycbw5Wx9uPTjkwjvAFfwobwbbOHnisanLOkVV67kMCbNmUIgfqB_jd-zBI80Kqw1iWQ/exec", {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => console.log("Saved:", data))
+    .catch(err => console.error("Save failed:", err));
+}
+
+</script>
+
+</body>
+</html>
