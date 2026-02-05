@@ -1168,14 +1168,6 @@ function generateDocument() {
                 window.print();
                 document.body.innerHTML = originalContent;
                 window.location.reload();
-                
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Printing Started!',
-                    text: 'Document sent to printer',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
             }
         });
     }
