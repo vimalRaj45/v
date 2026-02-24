@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -500,7 +501,6 @@
                             <img src="https://i.ibb.co/xS2YsKbY/rio.jpg" class="rounded-circle border border-5 border-secondary mb-4" 
                                  style="width: 150px; height: 150px; object-fit: cover;" alt="Soundharraj">
                             <h4 class="text-primary fw-bold">Soundharraj</h4>
-                            <p class="text-muted">Founder & CEO</p>
                             <p>With over 10 years of experience in security systems and networking, Soundharraj leads our team with expertise and dedication to customer satisfaction.</p>
                             <button onclick="showOwnerAlert()" class="btn btn-accent mt-3">
                                 <i class="bi bi-person-badge me-2"></i>Contact Owner
@@ -920,82 +920,48 @@
     <!-- Custom JavaScript -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    // Wait a moment for the page to load completely
-    setTimeout(function() {
-        Swal.fire({
-            title: '<span class="text-primary">🎊</span>',
-            html: `
-                <div class="text-center">
-                    <div class="mb-4">
-                        <h3 class="fw-bold text-primary mb-3">
-                            <i class="bi bi-camera-video"></i> I-CAM Solution Services
-                        </h3>
-                        <div class="position-relative">
-                            <h2 class="fw-bold mb-2" style="color: #0a2463;">Happy New Year 2026</h2>
-                            <div class="position-absolute top-0 start-50 translate-middle" style="transform: translate(-50%, -120%);">
-                                <i class="bi bi-star-fill text-warning fs-5"></i>
-                                <i class="bi bi-star-fill text-warning fs-5 mx-1"></i>
-                                <i class="bi bi-star-fill text-warning fs-5"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-primary bg-opacity-10 p-4 rounded-4 mb-4 border border-primary border-opacity-25">
-                        <p class="mb-0 fw-medium">
-                            <i class="bi bi-shield-check text-primary me-2"></i>
-                            
-                           <p class="text-light"> Wishing you a year filled with safety, security, and success</p>
-                        </p>
-                    </div>
-                    
-                    <div class="mt-3">
-                        <p class="small text-muted mb-2">
-                            Professional CCTV & Security Solutions
-                        </p>
-                        <p class="small text-primary fw-semibold mb-0">
-                            <i class="bi bi-geo-alt me-1"></i>
-                            Serving: Rasipuram • Salem • Namakkal • Viluppuram
-                        </p>
-                    </div>
-                </div>
-            `,
-            icon: false, // No icon
-            showClass: {
-                popup: 'animate__animated animate__fadeIn'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOut'
-            },
-            confirmButtonText: '<i class="bi bi-arrow-right me-2"></i> Explore Our Services',
-            confirmButtonColor: '#0a2463',
-            showCancelButton: true,
-            cancelButtonText: 'Close',
-            cancelButtonColor: '#6c757d',
-            background: '#ffffff',
-            width: '420px',
-            customClass: {
-                popup: 'rounded-4 border border-primary border-1 shadow',
-                title: 'h3 fw-bold',
-                htmlContainer: 'text-dark',
-                confirmButton: 'fw-semibold py-2 px-4',
-                cancelButton: 'fw-medium py-2 px-4'
-            },
-            didOpen: () => {
-                // Add subtle animation to the stars
-                const stars = document.querySelectorAll('.bi-star-fill');
-                stars.forEach((star, index) => {
-                    star.style.animation = `twinkle ${1 + index * 0.5}s infinite alternate`;
-                });
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Scroll to services section
-                document.getElementById('services').scrollIntoView({ 
-                    behavior: 'smooth' 
-                });
-            }
-        });
-    }, 800); // Delay to let page load
+   // Wait a moment for the page to load completely
+setTimeout(function () {
+  Swal.fire({
+    title: '<span class="text-primary">Thank You</span>',
+    html: `
+      <div class="text-center">
+        <h3 class="fw-bold text-primary mb-3">
+          <i class="bi bi-camera-video"></i> I-CAM Solution Services
+        </h3>
+
+        <h4 class="fw-semibold mb-3" style="color:#0a2463;">
+          New Year 2026 Celebrations Completed
+        </h4>
+
+        <div class="bg-primary bg-opacity-10 p-4 rounded-4 mb-4 border border-primary border-opacity-25">
+          <p class="mb-0 fw-medium text-dark">
+            Thank you for being part of our New Year journey.  
+            We are now back to regular operations and ready to serve you with
+            enhanced security and surveillance solutions.
+          </p>
+        </div>
+
+        <p class="small text-muted mb-2">
+          Professional CCTV & Security Solutions
+        </p>
+        <p class="small text-primary fw-semibold mb-0">
+          <i class="bi bi-geo-alt me-1"></i>
+          Rasipuram • Salem • Namakkal • Viluppuram
+        </p>
+      </div>
+    `,
+    icon: false,
+    confirmButtonText: 'Continue',
+    confirmButtonColor: '#0a2463',
+    background: '#ffffff',
+    width: '420px',
+    customClass: {
+      popup: 'rounded-4 border border-primary shadow',
+      confirmButton: 'fw-semibold py-2 px-4'
+    }
+  });
+}, 800);
 
     // Add CSS for twinkle animation
     const style = document.createElement('style');
@@ -1114,7 +1080,7 @@
         
         function showOwnerAlert() {
             Swal.fire({
-                title: 'Soundharraj - Founder & CEO',
+                title: 'Soundharraj',
                 html: `
                     <div class="text-center">
                         <p>With over 10 years of experience in security systems and networking solutions.</p>
