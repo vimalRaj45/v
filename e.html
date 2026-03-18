@@ -1,479 +1,104 @@
-
-
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Registration Form</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <style>
-        body {
-            background-color:  #ead1b1; 
-            font-family: Arial, sans-serif; 
-        }
-        h2 {
-            color: #333; 
-            margin-bottom: 20px; 
-        }
-        label {
-            font-weight: bold; 
-        }
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1055;
-        }
-        .toast {
-            background-color: rgba(255, 255, 255, 0.9); 
-            border: 1px solid #17a2b8;
-        }
-        .toast-header {
-            color: #007bff;
-            font-weight: bold;
-        }
-        .toast-body {
-            color: #333;
-        }
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            z-index: 1050; 
-            text-align: center; /* Center text */
-        }
-        .spinner-border {
-            margin-top: 20%;
-            width: 3rem;
-            height: 3rem;
-        }
-        .but{
-           color: #c47335
-        }
-        .but:hover{
-            color: #c5651c;
-        }
-        /* From Uiverse.io by Nawsome */ 
-.loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 10;
-  width: 160px;
-  height: 100px;
-  margin-left: -80px;
-  margin-top: -50px;
-  border-radius: 5px;
-  background: #1e3f57;
-  animation: dot1_ 3s cubic-bezier(0.55,0.3,0.24,0.99) infinite;
-}
-
-.loader:nth-child(2) {
-  z-index: 11;
-  width: 150px;
-  height: 90px;
-  margin-top: -45px;
-  margin-left: -75px;
-  border-radius: 3px;
-  background: #3c517d;
-  animation-name: dot2_;
-}
-
-.loader:nth-child(3) {
-  z-index: 12;
-  width: 40px;
-  height: 20px;
-  margin-top: 50px;
-  margin-left: -20px;
-  border-radius: 0 0 5px 5px;
-  background: #6bb2cd;
-  animation-name: dot3_;
-}
-
-@keyframes dot1_ {
-  3%,97% {
-    width: 160px;
-    height: 100px;
-    margin-top: -50px;
-    margin-left: -80px;
-  }
-
-  30%,36% {
-    width: 80px;
-    height: 120px;
-    margin-top: -60px;
-    margin-left: -40px;
-  }
-
-  63%,69% {
-    width: 40px;
-    height: 80px;
-    margin-top: -40px;
-    margin-left: -20px;
-  }
-}
-
-@keyframes dot2_ {
-  3%,97% {
-    height: 90px;
-    width: 150px;
-    margin-left: -75px;
-    margin-top: -45px;
-  }
-
-  30%,36% {
-    width: 70px;
-    height: 96px;
-    margin-left: -35px;
-    margin-top: -48px;
-  }
-
-  63%,69% {
-    width: 32px;
-    height: 60px;
-    margin-left: -16px;
-    margin-top: -30px;
-  }
-}
-
-@keyframes dot3_ {
-  3%,97% {
-    height: 20px;
-    width: 40px;
-    margin-left: -20px;
-    margin-top: 50px;
-  }
-
-  30%,36% {
-    width: 8px;
-    height: 8px;
-    margin-left: -5px;
-    margin-top: 49px;
-    border-radius: 8px;
-  }
-
-  63%,69% {
-    width: 16px;
-    height: 4px;
-    margin-left: -8px;
-    margin-top: -37px;
-    border-radius: 10px;
-  }
-}
-    </style>
-	
+<title>Appointment Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body {font-family: Arial; background:#f4f6f9; padding:20px;}
+.container {max-width:400px; margin:auto; background:white; padding:20px; border-radius:10px;}
+input,select,textarea,button{width:100%;margin-top:10px;padding:10px;}
+button{background:#007bff;color:white;border:none;}
+.hidden{display:none;}
+.status{margin-top:10px;padding:10px;}
+.success{background:#d4edda;}
+.error{background:#f8d7da;}
+</style>
 </head>
+
 <body>
-    <div class="container mt-5" id="formContainer">
-        <h2 class="text-center">Event Registration Form</h2>
-        <form id="myForm" action="javascript:void(0);" method="POST" onsubmit="handleSubmit()">
-            <label for="eventType">Event Type </label>
-            <select name="eventType" id="eventType" required class="form-control mb-2">
-                <optgroup label="Technical Events">
-                    <option value="Innovation Sprout">Innovation Sprout</option>
-                    <option value="Quiz to Quirk">Quiz to Quirk</option>
-                    <option value="IOT InnovateXpo">IOT InnovateXpo</option>
-                    <option value="UI Design">UI Design</option>
-                    <option value="Game Development">Game Development</option>
-                    <option value="ML Fusion">ML Fusion</option>
-                    <option value="AI Fusion">AI Fusion</option>
-                    <option value="Dashing Boards">Dashing Boards</option>
-                    <option value="Appventure">Appventure</option>
-                </optgroup>
-                <optgroup label="Non-Technical Events">
-                    <option value="Memo O Mania">Memo O Mania</option>
-                    <option value="Charde Fusion">Charde Fusion</option>
-                    <option value="Karaoke">Karaoke</option>
-                    <option value="Funfest">Fun fest</option>
-                    <option value="Image Finder">Image Finder</option>
-                    <option value="Aperture Magic">Aperture Magic</option>
-                </optgroup>
-            </select>
 
-            <label>Registration Number</label>
-            <input type="number" name="Regno" placeholder="Enter Registration Number" required class="form-control mb-2">
-
-            <label>Name</label>
-            <input type="text" name="name" placeholder="Enter Your Name" required class="form-control mb-2">
-
-            <label for="dept">Department</label>
-            <select name="dept" id="dept" required class="form-control mb-2">
-                <option value="">Select Department</option>
-                <option value="CSE">Computer Science and Engineering</option>
-                <option value="AIML">Artificial Intelligence Machine Learning</option>
-                <option value="ME">Mechanical Engineering</option>
-                <option value="EE">Electrical Engineering</option>
-                <option value="CE">Civil Engineering</option>
-            </select>
-            
-            <label>Year</label>
-            <select name="year" required class="form-control mb-2">
-                <option value="">Select Year</option>
-                <option value="1">1st Year</option>
-                <option value="2">2nd Year</option>
-                <option value="3">3rd Year</option>
-                <option value="4">4th Year</option>
-            </select>
-
-            <label>Section</label>
-            <input type="text" name="section" placeholder="Enter Section" required class="form-control mb-2">
-
-            <label>Team Members (comma-separated)</label>
-            <input type="text" name="teammember" placeholder="Enter Team Members" required class="form-control mb-2">
-
-            <label>Team Leader</label>
-            <input type="text" name="teamleder" placeholder="Enter Team Leader Name" required class="form-control mb-2">
-            <!-- Payment Link -->
-
-<!-- Payment ID Input -->
-<label for="paymentId">Enter Payment ID (Payment ID Check Your Email After Payment...)</label>
-<input type="text" name="paymentId" id="paymentId" placeholder="Enter Payment ID" required class="form-control mb-2">
-
-<!-- Verify Payment Button -->
-<button type="button" class="btn btn-info" id="verifyBtn">Verify</button>
-
-<!-- Submit Button (Initially Hidden) -->
-<button type="submit" class="btn btn-secondary but" id="submitBtn" style="display: none;">Register</button>
-
-<script>
-    $(document).ready(function () {
-        // Function to check Payment ID in Google Sheets
-        async function checkPaymentId(paymentId) {
-            const scriptUrl = "https://script.google.com/macros/s/AKfycbyXz-nZg0ST8vI--ZYC0RyocgaNfU3S34vaGBYNBPzuNmuDMrARrr852LmT8CpfuenB/exec"; // Replace with your actual Apps Script URL
-            $("#loading").show();
-            try {
-            const response = await fetch(`${scriptUrl}?transactionId=${paymentId}`); // Ensure the correct query parameter
-            const data = await response.json();
-            
-            
-            return data.valid;
-           
-        } catch (error) {
-                console.error("Error checking Payment ID:", error);
-                return false;
-            }
-        }
-
-        // Verify Payment ID when clicking "Verify" button
-        $("#verifyBtn").click(async function () {
-            const paymentId = $("#paymentId").val().trim();
-            if (paymentId.length > 5) { // Check only if input is valid length
-                const isValid = await checkPaymentId(paymentId);
-                if (isValid) {
-                    alert("Payment Verified! You can now register.");
-                    $("#loading").hide();
-                    $("#submitBtn").show();
-                } else {
-                    alert("Invalid Payment ID! Please enter a valid one.");
-                    $("#submitBtn").hide();
-                    $("#loading").hide();
-                }
-            } else {
-                alert("Please enter a valid Payment ID.");
-                $("#submitBtn").hide();
-                $("#loading").hide();
-            }
-        });
-    });
-</script>
-
-        </form>
-        <form class="mt-4 p-3 d-flex justify-content-end"><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Q1Vs5OqMfUyGBX" async> </script> </form>
-    </div>
-
-    <!-- Loading Animation -->
-    <div class="loading" id="loading">
-        <!-- From Uiverse.io by Nawsome --> 
 <div class="container">
-  <h2 style="
-    text-align: center; 
-    margin-top: 20vh; 
-    color: #007bff; 
-    font-weight: bold; 
-    font-size: 24px; 
-    letter-spacing: 1px; 
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-">
-    Please Wait...
-</h2>
+<h2>Book Appointment</h2>
 
-  <div class="loader"></div>
-	<div class="loader"></div>
-	<div class="loader"></div>
+<input id="phone" placeholder="Phone">
+<button onclick="checkUser()">Next</button>
+
+<div id="formSection" class="hidden">
+<input id="name" placeholder="Name">
+<input type="date" id="date">
+<input type="time" id="time">
+
+<select id="service">
+<option value="">Select Service</option>
+<option>Consultation</option>
+<option>Dental</option>
+<option>Checkup</option>
+</select>
+
+<textarea id="message"></textarea>
+
+<button onclick="book()">Book</button>
 </div>
 
-    </div>
+<div id="statusBox" class="status hidden"></div>
+</div>
 
-    <!-- Toast Notification -->
-    <div class="toast-container">
-        <div class="toast" id="successToast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
-            <div class="toast-header">
-                <strong class="mr-auto">Success</strong>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                Registerd successfully!
-            </div>
-        </div>
-    </div>
+<script>
+const URL = "https://script.google.com/macros/s/AKfycbyhVBbkkoEwxvekP1twgtKfhNrZokmCqWsRKirW0TiCUpG66I1CmpPXpFss41QcEgMa/exec";
 
-    <script>
-        
-        $(document).ready(function () {
-  // Initialize Select2 for eventType dropdown
-  $('#eventType').select2();
+function show(msg,type="success"){
+  const b=document.getElementById("statusBox");
+  b.innerText=msg;
+  b.className="status "+type;
+  b.classList.remove("hidden");
+}
 
+async function checkUser(){
+  const phone=document.getElementById("phone").value;
 
+  const res=await fetch(URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({action:"check_user",phone})
+  });
 
-  // Function to save form data to local storage (excluding transaction ID)
-  function saveFormDataToLocalStorage() {
-    const formData = {
-      eventType: $('#eventType').val(),
-      regNo: $('input[name="Regno"]').val(),
-      name: $('input[name="name"]').val(),
-      department: $('#dept').val(),
-      year: $('select[name="year"]').val(),
-      section: $('input[name="section"]').val(),
-      teamMembers: $('input[name="teammember"]').value,
-      teamLeader: $('input[name="teamleder"]').val(),
-    };
-    localStorage.setItem("formData", JSON.stringify(formData));
+  const data=await res.json();
+
+  document.getElementById("formSection").classList.remove("hidden");
+
+  if(data.data){
+    document.getElementById("name").value=data.data.name;
+  }else{
+    show("New user, enter name");
   }
+}
 
-  // Function to populate form fields from local storage
-  function populateFormFromLocalStorage() {
-    const savedData = JSON.parse(localStorage.getItem("formData"));
-    if (savedData) {
-      $('#eventType').val(savedData.eventType).trigger('change');
-      $('input[name="Regno"]').val(savedData.regNo);
-      $('input[name="name"]').val(savedData.name);
-      $('#dept').val(savedData.department).trigger('change');
-      $('select[name="year"]').val(savedData.year).trigger('change');
-      $('input[name="section"]').val(savedData.section);
-      $('input[name="teammember"]').val(savedData.teamMembers);
-      $('input[name="teamleder"]').val(savedData.teamLeader);
-    }
-  }
-
-  // Show success modal after registration
-  function showSuccessModal() {
-    const modal = document.createElement("div");
-    modal.style.position = "fixed";
-    modal.style.top = "50%";
-    modal.style.left = "50%";
-    modal.style.transform = "translate(-50%, -50%)";
-    modal.style.backgroundColor = "white";
-    modal.style.padding = "20px";
-    modal.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
-    modal.style.zIndex = "1000";
-
-    modal.innerHTML = `
-  <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); border-radius: 8px; z-index: 1000; width: 300px; text-align: center;">
-    <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Registered successfully!</p>
-    <p style="font-size: 14px; margin-bottom: 20px;">Would you like to participate in more events?</p>
-    <button id="addMoreEvents" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; font-size: 14px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Yes</button>
-    <button id="closeModal" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; font-size: 14px; border-radius: 4px; cursor: pointer;">No</button>
-  </div>
-`;
-
-    document.body.appendChild(modal);
-
-    // Handle "Yes" button click
-    document.getElementById("addMoreEvents").addEventListener("click", () => {
-      populateFormFromLocalStorage();
-      $("#submitBtn").hide();
-      modal.remove();
-    });
-
-    // Handle "No" button click
-    document.getElementById("closeModal").addEventListener("click", () => {
-      modal.remove();
-    });
-  }
-
-  window.handleSubmit = function () {
-  // Get selected events and ensure it's always an array
-  const selectedEvents = $('#eventType').val() || []; // Default to an empty array if null
-
-  // Ensure selectedEvents is an array
-  const eventArray = Array.isArray(selectedEvents) ? selectedEvents : [selectedEvents];
-
-  // Check if at least one event is selected
-  if (eventArray.length === 0) {
-    alert("Please select at least one event.");
-    return;
-  }
-
-  // Save form data to local storage (excluding transaction ID)
-  saveFormDataToLocalStorage();
-
-  // Define action links for each event
-  const actionLinks = {
-    "Innovation Sprout": "https://script.google.com/macros/s/AKfycbw9JXmJlhRPVWFNQmI-KixQZiujT_XsHPPSUMLDBbJomrpcazMS7_reG8Kgi1zPQXP_/exec",
-    "Quiz to Quirk": "https://script.google.com/macros/s/AKfycbz8eyyDQTzm6B7jGD_EG9Pbj85DPPk4_AOyI0c7ZfyAs52b-0H44JVWAFZt-4pHPmpXYQ/exec",
-    "IOT InnovateXpo": "https://script.google.com/macros/s/AKfycbzviASqzMLHfr3p-ngYc1z2X5btM3F2P7frRxnj5et5qe5ogVB2IW1G-bXNuvyxHiHB/exec",
-    "UI Design": "https://script.google.com/macros/s/AKfycbyyMF01jBzvCCMX5f59Ddy7CRuetR4UAs3ntpZSR-DuZPphc1-CMNvngbRX7YXhJ1C0_g/exec",
-    "Game Development": "https://script.google.com/macros/s/AKfycbwKsuVBmQ-z_hmPg__54Z2rrww0O6THmNosJqBA65JB1-a9XLedlkXc1gjR7KSxwH-Qnw/exec",
-    "ML Fusion": "https://script.google.com/macros/s/AKfycbxdOrLi7cKX1d1Ex_M7rhFGLkPW9kjC4c0S-KSCmE7I4frR3mzkqWfmedu5TTzYi5ggSQ/exec",
-    "AI Fusion": "https://script.google.com/macros/s/AKfycbyIsj32n0g_oqttjETqulJUEe4gNQ2YtQ_GFDZXa9f-RVUQRZyD-k_c1AAx8G2YgRfbPg/exec",
-    "Dashing Boards": "https://script.google.com/macros/s/AKfycbws4wHuLyULQqyp0H2g8ZQWnnfMv6VnPC26uDt1CcKxkGFNuLVV6xi-QQ3wlL69T7dDJQ/exec",
-    "Appventure": "https://script.google.com/macros/s/AKfycbzF58OUeU5Zl3Af-SUoRRAY4FbICZGSUKcJhtHR4DgDAWbHy01F16BL4keIbCKn22S0/exec",
-    "Memo O Mania": "https://script.google.com/macros/s/AKfycbxrtdpOJS7ZzNHCrX6cNkfiVYSZzeTrcLAPdK77u88gPl8NAX5YkpI5_vX4HkUUtOwE/exec",
-    "Charde Fusion": "https://script.google.com/macros/s/AKfycbzco9K-FyqV6ZnniPz_Bgk-rkUbNJcEFVDgdy4ZL9M0y_1buBC4ysw4ZrBh9g2hpew0/exec",
-    "Karaoke": "https://script.google.com/macros/s/AKfycbzIKffhb8b5HzzDtnw6YzKDS-HTaq9KKD_y6knH2giE_gEzHHy0fxH_WvXsMOzfsU8f/exec",
-    "Funfest": "https://script.google.com/macros/s/AKfycbwj4OtnZmAi5ltEpJH_yZoPqToXxFVXaUHCXy13GyxeVu7xi4yU4HNeR60cmAGt1cEuQ/exec",
-    "Image Finder": "https://script.google.com/macros/s/AKfycbzCRYbZ9N_UV1EUsxG_O50n_2CoUzy30hhV3-Cf9A0bhchz8iSFMbFrq_l0_JefIQzH/exec",
-    "Aperture Magic": "https://script.google.com/macros/s/AKfycbxUicNq9rMmMfvhNaW8h74RhiTkN2D5tRHahzPCmJ_K4VeqOGwY0uWhiPPZq1zGID4g/exec"
+async function book(){
+  const body={
+    action:"book_appointment",
+    name:name.value,
+    phone:phone.value,
+    date:date.value,
+    time:time.value,
+    service:service.value,
+    message:message.value
   };
 
-  // Map selected events to their corresponding URLs
-  const selectedEventURLs = eventArray.map(event => actionLinks[event]);
-
-  // Create FormData object from the form
-  const form = document.getElementById('myForm');
-  const data = new FormData(form);
-
-  // Show loading spinner
-  $('#loading').show();
-
-  // Send POST requests for each selected event
-  selectedEventURLs.forEach((url) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.onload = function () {
-      // Hide loading spinner
-      $('#loading').hide();
-      if (xhr.status === 200) {
-        // Show success message
-        $('#successToast').toast('show');
-        document.getElementById("myForm").reset();
-
-        // Show success modal
-        showSuccessModal();
-      }
-    };
-    xhr.send(data);
+  const res=await fetch(URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(body)
   });
-};
-});
-    </script>
+
+  const data=await res.json();
+
+  if(data.status==="success"){
+    show("✅ Appointment Pending");
+  }else{
+    show(data.message,"error");
+  }
+}
+</script>
 
 </body>
-</html
->
+</html>
