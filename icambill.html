@@ -1136,6 +1136,18 @@
 </div>
 
 <script>
+    // Global Loading Template
+    const typewriterLoadingHTML = `
+        <div class="typewriter-container">
+            <div class="typewriter">
+                <div class="slide"><i></i></div>
+                <div class="paper"></div>
+                <div class="keyboard"></div>
+            </div>
+            <div style="margin-top: 15px; font-weight: bold; color: #0b3c5d;">Processing Cloud Request...</div>
+        </div>
+    `;
+
     // Initialize date fields
     document.getElementById('docDate').valueAsDate = new Date();
     
@@ -2062,3 +2074,5 @@ function generateDocument() {
 
 </body>
 </html>
+
+      
