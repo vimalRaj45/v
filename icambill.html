@@ -655,25 +655,201 @@
         }
     }
     
-    @media (max-width: 768px) {
-        .document-info {
-            flex-direction: column;
-            gap: 20px;
+    @media print {
+        body { padding: 0 !important; margin: 0 !important; background: white !important; }
+        .container, .dashboard-panel, .form-panel, .preview-header, .action-buttons, .document-selector, #editModeIndicator, .stats-card, div[style*="text-align: center; margin-bottom: 20px;"] { 
+            display: none !important; 
         }
-        
-        .header {
-            flex-direction: column;
-            text-align: center;
-            gap: 20px;
+        .preview-panel {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            max-width: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            display: block !important;
         }
-        
-        .company-details {
-            text-align: center;
+        .document-container {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            border: none !important;
+            width: 100% !important;
+            max-width: none !important;
         }
-        
-        .company-details h2 {
-            justify-content: center;
+    }
+    /* Typewriter Animation from Uiverse.io by Nawsome */
+    .typewriter-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        gap: 20px;
+    }
+
+    .typewriter {
+        --blue: #0b3c5d;
+        --blue-dark: #1d6fa5;
+        --key: #fff;
+        --paper: #EEF0FD;
+        --text: #D3D4EC;
+        --tool: #FBC56C;
+        --duration: 3s;
+        position: relative;
+        -webkit-animation: bounce05 var(--duration) linear infinite;
+        animation: bounce05 var(--duration) linear infinite;
+    }
+
+    .typewriter .slide {
+        width: 92px;
+        height: 20px;
+        border-radius: 3px;
+        margin-left: 14px;
+        transform: translateX(14px);
+        background: linear-gradient(var(--blue), var(--blue-dark));
+        -webkit-animation: slide05 var(--duration) ease infinite;
+        animation: slide05 var(--duration) ease infinite;
+    }
+
+    .typewriter .slide:before, .typewriter .slide:after,
+    .typewriter .slide i:before {
+        content: "";
+        position: absolute;
+        background: var(--tool);
+    }
+
+    .typewriter .slide:before {
+        width: 2px;
+        height: 8px;
+        top: 6px;
+        left: 100%;
+    }
+
+    .typewriter .slide:after {
+        left: 94px;
+        top: 3px;
+        height: 14px;
+        width: 6px;
+        border-radius: 3px;
+    }
+
+    .typewriter .slide i {
+        display: block;
+        position: absolute;
+        right: 100%;
+        width: 6px;
+        height: 4px;
+        top: 4px;
+        background: var(--tool);
+    }
+
+    .typewriter .slide i:before {
+        right: 100%;
+        top: -2px;
+        width: 4px;
+        border-radius: 2px;
+        height: 14px;
+    }
+
+    .typewriter .paper {
+        position: absolute;
+        left: 24px;
+        top: -26px;
+        width: 40px;
+        height: 46px;
+        border-radius: 5px;
+        background: var(--paper);
+        transform: translateY(46px);
+        -webkit-animation: paper05 var(--duration) linear infinite;
+        animation: paper05 var(--duration) linear infinite;
+    }
+
+    .typewriter .paper:before {
+        content: "";
+        position: absolute;
+        left: 6px;
+        right: 6px;
+        top: 7px;
+        border-radius: 2px;
+        height: 4px;
+        transform: scaleY(0.8);
+        background: var(--text);
+        box-shadow: 0 12px 0 var(--text), 0 24px 0 var(--text), 0 36px 0 var(--text);
+    }
+
+    .typewriter .keyboard {
+        width: 120px;
+        height: 56px;
+        margin-top: -10px;
+        z-index: 1;
+        position: relative;
+    }
+
+    .typewriter .keyboard:before, .typewriter .keyboard:after {
+        content: "";
+        position: absolute;
+    }
+
+    .typewriter .keyboard:before {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 7px;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        transform: perspective(10px) rotateX(2deg);
+        transform-origin: 50% 100%;
+    }
+
+    .typewriter .keyboard:after {
+        left: 2px;
+        top: 25px;
+        width: 11px;
+        height: 4px;
+        border-radius: 2px;
+        box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key);
+        -webkit-animation: keyboard05 var(--duration) linear infinite;
+        animation: keyboard05 var(--duration) linear infinite;
+    }
+
+    @keyframes bounce05 {
+        85%, 92%, 100% { transform: translateY(0); }
+        89% { transform: translateY(-4px); }
+        95% { transform: translateY(2px); }
+    }
+
+    @keyframes slide05 {
+        5% { transform: translateX(14px); }
+        15%, 30% { transform: translateX(6px); }
+        40%, 55% { transform: translateX(0); }
+        65%, 70% { transform: translateX(-4px); }
+        80%, 89% { transform: translateX(-12px); }
+        100% { transform: translateX(14px); }
+    }
+
+    @keyframes paper05 {
+        5% { transform: translateY(46px); }
+        20%, 30% { transform: translateY(34px); }
+        40%, 55% { transform: translateY(22px); }
+        65%, 70% { transform: translateY(10px); }
+        80%, 85% { transform: translateY(0); }
+        92%, 100% { transform: translateY(46px); }
+    }
+
+    @keyframes keyboard05 {
+        5%, 12%, 21%, 30%, 39%, 48%, 57%, 66%, 75%, 84% {
+            box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key);
         }
+        9% { box-shadow: 15px 2px 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
+        18% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 2px 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
+        27% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 12px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
+        36% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 12px 0 var(--key), 60px 12px 0 var(--key), 68px 12px 0 var(--key), 83px 10px 0 var(--key); }
+        45% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 2px 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
+        54% { box-shadow: 15px 0 0 var(--key), 30px 2px 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
+        63% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 12px 0 var(--key); }
+        72% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 2px 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
+        81% { box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 12px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); }
     }
 </style>
 </head>
@@ -694,6 +870,17 @@
 <div class="container" id="generatorContainer">
     <!-- Form Panel -->
     <div class="form-panel">
+        <div id="editModeIndicator" style="display: none; background: #fff3cd; color: #856404; padding: 12px 15px; border-radius: 10px; margin-bottom: 20px; align-items: center; justify-content: space-between; font-weight: bold; font-size: 14px; border: 2px solid #ffeeba; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <span style="display: flex; align-items: center; gap: 8px;"><i class="bi bi-pencil-square" style="font-size: 1.2em;"></i> EDITING RECORD (Row: <span class="row-num"></span>)</span>
+            <div style="display: flex; gap: 8px;">
+                <button onclick="saveToSheet()" style="background: #28a745; color: white; border: none; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.background='#218838'" onmouseout="this.style.background='#28a745'">
+                    <i class="bi bi-cloud-arrow-up-fill"></i> Save Changes
+                </button>
+                <button onclick="cancelEditMode()" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s;" onmouseover="this.style.background='#c82333'" onmouseout="this.style.background='#dc3545'">
+                    Cancel
+                </button>
+            </div>
+        </div>
         <div class="document-selector">
             <h3><i class="bi bi-filetype-doc"></i> Select Document Type</h3>
             <div class="doc-buttons">
@@ -802,9 +989,14 @@
             </div>
         </div>
         
-        <button type="button" class="submit-btn" onclick="generateDocument()">
-            <i class="bi bi-magic"></i> Generate Document Preview
-        </button>
+        <div style="display: flex; gap: 15px; margin-top: 25px;">
+            <button type="button" class="submit-btn" onclick="generateDocument()" style="flex: 1.5; margin-top: 0; background: linear-gradient(135deg, #0b3c5d 0%, #1d6fa5 100%);">
+                <i class="bi bi-magic"></i> Generate Preview
+            </button>
+            <button type="button" class="submit-btn" onclick="saveToSheet()" style="flex: 1; margin-top: 0; background: linear-gradient(135deg, #28a745 0%, #218838 100%); border-color: #1e7e34;">
+                <i class="bi bi-cloud-arrow-up-fill"></i> Save in Cloud
+            </button>
+        </div>
         
         <!-- Statistics Card -->
         <div class="stats-card">
@@ -927,11 +1119,13 @@
                     <!-- Data will be loaded here -->
                 </tbody>
             </table>
-            <div id="dashboardLoading" class="loading-spinner">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden"><i class="bi bi-hourglass-split" style="font-size: 40px;"></i></span>
+            <div id="dashboardLoading" class="hidden typewriter-container">
+                <div class="typewriter">
+                    <div class="slide"><i></i></div>
+                    <div class="paper"></div>
+                    <div class="keyboard"></div>
                 </div>
-                <div>Fetching data from Google Sheets...</div>
+                <div style="margin-top: 10px; color: #0b3c5d; font-weight: bold;">Synchronizing with Google Sheets...</div>
             </div>
             <div id="noDataMessage" class="hidden" style="text-align: center; padding: 50px; color: #666;">
                 <i class="bi bi-info-circle" style="font-size: 40px; margin-bottom: 10px; display: block;"></i>
@@ -1019,7 +1213,8 @@
         noData.classList.add('hidden');
 
         try {
-            const response = await fetch("https://script.google.com/macros/s/AKfycby6b7u1shcdAcZs80tZ4ss9SVj_-rQ-Q2IZN5w8P-1HF6sAoRWPISVMMHc-To5AOuQoDA/exec");
+            const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxo9ouYFbZWYdd9_XGlD-5taog6Y8m-CwNqFU-TAjbzSFjglXrzYZcW_a9In_E0BacmpQ/exec";
+            const response = await fetch(API_ENDPOINT);
             dashboardData = await response.json();
             renderDashboard(dashboardData);
         } catch (error) {
@@ -1093,6 +1288,11 @@
             }
 
             const row = document.createElement('tr');
+            row.style.cursor = 'pointer';
+            row.onclick = () => viewDocumentDetails(item);
+            row.onmouseover = () => row.style.backgroundColor = '#f0f4f8';
+            row.onmouseout = () => row.style.backgroundColor = 'transparent';
+            
             row.innerHTML = `
                 <td>${item.Date && item.Date !== "Invalid Date" ? new Date(item.Date).toLocaleDateString('en-IN') : 'N/A'}</td>
                 <td><span class="badge ${isInvoice ? 'badge-invoice' : 'badge-quotation'}">${item['Doc Type']}</span></td>
@@ -1115,6 +1315,254 @@
         document.getElementById('statTotalRevenue').textContent = `₹${revenue.toLocaleString('en-IN')}`;
         document.getElementById('statTotalInvoices').textContent = invoices;
         document.getElementById('statTotalQuotations').textContent = quotations;
+    }
+
+    function viewDocumentDetails(item) {
+        const isInvoice = item['Doc Type'].toLowerCase() === 'invoice';
+        const dateStr = item.Date && item.Date !== "Invalid Date" ? new Date(item.Date).toLocaleDateString('en-IN', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        }) : 'N/A';
+
+        // Format Items list (assuming comma-separated from the saveToSheet function)
+        let itemsFormatted = '';
+        if (item.Items) {
+            const itemsList = item.Items.split(', ');
+            itemsFormatted = `<div style="text-align: left; margin-top: 15px; background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #0b3c5d;">
+                <h4 style="margin-bottom: 10px; color: #0b3c5d; border-bottom: 1px solid #ddd; padding-bottom: 5px;"><i class="bi bi-cart-check"></i> Items Summary</h4>
+                <ul style="list-style: none; padding: 0;">
+                    ${itemsList.map(i => `<li style="padding: 5px 0; border-bottom: 1px dashed #eee;"><i class="bi bi-check2-circle" style="color: #28a745; margin-right: 8px;"></i>${i}</li>`).join('')}
+                </ul>
+            </div>`;
+        }
+
+        Swal.fire({
+            title: `<span style="color: #0b3c5d;"><i class="bi ${isInvoice ? 'bi-receipt' : 'bi-file-earmark-text'}"></i> ${isInvoice ? 'Invoice' : 'Quotation'} Details</span>`,
+            html: `
+                <div style="font-size: 14px; color: #555;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; margin-bottom: 20px;">
+                        <div>
+                            <div style="font-weight: bold; color: #0b3c5d;">Customer Name</div>
+                            <div>${item['Customer Name']}</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: bold; color: #0b3c5d;">Document Number</div>
+                            <div>${item['Doc Number']}</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: bold; color: #0b3c5d;">Phone</div>
+                            <div>${item.Phone || '-'}</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: bold; color: #0b3c5d;">Date</div>
+                            <div>${dateStr}</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: bold; color: #0b3c5d;">Email</div>
+                            <div>${item.Email || '-'}</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: bold; color: #0b3c5d;">Grand Total</div>
+                            <div style="font-size: 1.2em; color: #28a745; font-weight: bold;">₹${(item['Grand Total'] || 0).toLocaleString('en-IN')}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 10px; background: #f1f3f5; border-radius: 6px; text-align: center;">
+                        <div>
+                            <div style="font-size: 11px; opacity: 0.8;">Subtotal</div>
+                            <div style="font-weight: 600;">₹${(item.Subtotal || 0).toLocaleString('en-IN')}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; opacity: 0.8;">GST</div>
+                            <div style="font-weight: 600;">₹${(item.GST || 0).toLocaleString('en-IN')}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; opacity: 0.8;">Discount</div>
+                            <div style="font-weight: 600;">₹${(item.Discount || 0).toLocaleString('en-IN')}</div>
+                        </div>
+                    </div>
+
+                    ${itemsFormatted}
+                    
+                    <div style="margin-top: 20px; font-size: 11px; color: #888;">
+                        <i class="bi bi-clock-history"></i> Logged at: ${new Date(item.Timestamp).toLocaleString('en-IN')}
+                    </div>
+                </div>
+            `,
+            width: '600px',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            denyButtonColor: '#ffc107',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: '<i class="bi bi-cloud-download"></i> Load & Download',
+            denyButtonText: '<i class="bi bi-pencil-square"></i> Edit Record',
+            cancelButtonText: '<i class="bi bi-trash"></i> Delete',
+            showCloseButton: true,
+            customClass: {
+                popup: 'premium-popup'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                loadItemToGenerator(item);
+            } else if (result.isDenied) {
+                editItemInGenerator(item);
+            } else if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+                deleteItemFromCloud(item['Doc Number']);
+            }
+        });
+    }
+
+    function deleteItemFromCloud(docNumber) {
+        Swal.fire({
+            title: 'Delete Record?',
+            text: `Are you sure you want to permanently delete document ${docNumber} from the cloud? This cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Delete It',
+            cancelButtonText: 'Keep It'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: '',
+                    html: typewriterLoadingHTML,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    customClass: {
+                        popup: 'transparent-popup'
+                    }
+                });
+
+                const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxo9ouYFbZWYdd9_XGlD-5taog6Y8m-CwNqFU-TAjbzSFjglXrzYZcW_a9In_E0BacmpQ/exec";
+                fetch(API_ENDPOINT, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "delete",
+                        "Doc Number": docNumber
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Record has been removed from Google Sheets.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    fetchDashboardData(); // Refresh table
+                })
+                .catch(err => {
+                    Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to delete record.' });
+                });
+            }
+        });
+    }
+
+    let isEditMode = false;
+    let editingDocId = null;
+
+    function editItemInGenerator(item) {
+        isEditMode = true;
+        editingDocId = item['Doc Number'];
+        loadItemToGenerator(item);
+        
+        // Add a visual indicator for Edit Mode
+        const indicator = document.getElementById('editModeIndicator');
+        if (indicator) {
+            indicator.style.display = 'flex';
+            indicator.querySelector('.row-num').textContent = editingDocId;
+        }
+    }
+
+    function cancelEditMode() {
+        isEditMode = false;
+        editingDocId = null;
+        const indicator = document.getElementById('editModeIndicator');
+        if (indicator) indicator.style.display = 'none';
+        
+        // Reset form
+        document.getElementById('customerName').value = '';
+        generateDocNumber(currentDocType);
+        Swal.fire({
+            icon: 'info',
+            title: 'Edit Mode Cancelled',
+            text: 'You are now creating a new document again.',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    }
+
+    function loadItemToGenerator(item) {
+        // Switch to Generator view
+        selectDocumentType(item['Doc Type'].toLowerCase());
+
+        // Fill basic fields
+        document.getElementById('customerName').value = item['Customer Name'] || '';
+        document.getElementById('customerAddress').value = item.Address || ''; // Note: needs manual fix if missing
+        document.getElementById('customerPhone').value = item.Phone || '';
+        document.getElementById('customerEmail').value = item.Email || '';
+        document.getElementById('docNumber').value = item['Doc Number'] || '';
+        
+        if (item.Date && item.Date !== "Invalid Date") {
+            document.getElementById('docDate').value = new Date(item.Date).toISOString().split('T')[0];
+        }
+
+        // Fill additional fields
+        document.getElementById('discountAmount').value = item.Discount || 0;
+        document.getElementById('shippingCharges').value = item.Shipping || 0;
+
+        // Reconstruct items
+        const itemsForm = document.getElementById('itemsForm');
+        itemsForm.innerHTML = ''; // Clear existing
+        
+        if (item.Items) {
+            const itemsList = item.Items.split(', ');
+            itemsList.forEach(itemStr => {
+                // Format: "Desc x Qty @ ₹Rate"
+                const match = itemStr.match(/(.+) x (\d+) @ ₹(.+)/);
+                if (match) {
+                    const desc = match[1];
+                    const qty = match[2];
+                    const rate = match[3];
+                    
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td><input type="text" class="item-desc" value="${desc}"></td>
+                        <td><input type="number" class="item-qty" value="${qty}" min="1"></td>
+                        <td><input type="number" class="item-rate" value="${rate}" min="0"></td>
+                        <td><button type="button" class="remove-item-btn" onclick="removeItem(this)">
+                            <i class="bi bi-trash"></i> Remove
+                        </button></td>
+                    `;
+                    itemsForm.appendChild(newRow);
+                }
+            });
+        }
+        
+        // If no items were reconstructed, add one empty row
+        if (itemsForm.innerHTML === '') {
+            addNewItem();
+        }
+
+        updateStatistics();
+        
+        // Scroll to generator and show notice
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        Swal.fire({
+            icon: 'info',
+            title: 'Record Loaded',
+            text: 'Details have been loaded into the form. You can now generate the preview and download the PDF.',
+            timer: 2000,
+            showConfirmButton: false
+        });
+        
+        // Automatic generation
+        setTimeout(() => {
+            generateDocument();
+        }, 800);
     }
     
     function generateDocNumber(type) {
@@ -1324,7 +1772,7 @@ function generateDocument() {
                     <h2><i class="bi bi-building"></i> ICAM SOLUTIONS</h2>
                     <div><i class="bi bi-headset"></i> +91 98945 10065</div>
                     <div><i class="bi bi-globe"></i> icamsolutions.netlify.app</div>
-                    <div><i class="bi bi-geo-alt"></i> Chennai, Tamil Nadu</div>
+                    <div><i class="bi bi-geo-alt"></i> Rasipuram , Namkkal</div>
                 </div>
             </div>
             
@@ -1344,7 +1792,7 @@ function generateDocument() {
                         <strong>ICAM SOLUTIONS</strong><br>
                         <i class="bi bi-card-checklist"></i> GSTIN: 33AAAAA0000A1Z5<br>
                         <i class="bi bi-card-checklist"></i> PAN: AAAAA0000A<br>
-                        <i class="bi bi-bank"></i> SBI, Chennai Main<br>
+                        <i class="bi bi-bank"></i> SBI, Rasipuram Main<br>
                         <i class="bi bi-credit-card"></i> A/C: 123456789012
                     </div>
                 </div>
@@ -1452,14 +1900,15 @@ function generateDocument() {
         
         // Show loading animation
         Swal.fire({
-            title: '<i class="bi bi-file-earmark-pdf-fill"></i> Creating PDF',
-            html: 'Please wait while we generate your PDF document...',
+            title: '',
+            html: typewriterLoadingHTML,
+            showConfirmButton: false,
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
+            customClass: {
+                popup: 'transparent-popup'
             }
         });
-        
+
         try {
             const canvas = await html2canvas(element, {
                 scale: 2,
@@ -1513,36 +1962,36 @@ function generateDocument() {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                const originalContent = document.body.innerHTML;
-                const printContent = document.getElementById('documentPreview').innerHTML;
-                
-                document.body.innerHTML = `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Print Document</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            @media print {
-                                @page { margin: 0; }
-                                body { margin: 1.6cm; }
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        ${printContent}
-                    </body>
-                    </html>
-                `;
-                
                 window.print();
-                document.body.innerHTML = originalContent;
-                window.location.reload();
             }
         });
     }
     async function saveToSheet() {
     const totals = calculateTotals();
+
+    // ASK FOR CONFIRMATION
+    const result = await Swal.fire({
+        title: isEditMode ? 'Update Cloud Record?' : 'Save to Cloud?',
+        text: isEditMode ? `Do you want to save these changes to record ${editingDocId} in Google Sheets?` : 'Do you want to save this document to Google Sheets for tracking?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: isEditMode ? '<i class="bi bi-cloud-check"></i> Update Now' : '<i class="bi bi-cloud-plus"></i> Save Now',
+        cancelButtonText: 'Not Now'
+    });
+
+    if (!result.isConfirmed) return;
+
+    Swal.fire({
+        title: '',
+        html: typewriterLoadingHTML,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        customClass: {
+            popup: 'transparent-popup'
+        }
+    });
 
     const items = [];
     document.querySelectorAll('#itemsForm tr').forEach(row => {
@@ -1555,28 +2004,58 @@ function generateDocument() {
     });
 
     const payload = {
-        docType: currentDocType,
-        docNumber: document.getElementById('docNumber').value,
-        docDate: document.getElementById('docDate').value,
-        customerName: document.getElementById('customerName').value,
-        customerPhone: document.getElementById('customerPhone').value,
-        customerEmail: document.getElementById('customerEmail').value,
-        subtotal: totals.subtotal,
-        gst: totals.gstAmount,
-        discount: totals.discount,
-        shipping: totals.shipping,
-        grandTotal: totals.grandTotal,
-        items: items.join(", ")
+        "action": isEditMode ? "update" : "create",
+        "Timestamp": new Date().toISOString(),
+        "Doc Type": currentDocType,
+        "Doc Number": document.getElementById('docNumber').value,
+        "Date": document.getElementById('docDate').value,
+        "Customer Name": document.getElementById('customerName').value,
+        "Phone": document.getElementById('customerPhone').value,
+        "Email": document.getElementById('customerEmail').value,
+        "Address": document.getElementById('customerAddress').value,
+        "Subtotal": totals.subtotal,
+        "GST": totals.gstAmount,
+        "Discount": totals.discount,
+        "Shipping": totals.shipping,
+        "Grand Total": totals.grandTotal,
+        "Items": items.join(", ")
     };
 
-    // SEND TO GOOGLE APPS SCRIPT
-    fetch("https://script.google.com/macros/s/AKfycbw5Wx9uPTjkwjvAFfwobwbbOHnisanLOkVV67kMCbNmUIgfqB_jd-zBI80Kqw1iWQ/exec", {
+    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxo9ouYFbZWYdd9_XGlD-5taog6Y8m-CwNqFU-TAjbzSFjglXrzYZcW_a9In_E0BacmpQ/exec";
+    
+    fetch(API_ENDPOINT, {
         method: "POST",
         body: JSON.stringify(payload)
     })
     .then(res => res.json())
-    .then(data => console.log("Saved:", data))
-    .catch(err => console.error("Save failed:", err));
+    .then(data => {
+        console.log("Saved/Updated:", data);
+        
+        // Show success message
+        Swal.fire({
+            icon: 'success',
+            title: isEditMode ? 'Record Updated!' : 'Saved Successfully!',
+            text: isEditMode ? 'Changes have been applied to the cloud.' : 'New document has been synchronized with Google Sheets.',
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        if (isEditMode) {
+            isEditMode = false;
+            editingDocId = null;
+            const indicator = document.getElementById('editModeIndicator');
+            if (indicator) indicator.style.display = 'none';
+        }
+    })
+    .catch(err => {
+        console.error("Operation failed:", err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Cloud Sync Failed',
+            text: 'Could not connect to Google Sheets. Please check your internet connection.',
+            confirmButtonColor: '#dc3545'
+        });
+    });
 }
 
 </script>
