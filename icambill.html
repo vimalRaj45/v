@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,6 @@
 <title>ICAM Solutions - Document Generator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<!-- SweetAlert2 for alerts and loading animations -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -60,13 +60,15 @@
     
     .doc-buttons {
         display: flex;
-        gap: 15px;
+        gap: 10px;
         margin-top: 15px;
+        flex-wrap: wrap;
     }
     
     .doc-btn {
         flex: 1;
-        padding: 15px;
+        min-width: 100px;
+        padding: 12px 10px;
         border: 2px solid white;
         background: transparent;
         color: white;
@@ -91,6 +93,161 @@
     .doc-btn:hover:not(.active) {
         background: rgba(255,255,255,0.1);
         transform: translateY(-1px);
+    }
+    
+    /* Dashboard Specific Styles */
+    .dashboard-panel {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .dashboard-title {
+        color: #0b3c5d;
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .dashboard-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        padding: 20px;
+        border-radius: 12px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card.blue { background: linear-gradient(135deg, #0b3c5d 0%, #1d6fa5 100%); }
+    .stat-card.green { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
+    .stat-card.purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .stat-card.orange { background: linear-gradient(135deg, #f39c12 0%, #d35400 100%); }
+
+    .stat-card .icon { font-size: 32px; opacity: 0.3; position: absolute; right: 20px; top: 20px; }
+    .stat-card .value { font-size: 28px; font-weight: bold; }
+    .stat-card .label { font-size: 14px; opacity: 0.9; }
+
+    .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 400px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 12px 15px 12px 45px;
+        border: 2px solid #e0e0e0;
+        border-radius: 30px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+        border-color: #0b3c5d;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(11, 60, 93, 0.1);
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 17px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    .data-table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid #eee;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    .data-table th {
+        background: #f8f9fa;
+        color: #0b3c5d;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #eee;
+    }
+
+    .data-table td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .badge-invoice { background: rgba(40, 167, 69, 0.1); color: #28a745; }
+    .badge-quotation { background: rgba(11, 60, 93, 0.1); color: #0b3c5d; }
+
+    .refresh-btn {
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+        color: #333;
+    }
+
+    .refresh-btn:hover {
+        background: #e9ecef;
+        transform: scale(1.05);
+    }
+
+    .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 100px;
+        gap: 20px;
+        color: #0b3c5d;
     }
     
     .form-section {
@@ -523,9 +680,10 @@
 <body>
 
 <div style="text-align: center; margin-bottom: 20px;">
-    <h1 style="color: white; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 15px;">
-        <i class="bi bi-file-earmark-text-fill" style="font-size: 1.2em;"></i> 
+    <h1 style="color: white; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 20px;">
+        <i class="bi bi-file-earmark-text-fill" style="font-size: 1.2em; opacity: 0.9;"></i> 
         ICAM Solutions Document Generator
+        <i class="bi bi-receipt" onclick="selectDocumentType('dashboard')" style="font-size: 1.25em; opacity: 0.8; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.1)'" onmouseout="this.style.opacity='0.8'; this.style.transform='scale(1)'" title="View Business Dashboard"></i>
     </h1>
     <p style="color: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; gap: 10px;">
         <i class="bi bi-lightning-charge-fill"></i>
@@ -533,7 +691,7 @@
     </p>
 </div>
 
-<div class="container">
+<div class="container" id="generatorContainer">
     <!-- Form Panel -->
     <div class="form-panel">
         <div class="document-selector">
@@ -544,6 +702,9 @@
                 </button>
                 <button class="doc-btn" onclick="selectDocumentType('invoice')">
                     <i class="bi bi-receipt"></i> Invoice
+                </button>
+                <button class="doc-btn" id="dashboardTabBtn" onclick="selectDocumentType('dashboard')">
+                    <i class="bi bi-speedometer2"></i> Dashboard
                 </button>
             </div>
         </div>
@@ -698,6 +859,88 @@
     </div>
 </div>
 
+<!-- Dashboard View (Initially Hidden) -->
+<div id="dashboardView" class="container hidden" style="max-width: 1400px; grid-template-columns: 1fr;">
+    <div class="dashboard-panel">
+        <div class="dashboard-header">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="refresh-btn" onclick="selectDocumentType('quotation')" style="background: #0b3c5d; color: white; border: none;">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <div class="dashboard-title">
+                    <i class="bi bi-speedometer2"></i> Business Dashboard
+                </div>
+            </div>
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" id="dashboardSearch" placeholder="Search customer, number..." oninput="filterDashboard()">
+            </div>
+            <div class="filter-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <select id="typeFilter" onchange="filterDashboard()" style="padding: 10px; border-radius: 8px; border: 1px solid #ddd; outline: none; background: white; color: #0b3c5d; font-weight: 600;">
+                    <option value="all">All Documents</option>
+                    <option value="invoice">Invoices Only</option>
+                    <option value="quotation">Quotations Only</option>
+                </select>
+                <button class="refresh-btn" onclick="fetchDashboardData()">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-stats-grid">
+            <div class="stat-card blue">
+                <i class="bi bi-file-earmark-text icon"></i>
+                <div class="label">Total Documents</div>
+                <div class="value" id="statTotalDocs">0</div>
+            </div>
+            <div class="stat-card green">
+                <i class="bi bi-cash-coin icon"></i>
+                <div class="label">Total Revenue (Invoices)</div>
+                <div class="value" id="statTotalRevenue">₹0</div>
+            </div>
+            <div class="stat-card purple">
+                <i class="bi bi-receipt icon"></i>
+                <div class="label">Total Invoices</div>
+                <div class="value" id="statTotalInvoices">0</div>
+            </div>
+            <div class="stat-card orange">
+                <i class="bi bi-file-text icon"></i>
+                <div class="label">Total Quotations</div>
+                <div class="value" id="statTotalQuotations">0</div>
+            </div>
+        </div>
+
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Doc Number</th>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th class="right">Amount</th>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboardTableBody">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+            <div id="dashboardLoading" class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden"><i class="bi bi-hourglass-split" style="font-size: 40px;"></i></span>
+                </div>
+                <div>Fetching data from Google Sheets...</div>
+            </div>
+            <div id="noDataMessage" class="hidden" style="text-align: center; padding: 50px; color: #666;">
+                <i class="bi bi-info-circle" style="font-size: 40px; margin-bottom: 10px; display: block;"></i>
+                No documents found matching your search.
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // Initialize date fields
     document.getElementById('docDate').valueAsDate = new Date();
@@ -717,11 +960,25 @@
     let currentDocType = 'quotation';
     
     function selectDocumentType(type) {
-        currentDocType = type;
+        // Toggle active button
         document.querySelectorAll('.doc-btn').forEach(btn => {
             btn.classList.remove('active');
+            if (btn.textContent.trim().toLowerCase().includes(type)) {
+                btn.classList.add('active');
+            }
         });
-        event.target.classList.add('active');
+
+        if (type === 'dashboard') {
+            document.getElementById('generatorContainer').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
+            fetchDashboardData();
+            return;
+        } else {
+            document.getElementById('generatorContainer').classList.remove('hidden');
+            document.getElementById('dashboardView').classList.add('hidden');
+        }
+
+        currentDocType = type;
         
         // Update statistics
         document.getElementById('docTypeLabel').textContent = type === 'invoice' ? 'Invoice' : 'Quotation';
@@ -730,11 +987,14 @@
         generateDocNumber(type);
         
         // Update valid until field visibility
-        const validUntilGroup = document.getElementById('validUntil').closest('.form-group');
-        if (type === 'invoice') {
-            validUntilGroup.style.display = 'none';
-        } else {
-            validUntilGroup.style.display = 'block';
+        const validUntilField = document.getElementById('validUntil');
+        const validUntilGroup = validUntilField ? validUntilField.closest('.form-group') : null;
+        if (validUntilGroup) {
+            if (type === 'invoice') {
+                validUntilGroup.style.display = 'none';
+            } else {
+                validUntilGroup.style.display = 'block';
+            }
         }
         
         // Show notification
@@ -745,6 +1005,116 @@
             timer: 1500,
             showConfirmButton: false
         });
+    }
+
+    let dashboardData = [];
+
+    async function fetchDashboardData() {
+        const tableBody = document.getElementById('dashboardTableBody');
+        const loading = document.getElementById('dashboardLoading');
+        const noData = document.getElementById('noDataMessage');
+
+        tableBody.innerHTML = '';
+        loading.classList.remove('hidden');
+        noData.classList.add('hidden');
+
+        try {
+            const response = await fetch("https://script.google.com/macros/s/AKfycby6b7u1shcdAcZs80tZ4ss9SVj_-rQ-Q2IZN5w8P-1HF6sAoRWPISVMMHc-To5AOuQoDA/exec");
+            dashboardData = await response.json();
+            renderDashboard(dashboardData);
+        } catch (error) {
+            console.error("Error fetching dashboard data:", error);
+            loading.innerHTML = `
+                <i class="bi bi-exclamation-triangle-fill" style="font-size: 40px; color: #dc3545;"></i>
+                <div style="margin-top: 10px; color: #dc3545;">Failed to fetch data. Please try again.</div>
+                <button class="refresh-btn" style="margin-top: 20px;" onclick="fetchDashboardData()">Try Again</button>
+            `;
+        }
+    }
+
+    function filterDashboard() {
+        const query = document.getElementById('dashboardSearch').value.toLowerCase();
+        const typeFilter = document.getElementById('typeFilter').value.toLowerCase();
+        
+        const filtered = dashboardData.filter(item => {
+            const matchesQuery = (item['Customer Name'] && item['Customer Name'].toLowerCase().includes(query)) ||
+                                (item['Doc Number'] && item['Doc Number'].toLowerCase().includes(query)) ||
+                                (item.Items && item.Items.toLowerCase().includes(query));
+            
+            const matchesType = typeFilter === 'all' || item['Doc Type'].toLowerCase() === typeFilter;
+            
+            return matchesQuery && matchesType;
+        });
+        
+        renderDashboard(filtered, false); // Don't reset the data array, just re-render
+        
+        const noData = document.getElementById('noDataMessage');
+        if (filtered.length === 0) {
+            noData.classList.remove('hidden');
+        } else {
+            noData.classList.add('hidden');
+        }
+    }
+
+    function renderDashboard(data, isInitialFetch = true) {
+        const tableBody = document.getElementById('dashboardTableBody');
+        const loading = document.getElementById('dashboardLoading');
+        const noData = document.getElementById('noDataMessage');
+
+        loading.classList.add('hidden');
+        tableBody.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            noData.classList.remove('hidden');
+            if (isInitialFetch) {
+                updateStats(0, 0, 0, 0);
+            }
+            return;
+        }
+
+        let totalRevenue = 0;
+        let invoiceCount = 0;
+        let quotationCount = 0;
+
+        // Use the original data for stats if this is a filtered render
+        const statsData = isInitialFetch ? data : dashboardData;
+        
+        // Re-calculate stats based on full data or filtered data? 
+        // Usually stats should reflect the CURRENT view, but user might want global stats.
+        // Let's stick to CURRENT view stats if filtered.
+        
+        data.forEach(item => {
+            const isInvoice = item['Doc Type'].toLowerCase() === 'invoice';
+            if (isInvoice) {
+                totalRevenue += parseFloat(item['Grand Total']) || 0;
+                invoiceCount++;
+            } else {
+                quotationCount++;
+            }
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.Date && item.Date !== "Invalid Date" ? new Date(item.Date).toLocaleDateString('en-IN') : 'N/A'}</td>
+                <td><span class="badge ${isInvoice ? 'badge-invoice' : 'badge-quotation'}">${item['Doc Type']}</span></td>
+                <td><strong>${item['Doc Number']}</strong></td>
+                <td>${item['Customer Name']}</td>
+                <td>${item.Phone || '-'}</td>
+                <td class="right" style="font-weight: 600; color: #0b3c5d;">₹${(item['Grand Total'] || 0).toLocaleString('en-IN')}</td>
+                <td style="font-size: 12px; color: #777; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.Items}">
+                    ${item.Items || '-'}
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        updateStats(data.length, totalRevenue, invoiceCount, quotationCount);
+    }
+
+    function updateStats(total, revenue, invoices, quotations) {
+        document.getElementById('statTotalDocs').textContent = total;
+        document.getElementById('statTotalRevenue').textContent = `₹${revenue.toLocaleString('en-IN')}`;
+        document.getElementById('statTotalInvoices').textContent = invoices;
+        document.getElementById('statTotalQuotations').textContent = quotations;
     }
     
     function generateDocNumber(type) {
@@ -947,7 +1317,7 @@ function generateDocument() {
         const docHTML = `
             <div class="header">
                  <!-- Replace the current logo image with this -->
-<img src="https://i.ibb.co/Xf4tpfNY/file-0000000059f871fa90f3acdcedaca209.png" 
+<img src="https://i.ibb.co/HDdZJrPK/icam-w.jpg" 
      alt="ICAM Solutions Logo"
      style="height: 120px; background: white;">
                 <div class="company-details">
