@@ -2132,20 +2132,26 @@ function generateDocument() {
         });
 
         try {
-            // Pre-capture: Ensure element is fully expanded and background is white
+            // Force edge-to-edge capture by stripping all possible padding/borders
             const originalStyle = element.getAttribute('style') || '';
-            element.style.height = 'auto';
-            element.style.maxHeight = 'none';
-            element.style.overflow = 'visible';
+            element.style.cssText = `
+                width: 850px !important;
+                padding: 0px !important;
+                margin: 0px !important;
+                border: none !important;
+                border-radius: 0px !important;
+                height: auto !important;
+                background: white !important;
+            `;
             
             const canvas = await html2canvas(element, {
-                scale: 3, // Higher resolution
+                scale: 2, 
                 useCORS: true,
                 logging: false,
                 backgroundColor: '#ffffff',
-                windowWidth: element.scrollWidth,
+                windowWidth: 850,
                 windowHeight: element.scrollHeight,
-                scrollY: -window.scrollY // Fixes potential offset issues
+                scrollY: -window.scrollY
             });
             
             // Restore original style
@@ -2158,26 +2164,24 @@ function generateDocument() {
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
             
-            const margin = 3; // Reduced margin from 10 to 3 for more space
-            const maxW = pageWidth - (2 * margin);
-            const maxH = pageHeight - (2 * margin);
+            // NO MARGINS - EDGE TO EDGE
+            const maxW = pageWidth;
+            const maxH = pageHeight;
             
-            // Original proportions from canvas
             let imgW = maxW;
             let imgH = (canvas.height * imgW) / canvas.width;
             
-            // SHRINK TO FIT: If the calculated height exceeds the page height, scale it down
+            // SHRINK TO FIT (Height only)
             if (imgH > maxH) {
                 const ratio = maxH / imgH;
                 imgW = imgW * ratio;
                 imgH = maxH;
             }
 
-            // Calculate offsets to center the content
+            // Standard final layout
             const xOffset = (pageWidth - imgW) / 2;
-            const yOffset = (pageHeight - imgH) / 2; // Center vertically too if it fits easily
-
-            // Add content to a single page
+            const yOffset = (pageHeight - imgH) / 2;
+            
             pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgW, imgH, undefined, 'FAST');
             
             const docType = currentDocType === 'invoice' ? 'Invoice' : 'Quotation';
