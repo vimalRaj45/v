@@ -2457,7 +2457,41 @@ function generateDocument() {
             }
         });
     }
+     // Support for Enter key
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('loginPassword')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+        checkLogin();
+    });
 
+    // Security: Prevent DevTools and Inspect
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    
+    document.addEventListener('keydown', (e) => {
+        // F12
+        if (e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+        // Ctrl+U (View Source), Ctrl+S (Save)
+        if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Disable dragging images to view source links
+    document.addEventListener('dragstart', (e) => {
+        if (e.target.nodeName === 'IMG') {
+            e.preventDefault();
+        }
+    });
    
 </script>
 
