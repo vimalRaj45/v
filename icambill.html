@@ -1991,12 +1991,20 @@ function generateDocument() {
         
         // Generate document HTML
         const docHTML = `
-            <div class="header">
-                 <!-- Replace the current logo image with this -->
-<img src="https://i.ibb.co/HDdZJrPK/icam-w.jpg" 
-     alt="ICAM Solutions Logo"
-     style="height: 120px; background: white;">
-                <div class="company-details">
+            <div id="pdfFrame" style="border: 2px solid #0b3c5d; border-radius: 20px; padding: 35px; background: white; min-height: 1000px; box-sizing: border-box; position: relative; overflow: hidden;">
+                <!-- Networking Watermark / Design Elements -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.03; z-index: 0; background-image: radial-gradient(#0b3c5d 1px, transparent 1px); background-size: 20px 20px;"></div>
+                <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) rotate(-35deg); font-size: 100px; color: #0b3c5d; font-weight: 900; opacity: 0.04; white-space: nowrap; pointer-events: none; z-index: 0;">ICAM SOLUTIONS</div>
+                
+                <!-- Networking Corner Accents -->
+                <div style="position: absolute; top: 0; left: 0; width: 80px; height: 80px; border-top: 6px solid #28a745; border-left: 6px solid #28a745; border-top-left-radius: 18px;"></div>
+                <div style="position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; border-bottom: 6px solid #0b3c5d; border-right: 6px solid #0b3c5d; border-bottom-right-radius: 18px;"></div>
+                
+                <div class="header" style="position: relative; z-index: 1;">
+                    <img src="https://i.ibb.co/HDdZJrPK/icam-w.jpg" 
+                         alt="ICAM Solutions Logo"
+                         style="height: 120px; background: white;">
+                    <div class="company-details">
                     <h2><i class="bi bi-building"></i> ICAM SOLUTIONS</h2>
                     <div><i class="bi bi-headset"></i> +91 98945 10065</div>
                     <div><i class="bi bi-globe"></i> icamsolutions.netlify.app</div>
@@ -2122,6 +2130,7 @@ function generateDocument() {
                         : 'This quotation is valid for 30 days from the date mentioned above.'}
                 </div>
             </div>
+            </div>
         `;
         
         // Update preview
@@ -2164,9 +2173,10 @@ function generateDocument() {
                 padding: 0px !important;
                 margin: 0px !important;
                 border: none !important;
-                border-radius: 0px !important;
+                border-radius: 20px !important;
                 height: auto !important;
                 background: white !important;
+                box-sizing: border-box !important;
             `;
             
             const canvas = await html2canvas(element, {
