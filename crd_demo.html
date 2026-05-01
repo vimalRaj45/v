@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spirelia AI CRM — Demo & Instructions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #475569;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --transition: all 0.2s ease-in-out;
+    }
+    
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #cbd5e1;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: var(--transition);
+    }
+    
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .logo i { color: var(--accent); font-size: 1.75rem; }
+    
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    
+    .theme-toggle, .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.625rem 1.25rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    
+    .theme-toggle { background: var(--bg-tertiary); color: var(--text-primary); }
+    .theme-toggle:hover, .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+    .btn-outline:hover { background: var(--accent); color: white; }
+    .btn-success { background: var(--success); }
+    .btn-success:hover { background: #059669; }
+    
+    /* Main Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; }
+      .sidebar { position: static; width: 100%; }
+    }
+    
+    /* Sidebar Navigation */
+    .sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      background: var(--bg-secondary);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+    }
+    
+    .nav-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .nav-list { list-style: none; }
+    .nav-item { margin-bottom: 0.25rem; }
+    
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 0.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: var(--transition);
+    }
+    
+    .nav-link:hover, .nav-link.active {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .nav-link i { width: 1.25rem; text-align: center; }
+    
+    /* Content Sections */
+    .content { display: flex; flex-direction: column; gap: 2rem; }
+    
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+    }
+    
+    .card:hover { border-color: var(--accent); }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .card-header i { color: var(--accent); font-size: 1.25rem; }
+    .card-title { font-size: 1.25rem; font-weight: 600; }
+    
+    /* Status Badges */
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .status-done { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .status-partial { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+    .status-pending { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    
+    /* Tables */
+    .table-wrapper { overflow-x: auto; }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    
+    th, td {
+      padding: 0.875rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    
+    tr:hover { background: var(--bg-tertiary); }
+    
+    /* Code Blocks */
+    pre {
+      background: var(--bg-primary);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+    
+    code {
+      color: var(--accent);
+      font-family: inherit;
+    }
+    
+    .comment { color: var(--text-secondary); }
+    .string { color: var(--success); }
+    .keyword { color: var(--warning); }
+    
+    /* Mermaid Diagrams */
+    .mermaid {
+      background: var(--bg-secondary);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+    
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: var(--bg-tertiary);
+      border-radius: 0.75rem;
+    }
+    
+    .feature-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.5rem;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+    }
+    
+    .feature-content h4 { font-weight: 600; margin-bottom: 0.25rem; }
+    .feature-content p { color: var(--text-secondary); font-size: 0.875rem; }
+    
+    /* Accordion */
+    .accordion { border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden; }
+    
+    .accordion-item { border-bottom: 1px solid var(--border); }
+    .accordion-item:last-child { border-bottom: none; }
+    
+    .accordion-header {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--bg-tertiary);
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      transition: var(--transition);
+      color: var(--text-primary);
+    }
+    
+    .accordion-header:hover { background: var(--border); }
+    .accordion-header.active { background: var(--accent); color: white; }
+    
+    .accordion-content {
+      padding: 0 1.25rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      background: var(--bg-secondary);
+    }
+    
+    .accordion-content.show {
+      padding: 1rem 1.25rem;
+      max-height: 500px;
+    }
+    
+    /* File Tree */
+    .file-tree {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.75;
+    }
+    
+    .file-tree .folder { color: var(--warning); }
+    .file-tree .file { color: var(--accent); }
+    .file-tree .note { color: var(--text-secondary); font-style: italic; }
+    
+    /* Progress Bar */
+    .progress-container {
+      background: var(--bg-tertiary);
+      border-radius: 0.5rem;
+      height: 0.5rem;
+      overflow: hidden;
+      margin: 0.5rem 0 1rem;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      border-radius: 0.5rem;
+      transition: width 0.5s ease;
+    }
+    
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+    
+    /* Utility Classes */
+    .text-accent { color: var(--accent); }
+    .text-success { color: var(--success); }
+    .text-warning { color: var(--warning); }
+    .text-danger { color: var(--danger); }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mt-2 { margin-top: 1rem; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-2 { gap: 0.5rem; }
+    .wrap { flex-wrap: wrap; }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate { animation: fadeIn 0.4s ease forwards; }
+    .animate-delay-1 { animation-delay: 0.1s; }
+    .animate-delay-2 { animation-delay: 0.2s; }
+    .animate-delay-3 { animation-delay: 0.3s; }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <i class="bi bi-robot"></i>
+      <span>Spirelia AI CRM</span>
+    </div>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+        <i class="bi bi-moon-stars"></i>
+      </button>
+      <a href="https://github.com/vimalRaj45/crm_back" target="_blank" class="btn btn-outline">
+        <i class="bi bi-github"></i> View Repo
+      </a>
+      <a href="#setup" class="btn btn-success">
+        <i class="bi bi-play-circle"></i> Get Started
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+  
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="nav-title">Contents</div>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="#overview" class="nav-link active"><i class="bi bi-house"></i> Overview</a></li>
+      <li class="nav-item"><a href="#pipeline" class="nav-link"><i class="bi bi-diagram-3"></i> Pipeline Status</a></li>
+      <li class="nav-item"><a href="#features" class="nav-link"><i class="bi bi-stars"></i> What's Built</a></li>
+      <li class="nav-item"><a href="#usage" class="nav-link"><i class="bi bi-book"></i> How to Use</a></li>
+      <li class="nav-item"><a href="#flow" class="nav-link"><i class="bi bi-arrow-repeat"></i> Processing Flow</a></li>
+      <li class="nav-item"><a href="#stack" class="nav-link"><i class="bi bi-layers"></i> Tech Stack</a></li>
+      <li class="nav-item"><a href="#pending" class="nav-link"><i class="bi bi-hourglass-split"></i> Pending Items</a></li>
+      <li class="nav-item"><a href="#files" class="nav-link"><i class="bi bi-folder"></i> File Structure</a></li>
+      <li class="nav-item"><a href="#changes" class="nav-link"><i class="bi bi-git"></i> Recent Changes</a></li>
+    </ul>
+  </aside>
+  
+  <!-- Main Content Area -->
+  <main class="content">
+    
+    <!-- Overview Section -->
+    <section id="overview" class="card animate">
+      <div class="card-header">
+        <i class="bi bi-info-circle"></i>
+        <h2 class="card-title">System Overview</h2>
+      </div>
+      <p class="mb-2">
+        <strong>Spirelia</strong> is an end-to-end AI-powered Lead Intelligence CRM that automatically ingests job alerts from Gmail, qualifies leads using Groq AI (Llama 3.3), enriches company data, and presents everything through a secure, premium web dashboard.
+      </p>
+      
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 80%"></div>
+      </div>
+      <div class="progress-label">
+        <span>Pipeline Completion</span>
+        <strong class="text-success">8/10 Steps Complete</strong>
+      </div>
+      
+      <div class="mermaid">
+flowchart LR
+    A[Gmail Alerts] --> B[Apps Script Trigger]
+    B --> C[Sender Filter]
+    C --> D[Quick Fingerprint Dedup]
+    D --> E[Groq AI Extraction]
+    E --> F[Noise Filter + Scoring]
+    F --> G[Google Sheets - 14 Columns]
+    G --> H[Node.js API Server]
+    H --> I[Web Dashboard]
+      </div>
+    </section>
+    
+    <!-- Pipeline Status -->
+    <section id="pipeline" class="card animate animate-delay-1">
+      <div class="card-header">
+        <i class="bi bi-diagram-3"></i>
+        <h2 class="card-title">Pipeline Steps — Status</h2>
+      </div>
+      
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Feature</th>
+              <th>Status</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>Job Alert Received</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td>Gmail trigger via Apps Script, processes up to 50 threads / 20 new emails</td>
+            </tr>
+            <tr>
+              <td>02</td>
+              <td>AI Extraction</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td>Groq Llama 3.3-70B extracts 12 structured fields per lead</td>
+            </tr>
+            <tr>
+              <td>03</td>
+              <td>Filtering & Qualification</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td>Score 0–100, noise keyword filter, sector gate, 3-layer dedup</td>
+            </tr>
+            <tr>
+              <td>04</td>
+              <td>Company Identified</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td>Validated company name passed to enrichment</td>
+            </tr>
+            <tr>
+              <td>05</td>
+              <td>Wikipedia Lookup</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td><code>buildWikipedia()</code> — auto-generated URL, no rate limits</td>
+            </tr>
+            <tr>
+              <td>06</td>
+              <td>Company Website</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td><code>extractDomain()</code> — fallback domain heuristic</td>
+            </tr>
+            <tr>
+              <td>07</td>
+              <td>Decision Maker — LinkedIn</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td><code>buildDecisionLink()</code> — auto CTO/VP R&D search URL</td>
+            </tr>
+            <tr>
+              <td>08</td>
+              <td>Email Finder (Hunter/Apollo)</td>
+              <td><span class="status status-partial"><i class="bi bi-exclamation-triangle"></i> Partial</span></td>
+              <td>Currently uses <code>guessEmail()</code> heuristic — real API pending</td>
+            </tr>
+            <tr>
+              <td>09</td>
+              <td>AI Outreach Generated</td>
+              <td><span class="status status-pending"><i class="bi bi-x-circle"></i> Pending</span></td>
+              <td>Personalized email + LinkedIn message drafting not yet built</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>Stored in Google Sheets</td>
+              <td><span class="status status-done"><i class="bi bi-check-circle"></i> Done</span></td>
+              <td>14-column CRM with verified writes + dedup</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+    <!-- What's Built -->
+    <section id="features" class="card animate animate-delay-2">
+      <div class="card-header">
+        <i class="bi bi-stars"></i>
+        <h2 class="card-title">What's Been Built</h2>
+      </div>
+      
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header active" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-file-code"></i> Google Apps Script (Code.gs)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content show">
+            <p class="mb-2"><strong>624 Lines • ES5-Compatible • Production Ready</strong></p>
+            
+            <div class="feature-grid">
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-person-check"></i></div>
+                <div class="feature-content">
+                  <h4>Dynamic Sender Filter</h4>
+                  <p><code>ALLOWED_SENDERS</code> config: <code>["*"]</code> for all, or specific emails/domains</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="feature-content">
+                  <h4>3-Layer Smart Dedup</h4>
+                  <p>MsgID check → Quick fingerprint → Full signature comparison</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-clock-history"></i></div>
+                <div class="feature-content">
+                  <h4>Rate Limit Protection</h4>
+                  <p>2.5s delay between AI calls + exponential backoff on 429 errors</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon"><i class="bi bi-check2-square"></i></div>
+                <div class="feature-content">
+                  <h4>Verified Writes</h4>
+                  <p><code>SpreadsheetApp.flush()</code> + read-back verification after every row</p>
+                </div>
+              </div>
+            </div>
+            
+            <p class="mt-2 mb-1"><strong>Configuration Example:</strong></p>
+            <pre><code><span class="keyword">var</span> CONFIG = {
+  MAX_SEARCH_THREADS: <span class="string">50</span>,
+  MAX_PROCESS_MESSAGES: <span class="string">20</span>,
+  SLEEP_MS: <span class="string">2500</span>,
+  NOISE_KEYWORDS: [<span class="string">"tcs"</span>, <span class="string">"infosys"</span>, <span class="string">"wipro"</span>, ...],
+  AI_MODEL: <span class="string">"llama-3.3-70b-versatile"</span>,
+  AI_TEMPERATURE: <span class="string">0.1</span>,
+  LOG_TRUNCATE: <span class="string">800</span>,
+  <span class="comment">// Dynamic sender filter</span>
+  ALLOWED_SENDERS: [<span class="string">"vimalraj5207@gmail.com"</span>, <span class="string">"muralidharanl@gmail.com"</span>]
+};</code></pre>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-server"></i> Node.js Server (server.js)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <ul class="mb-2">
+              <li>✅ Express server with REST API</li>
+              <li>✅ OTP Login via Brevo HTTP API (axios, no SMTP)</li>
+              <li>✅ Multi-user support: 3 allowed emails configured in <code>.env</code></li>
+              <li>✅ Token-based sessions (24-hour expiry, in-memory store)</li>
+              <li>✅ Protected <code>/api/leads</code> endpoint reads from Google Sheets</li>
+              <li>✅ CORS enabled, binds <code>0.0.0.0</code> for Render deployment</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-layout-text-window"></i> Dashboard (public/index.html)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <ul class="mb-2">
+              <li>🌓 Dark/Light theme toggle with <code>localStorage</code> persistence</li>
+              <li>📊 Stats row: Total Leads, Avg Score, Top Score, Companies</li>
+              <li>🔍 7 Advanced Filters (collapsible panel)</li>
+            </ul>
+            
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th>Filter</th><th>Type</th><th>How It Works</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Global Search</td><td>Text</td><td>Searches across ALL columns</td></tr>
+                  <tr><td>Score Range</td><td>Min/Max</td><td>Focus on high-quality leads (0–100)</td></tr>
+                  <tr><td>Sector</td><td>Dropdown</td><td>Auto, Pharma, Aerospace, Manufacturing, GCC, Agriculture, Tech</td></tr>
+                  <tr><td>Position</td><td>Dropdown</td><td>VP, Director, Head/Lead, Manager, CTO/CXO</td></tr>
+                  <tr><td>Has Contact</td><td>Toggle</td><td>Only shows leads with email or LinkedIn</td></tr>
+                  <tr><td>Fit Reason</td><td>Text</td><td>Search "patent", "R&D", "innovation"</td></tr>
+                  <tr><td>Since Date</td><td>Date picker</td><td>Only leads from a specific date onwards</td></tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <p class="mt-2">• Click any row → full lead detail modal with all 14 fields<br>
+            • Score + Fit Reason hero section in modal<br>
+            • Active filter count indicator<br>
+            • Fully mobile responsive</p>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-shield-lock"></i> Login (public/login.html)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <ul>
+              <li>🎨 Glassmorphic OTP login with animated grid + orb background</li>
+              <li>🔢 6-digit auto-advance OTP boxes + paste support</li>
+              <li>🔄 Auto-redirect if already authenticated</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- How to Use -->
+    <section id="usage" class="card animate animate-delay-3">
+      <div class="card-header">
+        <i class="bi bi-book"></i>
+        <h2 class="card-title">How to Use</h2>
+      </div>
+      
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header active" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-gear"></i> Initial Setup (One-Time)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content show">
+            <h4 class="mb-1 text-accent">Google Apps Script</h4>
+            <ol class="mb-2">
+              <li>Open Google Sheet: <code class="text-accent">1VJtX69Wn4lDryad8L6NkpMylnlys_tPJqYn-b2Oa_aI</code></li>
+              <li>Go to <strong>Extensions → Apps Script</strong></li>
+              <li>Paste the full <code>Code.gs</code> content</li>
+              <li>Set script property: <strong>Project Settings → Script Properties → Add</strong>
+                <ul>
+                  <li>Key: <code>GROQ_API_KEY</code></li>
+                  <li>Value: <em>(your Groq API key)</em></li>
+                </ul>
+              </li>
+              <li>Run <code>initializeCRM()</code> from the CRM-V2 menu to set up sheets</li>
+              <li><em>(Optional)</em> Set a time-based trigger for <code>fetchAndQualifyLeads()</code></li>
+            </ol>
+            
+            <h4 class="mb-1 text-accent mt-2">Configure Sender Filter</h4>
+            <p class="mb-1">In <code>Code.gs</code>, modify <code>CONFIG.ALLOWED_SENDERS</code>:</p>
+            <pre><code><span class="comment">// Process ONLY these senders:</span>
+ALLOWED_SENDERS: [<span class="string">"vimalraj5207@gmail.com"</span>, <span class="string">"muralidharanl@gmail.com"</span>]
+
+<span class="comment">// OR process ALL senders (no filter):</span>
+ALLOWED_SENDERS: [<span class="string">"*"</span>]
+
+<span class="comment">// OR filter by domain:</span>
+ALLOWED_SENDERS: [<span class="string">"@tesla.com"</span>, <span class="string">"@boeing.com"</span>]</code></pre>
+            
+            <h4 class="mb-1 text-accent mt-2">Web Dashboard (Local Dev)</h4>
+            <pre><code>cd CRM-V2
+npm install
+node server.js
+<span class="comment"># → Open http://localhost:3000</span></code></pre>
+            
+            <h4 class="mb-1 text-accent mt-2">Render Deployment</h4>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>Variable</th><th>Value</th></tr></thead>
+                <tbody>
+                  <tr><td><code>BREVO_API_KEY</code></td><td><em>(Brevo API key)</em></td></tr>
+                  <tr><td><code>BREVO_SENDER</code></td><td><code>malikasaravanan774@gmail.com</code></td></tr>
+                  <tr><td><code>ALLOWED_EMAILS</code></td><td><code>malikasaravanan774@gmail.com,muralidharanl@gmail.com,vimalraj5207@gmail.com</code></td></tr>
+                  <tr><td><code>GROQ_API_KEY</code></td><td><em>(Groq API key)</em></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mt-1">• Upload <code>service-account.json</code> to the repo root</p>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-calendar-check"></i> Daily Usage</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>Action</th><th>How</th></tr></thead>
+                <tbody>
+                  <tr><td>Process new leads</td><td>Run <code>fetchAndQualifyLeads()</code> from Apps Script</td></tr>
+                  <tr><td>View leads</td><td>Open dashboard → login with allowed email → receive OTP</td></tr>
+                  <tr><td>Search leads</td><td>Global search bar or use 7 advanced filters</td></tr>
+                  <tr><td>Filter high-quality</td><td>Set Score Range to 70–100</td></tr>
+                  <tr><td>Filter by sector</td><td>Select sector dropdown (Auto, Pharma, GCC, etc.)</td></tr>
+                  <tr><td>Find contacts only</td><td>Toggle "Has Contact" switch</td></tr>
+                  <tr><td>View lead details</td><td>Click any table row → modal shows all 14 fields</td></tr>
+                  <tr><td>Toggle dark/light</td><td>Click moon/sun icon in navbar</td></tr>
+                  <tr><td>View stats</td><td>Run <code>showStats()</code> from CRM-V2 menu</td></tr>
+                  <tr><td>Reset filters</td><td>Click Reset button in filter panel</td></tr>
+                  <tr><td>Logout</td><td>Click Logout button in navbar</td></tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <p class="mt-2"><strong>Allowed Login Emails:</strong><br>
+            • <code>malikasaravanan774@gmail.com</code><br>
+            • <code>muralidharanl@gmail.com</code><br>
+            • <code>vimalraj5207@gmail.com</code></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Processing Flow -->
+    <section id="flow" class="card animate">
+      <div class="card-header">
+        <i class="bi bi-arrow-repeat"></i>
+        <h2 class="card-title">Pipeline Processing Flow</h2>
+      </div>
+      
+      <div class="mermaid">
+flowchart TD
+    A[Gmail Search: innovation/R&D/patent] --> B{Thread Loop<br/>max 50 threads}
+    B --> C[Get Message]
+    C --> D{Sender<br/>Allowed?}
+    D -- No --> C
+    D -- Yes --> E{MsgID<br/>Exists?}
+    E -- Yes --> C
+    E -- No --> F{Quick<br/>Fingerprint<br/>Match?}
+    F -- Yes --> G[Skip - Duplicate Content]
+    F -- No --> H[Call Groq AI]
+    H --> I{Leads<br/>Found?}
+    I -- No --> C
+    I -- Yes --> J{Noise<br/>Filter}
+    J -- Noise --> K[Discard]
+    J -- Clean --> L{Full Signature<br/>Dedup}
+    L -- Duplicate --> K
+    L -- Unique --> M[Append to Sheet]
+    M --> N[Verify Write]
+    N --> O{20 Messages<br/>Processed?}
+    O -- No --> C
+    O -- Yes --> P[Show Summary]
+      </div>
+    </section>
+    
+    <!-- Tech Stack -->
+    <section id="stack" class="card animate animate-delay-1">
+      <div class="card-header">
+        <i class="bi bi-layers"></i>
+        <h2 class="card-title">Tech Stack</h2>
+      </div>
+      
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-cpu"></i></div>
+          <div class="feature-content">
+            <h4>AI Engine</h4>
+            <p>Groq API — Llama 3.3-70B Versatile</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-file-earmark-code"></i></div>
+          <div class="feature-content">
+            <h4>Automation</h4>
+            <p>Google Apps Script (ES5 compatible)</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-table"></i></div>
+          <div class="feature-content">
+            <h4>Data Store</h4>
+            <p>Google Sheets (14-column CRM)</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-node-js"></i></div>
+          <div class="feature-content">
+            <h4>Backend</h4>
+            <p>Node.js + Express</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-envelope"></i></div>
+          <div class="feature-content">
+            <h4>Email OTP</h4>
+            <p>Brevo HTTP API v3 (via axios)</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-key"></i></div>
+          <div class="feature-content">
+            <h4>Auth</h4>
+            <p>Token-based (crypto.randomBytes, 24h expiry)</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-palette"></i></div>
+          <div class="feature-content">
+            <h4>Frontend</h4>
+            <p>Vanilla HTML/CSS/JS + Bootstrap Icons + Inter font</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="bi bi-cloud"></i></div>
+          <div class="feature-content">
+            <h4>Hosting</h4>
+            <p>Render (Web Service)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Pending Items -->
+    <section id="pending" class="card animate animate-delay-2">
+      <div class="card-header">
+        <i class="bi bi-hourglass-split"></i>
+        <h2 class="card-title">What's Pending</h2>
+      </div>
+      
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header active" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-envelope-paper"></i> Email Finder — Hunter.io / Apollo (Step 08)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content show">
+            <p class="mb-2">Currently <code>guessEmail()</code> generates placeholder emails like <code>careers@company.com</code>. To complete:</p>
+            <ul>
+              <li>Integrate Hunter.io API (<code>GET https://api.hunter.io/v2/domain-search</code>)</li>
+              <li>Or Apollo.io API for verified decision-maker emails</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-chat-square-text"></i> AI Outreach Generation (Step 09)</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <p class="mb-2">Not yet built. To complete:</p>
+            <ul>
+              <li>Add a second Groq AI call after enrichment</li>
+              <li>Generate personalized email in Prof. Bala's voice</li>
+              <li>Generate LinkedIn connect message + 2 follow-up emails</li>
+              <li>Store in a new "Outreach" sheet tab</li>
+              <li>Display outreach content in dashboard modal</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <span><i class="bi bi-lightbulb"></i> Optional Enhancements</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <div class="accordion-content">
+            <ul>
+              <li>⏰ Time-based Apps Script trigger (e.g., every 6 hours)</li>
+              <li>🔄 Pipeline stage management (Contacted → Qualified → Closed)</li>
+              <li>📥 CSV export from dashboard</li>
+              <li>🔔 Email alerts for high-score leads</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- File Structure -->
+    <section id="files" class="card animate animate-delay-3">
+      <div class="card-header">
+        <i class="bi bi-folder"></i>
+        <h2 class="card-title">File Structure</h2>
+      </div>
+      
+      <pre class="file-tree"><span class="folder">CRM-V2/</span>
+├── <span class="file">server.js</span>            <span class="note"># Express API server (auth + leads endpoint)</span>
+├── <span class="file">package.json</span>         <span class="note"># Dependencies + start script</span>
+├── <span class="file">.env</span>                 <span class="note"># Secrets (not in git)</span>
+├── <span class="file">.gitignore</span>           <span class="note"># Excludes .env, service-account, node_modules</span>
+├── <span class="file">service-account.json</span> <span class="note"># Google Sheets API credentials (not in git)</span>
+├── <span class="file">Code.gs</span>              <span class="note"># Google Apps Script (paste into Sheet editor)</span>
+└── <span class="folder">public/</span>
+    ├── <span class="file">index.html</span>       <span class="note"># Dashboard (7 filters, modal, theme toggle)</span>
+    └── <span class="file">login.html</span>       <span class="note"># OTP login page</span></pre>
+    </section>
+    
+    <!-- Recent Changes -->
+    <section id="changes" class="card animate">
+      <div class="card-header">
+        <i class="bi bi-git"></i>
+        <h2 class="card-title">Key Changes in Latest Code.gs Update</h2>
+      </div>
+      
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Change</th><th>Before</th><th>After</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Syntax</strong></td>
+              <td>ES6 (<code>const</code>, <code>let</code>, <code>=></code>, template literals)</td>
+              <td>ES5 (<code>var</code>, <code>function()</code>, string concat) — full Apps Script compatibility</td>
+            </tr>
+            <tr>
+              <td><strong>Sender Filter</strong></td>
+              <td>Process all emails</td>
+              <td>Dynamic <code>ALLOWED_SENDERS</code> — set <code>["*"]</code> for all, or specific emails/domains</td>
+            </tr>
+            <tr>
+              <td><strong>Content Dedup</strong></td>
+              <td>Only checked after AI call</td>
+              <td><strong>Pre-AI fingerprint</strong> (<code>generateQuickSignature()</code>) — skips AI call entirely for duplicate content</td>
+            </tr>
+            <tr>
+              <td><strong>AI Call Savings</strong></td>
+              <td>Called AI for every new MsgID</td>
+              <td>Skips AI if content fingerprint already exists — saves Groq API quota</td>
+            </tr>
+            <tr>
+              <td><strong>Emoji Logging</strong></td>
+              <td><code>🚀 ✅ ❌ 📊</code> in logs</td>
+              <td>Clean text logging for production clarity</td>
+            </tr>
+            <tr>
+              <td><strong>Error Handling</strong></td>
+              <td>Optional chaining (<code>?.</code>)</td>
+              <td>Explicit null checks for ES5 safety</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    
+  </main>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>
+    <strong>Spirelia AI CRM</strong> • Prepared for Prof. Bala Ramadurai • 
+    <span class="text-accent">2 May 2026</span><br>
+    Repo: <a href="https://github.com/vimalRaj45/crm_back" class="text-accent" target="_blank">github.com/vimalRaj45/crm_back</a>
+  </p>
+</footer>
+
+<!-- Scripts -->
+<script>
+  // Initialize Mermaid
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: document.documentElement.getAttribute('data-theme') === 'light' ? 'default' : 'dark',
+    securityLevel: 'loose',
+    fontFamily: 'Inter, sans-serif'
+  });
+  
+  // Theme Toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  
+  // Check for saved theme preference or respect OS preference
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
+    html.setAttribute('data-theme', 'light');
+    themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+  }
+  
+  themeToggle.addEventListener('click', () => {
+    const isLight = html.getAttribute('data-theme') === 'light';
+    html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    localStorage.setItem('theme', isLight ? 'dark' : 'light');
+    themeToggle.innerHTML = isLight ? '<i class="bi bi-moon-stars"></i>' : '<i class="bi bi-sun"></i>';
+    
+    // Re-render Mermaid diagrams with new theme
+    mermaid.initialize({
+      theme: isLight ? 'dark' : 'default',
+      startOnLoad: true,
+      securityLevel: 'loose',
+      fontFamily: 'Inter, sans-serif'
+    });
+    mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+  });
+  
+  // Accordion Toggle
+  function toggleAccordion(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('i:last-child');
+    
+    header.classList.toggle('active');
+    content.classList.toggle('show');
+    icon.classList.toggle('bi-chevron-down');
+    icon.classList.toggle('bi-chevron-up');
+  }
+  
+  // Smooth scroll for nav links
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Update active state
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      
+      // Scroll to section
+      const targetId = link.getAttribute('href');
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+  
+  // Update active nav link on scroll
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 150;
+      if (pageYOffset >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+    
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
