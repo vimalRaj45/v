@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spirelia AI CRM — Lead Pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f9fc;
+    --white: #ffffff;
+    --border: #e2e6ef;
+    --text: #1a2035;
+    --muted: #6b7694;
+    --light: #f1f3f9;
+    --blue: #1d4ed8;
+    --blue-light: #eff4ff;
+    --blue-border: #bfcfff;
+    --green: #0d7a4e;
+    --green-light: #edfbf4;
+    --green-border: #9fe8c8;
+    --amber: #b45309;
+    --amber-light: #fffbeb;
+    --amber-border: #fcd34d;
+    --purple: #6d28d9;
+    --purple-light: #f5f0ff;
+    --purple-border: #c4b5fd;
+    --gray: #374151;
+    --gray-light: #f3f4f6;
+    --gray-border: #d1d5db;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px 80px;
+  }
+
+  .wrapper { max-width: 720px; margin: 0 auto; }
+
+  .header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .header .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .pipeline { display: flex; flex-direction: column; }
+
+  .node { display: flex; align-items: stretch; }
+
+  .spine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 52px;
+    flex-shrink: 0;
+  }
+
+  .dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    border: 2px solid;
+    margin-top: 18px;
+  }
+
+  .dot.blue   { border-color: var(--blue);         background: var(--blue-light); }
+  .dot.green  { border-color: var(--green);         background: var(--green-light); }
+  .dot.amber  { border-color: var(--amber);         background: var(--amber-light); }
+  .dot.purple { border-color: var(--purple);        background: var(--purple-light); }
+  .dot.gray   { border-color: var(--gray-border);   background: var(--gray-light); }
+
+  .connector      { width: 2px; flex: 1; min-height: 16px; background: var(--border); }
+  .connector.dash {
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--amber-border) 0px, var(--amber-border) 5px,
+      transparent 5px, transparent 11px
+    );
+  }
+  .connector.none { background: transparent; }
+
+  .card-wrap { flex: 1; padding: 12px 0 12px 20px; }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    border-left-width: 3px;
+  }
+
+  .card.blue   { border-left-color: var(--blue); }
+  .card.green  { border-left-color: var(--green); }
+  .card.amber  { border-left-color: var(--amber); }
+  .card.purple { border-left-color: var(--purple); }
+  .card.gray   { border-left-color: var(--gray-border); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .step-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge.blue   { background: var(--blue-light);   color: var(--blue);   border: 1px solid var(--blue-border); }
+  .badge.green  { background: var(--green-light);  color: var(--green);  border: 1px solid var(--green-border); }
+  .badge.amber  { background: var(--amber-light);  color: var(--amber);  border: 1px solid var(--amber-border); }
+  .badge.purple { background: var(--purple-light); color: var(--purple); border: 1px solid var(--purple-border); }
+  .badge.gray   { background: var(--gray-light);   color: var(--gray);   border: 1px solid var(--gray-border); }
+
+  .card-desc {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .card-desc strong { color: var(--text); font-weight: 600; }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--light);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* Branch */
+  .branch-row { display: flex; align-items: stretch; }
+  .branch-spine { width: 52px; flex-shrink: 0; display: flex; justify-content: center; }
+  .branch-spine-line { width: 2px; background: var(--border); }
+  .branch-label-wrap { flex: 1; padding: 6px 0 6px 20px; display: flex; align-items: center; }
+  .branch-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+  .branch-label::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--amber-border);
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left  { font-size: 13px; font-weight: 700; color: var(--text); }
+  .footer-right { font-size: 12px; font-weight: 400; color: var(--muted); }
+  .footer-right span { color: var(--blue); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <div class="eyebrow">Spirelia AI CRM · Lead Intelligence</div>
+    <h1>Automated Lead Pipeline</h1>
+    <p>End-to-end flow from job alert ingestion to personalised AI outreach, powered by Google Sheets.</p>
+  </div>
+
+  <div class="pipeline">
+
+    <!-- STEP 01 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot blue">📬</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card blue">
+          <div class="step-num">STEP 01</div>
+          <div class="card-header">
+            <div class="card-title">Job Alert Received</div>
+            <div class="badge blue">Trigger</div>
+          </div>
+          <div class="card-desc">Gmail job alert arrives and <strong>Apps Script trigger fires automatically</strong>, parsing the incoming email for job details.</div>
+          <div class="pills">
+            <div class="pill">Gmail Alerts</div>
+            <div class="pill">LinkedIn Jobs</div>
+            <div class="pill">Naukri / Indeed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 02 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot purple">🤖</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card purple">
+          <div class="step-num">STEP 02</div>
+          <div class="card-header">
+            <div class="card-title">AI Extraction</div>
+            <div class="badge purple">Groq · Llama 3.1</div>
+          </div>
+          <div class="card-desc">LLM parses the raw job text and extracts structured fields — <strong>company name, role, location, and job description</strong> — ready for evaluation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 03 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot amber">⚡</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card amber">
+          <div class="step-num">STEP 03</div>
+          <div class="card-header">
+            <div class="card-title">Filtering &amp; Qualification</div>
+            <div class="badge amber">Core Gate</div>
+          </div>
+          <div class="card-desc">AI scores each lead <strong>1–100</strong> based on fit for Spirelia's products. Leads that do not meet the threshold are automatically discarded.</div>
+          <div class="pills">
+            <div class="pill">1,000+ Employees</div>
+            <div class="pill">$1B+ Revenue</div>
+            <div class="pill">Score ≥ 70 to proceed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 04 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot gray">🏢</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card gray">
+          <div class="step-num">STEP 04</div>
+          <div class="card-header">
+            <div class="card-title">Company Identified</div>
+            <div class="badge gray">Extracted</div>
+          </div>
+          <div class="card-desc">Qualified company name is confirmed and passed into the enrichment pipeline to gather firmographic data.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 05 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot green">📖</div>
+        <div class="connector dash"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card green">
+          <div class="step-num">STEP 05</div>
+          <div class="card-header">
+            <div class="card-title">Wikipedia Lookup</div>
+            <div class="badge green">Primary · Safe</div>
+          </div>
+          <div class="card-desc">First enrichment source. <strong>No rate limits, no ToS risk.</strong> Extracts revenue, headcount, industry, and headquarters from public domain data.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch -->
+    <div class="branch-row">
+      <div class="branch-spine"><div class="branch-spine-line"></div></div>
+      <div class="branch-label-wrap">
+        <div class="branch-label">If not found on Wikipedia →</div>
+      </div>
+    </div>
+
+    <!-- STEP 06 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot amber">🌐</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card amber">
+          <div class="step-num">STEP 06</div>
+          <div class="card-header">
+            <div class="card-title">Company Website</div>
+            <div class="badge amber">Fallback</div>
+          </div>
+          <div class="card-desc">Used <strong>only if a known or user-provided URL is available.</strong> Light meta tag extraction — no deep scraping, fully respectful of site policies.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 07 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot blue">🔗</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card blue">
+          <div class="step-num">STEP 07</div>
+          <div class="card-header">
+            <div class="card-title">Decision Maker — LinkedIn</div>
+            <div class="badge blue">Search Link</div>
+          </div>
+          <div class="card-desc">System auto-generates a targeted LinkedIn search URL to identify the <strong>right decision maker</strong> at the company — CTO, VP Engineering, or COO.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 08 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot purple">📧</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card purple">
+          <div class="step-num">STEP 08</div>
+          <div class="card-header">
+            <div class="card-title">Email Finder</div>
+            <div class="badge purple">Hunter / Apollo</div>
+          </div>
+          <div class="card-desc">Hunter.io or Apollo API retrieves a <strong>verified email address</strong> for the identified decision maker, pre-filling the outreach form automatically.</div>
+          <div class="pills">
+            <div class="pill">Hunter.io</div>
+            <div class="pill">Apollo.io</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 09 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot green">✍️</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card green">
+          <div class="step-num">STEP 09</div>
+          <div class="card-header">
+            <div class="card-title">AI Outreach Generated</div>
+            <div class="badge green">Auto-drafted</div>
+          </div>
+          <div class="card-desc">Groq generates a fully personalised <strong>email and LinkedIn connect message</strong> in Prof. Bala Ramadurai's voice, tailored to the specific company and role.</div>
+          <div class="pills">
+            <div class="pill">Personalised Email</div>
+            <div class="pill">LinkedIn Connect</div>
+            <div class="pill">2 Follow-ups</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 10 -->
+    <div class="node">
+      <div class="spine">
+        <div class="dot blue">📊</div>
+        <div class="connector none"></div>
+      </div>
+      <div class="card-wrap">
+        <div class="card blue">
+          <div class="step-num">STEP 10</div>
+          <div class="card-header">
+            <div class="card-title">Stored in Google Sheets</div>
+            <div class="badge blue">Google Sheets</div>
+          </div>
+          <div class="card-desc">All lead data, enrichment results, and generated outreach content are stored in <strong>Google Sheets</strong>. The CRM dashboard reflects updates in real time.</div>
+          <div class="pills">
+            <div class="pill">Leads Sheet</div>
+            <div class="pill">Outreach Sheet</div>
+            <div class="pill">Live Dashboard</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">Spirelia AI CRM</div>
+    <div class="footer-right">Built for <span>Prof. Bala Ramadurai</span> · 2025</div>
+  </div>
+
+</div>
+</body>
+  </html>
+  
