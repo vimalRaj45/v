@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Important Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: lavender;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+    h2 {
+      color: #4CAF50;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Check if user is authenticated
+    if (!sessionStorage.getItem("authenticated")) {
+      alert("Access denied. Please verify your OTP first.");
+      window.location.href = "https://vimalraj45.github.io/v/"; // Redirect to OTP page
+    }
+  </script>
+
+  <h2>SRK Property Contacts</h2>
+  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTE0aysjRRZ8zbyLcnb1lBRugOb8p_Sv6YtckSt3wjWsKdLdsBNUZtPT6HKWAaeVjHhmQwsOgoxazjc/pubhtml?widget=true&amp;headers=false" allowfullscreen></iframe>
+</body>
+</html>
